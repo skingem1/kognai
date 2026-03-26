@@ -7813,3 +7813,59 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Impact: All 7 Achiri analytics scripts (retention, quality-monitor, readiness, dashboard-export, topic-analytics, export-analytics, weekly-usage-digest) now see accurate user counts (1 real user, not 83). E2E tests still pass 27/27.
 - Swarm used: no
 - Timestamp: 2026-03-26T07:15:00Z
+
+## Sprint 1419 — 2026-03-26
+- Sprint: BUGFIX — ecosystem.config.js: replace hardcoded Mac paths with __dirname
+- Files modified: ecosystem.config.js
+- Change: 60+ occurrences of /Users/tarekmnif/kognai replaced with __dirname in cwd (63), TS_NODE_PROJECT (54), error_file (63), out_file (63), SCS_CLIPS_DIR (2). Validated: node -e require() → VALID — 81 apps.
+- Impact: CRITICAL deploy fix — pm2 start ecosystem.config.js will no longer fail on Hetzner (/home/invoica/apps/kognai)
+- Swarm used: no
+- Timestamp: 2026-03-26T07:00:00Z
+
+## Sprint 1420 — 2026-03-26
+- Sprint: BUGFIX — Move ts-node and typescript to production dependencies
+- Files modified: package.json
+- Change: ts-node@^10.9.2 and typescript@^5.7.0 moved from devDependencies to dependencies. deploy-hetzner.sh runs npm ci --omit=dev, so Hetzner would not install devDeps. All PM2 processes use npx ts-node.
+- Impact: CRITICAL deploy fix — all PM2 processes on Hetzner would fail to start without ts-node installed
+- Swarm used: no
+- Timestamp: 2026-03-26T07:10:00Z
+
+## Sprint 1421 — 2026-03-26
+- Sprint: CHORE — Add SCS-001 generated artifact dirs to .gitignore, untrack cached files
+- Files modified: .gitignore
+- Change: Added workspace/scs001/scripts/, workspace/scs001/code-demo-runs/, workspace/scs001/topic-radar/ to .gitignore. Ran git rm --cached -r on all 3 dirs (removed 155 tracked files).
+- Impact: Eliminates hundreds of D-entries in git status from generated pipeline artifacts
+- Swarm used: no
+- Timestamp: 2026-03-26T07:20:00Z
+
+## Sprint 1422 — 2026-03-26
+- Sprint: BUGFIX — Replace remaining hardcoded /Users/tarekmnif paths in SCS-001 scripts
+- Files modified: scripts/scs001/pipelines/code-demo.ts, scripts/scs001/produce-vlog.ts, scripts/telegram-commands/cmd-spielberg.ts
+- Change: code-demo.ts + produce-vlog.ts: Downloads copy dir now uses os.homedir(). cmd-spielberg.ts: HOME env fallback uses homedir() not literal path.
+- Impact: These scripts now work on Hetzner (homedir = /home/invoica instead of /Users/tarekmnif)
+- Swarm used: no
+- Timestamp: 2026-03-26T08:00:00Z
+
+## Sprint 1423 — 2026-03-26
+- Sprint: BUGFIX — Fix hardcoded /Users/tarekmnif paths in kognai.ecosystem.config.js and shell scripts
+- Files modified: kognai.ecosystem.config.js, scripts/start-router.sh, scripts/generate-daily-brief.sh, scripts/install-clawhub-skills.sh
+- Change: kognai.ecosystem.config.js uses __dirname for all paths (4 apps: router, dashboard, drain, heartbeat). Shell scripts use KOGNAI_ROOT=$(cd $(dirname $0)/.. && pwd).
+- Impact: All ecosystem configs and helper scripts now work cross-platform
+- Swarm used: no
+- Timestamp: 2026-03-26T08:10:00Z
+
+## Sprint 1424 — 2026-03-26
+- Sprint: FEATURE — Auto-write/clear data/rapidapi-lapse.json from rapidapi-tiktok-client.ts
+- Files modified: scripts/scs001/rapidapi-tiktok-client.ts
+- Change: markRapidApiLapse() writes lapse file on 403. clearRapidApiLapse() deletes it on success. Called in searchByKeyword, getTrendingFeed, getVideoInfo.
+- Impact: /status and /blockers lapse warnings now automatically triggered and cleared — no manual intervention needed
+- Swarm used: no
+- Timestamp: 2026-03-26T08:20:00Z
+
+## Sprint 1425 — 2026-03-26
+- Sprint: BUGFIX — Replace stale /stats/health with /health across 4 script files
+- Files modified: scripts/achiri/init-hetzner.sh, scripts/telegram-commands/cmd-management.ts, scripts/telegram-commands/cmd-stripe.ts, scripts/telegram-commands/cmd-spielberg.ts
+- Change: Sprint 1415 renamed the health endpoint but 5 references were missed. All 5 fixed.
+- Impact: /achiri-ping and Hetzner live checks now correctly report server status
+- Swarm used: no
+- Timestamp: 2026-03-26T08:30:00Z
