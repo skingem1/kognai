@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1395",
+  "title": "BUGFIX — /today shows duplicate video IDs in top 3 (ledger has multiple entries per video)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "cmdToday() builds unposted list from publish-ledger.jsonl which has multiple entries per video_id (e.g., video-75ac1293 appears 9x). The filter at line 562 doesn't deduplicate, so the top 3 shows same video multiple times. Fix: add seenVids Set to deduplicate after the initial filter.",
+  "tasks": [
+    {
+      "id": "1395-today-dedup",
+      "description": "In scripts/telegram-commands/cmd-content.ts cmdToday(): after filtering unposted, deduplicate by video_id using a Set before sorting. Add seenVids Set and filter out duplicate video_ids.",
+      "files": ["scripts/telegram-commands/cmd-content.ts"],
+      "status": "pending",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

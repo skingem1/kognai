@@ -1,17 +1,17 @@
-# KOGNAI DAILY BRIEF — 2026-03-25
-## Wednesday, March 25, 2026
+# KOGNAI DAILY BRIEF — 2026-03-26
+## Thursday, March 26, 2026
 
-**Generated:** 2026-03-25 18:49
-**Active Sprint:** sprint-1310
-**Hours Today:** 6h
-**Midday Block:** YES (12:00-14:00)
+**Generated:** 2026-03-26 03:02
+**Active Sprint:** sprint-1394
+**Hours Today:** 4h
+**Midday Block:** NO (Tuesday/Thursday)
 
 ---
 
 ## LIVE STATUS (auto-generated)
-**Gate:** 🟢 ON_TRACK — 11/30 posts · 19 needed · 13d to Apr 7
-**Godman launch:** 20d — April 14  |  **Achiri alpha:** 31d — April 25
-**Next sprint:** queue empty — run /replenish or pick manually
+**Gate:** 🟢 ON_TRACK — 22/30 posts · 8 needed · 12d to Apr 7
+**Godman launch:** 19d — April 14  |  **Achiri alpha:** 30d — April 25
+**Next queued sprint:** Sprint 1394 — BUGFIX — Fix pipeline error: scs001-pipeline-error.log
 
 **Blockers:**
 - 🔴 **TIKTOK_ACCESS_TOKEN** not set — live TikTok posting blocked (set in .env)
@@ -23,44 +23,39 @@
 | Block | Time | Available |
 |-------|------|-----------|
 | AM | 07:00–09:30 | YES |
-| MID | 12:00–14:00 | YES |
+| MID | 12:00–14:00 | NO |
 | PM | 18:00–19:30 | YES |
 
 ---
 
 ## TODAY'S TASKS
 
-### Wednesday, March 25
+### Thursday, March 26
 
 **AM 07:00–09:30**
-- [ ] ⚠️ **Post 2 TikTok video(s) today** (11/30 · 13d left · /today for top picks)
-- [ ] 🔄 Queue empty — run /replenish to generate next sprint
+- [ ] ⚠️ **Post 1 TikTok video(s) today** (22/30 · 12d left · /today for top picks)
+- [ ] 🛠️ **Sprint 1394: BUGFIX — Fix pipeline error: scs001-pipeline-error.log** — /sprint to view queue
 - [ ] /errors — check for overnight process errors
 - [ ] /status — confirm gate pace and cron health
 
-**MID 12:00–14:00**
-- [ ] 📱 **[YOU] Post today's video(s)** — /pickup then /caption-next for text
-- [ ] 🚀 Godman: 20d to launch — /godman for readiness checklist
-- [ ] 🤖 Achiri: set ACHIRI_TELEGRAM_BOT_TOKEN in .env → ./scripts/achiri/start-bot.sh
-
 **PM 18:00–19:30**
 - [ ] Review AM sprint output — /changelog to see what shipped
-- [ ] Check today's post count: /gate (need 2/day to stay on track)
-- [ ] Achiri: 31d to alpha — /achiri for readiness summary
+- [ ] Check today's post count: /gate (need 1/day to stay on track)
+- [ ] Achiri: 30d to alpha — /achiri for readiness summary
 - [ ] Write session log to workspace/agents/memory/
 
 ---
 
 ## TOMORROW PREVIEW
 
-### Wednesday, March 26
-**Sprint 068 — Monitoring Dashboard**
-
+### Thursday, March 27
 **AM 07:00–09:30**
-- [ ] [SWARM] Kick off sprint-068
-- [ ] Review early dashboard code in `frontend/`
-- [ ] Continue daily content posting routine
-- [ ] Check engagement trends — any posts gaining traction?
+- [ ] Read sprint-068 output
+- [ ] Test dashboard: does it show real-time revenue + costs?
+- [ ] Can you check dashboard from phone? (mobile responsive)
+- [ ] Verify Telegram alerts: does it ping you on sprint failure / cost spike?
+
+**NO MIDDAY BLOCK**
 
 ---
 

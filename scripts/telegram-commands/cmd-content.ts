@@ -559,8 +559,14 @@ export function cmdToday(): string {
   }
 
   // Get top unposted videos with captioned mp4
+  // Sprint 1395: deduplicate by video_id — ledger has multiple entries per video
+  const seenVids = new Set<string>();
   const unposted = (ledger as any[])
-    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id)
+    .filter((e: any) => {
+      if (!e.video_id || recordedIds.has(e.video_id) || seenVids.has(e.video_id)) return false;
+      seenVids.add(e.video_id);
+      return true;
+    })
     .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
   const ready = unposted.filter((e: any) => findCaptionedMp4(e.video_id) !== null);
 
