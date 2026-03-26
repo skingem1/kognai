@@ -49,7 +49,7 @@ MODELS: dict[Tier, ModelConfig] = {
     Tier.NANO: ModelConfig(
         name="qwen3:0.6b",
         tier=Tier.NANO,
-        endpoint="http://localhost:11434",
+        endpoint="http://127.0.0.1:11434",
         cost_per_1k_tokens=0.0,
         max_context=32_000,
         think_capable=False,
@@ -58,7 +58,7 @@ MODELS: dict[Tier, ModelConfig] = {
     Tier.LOCAL: ModelConfig(
         name="qwen3:4b",
         tier=Tier.LOCAL,
-        endpoint="http://localhost:11434",
+        endpoint="http://127.0.0.1:11434",
         cost_per_1k_tokens=0.0,
         max_context=32_000,
         think_capable=True,
@@ -67,7 +67,7 @@ MODELS: dict[Tier, ModelConfig] = {
     Tier.POWER: ModelConfig(
         name="qwen3:14b",
         tier=Tier.POWER,
-        endpoint="http://localhost:11434",
+        endpoint="http://127.0.0.1:11434",
         cost_per_1k_tokens=0.0,
         max_context=40_000,
         think_capable=True,
@@ -349,7 +349,7 @@ def run_ollama(model_name: str, prompt: str, think: bool = False, system: str = 
         "system": system,
         "stream": False,
     }
-    resp = httpx.post("http://localhost:11434/api/generate", json=payload, timeout=600)
+    resp = httpx.post("http://127.0.0.1:11434/api/generate", json=payload, timeout=600)
     resp.raise_for_status()
     return resp.json()["response"]
 

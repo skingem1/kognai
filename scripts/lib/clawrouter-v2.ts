@@ -30,7 +30,7 @@ import * as crypto from 'crypto';
 import { getWalletState, recordSpend } from './wallet-state';
 
 // ── Config ────────────────────────────────────────────────────────────────────
-const _rawOllamaHost = process.env.OLLAMA_HOST || 'http://localhost:11434';
+const _rawOllamaHost = process.env.OLLAMA_HOST || 'http://127.0.0.1:11434'; // SEC1: loopback-only default
 const OLLAMA_BASE = _rawOllamaHost.startsWith('http') ? _rawOllamaHost : `http://${_rawOllamaHost}`;
 const CLAWROUTER_GATEWAY = process.env.CLAWROUTER_GATEWAY_URL || 'http://localhost:18789/v1';
 const OLLAMA_TIMEOUT_MS = 180_000;  // 3 min for local models (was 10 min — caused hangs)

@@ -5,7 +5,7 @@
 import * as https from 'https';
 import * as http from 'http';
 
-const OLLAMA_BASE = process.env.OLLAMA_BASE || 'http://localhost:11434';
+const OLLAMA_BASE = process.env.OLLAMA_BASE || 'http://127.0.0.1:11434'; // SEC1: loopback-only default
 const EMBED_MODEL = 'nomic-embed-text';
 const EMBED_DIMS  = 768;
 

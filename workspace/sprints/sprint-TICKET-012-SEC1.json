@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-TICKET-012-SEC1",
+  "title": "TICKET-012-SEC1 — Rebind Ollama to 127.0.0.1:11434 (loopback only)",
+  "block": "TICKET-012",
+  "source": "queue-prescribed",
+  "status": "done",
+  "rationale": "SEC1 security prerequisite from Master Architecture FINAL. Updated all Ollama endpoint defaults from localhost:11434 to 127.0.0.1:11434: (1) runtime/router.py: 4 occurrences replaced; (2) scripts/lib/clawrouter-v2.ts: default fallback updated; (3) scripts/lib/brainx-embed.ts: default fallback updated. Added OMEL network audit: scripts/lib/omel/network-audit.ts — auditOllamaLoopback() checks OLLAMA_HOST is loopback-only, logs to logs/omel/network-audit-YYYY-MM-DD.jsonl, exported from omel/index.ts. Ecosystem.config.js already had 127.0.0.1 in all 4 OLLAMA_HOST entries.",
+  "tasks": [
+    {
+      "id": "TICKET-012-SEC1-01",
+      "description": "runtime/router.py: replace localhost:11434 with 127.0.0.1:11434 (4 occurrences)",
+      "files": ["runtime/router.py"],
+      "status": "done",
+      "type": "security"
+    },
+    {
+      "id": "TICKET-012-SEC1-02",
+      "description": "clawrouter-v2.ts and brainx-embed.ts: update default fallback to 127.0.0.1:11434",
+      "files": ["scripts/lib/clawrouter-v2.ts", "scripts/lib/brainx-embed.ts"],
+      "status": "done",
+      "type": "security"
+    },
+    {
+      "id": "TICKET-012-SEC1-03",
+      "description": "Add OMEL network audit: auditOllamaLoopback() in omel/network-audit.ts, exported from index.ts",
+      "files": ["scripts/lib/omel/network-audit.ts", "scripts/lib/omel/index.ts"],
+      "status": "done",
+      "type": "security"
+    }
+  ]
+}
