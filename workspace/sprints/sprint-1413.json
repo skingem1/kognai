@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1413",
+  "title": "BUGFIX — fal.ai circuit breaker only checked at module load, not per-call (concurrent-run race condition)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "logs/scs001-pipeline-error.log shows 4 ETIMEDOUT failures on 2026-03-25T18:26–19:38. Sprint 1404 added a disk-persisted circuit breaker, but it is only loaded once at module import time (loadPersistedCircuit() at module top-level). If a second concurrent PM2 run starts BEFORE the first run writes data/fal-circuit.json (which happens at the 2nd consecutive timeout), the second run has no knowledge of the tripped circuit. Fix: add a checkDiskCircuit() call inside generateBrollVideo() at each invocation, so even long-running overlapping processes can bail out after a sibling trips the circuit.",
+  "tasks": [
+    {
+      "id": "1413-fal-per-call-circuit-check",
+      "description": "In scripts/scs001/fal-video-client.ts: add a checkDiskCircuit() function that reads data/fal-circuit.json and, if still within TTL, sets falConsecutiveTimeouts=FAL_CIRCUIT_THRESHOLD. Call checkDiskCircuit() at the top of generateBrollVideo() before the for-loop. This ensures concurrent runs that loaded the module before the circuit was written will still bail out on subsequent calls.",
+      "files": ["scripts/scs001/fal-video-client.ts"],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

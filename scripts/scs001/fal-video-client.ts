@@ -43,6 +43,23 @@ function clearPersistedCircuit(): void {
   try { if (existsSync(FAL_CIRCUIT_PATH)) unlinkSync(FAL_CIRCUIT_PATH); } catch { /* skip */ }
 }
 
+// Sprint 1413: Per-call disk check — handles concurrent pipeline runs that loaded the module
+// BEFORE a sibling run wrote the circuit file. loadPersistedCircuit() only runs at import time
+// so a second overlapping run can't benefit from a circuit tripped after it started.
+function checkDiskCircuit(): void {
+  if (falConsecutiveTimeouts >= FAL_CIRCUIT_THRESHOLD) return; // already tripped in-memory
+  try {
+    if (existsSync(FAL_CIRCUIT_PATH)) {
+      const d = JSON.parse(readFileSync(FAL_CIRCUIT_PATH, 'utf-8'));
+      const elapsed = Date.now() - new Date(d.tripped_at).getTime();
+      if (elapsed < FAL_CIRCUIT_TTL_MS) {
+        falConsecutiveTimeouts = FAL_CIRCUIT_THRESHOLD;
+        console.warn(`  [fal.ai] Circuit open (sibling tripped ${Math.round(elapsed / 60000)}min ago) — skipping fal.ai calls`);
+      }
+    }
+  } catch { /* skip */ }
+}
+
 function loadFalKey(): string {
   if (process.env.FAL_KEY) return process.env.FAL_KEY;
   try {
@@ -99,6 +116,8 @@ export async function generateBrollVideo(
 ): Promise<BrollResult> {
   const falKey = loadFalKey();
   if (!falKey) throw new Error('FAL_KEY not set in .env');
+
+  checkDiskCircuit(); // Sprint 1413: re-check disk on each call for concurrent-run safety
 
   mkdirSync(dirname(outPath), { recursive: true });
 

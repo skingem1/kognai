@@ -7763,3 +7763,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Impact: Orchestrator now compiles cleanly with 0 TS errors. Direct npx ts-node invocation works for testing.
 - Swarm used: no
 - Timestamp: 2026-03-26T05:30:00Z
+
+## Sprint 1413 — 2026-03-26
+- Sprint: BUGFIX — fal.ai circuit breaker per-call disk check (concurrent-run race condition)
+- Files modified: scripts/scs001/fal-video-client.ts
+- Fix: Sprint 1404 persisted the circuit breaker to data/fal-circuit.json but only loaded it at module import time (loadPersistedCircuit() at module top-level). Logs showed 4 ETIMEDOUT failures on 2026-03-25 at 19:26–19:38: first run tripped the circuit at 19:32, but a second concurrent run that loaded the module before 19:32 had no knowledge of the tripped circuit and continued making fal.ai calls. Added checkDiskCircuit() called at the top of generateBrollVideo() on every invocation. Now concurrent runs bail out as soon as any sibling writes data/fal-circuit.json.
+- Impact: Eliminates redundant 85-150s timeout waits in concurrent pipeline runs after fal.ai becomes unreachable
+- Swarm used: no
+- Timestamp: 2026-03-26T05:50:00Z

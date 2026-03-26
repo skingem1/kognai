@@ -4193,10 +4193,10 @@
       "status": "done"
     },
     {
-      "sprint": 1412,
+      "sprint": 1413,
       "title": "BUGFIX \u2014 Fix pipeline error: scs001-pipeline-error.log",
       "block": "BUGFIX",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "Pipeline error detected: scs001-pipeline-error.log: 2026-03-25 19:38:55 +01:00:     Scene s6 generation failed: All fal.ai mo",
       "added_at": "2026-03-26T03:10:00.458Z"
