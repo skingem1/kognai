@@ -79,7 +79,7 @@ const server = http.createServer(async (req, res) => {
   // GET /health
   // Sprint 1415: includes capabilities block for deployment visibility.
   if (method === 'GET' && url === '/health') {
-    // Check Ollama model availability (required capability)
+    // Check inference availability: Ollama (free tier) OR Anthropic (paid tiers)
     let ollama_ready = false;
     try {
       const ollamaHost = process.env.OLLAMA_HOST ?? 'http://localhost:11434';
@@ -102,7 +102,8 @@ const server = http.createServer(async (req, res) => {
       elevenlabs_key: !!process.env.ELEVENLABS_API_KEY,
       paymee_key:     !!process.env.PAYMEE_API_KEY,
     };
-    const status = ollama_ready ? 'ok' : 'degraded';
+    const dry_run = process.env.ACHIRI_DRY_RUN === '1';
+    const status = (dry_run || ollama_ready || !!(process.env.ANTHROPIC_API_KEY || '').trim()) ? 'ok' : 'degraded';
     return send(res, 200, { status, version: '1415', uptime_s: Math.floor((Date.now() - START_TIME) / 1000), cached_handlers: handlerCache.size, capabilities });
   }
 

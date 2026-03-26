@@ -1,0 +1,21 @@
+{
+  "sprint_id": "sprint-1439",
+  "title": "BUGFIX — Achiri /health returns 'degraded' when Anthropic key set but Ollama down",
+  "block": "PHASE2",
+  "source": "queue-prescribed",
+  "rationale": "run-all-tests.ts shows 16/17 passing — HTTP API test fails because GET /health returns status='degraded' when Ollama is unavailable, even when ANTHROPIC_API_KEY is set (which enables cloud-tier chat). The health logic on line 105 of agents/achiri/server.ts only checks ollama_ready. Fix: status = (ollama_ready || !!ANTHROPIC_API_KEY) ? 'ok' : 'degraded'. This restores 17/17 tests for the Apr 25 alpha pre-launch suite.",
+  "tasks": [
+    {
+      "id": "1439-health-fix",
+      "description": "In agents/achiri/server.ts, line 105, change: `const status = ollama_ready ? 'ok' : 'degraded';` to: `const status = (ollama_ready || !!process.env.ANTHROPIC_API_KEY) ? 'ok' : 'degraded';`. Also update the comment on line 82 from '// Check Ollama model availability (required capability)' to '// Check inference availability: Ollama (free tier) OR Anthropic (paid tiers)'. Do NOT change any other lines.",
+      "files": [
+        "agents/achiri/server.ts"
+      ],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix",
+      "task_target": "local"
+    }
+  ]
+}
