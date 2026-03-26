@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1390",
+  "title": "BUGFIX — /posted auto-detect picks last delivery (already posted), not last UNPOSTED",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "cmdPosted() reads the last line of auto-delivered.jsonl to auto-detect the video. But the last delivery (dbt-c9a1b9aa) is already recorded — operator gets 'already recorded' error. Fix: scan auto-delivered.jsonl from the end, skip entries already in manual-posts.jsonl, use the first unposted one.",
+  "tasks": [
+    {
+      "id": "1390-posted-detect",
+      "description": "In scripts/telegram-commands/cmd-content.ts, change cmdPosted() to scan auto-delivered.jsonl from the end and skip video_ids already in readRealPosts(). Use the first unposted entry found instead of the last line blindly.",
+      "files": ["scripts/telegram-commands/cmd-content.ts"],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

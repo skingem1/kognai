@@ -325,23 +325,24 @@ export function cmdPosted(args?: string): string {
     return `⚠️ No auto-delivered videos found. Use \`/deliver\` first.`;
   }
 
-  // Get most recent delivery
-  let latest: any = null;
-  for (let i = lines.length - 1; i >= 0; i--) {
-    try { latest = JSON.parse(lines[i]); break; } catch { /* skip */ }
-  }
-  if (!latest || !latest.video_id) {
-    return `⚠️ Could not parse last delivery. Use \`/record <id> 0\` manually.`;
-  }
-
-  const videoId = latest.video_id;
   const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
 
   // Sprint 1229: use readRealPosts for duplicate check — dry-run entries must not block real records
   const existing = readRealPosts();
-  if (existing.some((e: any) => e.video_id === videoId)) {
-    return `⚠️ \`${videoId}\` already recorded. Send \`/posted\` again after posting the next delivered video.`;
+  // Sprint 1390: scan from end, skip already-posted entries — find last UNPOSTED delivery
+  const postedIds = new Set(existing.map((e: any) => e.video_id).filter(Boolean));
+  let latest: any = null;
+  for (let i = lines.length - 1; i >= 0; i--) {
+    try {
+      const entry = JSON.parse(lines[i]);
+      if (entry?.video_id && !postedIds.has(entry.video_id)) { latest = entry; break; }
+    } catch { /* skip */ }
   }
+  if (!latest || !latest.video_id) {
+    return `⚠️ All delivered videos already recorded. Use \`/deliver\` to get the next video, then post it and run \`/posted\`.`;
+  }
+
+  const videoId = latest.video_id;
 
   // Record the post (Sprint 404: enriched with experiment metadata)
   const expData = getExperimentData(videoId);
