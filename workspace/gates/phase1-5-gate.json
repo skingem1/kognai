@@ -1,7 +1,7 @@
 {
   "gate": "phase1-5-tiktok-kill-switch",
   "date": "2026-03-26",
-  "generated_at": "2026-03-26T03:08:19.607Z",
+  "generated_at": "2026-03-26T03:13:53.930Z",
   "deadline": "2026-04-07",
   "days_remaining": 12,
   "urgency": "ON_TRACK",
@@ -12,7 +12,7 @@
       "id": "post-count",
       "name": "Manual TikTok Posts (target: 30)",
       "pass": true,
-      "details": "70 posts recorded in manual-posts.jsonl"
+      "details": "74 posts recorded in manual-posts.jsonl"
     },
     {
       "id": "total-views",
@@ -24,7 +24,7 @@
   "overall_pass": true,
   "recommendation": "PROCEED to Phase 2A — TikTok stable. Launch Achiri alpha Apr 25.",
   "raw": {
-    "posts_count": 70,
+    "posts_count": 74,
     "total_views": 0,
     "avg_views": 0,
     "posts_remaining": 0,

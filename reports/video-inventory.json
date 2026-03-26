@@ -1,5 +1,5 @@
 {
-  "scanned_at": "2026-03-26T03:09:15.978Z",
+  "scanned_at": "2026-03-26T03:14:49.215Z",
   "total_runs": 10,
   "total_videos": 24,
   "unique_topics": 16,
@@ -8,7 +8,7 @@
   "already_posted": 16,
   "ready_to_post": 0,
   "gate_status": {
-    "posted": 74,
+    "posted": 78,
     "target": 30,
     "gap": 0
   },
