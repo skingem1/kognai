@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1414",
+  "title": "BUGFIX — replenish-sprint-queue: getPipelineErrors() re-files stale errors (no freshness check)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "getPipelineErrors() reads the last line of each error log regardless of age. The 2026-03-25T19:38 fal.ai error triggered new sprint queue entries at 03:10 and 03:56 on 2026-03-26, even though sprint-1413 had already fixed the root cause. The isDuplicate() check didn't catch it because the second replenish ran before 1413 was marked done. Fix: parse the timestamp from the last log line and skip errors older than 6 hours.",
+  "tasks": [
+    {
+      "id": "1414-stale-error-freshness",
+      "description": "In scripts/replenish-sprint-queue.ts getPipelineErrors(): after reading lastLine, parse the leading timestamp (format: 'YYYY-MM-DD HH:MM:SS +HH:MM:') and skip the error if it is older than 6 hours. If the timestamp cannot be parsed, keep the current behaviour (include the error). This prevents stale overnight errors from being endlessly re-filed as new queue entries.",
+      "files": ["scripts/replenish-sprint-queue.ts"],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

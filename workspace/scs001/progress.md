@@ -7771,3 +7771,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Impact: Eliminates redundant 85-150s timeout waits in concurrent pipeline runs after fal.ai becomes unreachable
 - Swarm used: no
 - Timestamp: 2026-03-26T05:50:00Z
+
+## Sprint 1414 — 2026-03-26
+- Sprint: BUGFIX — replenish-sprint-queue.ts getPipelineErrors() stale error freshness check
+- Files modified: scripts/replenish-sprint-queue.ts
+- Fix: getPipelineErrors() read the last line of error logs with no age check. The 2026-03-25T19:38 fal.ai error kept triggering new sprint queue entries at 03:10 and 03:56 on 2026-03-26 (sprint-1413 was fixing the same error that was already in the log). Added 6-hour freshness check: parse the leading timestamp from the last log line (format: 'YYYY-MM-DD HH:MM:SS +HH:MM:') and skip if older than 6 hours. Unparse-able timestamps fall through to existing behaviour.
+- Impact: Prevents stale overnight errors from generating repeated duplicate sprint queue entries
+- Swarm used: no
+- Timestamp: 2026-03-26T06:10:00Z

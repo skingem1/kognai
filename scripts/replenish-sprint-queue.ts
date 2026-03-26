@@ -79,6 +79,10 @@ function getGateState(): { postsDelivered: number; daysLeft: number; urgency: st
   };
 }
 
+// Sprint 1414: max age for pipeline errors to be considered actionable.
+// Older errors are stale (already addressed or transient) and should not generate new queue items.
+const PIPELINE_ERROR_MAX_AGE_MS = 6 * 60 * 60 * 1000; // 6 hours
+
 function getPipelineErrors(): string[] {
   const errors: string[] = [];
   const logDir = path.join(ROOT, 'logs');
@@ -93,6 +97,13 @@ function getPipelineErrors(): string[] {
     if (content.length > 0) {
       const lastLine = content.split('\n').pop() ?? '';
       if (lastLine.includes('Error') || lastLine.includes('error')) {
+        // Sprint 1414: skip stale errors — parse leading timestamp and reject if > 6h old.
+        // Log format: "2026-03-25 19:38:55 +01:00: ..."
+        const tsMatch = lastLine.match(/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+-]\d{2}:\d{2}):/);
+        if (tsMatch) {
+          const errorAge = Date.now() - new Date(tsMatch[1]).getTime();
+          if (errorAge > PIPELINE_ERROR_MAX_AGE_MS) continue; // stale — skip
+        }
         errors.push(`${f}: ${lastLine.slice(0, 120)}`);
       }
     }
