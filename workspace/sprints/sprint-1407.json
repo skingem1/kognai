@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1407",
+  "title": "BUGFIX — Fix FFmpeg force_style comma escaping in clip-maker caption-composer",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "workspace/tools/clip-maker/src/caption-composer.ts line 195 has the same FFmpeg 8.1 force_style comma escaping bug fixed in sprint-1406 for agents/scs001-caption/index.ts. srtStyle = array.join(',') creates a comma-separated string; force_style='${srtStyle}' breaks FFmpeg 8.1 filter parsing because single-quote quoting does not protect commas inside filter option values. Fix: escape commas with \\, in the srtStyle join separator.",
+  "tasks": [
+    {
+      "id": "1407-clipmaker-force-style",
+      "description": "Fix workspace/tools/clip-maker/src/caption-composer.ts line 187-196: change srtStyle array join from ',' to '\\\\,' (backslash-escaped comma). Remove single-quote wrapping around force_style value. This is the same fix as sprint-1406 applied consistently to the clip-maker pipeline.",
+      "files": ["workspace/tools/clip-maker/src/caption-composer.ts"],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

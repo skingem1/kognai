@@ -184,15 +184,18 @@ export async function composeClip(
   ].join(';');
 
   // Step 2: SRT captions at bottom — PlayResX/Y fixes libass truncation on 1080x1920
+  // Sprint 1407: FFmpeg 8.1 does NOT honour single-quote escaping inside filter option
+  // values — commas in force_style='...' are parsed as filter separators. Fix: use \,
+  // backslash-escaped commas (same fix as sprint-1406 for agents/scs001-caption/index.ts).
   const srtStyle = [
     'PlayResX=1080', 'PlayResY=1920', 'WrapStyle=1',
     'FontName=Impact', 'FontSize=38',
     'PrimaryColour=&H00FFFFFF', 'OutlineColour=&H00000000',
     'BorderStyle=1', 'Outline=3',
     'MarginL=20', 'MarginR=20', 'MarginV=80', 'Alignment=2',
-  ].join(',');
+  ].join('\\,');
   const afterSub = srtPath
-    ? `[composed]subtitles='${srtPath}':force_style='${srtStyle}'[subraw]`
+    ? `[composed]subtitles='${srtPath}':force_style=${srtStyle}[subraw]`
     : `[composed]null[subraw]`;
 
   // Step 3: Brightness flash at t=0 — quick pop that fades by t=0.5s for opening impact
