@@ -1441,6 +1441,30 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint TICKET-013-CMO-03: CMO weekly content plan — Every Sunday 06:00 UTC
+      // Generates full week of X posts (Mon–Sun), tone-audited by Sherlock (qwen3:4b local).
+      // Output: reports/cmo/weekly-content-plan-YYYY-MM-DD.json
+      // To start: pm2 start ecosystem.config.js --only scs001-cmo-weekly
+      name: "scs001-cmo-weekly",
+      script: "./scripts/run-cmo-weekly-plan.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: __dirname,
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 6 * * 0",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: __dirname + "/tsconfig.scripts.json",
+        CEO_TELEGRAM_BOT_TOKEN: process.env.CEO_TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
+        ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY || "",
+      },
+      error_file: __dirname + "/logs/cmo-weekly-error.log",
+      out_file: __dirname + "/logs/cmo-weekly-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 1003: PM2 auto-healer — restarts errored/unstable processes, Telegram alert
       // Detects status=errored or unstable_restarts>=3, restarts, logs to logs/healer-state.json
       // To start: pm2 start ecosystem.config.js --only scs001-healer

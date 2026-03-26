@@ -2074,8 +2074,8 @@ class Orchestrator {
       log(c.cyan, `+ Loaded ${name} agent (MiniMax M2.5)`);
     }
 
-    const totalAgents = 3 + 1 + 1 + 1 + this.agents.size; // 3 Claude + 1 OpenAI Codex + 1 Manus CMO + 1 CTO + N coding
-    log(c.green, `\n✓ ${totalAgents} agents loaded (3 Claude + 1 Codex + 1 Manus CMO + ${1 + this.agents.size} MiniMax)\n`);
+    const totalAgents = 3 + 1 + 1 + 1 + this.agents.size; // 3 Claude + 1 OpenAI Codex + 1 CMO (qwen3:4b) + 1 CTO + N coding
+    log(c.green, `\n✓ ${totalAgents} agents loaded (3 Claude + 1 Codex + 1 CMO qwen3:4b + ${1 + this.agents.size} MiniMax)\n`);
   }
   private loadTasks(): void {
     const sprintFile = process.argv[2] || 'sprints/current.json';

@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-TICKET-013-CMO-03",
+  "title": "TICKET-013-CMO-03 — CMO wiring: orchestrator + Telegram approval loop + PM2",
+  "block": "TICKET-013",
+  "source": "queue-prescribed",
+  "status": "done",
+  "rationale": "Wired CMO into Kognai production stack: (1) ecosystem.config.js: added scs001-cmo-weekly PM2 job — runs run-cmo-weekly-plan.ts every Sunday 06:00 UTC (cwd=__dirname, qwen3:4b via local Claude); (2) telegram-commands/cmd-cmo.ts: /approve-content and /revise-content commands with 3-cycle approval loop — approve sets status='approved', revise increments revision_cycle up to MAX=3; (3) telegram-bot.ts: wired both commands; (4) orchestrate-agents-v2.ts: updated agent count comment (Manus CMO → qwen3:4b CMO). Gate: Telegram approval loop functional, CMO wired to PM2.",
+  "tasks": [
+    {
+      "id": "TICKET-013-CMO-03-01",
+      "description": "Add scs001-cmo-weekly PM2 job to ecosystem.config.js (Sunday 06:00 UTC)",
+      "files": ["ecosystem.config.js"],
+      "status": "done",
+      "type": "config"
+    },
+    {
+      "id": "TICKET-013-CMO-03-02",
+      "description": "Create cmd-cmo.ts: /approve-content and /revise-content with 3-cycle approval loop",
+      "files": ["scripts/telegram-commands/cmd-cmo.ts"],
+      "status": "done",
+      "type": "feature"
+    },
+    {
+      "id": "TICKET-013-CMO-03-03",
+      "description": "Wire /approve-content and /revise-content into telegram-bot.ts",
+      "files": ["scripts/telegram-bot.ts"],
+      "status": "done",
+      "type": "feature"
+    },
+    {
+      "id": "TICKET-013-CMO-03-04",
+      "description": "Update orchestrate-agents-v2.ts agent count comment: Manus CMO → qwen3:4b CMO",
+      "files": ["scripts/orchestrate-agents-v2.ts"],
+      "status": "done",
+      "type": "chore"
+    }
+  ]
+}

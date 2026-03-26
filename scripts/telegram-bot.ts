@@ -28,6 +28,7 @@ import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdP
 import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog, cmdXPost, cmdCosts, cmdWeeklyDigest, cmdPostNext, cmdPostingHealth, cmdBulkCaptions, cmdQueueFill, cmdPreflight, cmdRemind } from './telegram-commands/cmd-posting'; // Sprint 1385: added cmdRemind
 import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdReplenish, cmdEnrich, cmdBlockers, cmdBotTest, cmdSprintNext, cmdLog, cmdLaunches, cmdPostPulse, cmdNextActions, cmdSetUrl } from './telegram-commands/cmd-management';
 import { cmdHelp } from './telegram-commands/cmd-help';
+import { cmdApproveContent, cmdReviseContent } from './telegram-commands/cmd-cmo';
 import { cmdSubscribe } from './telegram-commands/cmd-subscribe';
 
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
@@ -210,6 +211,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/weeklyreport': response = cmdWeeklyReport();       break;
     case '/speakertest': response = cmdSpeakerTest();        break;
     case '/contentplan': response = cmdContentPlan();        break;
+    case '/approve-content': response = cmdApproveContent(cmdArgs); break;
+    case '/revise-content':  response = cmdReviseContent(cmdArgs);  break;
     case '/filmkit':     response = cmdFilmKit();            break;
     case '/progress':    response = cmdProgress();           break;
     case '/scorecard':   response = cmdScorecard();          break;
