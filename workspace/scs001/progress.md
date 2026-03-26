@@ -8035,3 +8035,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: Audit ran — 28 agents scanned, 28 undeclared (baseline). Log written to logs/context-hygiene/2026-03-26.jsonl
 - Swarm used: no (direct write — governance sprint, multi-file)
 - Timestamp: 2026-03-26T10:30:00.000Z
+
+## Sprint TICKET-005-RULE1 — Neutral Prompts (Governance)
+- Status: PASS
+- Commit: a1988a3e
+- Files created: scripts/governance/neutral-prompt-checker.ts (new, 95 lines), workspace/sprints/sprint-TICKET-005-RULE1.json
+- Files modified: scripts/lib/cto-approval-gate.ts (Rule 1 check + queue-empty-autonomous type added)
+- Test: neutral-prompt-checker.ts compiles; CTO gate integrates rule1Check before LLM review for autonomous sprints
+- Swarm used: no (direct write — governance sprint)
+- Timestamp: 2026-03-26T11:00:00.000Z
