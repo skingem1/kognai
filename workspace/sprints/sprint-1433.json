@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1433",
+  "title": "BUGFIX — Fix stale validPlatforms 3-platform list in Block E Analytics validation",
+  "block": "SCS001",
+  "source": "validation-scan",
+  "rationale": "validate-analytics-output.ts line 51 had the same stale validPlatforms = ['tiktok', 'instagram_reels', 'youtube_shorts'] as was just fixed in validate-publishing-output.ts (Sprint 1432). After Blotato multi-platform, PerformanceSignal.platform comes from BlotatoPlatform: 'instagram', 'youtube', 'tiktok', 'facebook', 'linkedin', 'threads', 'x', 'pinterest', 'bluesky'. The old 3-platform list caused the per-signal platform validation to fail for 8 of 9 platforms.",
+  "tasks": [
+    {
+      "id": "1433-fix-analytics-platform-list",
+      "description": "In scripts/scs001/validate-analytics-output.ts line 51: replace validPlatforms 3-item TikTok-era list with all 9 Blotato platform names. Added comment.",
+      "files": [
+        "scripts/scs001/validate-analytics-output.ts"
+      ],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

@@ -48,7 +48,8 @@ async function main(): Promise<void> {
 
   // --- Stage 3: PerformanceSignal contract validation ---
   console.log('Stage 3: PerformanceSignal contract validation');
-  const validPlatforms = ['tiktok', 'instagram_reels', 'youtube_shorts'];
+  // Sprint 1433: All 9 Blotato platforms (was 3-platform TikTok-era list)
+  const validPlatforms = ['instagram', 'youtube', 'tiktok', 'facebook', 'linkedin', 'threads', 'x', 'pinterest', 'bluesky'];
   const validStatuses = ['viral', 'performing', 'underperforming', 'failure'];
   const publishedIds = new Set(published.map(p => p.video_id));
 
