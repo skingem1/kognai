@@ -7693,3 +7693,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (direct surgical edit — 2 files, well-understood)
 - AAR: module not found, skipped
 - Timestamp: 2026-03-26T02:10:00Z
+
+## Sprint 1386 — FEAT /posted <tiktok_url> shortcut
+- Status: PASS
+- Commit: acf93b14
+- Files modified: scripts/telegram-commands/cmd-content.ts, scripts/telegram-bot.ts
+- Added: /posted <url> saves tiktok_url in manual-posts.jsonl entry
+- Reduces friction: operator copies TikTok URL + types /posted <url> instead of full /record <id> 0 <url>
+- Swarm used: no (direct surgical edit — 2 files)
+- Timestamp: 2026-03-26T02:30:00Z
