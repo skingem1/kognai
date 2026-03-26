@@ -80,7 +80,9 @@ async function generateVoice(
   if (!res.ok) {
     const err = await res.text();
     // Sprint 1440: surface quota exhaustion distinctly so callers can fall back to local TTS
-    if (res.status === 401 && err.includes('quota_exceeded')) {
+    // Sprint 1453: ElevenLabs returns 422 (not 401) for quota_exceeded; also catch 429 rate limit
+    if ((res.status === 401 || res.status === 422 || res.status === 429) &&
+        (err.includes('quota_exceeded') || err.includes('too_many_requests') || err.includes('character_limit'))) {
       throw new Error('ELEVENLABS_QUOTA_EXCEEDED: ' + err.slice(0, 200));
     }
     throw new Error(`ElevenLabs ${res.status}: ${err}`);
@@ -170,8 +172,11 @@ export async function generateVoiceover(
       totalDuration += result.duration_s;
     } catch (err: any) {
       // Sprint 1440: quota exhausted → switch all remaining to local TTS
-      if (err.message.startsWith('ELEVENLABS_QUOTA_EXCEEDED') && isLocalTTSAvailable()) {
-        console.warn(`  [TTS] ElevenLabs quota exceeded — switching remaining segments to local TTS ($0.00)`);
+      // Sprint 1453: also fallback on ANY ElevenLabs API error (not just quota) to prevent silent 0-segment results
+      if (isLocalTTSAvailable() &&
+          (err.message.startsWith('ELEVENLABS_QUOTA_EXCEEDED') || err.message.startsWith('ElevenLabs '))) {
+        const reason = err.message.startsWith('ELEVENLABS_QUOTA_EXCEEDED') ? 'quota exceeded' : 'API error';
+        console.warn(`  [TTS] ElevenLabs ${reason} — switching to local TTS ($0.00): ${err.message.slice(0, 80)}`);
         useLocalFallback = true;
         return generateLocalVoiceover(bundle, outDir, false);
       }

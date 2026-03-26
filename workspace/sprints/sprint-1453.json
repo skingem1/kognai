@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1453",
+  "title": "BUGFIX — TTS local fallback triggers on any ElevenLabs HTTP error",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "Root cause of 06:00 run has_audio QC failures (2026-03-26): tts-voiceover.ts only catches quota on HTTP 401, but ElevenLabs returns HTTP 422 for quota_exceeded. Local TTS fallback (Sprint 1440) never triggers, so 0 segments are mixed, has_voiceover stays false, QC fails all videos. Fix: (1) catch 422+429 as quota errors in generateVoice(), (2) in generateVoiceover() loop catch, fall back to local TTS on any ElevenLabs error (not just quota). No external deps, stdlib only.",
+  "tasks": [
+    {
+      "id": "1453-tts-fallback",
+      "description": "Fix scripts/scs001/tts-voiceover.ts. In generateVoice(): change quota check from 'res.status === 401' to '(res.status === 401 || res.status === 422 || res.status === 429)' to catch real ElevenLabs quota/rate errors. In generateVoiceover() loop catch block: change condition from 'err.message.startsWith(ELEVENLABS_QUOTA_EXCEEDED)' to also trigger on any non-transient ElevenLabs error (i.e., if err.message includes 'ElevenLabs' and isLocalTTSAvailable()). This ensures local TTS always fires when ElevenLabs is unavailable.",
+      "files": ["scripts/scs001/tts-voiceover.ts"],
+      "status": "pending",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
