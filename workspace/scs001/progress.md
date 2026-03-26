@@ -7869,3 +7869,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Impact: /achiri-ping and Hetzner live checks now correctly report server status
 - Swarm used: no
 - Timestamp: 2026-03-26T08:30:00Z
+
+## Sprint 1426 — 2026-03-26
+- Sprint: BUGFIX — Fix init-hetzner.sh .env template: add missing required + optional env vars
+- Files modified: scripts/achiri/init-hetzner.sh
+- Change: Added VAULT_LOCAL_MODEL_POWER=qwen3:4b (required by pre-deploy-check.ts), PAYMEE_API_KEY= and MINIMAX_API_KEY= (optional). Reorganised with section comments matching pre-deploy-check.ts categories.
+- Impact: Fresh Hetzner init no longer fails pre-deploy-check on missing VAULT_LOCAL_MODEL_POWER
+- Swarm used: no
+- Timestamp: 2026-03-26T08:40:00Z
