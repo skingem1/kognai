@@ -7,6 +7,80 @@
   "_critical_path": "AMD21-ASMR-IMPL(1236) → CODEBOOK-RESTORE(1237) → LEMON-SCAFFOLD-01(1238) → LEMON-SCAFFOLD-02(1239) → CFO-PROMPT-WIRE(1240)",
   "queue": [
     {
+      "sprint": "TICKET-014-CONST-01",
+      "ticket": "TICKET-014",
+      "title": "Wire ACP.md into all 28 agent prompts",
+      "description": "Add ACP mandate block to every agent prompt.md in kognai-agents/. Pattern: > **ACP Mandate** - This agent operates under the Agent Capability Profile (workspace/shared-context/ACP.md). Ratified 2026-03-25. Must be added after CONSTITUTION.md block.",
+      "files": [
+        "kognai-agents/*/prompt.md (all 28)"
+      ],
+      "status": "done",
+      "priority": "P0-CRITICAL",
+      "tags": [
+        "constitutional-compliance",
+        "acp",
+        "all-agents"
+      ],
+      "completed_at": "2026-03-26T11:37:07.644Z",
+      "commit": "beffbf64"
+    },
+    {
+      "sprint": "TICKET-014-CONST-02",
+      "ticket": "TICKET-014",
+      "title": "Wire SOUL.md into 25 missing agent prompts",
+      "description": "Add SOUL mandate block to the 25 agents missing it (all except ceo, cmo, conway-integration). Pattern: > **SOUL Mandate** - This agent is an expression of workspace/SOUL.md. Harvey identity, founding principles, and constitutional mission govern all outputs.",
+      "files": [
+        "kognai-agents/*/prompt.md (25 agents, skip ceo/cmo/conway-integration)"
+      ],
+      "status": "done",
+      "priority": "P0-CRITICAL",
+      "tags": [
+        "constitutional-compliance",
+        "soul",
+        "all-agents"
+      ],
+      "completed_at": "2026-03-26T11:38:01.583Z",
+      "commit": "84fbd1c4"
+    },
+    {
+      "sprint": "TICKET-014-CONST-03",
+      "ticket": "TICKET-014",
+      "title": "Verify full constitutional stack: grep audit all 28 agents for ACP + SOUL",
+      "description": "Run grep audit confirming all 28 agents have: FIVE_PRINCIPLES.md (already done), CONSTITUTION.md (already done), ACP.md (target 28/28), SOUL.md (target 28/28). Output report to workspace/gates/constitutional-compliance-YYYY-MM-DD.json",
+      "files": [
+        "kognai-agents/*/prompt.md",
+        "workspace/gates/constitutional-compliance-*.json"
+      ],
+      "status": "done",
+      "priority": "P0-CRITICAL",
+      "tags": [
+        "constitutional-compliance",
+        "audit",
+        "gate"
+      ],
+      "completed_at": "2026-03-26T11:38:30.089Z",
+      "commit": "da626751"
+    },
+    {
+      "sprint": "TICKET-015-QS-01",
+      "ticket": "TICKET-015",
+      "title": "pipeline-quality-scorer.ts — per-video auto-scoring (duration, subtitles, hook_timing, resolution)",
+      "description": "Build scripts/scs001/pipeline-quality-scorer.ts. Score each video 0-100 on: duration_ok (15-90s), has_audio (reuse qc-agent), has_subtitles (srt/vtt exists), hook_timing (first cut ≤3s via ffprobe), resolution_ok (width ≥720px). Composite score < 60 → flag, skip ledger write. Append to logs/pipeline-metrics/quality-scores.jsonl. Wire into batch-produce.ts after line 207 (after existing QC gates).",
+      "files": [
+        "scripts/scs001/pipeline-quality-scorer.ts",
+        "scripts/scs001/batch-produce.ts"
+      ],
+      "status": "done",
+      "priority": "P1-HIGH",
+      "tags": [
+        "quality",
+        "scs001",
+        "sprint-874"
+      ],
+      "completed_at": "2026-03-26T11:47:12.971Z",
+      "commit": "15c2bbf5"
+    },
+    {
       "sprint": "TICKET-011-EVAL-01",
       "title": "EVAL-011-01 — OpenClaw env var migration: CLAWDBOT_*/MOLTBOT_* → OPENCLAW_*",
       "block": "TICKET-011",
@@ -63,46 +137,56 @@
       "sprint": "TICKET-013-CMO-01",
       "title": "Sprint 193-01 — CMO agent scaffold: kognai-agents/cmo/ (agent.yaml + prompt.md)",
       "block": "TICKET-013",
-      "status": "queued",
+      "status": "done",
       "priority": "P1",
       "rationale": "L-09 launch checklist Sprint 1/3. Create kognai-agents/cmo/ directory. agent.yaml: T1 qwen3:4b, role=content-strategy. prompt.md: Five Principles wired (FIVE_PRINCIPLES.md reference), SOUL reference, Sherlock tone audit target (psychological_resilience ≥5% per AMD-18). Role: content strategy, X thread generation, launch coordination.",
-      "added_at": "2026-03-26T11:13:43.042092Z"
+      "added_at": "2026-03-26T11:13:43.042092Z",
+      "completed_at": "2026-03-26T11:34:18.524Z",
+      "commit": "902d7d9b"
     },
     {
       "sprint": "TICKET-013-CMO-02",
       "title": "Sprint 193-02 — CMO core capabilities: manifesto thread + launch schedule + content calendar",
       "block": "TICKET-013",
-      "status": "queued",
+      "status": "done",
       "priority": "P1",
       "rationale": "L-09 launch checklist Sprint 2/3. Implement CMO core tasks: (1) generate-manifesto-thread: 15-post X thread from Launch Strategy v1.0 §5, (2) generate-launch-schedule: April 8-15 posting calendar, (3) generate-weekly-calendar: ongoing content plan. Output: structured JSON + markdown. Gate: 15-post manifesto thread generated, passes Sherlock tone audit.",
-      "added_at": "2026-03-26T11:13:43.042092Z"
+      "added_at": "2026-03-26T11:13:43.042092Z",
+      "completed_at": "2026-03-26T11:41:54.441Z",
+      "commit": "9750b529"
     },
     {
       "sprint": "TICKET-013-CMO-03",
       "title": "Sprint 193-03 — CMO wiring: orchestrator + Telegram approval loop + PM2",
       "block": "TICKET-013",
-      "status": "queued",
+      "status": "done",
       "priority": "P1",
       "rationale": "L-09 launch checklist Sprint 3/3. Add CMO to orchestrate-agents-v2.ts. Wire Telegram approval loop (/approve-content, /revise-content, 3 cycles). Add to PM2 ecosystem.config.js as weekly-cmo job. Gate: Telegram approval loop functional, CMO added to agent catalog (28 → 29 agents).",
-      "added_at": "2026-03-26T11:13:43.042092Z"
+      "added_at": "2026-03-26T11:13:43.042092Z",
+      "completed_at": "2026-03-26T11:45:16.799Z",
+      "commit": "89325beb"
     },
     {
       "sprint": "TICKET-012-SEC1",
       "title": "SEC1 — Rebind Ollama to 127.0.0.1:11434 (loopback only)",
       "block": "TICKET-012",
-      "status": "queued",
+      "status": "done",
       "priority": "P2",
       "rationale": "Security prerequisite from Master Architecture FINAL SEC1. Rebind Ollama to 127.0.0.1:11434 only. Update OLLAMA_HOST in .env and all referencing scripts/configs. Add loopback check to OMEL audit. Gate: netstat -an | grep 11434 shows 127.0.0.1 only (no 0.0.0.0), swarm still functional post-rebind.",
-      "added_at": "2026-03-26T11:13:43.042092Z"
+      "added_at": "2026-03-26T11:13:43.042092Z",
+      "completed_at": "2026-03-26T11:50:49.532Z",
+      "commit": "4a3ebea5"
     },
     {
       "sprint": "TICKET-012-SEC3",
       "title": "SEC3 — Rebind router_server to 127.0.0.1:11435 (loopback only)",
       "block": "TICKET-012",
-      "status": "queued",
+      "status": "done",
       "priority": "P2",
       "rationale": "Security prerequisite from Master Architecture FINAL SEC3. Rebind router_server (ClawRouter gateway) to 127.0.0.1:11435 only. Update ClawRouter client configs referencing router port. Gate: netstat -an | grep 11435 shows 127.0.0.1 only, ClawRouter routing still functional post-rebind.",
-      "added_at": "2026-03-26T11:13:43.042092Z"
+      "added_at": "2026-03-26T11:13:43.042092Z",
+      "completed_at": "2026-03-26T11:53:05.457Z",
+      "commit": "1f34d02d"
     },
     {
       "sprint": "TICKET-009-Q01-01",
