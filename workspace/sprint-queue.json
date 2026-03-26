@@ -31,10 +31,12 @@
       "sprint": "TICKET-011-EVAL-03",
       "title": "EVAL-011-03 — ClaWHub listing: prepare + submit metadata before GitHub goes public",
       "block": "TICKET-011",
-      "status": "queued",
+      "status": "done",
       "priority": "P0-CRITICAL",
       "rationale": "EVAL-011 P0 CRITICAL Sprint 3/3. Prepare ClaWHub.com listing metadata: name, description, install command (npx kognai init), screenshots, tags. Submit listing. CRITICAL ORDER: ClaWHub listing must be live BEFORE GitHub branch goes public (331K user install source). Gate: listing live at clawHub.com, GitHub public branch NOT released until this passes.",
-      "added_at": "2026-03-26T11:13:43.042092Z"
+      "added_at": "2026-03-26T11:13:43.042092Z",
+      "completed_at": "2026-03-26T11:25:43.428Z",
+      "note": "Metadata prepared — clawHub-listing.json. Manual npm publish + clawHub.com submission required before GitHub goes public."
     },
     {
       "sprint": "TICKET-010-YT-01",

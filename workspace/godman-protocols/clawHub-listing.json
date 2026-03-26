@@ -1,0 +1,59 @@
+{
+  "_note": "ClaWHub.com listing metadata — Sprint TICKET-011-EVAL-03. Submit this before GitHub repos go public.",
+  "_status": "READY TO SUBMIT — awaiting manual ClaWHub.com submission",
+  "_gate": "listing must be live at clawHub.com BEFORE GitHub branch goes public (331K user install source)",
+
+  "listing": {
+    "name": "Godman Protocols",
+    "slug": "godman-protocols",
+    "install_command": "npx kognai init",
+    "description": "7 open protocols for building autonomous AI agent systems: coordination (PACT), latency-aware routing (LAX), reputation scoring (SCORE), event bus (SIGNAL), constitutional safety (SOUL), message format (AMF), resource scheduling (DRS).",
+    "tagline": "The missing infrastructure layer for autonomous AI agent swarms.",
+    "tags": ["agents", "protocols", "coordination", "safety", "typescript", "open-source"],
+    "category": "agent-infrastructure",
+    "license": "MIT",
+    "version": "0.2.0",
+    "npm_org": "@godman-protocols",
+    "github_org": "skingem1",
+    "docs_url": "https://godman-protocols.dev",
+    "screenshots": [
+      "workspace/godman-protocols/docs/demo-pact.mp4",
+      "workspace/godman-protocols/docs/demo-lax.mp4",
+      "workspace/godman-protocols/docs/demo-soul.mp4"
+    ]
+  },
+
+  "packages": [
+    { "name": "@godman-protocols/pact",   "description": "Agent Coordination and Trust",                    "tier": "T2" },
+    { "name": "@godman-protocols/lax",    "description": "Latency-Aware Execution with SLA contracts",      "tier": "T2" },
+    { "name": "@godman-protocols/score",  "description": "Scoring and Reputation for Agent Outputs",       "tier": "T2" },
+    { "name": "@godman-protocols/signal", "description": "Event Bus and Pub/Sub for Agent Swarms",          "tier": "T2" },
+    { "name": "@godman-protocols/soul",   "description": "Constitutional Constraints and Safety",           "tier": "T3" },
+    { "name": "@godman-protocols/amf",    "description": "Agent Message Format — signed typed envelopes",   "tier": "T1" },
+    { "name": "@godman-protocols/drs",    "description": "Dynamic Resource Scheduling for Agent Swarms",    "tier": "T2" }
+  ],
+
+  "openclaw_metadata": {
+    "version": "v2026.3.7+",
+    "tier": "T2",
+    "skills_registry": "skills/public/",
+    "agent_context": {
+      "primary_agent": "ceo",
+      "model_tier": "T2",
+      "preferred_model": "qwen3:14b"
+    }
+  },
+
+  "submission_steps": [
+    "1. Publish all 7 npm packages (see PUBLISH-CHECKLIST.md) — MUST be on npm before ClaWHub submission",
+    "2. Go to clawHub.com/submit",
+    "3. Use the JSON above to fill the listing form",
+    "4. Upload screenshots/demo MP4s from workspace/godman-protocols/docs/",
+    "5. Set listing visibility to 'public'",
+    "6. Confirm listing is live at clawHub.com/listing/godman-protocols",
+    "7. THEN and only then: make GitHub repos public"
+  ],
+
+  "prepared_at": "2026-03-26T00:00:00Z",
+  "prepared_by": "sprint-TICKET-011-EVAL-03"
+}

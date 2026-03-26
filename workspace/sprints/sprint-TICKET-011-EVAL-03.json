@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-TICKET-011-EVAL-03",
+  "title": "EVAL-011-03 — ClaWHub listing metadata prepared (manual submission required)",
+  "block": "TICKET-011",
+  "source": "queue-prescribed",
+  "status": "partial — requires manual ClaWHub submission",
+  "rationale": "Created workspace/godman-protocols/clawHub-listing.json with full listing metadata (name, description, install command, screenshots, tags, packages, OpenClaw metadata, submission steps). Cannot auto-submit to ClaWHub.com — requires human to go to clawHub.com/submit after npm packages are published. Gate partial: metadata ready; manual submission required before GitHub repos go public.",
+  "tasks": [
+    {
+      "id": "TICKET-011-EVAL-03-01",
+      "description": "Create clawHub-listing.json with full listing metadata + submission steps",
+      "files": ["workspace/godman-protocols/clawHub-listing.json"],
+      "status": "done",
+      "type": "content"
+    },
+    {
+      "id": "TICKET-011-EVAL-03-02",
+      "description": "MANUAL: publish npm packages, then submit listing at clawHub.com/submit",
+      "status": "blocked-manual",
+      "type": "manual-action",
+      "blocker": "requires human to publish npm + submit ClaWHub listing"
+    }
+  ]
+}
