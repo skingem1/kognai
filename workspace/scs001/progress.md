@@ -8088,3 +8088,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Key finding: Unsloth NOT viable on macOS (per TICKET-007-UNSLOTH-INSTALL). mlx-lm is correct choice.
 - Swarm used: no (direct write — governance sprint)
 - Timestamp: 2026-03-26T13:30:00.000Z
+
+## Sprint TICKET-007-CLAWROUTER-THINK — T2.5-LOCAL Thinking Mode Tier
+- Status: PASS
+- Commit: 6ba08e5c
+- Files modified: scripts/lib/clawrouter-v2.ts (T2_5_THINK tier, callOllamaThink, T2.5-LOCAL routing), ecosystem.config.js (THINKING_MODE env vars)
+- Logic: constitutional_flag=true + complexity!='apex' → qwen3:14b thinking mode ($0). Uncertainty markers → escalate to T3 APEX. Apex complexity preserves T3 APEX path.
+- Swarm used: no (direct write — routing change)
+- Timestamp: 2026-03-26T14:00:00.000Z
