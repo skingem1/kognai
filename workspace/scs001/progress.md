@@ -8053,3 +8053,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: 6 unit tests all pass (research phase passthrough, no id passthrough, missing blocked, done w/ prefix, done without prefix, pending blocked)
 - Swarm used: no (direct write — governance sprint)
 - Timestamp: 2026-03-26T11:30:00.000Z
+
+## Sprint TICKET-005-RULE3 — Task Contracts (Governance)
+- Status: PASS
+- Commit: 2e89d25c
+- Files created: scripts/governance/task-contract-checker.ts (new, 40 lines), workspace/sprints/sprint-TICKET-005-RULE3.json
+- Files modified: scripts/lib/cto-approval-gate.ts (inputs/outputs/success_criteria fields + Rule 3 gate call)
+- Test: 4 unit tests all pass (missing all, partial, all present, empty array)
+- Swarm used: no (direct write — governance sprint)
+- Timestamp: 2026-03-26T12:00:00.000Z
