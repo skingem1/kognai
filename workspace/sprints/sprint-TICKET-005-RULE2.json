@@ -1,0 +1,36 @@
+{
+  "sprint_id": "sprint-TICKET-005-RULE2",
+  "title": "TICKET-005-RULE2 — Research/Implementation Separation",
+  "block": "TICKET-005",
+  "source": "queue-prescribed",
+  "rationale": "Encode Rule 2: sprint schema gets a 'phase' field (research | implementation). A research sprint must complete and commit findings before a paired implementation sprint can execute. Gate rejects implementation sprints whose research_sprint_id is not yet done.",
+  "tasks": [
+    {
+      "id": "RULE2-schema",
+      "description": "Add phase?: 'research' | 'implementation' and research_sprint_id?: string to SprintProposal in scripts/lib/cto-approval-gate.ts",
+      "files": ["scripts/lib/cto-approval-gate.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "chomsky",
+      "type": "governance"
+    },
+    {
+      "id": "RULE2-gate",
+      "description": "Create scripts/governance/research-impl-gate.ts. Function checkResearchGate(sprint: SprintProposal, projectRoot: string): {allowed: boolean, reason: string}. If phase === 'implementation' and research_sprint_id is set: check workspace/sprints/{research_sprint_id}.json status field OR workspace/sprint-queue.json queue item. If research sprint not found or status !== 'done': return {allowed: false, reason: 'Research sprint <id> not done'}. Otherwise allowed. Under 60 lines.",
+      "files": ["scripts/governance/research-impl-gate.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "chomsky",
+      "type": "governance"
+    },
+    {
+      "id": "RULE2-cto-integration",
+      "description": "Edit scripts/lib/cto-approval-gate.ts: import checkResearchGate from '../governance/research-impl-gate'. In requestCTOApproval, after ACP checks and before Rule 1 check: if proposal.phase === 'implementation', call checkResearchGate. If !allowed: return CTOApprovalResult with approved:false, plan_reference: 'RULE2_RESEARCH_NOT_DONE'. Under 15 new lines.",
+      "files": ["scripts/lib/cto-approval-gate.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "chomsky",
+      "type": "governance"
+    }
+  ]
+}

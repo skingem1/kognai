@@ -26,6 +26,8 @@ import { checkCapability, getAgent, type Capability, type CapabilityCheckResult 
 import { ACPEngine, type EnforcementResult } from '../../acp/acp-engine';
 // Sprint TICKET-005-RULE1: Rule 1 (Neutral Prompts) — detect answer-seeding in Qwen-recommended sprints
 import { checkText as rule1Check } from '../governance/neutral-prompt-checker';
+// Sprint TICKET-005-RULE2: Rule 2 (Research/Implementation Separation)
+import { checkResearchGate } from '../governance/research-impl-gate';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -36,6 +38,10 @@ export interface SprintProposal {
   tasks: string[];
   estimated_complexity: string;
   source: 'autonomous_loop' | 'human' | 'cto_backlog' | 'queue-prescribed' | 'auto-queue-empty' | 'queue-empty-autonomous';
+  /** Sprint TICKET-005-RULE2: research | implementation phase gate */
+  phase?: 'research' | 'implementation';
+  /** ID of the research sprint that must be done before this implementation sprint can run */
+  research_sprint_id?: string;
   /** Optional: map of agent_id → required capabilities for ACP pre-check */
   agent_capabilities?: Array<{ agent: string; required_capabilities: Capability[] }>;
 }
@@ -198,6 +204,29 @@ export async function requestCTOApproval(
   } catch (err: any) {
     // ACPEngine failure is non-fatal — proceed with LLM review
     console.warn(`[CTO-GATE] ACPEngine check failed (non-fatal): ${err.message}`);
+  }
+
+  // Sprint TICKET-005-RULE2: Rule 2 (Research/Implementation Separation) — block impl if research not done
+  if (proposal.phase === 'implementation') {
+    const r2Result = checkResearchGate(proposal, projectRoot);
+    if (!r2Result.allowed) {
+      logCTODecision({
+        approved: false,
+        sprint_id: proposal.sprint_id,
+        reason: `Rule 2 violation: ${r2Result.reason}`,
+        plan_reference: 'RULE2_RESEARCH_NOT_DONE',
+        cto_confidence: 100,
+        timestamp,
+      }, projectRoot, product);
+      return {
+        approved: false,
+        sprint_id: proposal.sprint_id,
+        reason: `Rule 2 violation: ${r2Result.reason}`,
+        plan_reference: 'RULE2_RESEARCH_NOT_DONE',
+        cto_confidence: 100,
+        timestamp,
+      };
+    }
   }
 
   // Sprint TICKET-005-RULE1: Rule 1 (Neutral Prompts) check — only for autonomous sprints
