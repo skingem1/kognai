@@ -67,7 +67,10 @@ async function main(): Promise<void> {
   console.log('');
   assert(s.topics_found >= 1, 'Existing: topics_found >= 1');
   assert(s.published >= 1, 'Existing: published >= 1');
-  assert(s.published <= s.qc_passed, 'Existing: published <= qc_passed');
+  // Sprint 1430: Blotato multi-platform publishes up to 9 posts per QC-passed video.
+  // Old assertion was published <= qc_passed (written before Blotato). Now published = qc_passed × platforms.
+  assert(s.published >= s.qc_passed, 'Existing: published >= qc_passed (each video on ≥1 platform)');
+  assert(s.published <= s.qc_passed * 9, 'Existing: published <= qc_passed×9 (max 9 Blotato platforms)');
 
   const code = process.exitCode === 1 ? 1 : 0;
   console.log('');

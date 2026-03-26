@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1430",
+  "title": "BUGFIX — Fix stale published<=qc_passed assertion in Sprint 088 Flywheel validation",
+  "block": "SCS001",
+  "source": "validation-run",
+  "rationale": "validate-flywheel-output.ts (Sprint 088 integration test) asserted published <= qc_passed. This was correct when TikTok-only (1 post per video). After Blotato multi-platform was added, mock mode publishes to 9 platforms per video (published = qc_passed × 9). The stale assertion caused Sprint 088 test to always fail. Fixed: replaced with published >= qc_passed (at least 1 platform per video) and published <= qc_passed×9 (max 9 Blotato platforms). 14/14 assertions now pass.",
+  "tasks": [
+    {
+      "id": "1430-fix-validation-assertion",
+      "description": "In scripts/scs001/validate-flywheel-output.ts: replace assert(s.published <= s.qc_passed) with two assertions: (1) s.published >= s.qc_passed (each QC-passed video published to at least 1 platform), (2) s.published <= s.qc_passed * 9 (max 9 Blotato platforms). Added comment explaining Blotato multi-platform rationale. Validated: Sprint 088 test now 14/14 PASS.",
+      "files": [
+        "scripts/scs001/validate-flywheel-output.ts"
+      ],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
