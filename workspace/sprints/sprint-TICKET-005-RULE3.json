@@ -1,0 +1,36 @@
+{
+  "sprint_id": "sprint-TICKET-005-RULE3",
+  "title": "TICKET-005-RULE3 — Task Contracts",
+  "block": "TICKET-005",
+  "source": "queue-prescribed",
+  "rationale": "Encode Rule 3 (Task Contracts): autonomous sprint proposals must include inputs, outputs, success_criteria. CTO Approval Gate rejects proposals missing any of the three. Applies to autonomous_loop and queue-empty-autonomous sources.",
+  "tasks": [
+    {
+      "id": "RULE3-schema",
+      "description": "Add inputs?: string[], outputs?: string[], success_criteria?: string[] to SprintProposal in scripts/lib/cto-approval-gate.ts",
+      "files": ["scripts/lib/cto-approval-gate.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "chomsky",
+      "type": "governance"
+    },
+    {
+      "id": "RULE3-checker",
+      "description": "Create scripts/governance/task-contract-checker.ts. Function checkTaskContracts(sprint: SprintProposal): {valid: boolean, missing: string[]}. Checks that sprint.inputs, sprint.outputs, sprint.success_criteria are all present and non-empty arrays. Returns missing field names. Under 40 lines.",
+      "files": ["scripts/governance/task-contract-checker.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "chomsky",
+      "type": "governance"
+    },
+    {
+      "id": "RULE3-cto-integration",
+      "description": "Edit scripts/lib/cto-approval-gate.ts: import checkTaskContracts. In requestCTOApproval, after Rule 2 check and before Rule 1 check: if source is autonomous_loop or queue-empty-autonomous, call checkTaskContracts. If !valid: return CTOApprovalResult with approved:false, plan_reference: 'RULE3_CONTRACT_MISSING', reason listing missing fields. Under 15 new lines.",
+      "files": ["scripts/lib/cto-approval-gate.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "chomsky",
+      "type": "governance"
+    }
+  ]
+}

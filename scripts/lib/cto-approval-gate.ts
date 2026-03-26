@@ -28,6 +28,8 @@ import { ACPEngine, type EnforcementResult } from '../../acp/acp-engine';
 import { checkText as rule1Check } from '../governance/neutral-prompt-checker';
 // Sprint TICKET-005-RULE2: Rule 2 (Research/Implementation Separation)
 import { checkResearchGate } from '../governance/research-impl-gate';
+// Sprint TICKET-005-RULE3: Rule 3 (Task Contracts) — inputs/outputs/success_criteria required
+import { checkTaskContracts } from '../governance/task-contract-checker';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -42,6 +44,10 @@ export interface SprintProposal {
   phase?: 'research' | 'implementation';
   /** ID of the research sprint that must be done before this implementation sprint can run */
   research_sprint_id?: string;
+  /** Sprint TICKET-005-RULE3: Task Contracts — required for autonomous sprints */
+  inputs?: string[];
+  outputs?: string[];
+  success_criteria?: string[];
   /** Optional: map of agent_id → required capabilities for ACP pre-check */
   agent_capabilities?: Array<{ agent: string; required_capabilities: Capability[] }>;
 }
@@ -223,6 +229,30 @@ export async function requestCTOApproval(
         sprint_id: proposal.sprint_id,
         reason: `Rule 2 violation: ${r2Result.reason}`,
         plan_reference: 'RULE2_RESEARCH_NOT_DONE',
+        cto_confidence: 100,
+        timestamp,
+      };
+    }
+  }
+
+  // Sprint TICKET-005-RULE3: Rule 3 (Task Contracts) — only for autonomous sprints
+  if (proposal.source === 'queue-empty-autonomous' || proposal.source === 'autonomous_loop') {
+    const r3Result = checkTaskContracts(proposal);
+    if (!r3Result.valid) {
+      const missing = r3Result.missing.join(', ');
+      logCTODecision({
+        approved: false,
+        sprint_id: proposal.sprint_id,
+        reason: `Rule 3 violation: missing contract fields — ${missing}`,
+        plan_reference: 'RULE3_CONTRACT_MISSING',
+        cto_confidence: 100,
+        timestamp,
+      }, projectRoot, product);
+      return {
+        approved: false,
+        sprint_id: proposal.sprint_id,
+        reason: `Rule 3 violation: missing contract fields — ${missing}`,
+        plan_reference: 'RULE3_CONTRACT_MISSING',
         cto_confidence: 100,
         timestamp,
       };
