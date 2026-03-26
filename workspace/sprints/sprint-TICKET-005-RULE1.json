@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-TICKET-005-RULE1",
+  "title": "TICKET-005-RULE1 — Neutral Prompts",
+  "block": "TICKET-005",
+  "source": "queue-prescribed",
+  "rationale": "Encode Rule 1 (Neutral Prompts): sprint brief generator must never pre-seed answers. CTO Approval Gate adds check for answer-seeding patterns in briefs before execution. Answer-seeding = including specific implementation choices (code blocks, hardcoded function/class names, copy-this-pattern instructions) in the Qwen recommendation section. Leads to cargo-cult engineering instead of thoughtful solutions.",
+  "tasks": [
+    {
+      "id": "RULE1-checker",
+      "description": "Create scripts/governance/neutral-prompt-checker.ts. Takes a brief text (stdin or --file=path). Scans for answer-seeding patterns: (1) code blocks (``` fence) in the recommendation section, (2) lines starting with 'import ' or 'const ' or 'function ', (3) phrases like 'copy from Sprint NNN', 'exactly like', 'same pattern as', 'use the same code', (4) hardcoded variable names (camelCase or snake_case identifiers >15 chars in recommendation text). Returns {clean:bool, violations:[{line,pattern,text}]}. Exit 0 if clean, 1 if violations found. Under 80 lines.",
+      "files": [
+        "scripts/governance/neutral-prompt-checker.ts"
+      ],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "chomsky",
+      "type": "governance"
+    },
+    {
+      "id": "RULE1-gate-integration",
+      "description": "Edit scripts/lib/cto-approval-gate.ts to call neutral-prompt-checker on sprint rationale before approval. If source is 'queue-empty-autonomous' (Qwen-recommended): run neutral-prompt-checker on sprint description + task descriptions. If violations found: log to approved=false with reason='Rule 1 violation: answer-seeding detected in sprint brief'. If source is 'queue-prescribed': skip check (human wrote it, trusted). Write the result to approval log. Under 20 lines of new code added to existing file.",
+      "files": [
+        "scripts/lib/cto-approval-gate.ts"
+      ],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "chomsky",
+      "type": "governance"
+    }
+  ]
+}

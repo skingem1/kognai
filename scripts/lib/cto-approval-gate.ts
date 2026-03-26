@@ -24,6 +24,8 @@ import { routeCall, type ClawRouterV2Response } from './clawrouter-v2';
 import { checkCapability, getAgent, type Capability, type CapabilityCheckResult } from '../../agents/lib/acp';
 // Sprint 702: ACPEngine trust scoring enforcement
 import { ACPEngine, type EnforcementResult } from '../../acp/acp-engine';
+// Sprint TICKET-005-RULE1: Rule 1 (Neutral Prompts) — detect answer-seeding in Qwen-recommended sprints
+import { checkText as rule1Check } from '../governance/neutral-prompt-checker';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -33,7 +35,7 @@ export interface SprintProposal {
   description: string;
   tasks: string[];
   estimated_complexity: string;
-  source: 'autonomous_loop' | 'human' | 'cto_backlog' | 'queue-prescribed' | 'auto-queue-empty';
+  source: 'autonomous_loop' | 'human' | 'cto_backlog' | 'queue-prescribed' | 'auto-queue-empty' | 'queue-empty-autonomous';
   /** Optional: map of agent_id → required capabilities for ACP pre-check */
   agent_capabilities?: Array<{ agent: string; required_capabilities: Capability[] }>;
 }
@@ -196,6 +198,35 @@ export async function requestCTOApproval(
   } catch (err: any) {
     // ACPEngine failure is non-fatal — proceed with LLM review
     console.warn(`[CTO-GATE] ACPEngine check failed (non-fatal): ${err.message}`);
+  }
+
+  // Sprint TICKET-005-RULE1: Rule 1 (Neutral Prompts) check — only for autonomous sprints
+  if (proposal.source === 'queue-empty-autonomous' || proposal.source === 'autonomous_loop') {
+    try {
+      const textToCheck = `${proposal.description}\n${proposal.tasks.join('\n')}`;
+      const r1Result = rule1Check(textToCheck);
+      if (!r1Result.clean) {
+        const summary = r1Result.violations.slice(0, 3).map(v => `[${v.pattern}] ${v.text}`).join(' | ');
+        logCTODecision({
+          approved: false,
+          sprint_id: proposal.sprint_id,
+          reason: `Rule 1 violation (answer-seeding in brief): ${summary}`,
+          plan_reference: 'RULE1_NEUTRAL_PROMPT_VIOLATION',
+          cto_confidence: 100,
+          timestamp,
+        }, projectRoot, product);
+        return {
+          approved: false,
+          sprint_id: proposal.sprint_id,
+          reason: `Rule 1 violation (answer-seeding in brief): ${summary}`,
+          plan_reference: 'RULE1_NEUTRAL_PROMPT_VIOLATION',
+          cto_confidence: 100,
+          timestamp,
+        };
+      }
+    } catch (err: any) {
+      console.warn(`[CTO-GATE] Rule 1 check failed (non-fatal): ${err.message}`);
+    }
   }
 
   const planContext = loadPlanContext(projectRoot);
