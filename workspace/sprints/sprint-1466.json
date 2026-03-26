@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1466",
+  "title": "Auto-enqueue multiformat pipeline output into post-queue after each run",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "queue-fill-real.ts (Sprint 1463) was a one-time backfill. Tomorrow's pipeline runs (05:00, 09:00 cron) will produce new videos that still won't auto-appear in post-queue. Fix: add inline queue-fill logic at end of runPipeline() in run-multiformat-pipeline.ts. After each successful run, new video_ids are checked against existing queue and appended with status=pending. Zero impact on dry-run mode. Added readFileSync to imports.",
+  "inputs": [
+    "scripts/scs001/run-multiformat-pipeline.ts"
+  ],
+  "outputs": [
+    "scripts/scs001/run-multiformat-pipeline.ts (auto-enqueue block added)"
+  ],
+  "success_criteria": [
+    "After pipeline run, successful video_ids appended to post-queue.jsonl",
+    "Existing video_ids in queue are not duplicated",
+    "Dry-run mode skips queue write",
+    "No TypeScript compile errors in modified file"
+  ],
+  "tasks": [
+    {
+      "id": "1466-auto-enqueue",
+      "description": "run-multiformat-pipeline.ts: add post-queue append block after successCount > 0 at end of runPipeline()",
+      "files": ["scripts/scs001/run-multiformat-pipeline.ts"],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}

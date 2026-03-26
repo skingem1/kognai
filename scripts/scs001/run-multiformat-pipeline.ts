@@ -23,7 +23,7 @@
  */
 
 import { join } from 'path';
-import { mkdirSync, writeFileSync, existsSync, appendFileSync } from 'fs';
+import { mkdirSync, writeFileSync, readFileSync, existsSync, appendFileSync } from 'fs';
 import { TopicRadar, type TopicBrief, type VideoFormat } from './topic-radar';
 import { generateScript, generateBatch, type VideoScript } from './multiformat-scriptgen';
 import { generateAvatarSegments, isAvatarAvailable, type AvatarConfig } from './avatar-presenter';
@@ -434,6 +434,33 @@ async function runPipeline(options: {
   }
 
   console.log(`${'='.repeat(60)}\n`);
+
+  // Sprint 1466: auto-enqueue successful videos into post-queue.jsonl
+  if (successCount > 0 && !dryRun) {
+    const queueFile = join(ROOT, 'workspace', 'scs001', 'post-queue.jsonl');
+    const existingIds = new Set<string>();
+    if (existsSync(queueFile)) {
+      const lines = readFileSync(queueFile, 'utf-8').split('\n').filter(Boolean);
+      for (const line of lines) {
+        try { const e = JSON.parse(line); if (e.video_id) existingIds.add(e.video_id); }
+        catch {}
+      }
+    }
+    const toAdd = results.filter(r => r.success && r.video_path && !existingIds.has(r.script_id) && existsSync(r.video_path));
+    if (toAdd.length > 0) {
+      const now = new Date().toISOString();
+      const newLines = toAdd.map(r => JSON.stringify({
+        video_id: r.script_id,
+        title: r.title.replace(/&#(\d+);/g, (_, c: string) => String.fromCharCode(parseInt(c, 10))).slice(0, 120),
+        file: r.video_path,
+        score: 'N/A',
+        added_at: now,
+        status: 'pending',
+      })).join('\n') + '\n';
+      appendFileSync(queueFile, newLines);
+      console.log(`📥 Enqueued ${toAdd.length} video(s) into post-queue.jsonl`);
+    }
+  }
 
   return runResult;
 }
