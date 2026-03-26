@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1443",
+  "title": "PHASE2 — Achiri tier management CLI for alpha operator control",
+  "block": "PHASE2",
+  "source": "queue-prescribed",
+  "rationale": "For the Apr 25 alpha, the operator needs to manually upgrade waitlist users to tnd_basic (free access for alpha testers) and downgrade abusers. Currently this requires editing JSONL files manually. Fix: create scripts/achiri/set-user-tier.ts — CLI that reads workspace/achiri/user-tiers.json, sets a user's tier, prints before/after, and logs the change. Also used for resetting users who complete Paymee payments via bank transfer.",
+  "tasks": [
+    {
+      "id": "1443-tier-cli",
+      "description": "Create scripts/achiri/set-user-tier.ts. Usage: npx ts-node scripts/achiri/set-user-tier.ts <userId> <tier> [--reason <reason>]. Tiers: free, tnd_basic, tnd_premium. (1) Read workspace/achiri/user-tiers.json (object keyed by userId, defaults to 'free' if missing). (2) Validate tier is one of the 3 valid values. (3) Show: 'userId: old_tier → new_tier (reason)'. (4) Write updated user-tiers.json. (5) Append log entry to workspace/achiri/tier-changes.jsonl: {ts, userId, old_tier, new_tier, reason}. (6) Print confirmation. Also add a --list flag that prints all non-free tier users. File must be under 80 lines.",
+      "files": [
+        "scripts/achiri/set-user-tier.ts"
+      ],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}
