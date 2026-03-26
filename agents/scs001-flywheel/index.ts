@@ -72,8 +72,22 @@ export class ContentFlywheelAgent {
   }
 
   run(signals: PerformanceSignal[]): FlywheelOutput[] {
-    const viralSignals = signals.filter(s => s.flywheel_triggered);
-    console.log('[FlywheelAgent] ' + viralSignals.length + '/' + signals.length + ' signals are viral (flywheel triggered)');
+    const allViralSignals = signals.filter(s => s.flywheel_triggered);
+
+    // Dedup by video_id: same video published across 9 platforms produces 9 signals.
+    // Keep only the best-performing (highest completion_rate) per unique video to
+    // avoid generating 9× the intended 4 derivatives per viral video.
+    const bestByVideo = new Map<string, PerformanceSignal>();
+    for (const sig of allViralSignals) {
+      const existing = bestByVideo.get(sig.video_id);
+      if (!existing || sig.kpis.completion_rate > existing.kpis.completion_rate) {
+        bestByVideo.set(sig.video_id, sig);
+      }
+    }
+    const viralSignals = Array.from(bestByVideo.values());
+
+    console.log('[FlywheelAgent] ' + viralSignals.length + ' unique viral video(s) (' +
+      allViralSignals.length + ' signals, ' + signals.length + ' total)');
 
     if (viralSignals.length === 0) {
       console.log('[FlywheelAgent] No viral signals — flywheel idle');

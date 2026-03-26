@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1428",
+  "title": "BUGFIX — ContentFlywheelAgent: dedup by video_id to prevent 9× derivative inflation",
+  "block": "SCS001",
+  "source": "pipeline-run-observation",
+  "rationale": "Same root cause as Sprint 1427 (FailureLibrary dedup). PublishingAgent (Blotato) emits 9 PublishedVideo entries per unique video. AnalyticsAgent creates 9 PerformanceSignals. ContentFlywheelAgent filtered to flywheel_triggered=true but did not dedup by video_id — if 3/9 platform signals for a video had completion_rate >= 70%, it generated 12 derivatives per video instead of 4 (99 viral signals × 4 = 396 derivatives instead of 33 × 4 = 132). Fix: group viral signals by video_id, keep best-performing (highest completion_rate), process deduped set. Result: 396 → 132 derivatives per run.",
+  "tasks": [
+    {
+      "id": "1428-dedup-flywheel",
+      "description": "In ContentFlywheelAgent.run(), add dedup pass before the processing loop: build bestByVideo Map<string, PerformanceSignal> keyed by video_id, keeping the signal with the highest completion_rate (best-performing platform for flywheel learning). Process only the deduped signals. Updated log line shows unique viral video count vs total signal count.",
+      "files": [
+        "agents/scs001-flywheel/index.ts"
+      ],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
