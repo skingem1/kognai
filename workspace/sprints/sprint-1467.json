@@ -1,0 +1,29 @@
+{
+  "sprint_id": "sprint-1467",
+  "title": "Auto-enqueue vlog pipeline output into post-queue after each run",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "Sprint 1466 added auto-enqueue to multiformat pipeline. Vlog pipeline (produce-vlog.ts) had same gap — produces videos to vlog-runs/{runId}/{runId}.mp4 but never wrote to post-queue.jsonl. Fix mirrors Sprint 1466: append entry after meta.json write at end of produceVlog(). Added appendFileSync to imports.",
+  "inputs": [
+    "scripts/scs001/produce-vlog.ts"
+  ],
+  "outputs": [
+    "scripts/scs001/produce-vlog.ts (auto-enqueue block added)"
+  ],
+  "success_criteria": [
+    "After produce-vlog run, video_id appended to post-queue.jsonl",
+    "Duplicate video_ids skipped",
+    "No TypeScript compile errors"
+  ],
+  "tasks": [
+    {
+      "id": "1467-vlog-auto-enqueue",
+      "description": "produce-vlog.ts: append post-queue entry after meta.json write, deduplicate by runId",
+      "files": ["scripts/scs001/produce-vlog.ts"],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}

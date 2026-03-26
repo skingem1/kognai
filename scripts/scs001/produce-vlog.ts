@@ -25,7 +25,7 @@
  */
 
 import { execSync } from 'child_process';
-import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync, readFileSync, appendFileSync } from 'fs';
 import { homedir } from 'os';
 import { join } from 'path';
 
@@ -971,6 +971,27 @@ async function produceVlog(topic: string, mode: 'avatar' | 'tts' = 'avatar'): Pr
     mkdirSync(dlDir, { recursive: true });
     execSync(`cp "${finalPath}" "${dlDir}/${runId}.mp4"`, { stdio: 'pipe' });
   } catch {}
+
+  // Sprint 1467: auto-enqueue into post-queue.jsonl
+  const queueFile = join(WORKSPACE, 'post-queue.jsonl');
+  const existingIds = new Set<string>();
+  if (existsSync(queueFile)) {
+    readFileSync(queueFile, 'utf-8').split('\n').filter(Boolean).forEach(line => {
+      try { const e = JSON.parse(line); if (e.video_id) existingIds.add(e.video_id); }
+      catch {}
+    });
+  }
+  if (!existingIds.has(runId)) {
+    appendFileSync(queueFile, JSON.stringify({
+      video_id: runId,
+      title: script.title.slice(0, 120),
+      file: finalPath,
+      score: 'N/A',
+      added_at: new Date().toISOString(),
+      status: 'pending',
+    }) + '\n');
+    console.log(`📥 Enqueued ${runId} into post-queue.jsonl`);
+  }
 
   return finalPath;
 }
