@@ -7797,3 +7797,19 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Impact: achiri-daily-engage can now run cleanly, correctly targeting only real Telegram users. Deployment health check will show actual Achiri status including capabilities.
 - Swarm used: no
 - Timestamp: 2026-03-26T06:50:00Z
+
+## Sprint 1417 — 2026-03-26
+- Sprint: BUGFIX — achiri-reengage.ts filters test/E2E users from inactive user list
+- Files modified: scripts/achiri/achiri-reengage.ts
+- Change: After building allUsers Set from daily-counts.json, filters out any non-numeric userId. Added REAL_USER_REGEX = /^-?\d+$/ constant. Logs how many synthetic users were skipped.
+- Impact: achiri-reengage (runs daily at 15:00) will no longer generate 400 "chat not found" errors for e2e-test-*, validate-sprint-*, etc. IDs.
+- Swarm used: no
+- Timestamp: 2026-03-26T07:10:00Z
+
+## Sprint 1418 — 2026-03-26
+- Sprint: BUGFIX — Purge synthetic test users from daily-counts.json + add E2E cleanup
+- Files modified: workspace/achiri/daily-counts.json, scripts/achiri/validate-e2e-alpha.ts
+- Change: Removed 84 synthetic user entries (82/83 unique users were synthetic). Only real user 6001921477 remains. Added cleanupTestUsersFromDailyCounts() to validate-e2e-alpha.ts to auto-clean after each E2E run (safeguard — dry-run mode skips incrementDailyCount() so no test users are written in practice).
+- Impact: All 7 Achiri analytics scripts (retention, quality-monitor, readiness, dashboard-export, topic-analytics, export-analytics, weekly-usage-digest) now see accurate user counts (1 real user, not 83). E2E tests still pass 27/27.
+- Swarm used: no
+- Timestamp: 2026-03-26T07:15:00Z

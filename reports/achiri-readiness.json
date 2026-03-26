@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-03-24T11:42:49.493Z",
+  "generated_at": "2026-03-26T04:23:21.225Z",
   "alpha_date": "2026-04-25",
-  "days_to_alpha": 32,
+  "days_to_alpha": 30,
   "overall_ready": true,
   "score": 100,
   "checks": [
@@ -37,7 +37,7 @@
       "name": "User Activity",
       "category": "Engagement",
       "pass": true,
-      "detail": "92 users, 4698 messages over 5 days",
+      "detail": "1 users, 6 messages over 2 days",
       "critical": false
     },
     {

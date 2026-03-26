@@ -6,7 +6,7 @@
 
 | Criterion | Target | Actual | Pass |
 |-----------|--------|--------|------|
-| Manual TikTok Posts (target: 30) | — | 30 posts recorded in manual-posts.jsonl | ✅ |
+| Manual TikTok Posts (target: 30) | — | 123 posts recorded in manual-posts.jsonl | ✅ |
 | Total Views Across Posts (target: 500) | — | views unverifiable (TIKTOK_ACCESS_TOKEN not set) | ❌ |
 
 **Recommendation:** PROCEED to Phase 2A — TikTok stable. Launch Achiri alpha Apr 25.

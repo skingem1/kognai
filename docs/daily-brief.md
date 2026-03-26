@@ -1,17 +1,17 @@
 # KOGNAI DAILY BRIEF — 2026-03-26
 ## Thursday, March 26, 2026
 
-**Generated:** 2026-03-26 03:13
-**Active Sprint:** sprint-1400
+**Generated:** 2026-03-26 05:24
+**Active Sprint:** sprint-1416
 **Hours Today:** 4h
 **Midday Block:** NO (Tuesday/Thursday)
 
 ---
 
 ## LIVE STATUS (auto-generated)
-**Gate:** 🟢 ON_TRACK — 30/30 posts · 0 needed · 12d to Apr 7
+**Gate:** 🟢 ON_TRACK — 123/30 posts · 0 needed · 12d to Apr 7
 **Godman launch:** 19d — April 14  |  **Achiri alpha:** 30d — April 25
-**Next queued sprint:** Sprint 1402 — BUGFIX — Fix pipeline error: scs001-pipeline-error.log
+**Next sprint:** queue empty — run /replenish or pick manually
 
 **Blockers:**
 - 🔴 **TIKTOK_ACCESS_TOKEN** not set — live TikTok posting blocked (set in .env)
@@ -33,8 +33,8 @@
 ### Thursday, March 26
 
 **AM 07:00–09:30**
-- [ ] ⚠️ **Post 1 TikTok video(s) today** (30/30 · 12d left · /today for top picks)
-- [ ] 🛠️ **Sprint 1402: BUGFIX — Fix pipeline error: scs001-pipeline-error.log** — /sprint to view queue
+- [ ] ⚠️ **Post 1 TikTok video(s) today** (123/30 · 12d left · /today for top picks)
+- [ ] 🔄 Queue empty — run /replenish to generate next sprint
 - [ ] /errors — check for overnight process errors
 - [ ] /status — confirm gate pace and cron health
 

@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-03-26T03:44:01.823Z",
+  "generated_at": "2026-03-26T04:26:48.347Z",
   "overview": {
-    "total_users": 3,
-    "returning_users": 2,
-    "retention_pct": 67,
+    "total_users": 1,
+    "returning_users": 1,
+    "retention_pct": 100,
     "total_sessions": 6,
     "waitlist_count": 1,
     "invited_count": 1,
@@ -17,51 +17,25 @@
   },
   "daily": [
     {
-      "date": "2026-03-16",
-      "dau": 1,
-      "msgs": 1,
-      "new_users": 1
-    },
-    {
       "date": "2026-03-19",
-      "dau": 2,
-      "msgs": 6,
-      "new_users": 2
+      "dau": 1,
+      "msgs": 5,
+      "new_users": 1
     },
     {
       "date": "2026-03-20",
       "dau": 1,
       "msgs": 1,
       "new_users": 0
-    },
-    {
-      "date": "2026-03-21",
-      "dau": 1,
-      "msgs": 7,
-      "new_users": 0
     }
   ],
   "top_users": [
-    {
-      "user_id": "user-premium",
-      "total_msgs": 8,
-      "days_active": 2,
-      "first_seen": "2026-03-16",
-      "last_seen": "2026-03-21"
-    },
     {
       "user_id": "6001921477",
       "total_msgs": 6,
       "days_active": 2,
       "first_seen": "2026-03-19",
       "last_seen": "2026-03-20"
-    },
-    {
-      "user_id": "tarek-test",
-      "total_msgs": 1,
-      "days_active": 1,
-      "first_seen": "2026-03-19",
-      "last_seen": "2026-03-19"
     }
   ],
   "recent_errors": []
