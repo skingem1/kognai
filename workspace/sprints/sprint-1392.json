@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1392",
+  "title": "BUGFIX — Remove 3 test artifact entries from manual-posts.jsonl (gate 16→13)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Sprint 1390 verification test-ran cmdPosted() which wrote 3 entries to manual-posts.jsonl (exp-93f4ae07, dbt-79df7fa1, exp-af218f4c at 01:38-01:40am). These are test artifacts, not real TikTok posts. Gate inflated to 16/30 instead of correct 13/30. Remove them to restore accurate gate count.",
+  "tasks": [
+    {
+      "id": "1392-clean-test-artifacts",
+      "description": "Remove entries exp-93f4ae07, dbt-79df7fa1, exp-af218f4c from workspace/scs001/manual-posts.jsonl. All 3 were injected at 01:38-01:40am during Sprint 1390 test run. Gate restores to 13/30.",
+      "files": ["workspace/scs001/manual-posts.jsonl"],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
