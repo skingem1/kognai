@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1449",
+  "title": "PHASE2 — Achiri env push to Hetzner + bot setup guide",
+  "block": "PHASE2",
+  "source": "queue-empty-autonomous",
+  "rationale": "All Achiri blockers require human action or missing tooling. deploy-achiri.sh syncs code but does NOT push .env to Hetzner, so ANTHROPIC_API_KEY and other secrets are missing on the remote server — Achiri API will fail even after deploy. This sprint creates (1) scripts/achiri/push-env-to-hetzner.sh: reads local .env, filters to Achiri-required vars, SSH-pushes .env to Hetzner, restarts PM2, polls /health. (2) scripts/achiri/bot-setup-guide.sh: prints step-by-step BotFather instructions with exact commands, generates a .env snippet to paste. Both under 80 lines each.",
+  "tasks": [
+    {
+      "id": "1449-push-env",
+      "description": "Create scripts/achiri/push-env-to-hetzner.sh. Reads HETZNER_HOST (default 65.108.90.178), HETZNER_USER (default invoica), HETZNER_SSH_KEY (default ~/.ssh/id_ed25519). (1) Source local .env. (2) Extract these vars: ANTHROPIC_API_KEY, SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_KEY, OPENAI_API_KEY, MINIMAX_API_KEY, MINIMAX_DEFAULT_MODEL, MINIMAX_TTS_VOICE, MINIMAX_TTS_EMOTION, ELEVENLABS_API_KEY, ACHIRI_TELEGRAM_BOT_TOKEN (skip if empty), PAYMEE_API_KEY (skip if empty), PAYMEE_VENDOR_ID (skip if empty), OLLAMA_HOST. (3) SSH-write them to /home/invoica/apps/kognai/.env on Hetzner (append, not overwrite — use grep to skip already-set vars). (4) Run pm2 reload achiri-api via SSH. (5) Poll http://localhost:3420/health via SSH until 200 or 30s timeout. Print PASS/FAIL. Support --dry-run flag. Exit 0 on success.",
+      "files": [
+        "scripts/achiri/push-env-to-hetzner.sh"
+      ],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "1449-bot-guide",
+      "description": "Create scripts/achiri/bot-setup-guide.sh. Prints colour-formatted step-by-step guide for creating @AchiriBuddyBot via BotFather: (1) Open Telegram, search @BotFather. (2) Send /newbot. (3) Name: 'Achiri Buddy'. (4) Username: AchiriBuddyBot. (5) Copy the token. (6) Print: 'echo ACHIRI_TELEGRAM_BOT_TOKEN=<your_token> >> .env'. Also checks if ACHIRI_TELEGRAM_BOT_TOKEN is already set and prints 'Already configured' if so. Checks if ACHIRI_BASE_URL is set and prints 'Deploy needed' if not. Prints summary table of Achiri launch readiness. Under 60 lines.",
+      "files": [
+        "scripts/achiri/bot-setup-guide.sh"
+      ],
+      "status": "pending",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}
