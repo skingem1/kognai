@@ -1,15 +1,15 @@
 # KOGNAI DAILY BRIEF — 2026-03-26
 ## Thursday, March 26, 2026
 
-**Generated:** 2026-03-26 05:24
-**Active Sprint:** sprint-1416
+**Generated:** 2026-03-26 06:07
+**Active Sprint:** sprint-1426
 **Hours Today:** 4h
 **Midday Block:** NO (Tuesday/Thursday)
 
 ---
 
 ## LIVE STATUS (auto-generated)
-**Gate:** 🟢 ON_TRACK — 123/30 posts · 0 needed · 12d to Apr 7
+**Gate:** 🟢 ON_TRACK — 152/30 posts · 0 needed · 12d to Apr 7
 **Godman launch:** 19d — April 14  |  **Achiri alpha:** 30d — April 25
 **Next sprint:** queue empty — run /replenish or pick manually
 
@@ -33,7 +33,7 @@
 ### Thursday, March 26
 
 **AM 07:00–09:30**
-- [ ] ⚠️ **Post 1 TikTok video(s) today** (123/30 · 12d left · /today for top picks)
+- [ ] ⚠️ **Post 1 TikTok video(s) today** (152/30 · 12d left · /today for top picks)
 - [ ] 🔄 Queue empty — run /replenish to generate next sprint
 - [ ] /errors — check for overnight process errors
 - [ ] /status — confirm gate pace and cron health

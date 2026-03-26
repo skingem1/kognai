@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-26T03:43:11.290Z",
+  "timestamp": "2026-03-26T05:07:33.986Z",
   "period": {
     "today": "2026-03-26",
     "week_start": "2026-03-22"
@@ -28,15 +28,15 @@
   },
   "gate": {
     "posts_target": 30,
-    "posts_delivered": 95,
+    "posts_delivered": 153,
     "days_remaining": 12,
     "on_track": true,
     "urgency": "PASSED",
     "urgency_signal": "Gate criteria met — PROCEED"
   },
   "queue": {
-    "ready_count": 1192,
-    "unposted_count": 1192,
+    "ready_count": 1134,
+    "unposted_count": 1134,
     "top3_video_ids": [
       "video-88863065",
       "video-a9c3b478",
