@@ -8243,3 +8243,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - UX fix: users see continuous typing indicator while qwen3:4b processes (was: silent for 55s)
 - Swarm: not used (surgical edit)
 - Timestamp: 2026-03-26T11:15:00Z
+
+## Sprint 1461 — BUGFIX post-queue score normalization
+- Status: PASS
+- Commit: a3eca880
+- Files created: scripts/scs001/repair-post-queue-scores.ts, workspace/sprints/sprint-1461.json
+- Files modified: scripts/scs001/check-ready.ts (normalize negative scores → N/A), workspace/scs001/post-queue.jsonl (10 entries repaired)
+- Swarm: not used (surgical fix)
+- Timestamp: 2026-03-26T11:30:00Z
