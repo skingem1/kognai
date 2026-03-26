@@ -8127,3 +8127,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Fix: catch 422+429 as quota errors; generateVoiceover() catch falls back to local TTS on any ElevenLabs error.
 - Swarm used: no (single-file surgical edit)
 - Timestamp: 2026-03-26T15:30:00.000Z
+
+## Sprint 1454 — Browser poster warmup gate cleanup
+- Status: PASS
+- Commit: c36ee201
+- Files modified: ecosystem.config.js (removed AUTO_POST_DRY_RUN), scripts/scs001/tiktok-browser-poster.ts (warmup-pending exit 0 + Telegram notify)
+- After /warmup-complete 3 <score> on 2026-03-29: next cron fires live automatically
+- Swarm used: no (multi-file edit)
+- Timestamp: 2026-03-26T16:00:00.000Z
