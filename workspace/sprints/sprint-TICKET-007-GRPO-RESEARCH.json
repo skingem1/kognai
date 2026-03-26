@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-TICKET-007-GRPO-RESEARCH",
+  "title": "TICKET-007-GRPO-RESEARCH — GRPO research note for TICKET-006",
+  "block": "TICKET-007",
+  "source": "queue-prescribed",
+  "status": "done",
+  "rationale": "GRPO research note: how proximity-based reward scoring maps to KSL constitutional reward. Recommendation: SFT only now (mlx-lm lacks GRPO trainer, mac M4 feasible but slow). GRPO in Phase 3 of hyperagent roadmap.",
+  "deliverables": [
+    "workspace/spikes/TICKET-007-grpo-research.md"
+  ],
+  "tasks": [
+    {
+      "id": "T007-grpo-note",
+      "description": "Write GRPO research note covering GRPO mechanics, constitutional reward signal mapping, SFT vs GRPO recommendation, hyperagent integration",
+      "files": ["workspace/spikes/TICKET-007-grpo-research.md"],
+      "status": "done"
+    }
+  ]
+}
