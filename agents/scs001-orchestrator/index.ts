@@ -59,6 +59,7 @@ export interface PipelineRunReport {
     videos_captioned: number;
     qc_passed:        number;
     qc_failed:        number;
+    qc_failures:      string[];  // Sprint 1377: failure_reason per failed QC gate
     published:        number;
     viral:            number;
     performing:         number;
@@ -619,6 +620,7 @@ export class SCS001Orchestrator {
         videos_captioned:   captionedVideos.length,
         qc_passed:          passedGates.length,
         qc_failed:          gates.length - passedGates.length,
+        qc_failures:        gates.filter(g => !g.overall_pass).map(g => g.failure_reason ?? 'unknown'),
         published:          published.length,
         viral:              signals.filter(s => s.viral_status === 'viral').length,
         performing:         signals.filter(s => s.viral_status === 'performing').length,

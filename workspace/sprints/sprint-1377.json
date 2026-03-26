@@ -1,0 +1,21 @@
+{
+  "sprint_id": "sprint-1377",
+  "title": "BUGFIX — Pipeline Telegram notification shows qc_failed count but no failure detail",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "After Sprints 1362-1368 fixed QC checks, the operator has no visibility into whether QC is passing. The pipeline Telegram notification shows 'qc_failed: N' as a count only. When a video fails, the operator doesn't know which check failed (hook_timing? clip_understandable? why_does_this_matter?) and can't distinguish a systemic bug from a one-off. Fix: add qc_failures: string[] to PipelineRunReport.summary (failure_reason per failed gate), then show a QC section in notifier.ts when qc_failed > 0.",
+  "tasks": [
+    {
+      "id": "1377-qc-detail-report",
+      "description": "In agents/scs001-orchestrator/index.ts: add qc_failures: string[] to PipelineRunReport.summary type and populate it from gates that failed (failure_reason or 'unknown'). In agents/scs001-orchestrator/notifier.ts: add a QC section showing pass/fail count and listing failure reasons when qc_failed > 0.",
+      "files": [
+        "agents/scs001-orchestrator/index.ts",
+        "agents/scs001-orchestrator/notifier.ts"
+      ],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

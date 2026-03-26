@@ -31,6 +31,18 @@ function formatPipelineSummary(report: PipelineRunReport): string {
     lines.push('');
   }
 
+  // Sprint 1377: QC pass/fail detail
+  const qcTotal = s.qc_passed + s.qc_failed;
+  if (qcTotal > 0) {
+    lines.push(`🎬 *QC* — ${s.qc_passed}/${qcTotal} passed`);
+    if (s.qc_failed > 0 && s.qc_failures?.length) {
+      for (const reason of s.qc_failures) {
+        lines.push(`  ✗ ${reason}`);
+      }
+    }
+    lines.push('');
+  }
+
   if (errors.length > 0) {
     lines.push('⚠️ *Errors*');
     for (const e of errors) {
