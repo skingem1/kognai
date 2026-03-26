@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1385",
+  "title": "FEAT — /remind command + register scs001-remind PM2 crons",
+  "block": "FEAT",
+  "source": "self-directed",
+  "rationale": "Queue empty. Two posting-reminder gaps: (1) No /remind Telegram command exists — operator can't pull an on-demand posting reminder. (2) scs001-remind-noon and scs001-remind-evening are defined in ecosystem.config.js but NOT registered in PM2 — noon+7pm reminders are not firing. Fix both: add cmdRemind() to cmd-posting.ts, wire in telegram-bot.ts, then start the PM2 crons.",
+  "tasks": [
+    {
+      "id": "1385-cmd-remind",
+      "description": "Add cmdRemind() to scripts/telegram-commands/cmd-posting.ts. Logic: load gate JSON (days_remaining, posts_remaining, posts_count). Load publish-ledger.jsonl + manual-posts.jsonl to find top unposted video (highest viral_score). Return formatted message: urgency emoji, gate progress, next video ID + topic + /record command. Max 20 lines.",
+      "files": ["scripts/telegram-commands/cmd-posting.ts"],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "1385-wire-remind",
+      "description": "In scripts/telegram-bot.ts, add case '/remind' that calls cmdRemind() and sends result. Pattern: find existing case '/queue' or '/status' and add similar case '/remind'.",
+      "files": ["scripts/telegram-bot.ts"],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}

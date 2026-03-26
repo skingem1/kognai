@@ -1671,3 +1671,46 @@ export function cmdQueueFill(): string {
     return `❌ Queue fill error: ${e.message}`;
   }
 }
+
+// Sprint 1385: On-demand posting reminder with gate status + next video
+export function cmdRemind(): string {
+  const GATE_TARGET = 30;
+  const GATE_PATH = path.join(ROOT, 'workspace', 'gates', 'phase1-5-gate.json');
+  const DELIVERED_PATH = path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl');
+
+  let gate: any = {};
+  try { gate = JSON.parse(fs.readFileSync(GATE_PATH, 'utf-8')); } catch {}
+
+  const raw = gate.raw ?? {};
+  const postsDone: number = raw.posts_count ?? readRealPosts().length;
+  const daysLeft: number = gate.days_remaining ?? 0;
+  const postsLeft = Math.max(0, GATE_TARGET - postsDone);
+
+  if (postsLeft === 0) return '✅ *Gate met!* 30/30 posts recorded. Phase 1.5 unlocked.';
+
+  const urgency = daysLeft <= 3 ? '🚨' : daysLeft <= 7 ? '⚠️' : '⏰';
+  const pace = daysLeft > 0 ? (postsLeft / daysLeft).toFixed(1) : '?';
+  const bar = '█'.repeat(Math.round((postsDone / GATE_TARGET) * 10)) + '░'.repeat(10 - Math.round((postsDone / GATE_TARGET) * 10));
+
+  // Pick top unposted video
+  const postedIds = new Set(readRealPosts().map((e: any) => e.video_id).filter(Boolean));
+  const delivered = readLines(DELIVERED_PATH) as any[];
+  const next = delivered
+    .filter((e: any) => e.video_id && !postedIds.has(e.video_id) && e.mp4_path && fs.existsSync(e.mp4_path))
+    .sort((a: any, b: any) => (b.viral_score ?? 0) - (a.viral_score ?? 0))[0];
+
+  const lines = [
+    `${urgency} *Posting Reminder*`,
+    ``,
+    `[${bar}] ${postsDone}/${GATE_TARGET} posts · ${daysLeft}d left · ${pace}/day needed`,
+    ``,
+  ];
+  if (next) {
+    lines.push(`*Next to post:* \`${next.video_id}\``);
+    if (next.topic) lines.push(`📝 ${String(next.topic).slice(0, 70)}`);
+    lines.push(``, `After posting → \`/record ${next.video_id} 0 <tiktok_url>\``);
+  } else {
+    lines.push(`_No unposted video on disk — use /deliver to get one_`);
+  }
+  return lines.join('\n');
+}
