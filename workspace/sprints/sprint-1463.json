@@ -1,0 +1,34 @@
+{
+  "sprint_id": "sprint-1463",
+  "title": "queue-fill-real: enqueue on-disk multiformat + vlog videos missing from post-queue",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "TikTok warmup completes 2026-03-27. go-live.ts (Sprint 1462) shows all 20 post-queue entries as FILE MISSING — their source pipeline runs were cleaned or never written. Meanwhile 6 multiformat videos (mf-20260326T05, mf-20260326T09) and 2 vlog videos (vlog-mn76mml7, vlog-mn772om3) exist on disk with confirmed _final.mp4 / .mp4 files but are NOT in post-queue. Script scans both run-dirs, cross-checks queue, and enqueues real files only.",
+  "inputs": [
+    "workspace/scs001/multiformat-runs/*/run-report.json",
+    "workspace/scs001/vlog-runs/*/meta.json",
+    "workspace/scs001/post-queue.jsonl"
+  ],
+  "outputs": [
+    "scripts/scs001/queue-fill-real.ts",
+    "workspace/scs001/post-queue.jsonl (updated)"
+  ],
+  "success_criteria": [
+    "Script scans all multiformat run-report.json and vlog meta.json",
+    "Only enqueues videos where file exists on disk",
+    "Skips video_ids already in post-queue",
+    "Newly enqueued videos visible in go-live.ts output with file OK status",
+    "No duplicate entries written"
+  ],
+  "tasks": [
+    {
+      "id": "1463-queue-fill-real",
+      "description": "Create scripts/scs001/queue-fill-real.ts: scan multiformat and vlog run dirs, enqueue on-disk videos not yet in post-queue",
+      "files": ["scripts/scs001/queue-fill-real.ts"],
+      "status": "done",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}

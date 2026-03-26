@@ -113,7 +113,13 @@ function main(): void {
   const allEntries = readPostQueue();
   const pending = allEntries
     .filter(e => !e.status || e.status === 'pending')
-    .sort((a, b) => scoreWeight(b.score) - scoreWeight(a.score));
+    .sort((a, b) => {
+      // file-exists entries always rank above file-missing ones
+      const aHasFile = a.file ? fs.existsSync(a.file) : false;
+      const bHasFile = b.file ? fs.existsSync(b.file) : false;
+      if (aHasFile !== bHasFile) return aHasFile ? -1 : 1;
+      return scoreWeight(b.score) - scoreWeight(a.score);
+    });
 
   const isReady = days >= MIN_DAYS;
   const line = '═'.repeat(62);
