@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1372",
+  "title": "VERIFY — Confirm Sprint 1370 fal.ai ETIMEDOUT fix resolves Scene s6 failure",
+  "block": "VERIFY",
+  "source": "queue-prescribed",
+  "rationale": "Queue item 1372 referenced the same scs001-pipeline-error.log Scene s6 ETIMEDOUT error that Sprint 1370 already fixed. Sprint 1370 added start_new_session=True + os.killpg(SIGKILL) to fal-video-client.ts outer Python subprocess, preventing orphaned grandchildren from blocking pipe drain. Verification confirms the fix is deployed.",
+  "tasks": [
+    {
+      "id": "1372-verify-fal-fix",
+      "description": "Verify Sprint 1370 fix: grep fal-video-client.ts for start_new_session + killpg. Confirmed present at lines 110,116,122. Scene s6 ETIMEDOUT error was caused by exact issue fixed. No additional code changes needed.",
+      "file": "scripts/scs001/fal-video-client.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "verification"
+    }
+  ]
+}
