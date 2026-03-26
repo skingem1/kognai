@@ -8157,3 +8157,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR: aar-middleware module missing — logged in progress.md instead
 - Issues: CTO gate module missing (WARN only — queue-prescribed auto-approved)
 - Timestamp: 2026-03-26T00:00:00Z
+
+## Sprint TICKET-008-PROMO-02 — PROMO-02 (promo-scriptgen)
+- Status: PASS
+- Files created: scripts/promo/promo-scriptgen.ts, scripts/promo/validate-promo-scriptgen.ts, workspace/sprints/sprint-TICKET-008-PROMO-02.json
+- Test: validate-promo-scriptgen.ts --dry-run — PASS (3/3, 7-beat AIDA, duration 49s, image_index in bounds)
+- Pipeline: TICKET-008 PROMO-02/5 complete
+- Swarm used: no (multi-file + complex LLM prompt design)
+- AAR: aar-middleware module missing
+- Timestamp: 2026-03-26T00:00:00Z

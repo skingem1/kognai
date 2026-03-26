@@ -118,10 +118,11 @@
       "sprint": "TICKET-008-PROMO-02",
       "title": "PROMO-02 \u2014 promo-scriptgen.ts: qwen3:14b AIDA promotional script with image cue points",
       "block": "TICKET-008",
-      "status": "pending",
+      "status": "done",
       "priority": "P1",
       "rationale": "TICKET-008 P1-PROMO Sprint 2/5. Reads ProductData JSON, generates PromoScript via qwen3:14b (ClawRouter T2 POWER, local, /bin/zsh). AIDA structure: hook, problem, solution, benefit1, benefit2, proof, cta. Each beat has: text, image_index (null=avatar only), duration_s. Target 45-60s total. Tone variants: Professional/Enthusiastic/Conversational. Gate: 3 product scripts all have valid 7-beat AIDA structure, image_index values within bounds, total duration 45-65s.",
-      "added_at": "2026-03-26T09:10:28.926160Z"
+      "added_at": "2026-03-26T09:10:28.926160Z",
+      "completed_at": "2026-03-26T00:00:00Z"
     },
     {
       "sprint": "TICKET-008-PROMO-03",
