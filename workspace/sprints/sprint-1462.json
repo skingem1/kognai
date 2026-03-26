@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-1462",
+  "title": "TikTok go-live operator script (warmup complete → post workflow)",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "TikTok warmup completes 2026-03-27. Operator needs a single command to: (1) confirm warmup is done, (2) see top-scored pending videos with file paths, (3) mark a video as posted. Built as scripts/scs001/go-live.ts. Follows CLAUDE.md rule 7: manual posting is default, API is SPOF. Script shows operator exactly which files to upload and marks them done in post-queue.jsonl.",
+  "inputs": [
+    "workspace/scs001/warmup-status.json",
+    "workspace/scs001/post-queue.jsonl"
+  ],
+  "outputs": [
+    "scripts/scs001/go-live.ts"
+  ],
+  "success_criteria": [
+    "go-live.ts exits 1 with WARMUP PENDING when days < 3",
+    "go-live.ts exits 0 with READY TO POST when days >= 3",
+    "go-live.ts shows top 5 pending videos sorted by score desc",
+    "--mark-posted VIDEO_ID marks entry status=posted in post-queue.jsonl",
+    "File-not-found warning shown for missing video files"
+  ],
+  "tasks": [
+    {
+      "id": "1462-go-live-script",
+      "description": "Create scripts/scs001/go-live.ts: operator tool that checks warmup, lists top pending videos, and marks videos as posted",
+      "files": ["scripts/scs001/go-live.ts"],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}
