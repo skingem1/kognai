@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1429",
+  "title": "BUGFIX — Fix inflated viral/performing/failure_library counts in pipeline report",
+  "block": "SCS001",
+  "source": "pipeline-run-observation",
+  "rationale": "PipelineRunReport summary.viral and summary.performing counted raw PerformanceSignal objects (one per Blotato platform), not unique videos. With 33 videos × 9 platforms = 297 signals, 'viral' showed 99 and 'performing' showed 99+ instead of ~33 each. Also flywheel_derivatives used flywheelOutputs.length × 4 (hardcoded multiplier) instead of summing actual derivatives per output. Fixed: viral/performing now count unique video_ids via Set. failure_library now uses failureEntries.length (already deduped by Sprint 1427). flywheel_derivatives sums o.derivatives.length for accuracy. Console summary line now shows correct unique-video viral count.",
+  "tasks": [
+    {
+      "id": "1429-fix-report-counts",
+      "description": "In scs001-orchestrator/index.ts summary block: replace signals.filter(...).length with new Set(...map(s=>s.video_id)).size for viral and performing counts. Replace failure_library with failureEntries.length (deduped source). Replace flywheel_derivatives hardcoded ×4 with flywheelOutputs.reduce((sum,o)=>sum+o.derivatives.length,0). Console summary line inherits fix via s.viral.",
+      "files": [
+        "agents/scs001-orchestrator/index.ts"
+      ],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

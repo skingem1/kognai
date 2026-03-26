@@ -651,10 +651,13 @@ export class SCS001Orchestrator {
         qc_failed:          gates.length - passedGates.length,
         qc_failures:        gates.filter(g => !g.overall_pass).map(g => g.failure_reason ?? 'unknown'),
         published:          published.length,
-        viral:              signals.filter(s => s.viral_status === 'viral').length,
-        performing:         signals.filter(s => s.viral_status === 'performing').length,
-        failure_library:      signals.filter(s => s.failure_library_entry).length,
-        flywheel_derivatives: flywheelOutputs.length * 4,
+        // Sprint 1429: count unique video_ids (not raw signal count) — same video
+        // published across 9 Blotato platforms emits 9 signals per video. Unique
+        // counts match what FailureLibrary (Sprint 1427) and Flywheel (Sprint 1428) actually file.
+        viral:              new Set(signals.filter(s => s.viral_status === 'viral').map(s => s.video_id)).size,
+        performing:         new Set(signals.filter(s => s.viral_status === 'performing').map(s => s.video_id)).size,
+        failure_library:      failureEntries.length,
+        flywheel_derivatives: flywheelOutputs.reduce((sum, o) => sum + o.derivatives.length, 0),
         failure_entries:      failureEntries.length,
         clips_deduplicated:   clipsDeduplicated,
         platforms_targeted:   published.length > 0 ? 9 : 0,
