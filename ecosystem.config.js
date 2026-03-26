@@ -1465,6 +1465,29 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 1473: Pipeline heartbeat — alerts via Telegram if no pipeline run in 6h
+      // Runs every 30 min. Reads reports/pipeline-runs/latest.json.
+      // To start: pm2 start ecosystem.config.js --only scs001-heartbeat
+      name: "scs001-heartbeat",
+      script: "./scripts/scs001/pipeline-heartbeat.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: __dirname,
+      autorestart: false,
+      watch: false,
+      cron_restart: "*/30 * * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: __dirname + "/tsconfig.scripts.json",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
+        STALE_THRESHOLD_H: "6",
+      },
+      error_file: __dirname + "/logs/heartbeat-error.log",
+      out_file: __dirname + "/logs/heartbeat-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 1003: PM2 auto-healer — restarts errored/unstable processes, Telegram alert
       // Detects status=errored or unstable_restarts>=3, restarts, logs to logs/healer-state.json
       // To start: pm2 start ecosystem.config.js --only scs001-healer

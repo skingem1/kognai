@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1473",
+  "title": "FEATURE — SCS-001 pipeline heartbeat: Telegram alert if no pipeline run in 6h",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "The 15-stage pipeline runs every 3h (06:00/09:00/11:00 confirmed from pipeline-runs/). If the pipeline stops (PM2 crash, ffmpeg hang, model timeout), there is currently no alert. Build pipeline-heartbeat.ts: reads reports/pipeline-runs/latest.json, checks if last run was > 6h ago, sends Telegram alert to OWNER_TELEGRAM_CHAT_ID if stale. Wire into PM2 (every 30 min via cron_restart). Closes the blind-spot where the pipeline silently stops producing videos.",
+  "inputs": [
+    "reports/pipeline-runs/latest.json",
+    "ecosystem.config.js"
+  ],
+  "outputs": [
+    "scripts/scs001/pipeline-heartbeat.ts (new)",
+    "ecosystem.config.js (add scs001-heartbeat PM2 job)"
+  ],
+  "success_criteria": [
+    "pipeline-heartbeat.ts compiles without error",
+    "pipeline-heartbeat.ts --check runs dry and reports last run age",
+    "Telegram message sent when last run is simulated as > 6h old",
+    "PM2 job added to ecosystem.config.js with cron every 30 min"
+  ],
+  "tasks": [
+    {
+      "id": "1473-heartbeat-script",
+      "description": "Create scripts/scs001/pipeline-heartbeat.ts: reads reports/pipeline-runs/latest.json, computes hours since last run, sends Telegram alert via bot API if > STALE_THRESHOLD_H (default 6). Logs to logs/heartbeat/YYYY-MM-DD.jsonl. --check flag for dry-run.",
+      "files": ["scripts/scs001/pipeline-heartbeat.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "1473-ecosystem-wire",
+      "description": "ecosystem.config.js: add scs001-heartbeat PM2 job — runs pipeline-heartbeat.ts every 30 min via cron_restart '*/30 * * * *'. Include LOG_PREFIX, STALE_THRESHOLD_H env.",
+      "files": ["ecosystem.config.js"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "config"
+    }
+  ]
+}
