@@ -8144,3 +8144,16 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Fix: use OLLAMA_HOST with http:// normalization (matches all other agents)
 - Swarm used: no (single-line surgical edit)
 - Timestamp: 2026-03-26T16:30:00.000Z
+
+## Sprint TICKET-008-PROMO-01 — PROMO-01 (product-scraper)
+- Status: PASS
+- Commit: (pending)
+- Files created: scripts/promo/product-scraper.py, scripts/promo/product-scraper.ts, scripts/promo/validate-product-scraper.ts
+- Files modified: workspace/sprints/sprint-TICKET-008-PROMO-01.json
+- Test: validate-product-scraper.ts --dry-run — PASS (3/3 URLs)
+- Gate: name ✓, price ✓, images>=3 ✓, bulletPoints>=2 ✓ on all test URLs
+- Pipeline: TICKET-008 PROMO-01/5 complete
+- Swarm used: no (multi-file + external Python deps — wrote directly)
+- AAR: aar-middleware module missing — logged in progress.md instead
+- Issues: CTO gate module missing (WARN only — queue-prescribed auto-approved)
+- Timestamp: 2026-03-26T00:00:00Z
