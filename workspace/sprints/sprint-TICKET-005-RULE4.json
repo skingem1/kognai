@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-TICKET-005-RULE4",
+  "title": "TICKET-005-RULE4 — Context Hygiene Audit",
+  "block": "TICKET-005",
+  "source": "queue-prescribed",
+  "rationale": "Encode Rule 4 (Context Hygiene): Sherlock agent scans for context bleed between agents. Each agent prompt must declare its input context scope. Contamination events logged to logs/context-hygiene/YYYY-MM-DD.jsonl.",
+  "tasks": [
+    {
+      "id": "RULE4-scanner",
+      "description": "Create scripts/governance/context-hygiene-audit.ts. (1) Scan all kognai-agents/*/prompt.md files. (2) Check each for a '## Input Context' or '## Context Scope' section. (3) Build a report: {agent, has_scope_declaration, scope_lines (if present), risk_level: 'undeclared'|'declared'}. (4) Log to logs/context-hygiene/YYYY-MM-DD.jsonl with fields: {run_id, timestamp, agents_scanned, undeclared_count, agents: [...], recommendation}. (5) Print summary table to console. (6) Exit 0. Under 120 lines.",
+      "files": [
+        "scripts/governance/context-hygiene-audit.ts"
+      ],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "sherlock",
+      "type": "governance"
+    },
+    {
+      "id": "RULE4-standard",
+      "description": "Create docs/governance/context-scope-standard.md. Define the Rule 4 standard: what an 'Input Context' section must contain (allowed_inputs list, forbidden_inputs list, contamination_triggers list). Include a template for agent authors to copy. Show 2 examples: one compliant (scs001-script) and one that needs updating (generic supervisor). Under 80 lines.",
+      "files": [
+        "docs/governance/context-scope-standard.md"
+      ],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "chomsky",
+      "type": "governance"
+    }
+  ]
+}
