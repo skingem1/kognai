@@ -54,7 +54,7 @@
   "tiers": {
     "free": {
       "messages_per_day": 50,
-      "model": "local/qwen3:4b",
+      "model": "local/qwen3:0.6b",
       "features": ["conversation", "cultural_context"]
     },
     "tnd_basic": {

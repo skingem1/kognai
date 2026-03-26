@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1459",
+  "title": "BUGFIX — Achiri free tier qwen3:0.6b (fix 30s timeout)",
+  "block": "ACHIRI",
+  "source": "queue-empty-autonomous",
+  "rationale": "Achiri bot @achiriibot went live (Sprint 1458) and received real user messages on 2026-03-26T09:00. All chat() calls timed out after 30s because qwen3:4b is too slow on the Mac Mini under load. Fix: change free tier model from local/qwen3:4b to local/qwen3:0.6b (2.3s response time vs 30s+). Also increase Ollama timeout from 30s to 60s as belt-and-suspenders. Both changes are config/1-line surgical edits.",
+  "tasks": [
+    {
+      "id": "1459-model-switch",
+      "description": "kognai-agents/achiri/config.json: change free tier model from local/qwen3:4b to local/qwen3:0.6b",
+      "files": ["kognai-agents/achiri/config.json"],
+      "status": "done",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "1459-timeout-increase",
+      "description": "agents/achiri/index.ts: increase Ollama timeout from 30_000ms to 60_000ms. Sprint 1459 comment.",
+      "files": ["agents/achiri/index.ts"],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
