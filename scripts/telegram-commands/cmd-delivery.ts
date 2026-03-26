@@ -42,8 +42,14 @@ export async function cmdDeliver(chatId: string, args: string): Promise<string> 
     if (e.video_id && e.published_at) ledgerDates.set(e.video_id, e.published_at);
   }
 
+  // Sprint 1399: deduplicate by video_id — ledger has multiple entries per video; prevents sending same video twice in batch
+  const seenVidsDeliver = new Set<string>();
   const unposted = (ledger as any[])
-    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id)
+    .filter((e: any) => {
+      if (!e.video_id || recordedIds.has(e.video_id) || seenVidsDeliver.has(e.video_id)) return false;
+      seenVidsDeliver.add(e.video_id);
+      return true;
+    })
     .sort((a: any, b: any) =>
       freshnessScore(b.video_id, viralScores.get(b.video_id) ?? 0, ledgerDates) -
       freshnessScore(a.video_id, viralScores.get(a.video_id) ?? 0, ledgerDates)
@@ -390,8 +396,14 @@ export async function cmdPickup(chatId: string): Promise<void> {
     if (e.video_id && e.published_at) ledgerDates.set(e.video_id, e.published_at);
   }
 
+  // Sprint 1399: deduplicate by video_id — ledger has multiple entries per video; prevents sending same video twice in batch
+  const seenVidsPickup = new Set<string>();
   const unposted = (ledger as any[])
-    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && !archivedIds.has(e.video_id))
+    .filter((e: any) => {
+      if (!e.video_id || recordedIds.has(e.video_id) || archivedIds.has(e.video_id) || seenVidsPickup.has(e.video_id)) return false;
+      seenVidsPickup.add(e.video_id);
+      return true;
+    })
     .sort((a: any, b: any) =>
       freshnessScore(b.video_id, viralScores.get(b.video_id) ?? 0, ledgerDates) -
       freshnessScore(a.video_id, viralScores.get(a.video_id) ?? 0, ledgerDates)
