@@ -1,0 +1,52 @@
+{
+  "sprint_id": "sprint-1457",
+  "title": "SCS-001 — Daily go-live readiness check script",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "TikTok warmup completes ~2026-03-27 (started 2026-03-24, needs 3 days). Post-queue has pending videos. Operator needs a single command to check: (1) is warmup complete? (2) how many videos are ready to post? (3) what are today's top-scored videos? Sprint 1456 fixed warmup days_active auto-compute. This sprint adds scripts/scs001/check-ready.ts — a daily readiness CLI that calls verifyWarmupSignal(), reads post-queue.jsonl, and prints a READY/PENDING banner with actionable info.",
+  "inputs": [
+    "workspace/scs001/warmup-status.json — current warmup state with warmup_started_at and days_active",
+    "workspace/scs001/post-queue.jsonl — pending videos with title, score, file path",
+    "scripts/scs001/verify-warmup-signal.ts — warmup signal verifier (imported by check-ready.ts)"
+  ],
+  "outputs": [
+    "scripts/scs001/check-ready.ts — CLI that prints READY TO POST or WARMUP PENDING banner with video list",
+    "scripts/scs001/validate-check-ready.ts — test script verifying both exit codes"
+  ],
+  "success_criteria": [
+    "check-ready.ts exits 1 and prints WARMUP PENDING when days_active < 3",
+    "check-ready.ts exits 0 and prints READY TO POST when days_active >= 3",
+    "validate-check-ready.ts prints PASS with both scenarios tested"
+  ],
+  "tasks": [
+    {
+      "id": "1457-check-ready",
+      "description": "Create scripts/scs001/check-ready.ts — a CLI readiness checker. It must: (1) import and call verifyWarmupSignal() from ./verify-warmup-signal to get days_active and warmup_complete; (2) read workspace/scs001/post-queue.jsonl and count pending videos grouped by score; (3) print a formatted banner: if warmup_complete or days_active>=3 print READY TO POST with pending video count, else print WARMUP PENDING with days_active/3 progress and estimated completion date; (4) list up to 5 pending videos with title, score, file path; (5) exit code 0 if ready, exit code 1 if warmup still pending. Use only stdlib + fs/path. No external npm deps. Keep under 150 lines.",
+      "files": [
+        "scripts/scs001/check-ready.ts"
+      ],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "1457-validate-check-ready",
+      "description": "Create scripts/scs001/validate-check-ready.ts — validates check-ready.ts output. It must: (1) set WARMUP_OVERRIDE_DAYS=2 env var and run check-ready.ts, verify it exits with code 1 and output contains WARMUP PENDING; (2) set WARMUP_OVERRIDE_DAYS=3 and run check-ready.ts, verify it exits with code 0 and output contains READY TO POST; (3) print PASS or FAIL. Use child_process.execSync. Keep under 80 lines.",
+      "files": [
+        "scripts/scs001/validate-check-ready.ts"
+      ],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "test"
+    }
+  ],
+  "cto_gate": {
+    "approved": false,
+    "reason": "Rule 1 violation (answer-seeding in brief): [hardcoded-identifier] 1457-check-ready: Create scripts/scs001/check-ready.ts — a CLI readiness checker",
+    "plan_reference": "RULE1_NEUTRAL_PROMPT_VIOLATION",
+    "confidence": 100,
+    "timestamp": "2026-03-26T09:45:21.025Z"
+  }
+}

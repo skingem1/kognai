@@ -2681,6 +2681,10 @@ ONLY output the JSON array. No markdown, no explanation.`;
         tasks: this.tasks.map(t => `${t.id}: ${(t as any).title || t.context || t.type}`),
         estimated_complexity: sprintRaw.estimated_complexity || 'medium',
         source: sprintSource,
+        // Sprint 1457 BUGFIX: pass Rule 3 contract fields from sprint JSON to CTO gate
+        inputs: sprintRaw.inputs,
+        outputs: sprintRaw.outputs,
+        success_criteria: sprintRaw.success_criteria,
       };
 
       log(c.magenta, `\n--- CTO Approval Gate ---`);
