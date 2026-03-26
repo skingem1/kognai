@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1378",
+  "title": "VERIFY — FFmpeg subtitle burn-in errors in scs001-pipeline-error.log",
+  "block": "VERIFY",
+  "source": "self-directed",
+  "rationale": "Queue auto-generated from scs001-pipeline-error.log (18:20 March 25 errors: 'No option name near ...srt:force_style=...'). Root cause: subtitles filter invoked without f= prefix (bare path). Fix was already applied: Sprint 1320 fixed force_style quoting, Sprint 1325 added f= prefix, Sprint 1337 resolved outputDir to absolute path. All three committed 20:12-22:00 March 25, AFTER the 18:20 error run. Caption stage was not reached in subsequent pipeline runs (stopped at stage 2.5 due to RapidAPI lapse). The 07:00 March 26 run with Sprint 1356 active will be the first test of the caption fixes. No code changes needed.",
+  "tasks": [
+    {
+      "id": "1378-verify-caption-fix",
+      "description": "Verify: scs001-pipeline-error.log errors from 18:20 March 25 pre-date Sprint 1320/1325/1337. No code changes. The 07:00 March 26 pipeline run (first with Sprint 1356 mock briefs) will reach the caption stage and confirm the subtitle fix works.",
+      "file": "agents/scs001-caption/index.ts",
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "verify"
+    }
+  ]
+}
