@@ -1,0 +1,33 @@
+{
+  "sprint_id": "sprint-1480",
+  "title": "FEATURE — auto-deliver: also send pending post-queue.jsonl videos (multiformat + vlogs)",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "posting-auto-deliver.ts only delivers videos from publish-ledger.jsonl (15-stage pipeline). post-queue.jsonl has 6 pending multiformat/vlog videos that are never delivered. Extend auto-deliver to ALSO check post-queue.jsonl after the ledger batch: if batchSize not yet filled, pull from post-queue pending entries where file exists, send via Telegram, mark as posted in post-queue. This delivers multiformat and vlog content without needing a TikTok token.",
+  "inputs": [
+    "scripts/scs001/posting-auto-deliver.ts",
+    "workspace/scs001/post-queue.jsonl"
+  ],
+  "outputs": [
+    "scripts/scs001/posting-auto-deliver.ts (modified — add post-queue delivery after ledger batch)"
+  ],
+  "success_criteria": [
+    "After ledger batch, auto-deliver checks post-queue.jsonl for pending entries with valid files",
+    "Sends up to (batchSize - sentCount) videos from post-queue via Telegram",
+    "Marks sent entries as status=posted in post-queue.jsonl",
+    "Appends to auto-delivered.jsonl like ledger videos",
+    "Smoke test with fake token: logs post-queue candidate videos without 'Gate met' skip",
+    "tsc compile clean"
+  ],
+  "tasks": [
+    {
+      "id": "1480-postqueue-deliver",
+      "description": "In scripts/scs001/posting-auto-deliver.ts, after the existing ledger-based send loop completes (near end of main()), add a second pass: read workspace/scs001/post-queue.jsonl, find pending entries where existsSync(entry.file) is true and entry.video_id not in deliveredAll, send up to (batchSize - sentCount) of them via sendVideoFile(), mark each as posted in post-queue.jsonl (rewrite the file with status=posted for sent entries), append to auto-delivered.jsonl. Keep changes contained to main() function. No new helper functions needed — reuse readJsonLines and the existing sendVideoFile/appendFileSync pattern.",
+      "files": ["scripts/scs001/posting-auto-deliver.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}

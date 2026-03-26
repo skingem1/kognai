@@ -371,7 +371,7 @@ async function main(): Promise<void> {
     const tgCaption =
       `📦 ${timeLabel} Auto-Deliver [${b + 1}/${batchSize}] ${vsStr}${spkStr}${hookStr}${ageStr}\n\n` +
       `${caption}\n\n` +
-      `📊 ${manualPosts.length}/${GATE_TARGET} posts · ${daysLeft}d left · ${dailyTarget}/day\n\n` +
+      `📊 ${manualPostCount}/${GATE_TARGET} posts · ${daysLeft}d left · ${dailyTarget}/day\n\n` +
       `Save video → post to TikTok → /record ${videoId} 0 <tiktok_url>`;  // Sprint 1379: include URL placeholder
 
     console.log(`[auto-deliver] Sending ${videoId} [${b + 1}/${batchSize}] (${mp4Path})`);
@@ -393,6 +393,58 @@ async function main(): Promise<void> {
     } catch (err: any) {
       console.error(`[auto-deliver] ❌ Failed to send ${videoId}: ${err.message}`);
       recordFailure(videoId, err.message);
+    }
+  }
+
+  // Sprint 1480: Second pass — deliver pending post-queue.jsonl videos (multiformat + vlogs)
+  if (sentCount < batchSize) {
+    const POST_QUEUE_PATH = join(ROOT, 'workspace', 'scs001', 'post-queue.jsonl');
+    if (existsSync(POST_QUEUE_PATH)) {
+      const pqLines = readJsonLines(POST_QUEUE_PATH);
+      const pqCandidates = pqLines.filter((e: any) =>
+        (!e.status || e.status === 'pending') &&
+        typeof e.file === 'string' &&
+        existsSync(e.file) &&
+        e.video_id &&
+        !deliveredAll.has(e.video_id)
+      );
+      const remain = batchSize - sentCount;
+      const pqBatch = pqCandidates.slice(0, remain);
+      if (pqBatch.length > 0) {
+        console.log(`[auto-deliver] Post-queue: ${pqCandidates.length} ready, sending ${pqBatch.length}`);
+      }
+      const sentPqIds = new Set<string>();
+      for (const pqEntry of pqBatch) {
+        const videoId: string = pqEntry.video_id;
+        const mp4Path: string = pqEntry.file;
+        const title: string = (pqEntry.title || videoId).slice(0, 80);
+        const caption =
+          `📦 Post-Queue [${videoId}]\n\n${title}\n\n` +
+          `Save video → post to TikTok → /record ${videoId} 0 <tiktok_url>`;
+        console.log(`[auto-deliver] Sending pq:${videoId} (${mp4Path})`);
+        try {
+          await sendVideoFile(mp4Path, caption);
+          console.log(`[auto-deliver] ✅ Sent pq:${videoId}`);
+          sentCount++;
+          sentPqIds.add(videoId);
+          appendFileSync(DELIVERED_LOG, JSON.stringify({
+            video_id: videoId,
+            delivered_at: now.toISOString(),
+            source: 'post-queue',
+            mp4_path: mp4Path,
+          }) + '\n');
+        } catch (err: any) {
+          console.error(`[auto-deliver] ❌ Failed pq:${videoId}: ${err.message}`);
+        }
+      }
+      // Mark sent post-queue entries as posted
+      if (sentPqIds.size > 0) {
+        const updated = pqLines.map((e: any) =>
+          sentPqIds.has(e.video_id) ? { ...e, status: 'posted', posted_at: now.toISOString() } : e
+        );
+        writeFileSync(POST_QUEUE_PATH, updated.map((e: any) => JSON.stringify(e)).join('\n') + '\n');
+        console.log(`[auto-deliver] Marked ${sentPqIds.size} post-queue entries as posted`);
+      }
     }
   }
 
