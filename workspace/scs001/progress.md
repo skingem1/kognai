@@ -8226,3 +8226,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm: CTO gate PASSED (Rule 3 fix in orchestrate-agents-v2.ts working), qwen3:14b produced no files — wrote directly
 - AAR: aar-middleware module missing — noted only
 - Timestamp: 2026-03-26T10:30:00Z
+
+## Sprint 1459 — BUGFIX Achiri free tier timeout
+- Status: PASS
+- Commit: 930585c1
+- Files modified: kognai-agents/achiri/config.json (qwen3:4b → qwen3:0.6b), agents/achiri/index.ts (30s → 60s timeout)
+- Live fix: @achiriibot was timing out on real user messages (30s), now 2.3s response time
+- PM2: achiri-telegram restarted with new model config
+- Swarm: not used (single-line config fix, direct edit)
+- Timestamp: 2026-03-26T11:00:00Z
