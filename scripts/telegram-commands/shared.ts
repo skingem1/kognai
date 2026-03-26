@@ -116,6 +116,9 @@ export function findCaptionedMp4(videoId: string): string | null {
         }
       }
     }
+    // Sprint 1388: Check v2-output dir (v2-producer format: v2-output/<id>/<id>.mp4)
+    const v2Dir = path.join(scsDir, 'v2-output', videoId, `${videoId}.mp4`);
+    if (fs.existsSync(v2Dir)) return v2Dir;
   } catch { /* ignore */ }
   return null;
 }

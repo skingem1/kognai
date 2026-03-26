@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1388",
+  "title": "BUGFIX — findCaptionedMp4 misses v2-output videos: /deliver can't serve 11 ready MP4s",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "findCaptionedMp4 in shared.ts scans run-*/caption/ and multiformat-runs/mf-*/output/ but NOT v2-output/<id>/<id>.mp4. Result: 11 v2-format videos with MP4 files on disk are invisible to /deliver, /queue (ready check), and /pickup. Fix: add v2-output scan as 3rd lookup path in findCaptionedMp4.",
+  "tasks": [
+    {
+      "id": "1388-find-mp4",
+      "description": "In scripts/telegram-commands/shared.ts, extend findCaptionedMp4() to also check workspace/scs001/v2-output/<videoId>/<videoId>.mp4 as a 3rd search path. Add after the multiformat-runs block.",
+      "files": ["scripts/telegram-commands/shared.ts"],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
