@@ -7978,3 +7978,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (wrote directly — single file, gate pattern clear from existing gate scripts)
 - AAR logged: no (aar-middleware module not found)
 - Timestamp: 2026-03-26T10:15:00.000Z
+
+## Sprint 1446 — INFRA Fix Phase 1.5 gate display + PM2 Phase 2A gate cron
+- Status: PASS
+- Commit: 59a2ba8a
+- Files modified: scripts/update-gate-tracker.ts, ecosystem.config.js, docs/gate-tracker.md
+- Files created: workspace/sprints/sprint-1446.json
+- Changes: (1) update-gate-tracker.ts: phase15Pass now reads gateData.overall_pass===true instead of manual postCount>=30&&views>=500. Gate tracker correctly shows Phase 1.5 [x] PASS | PROCEED. (2) ecosystem.config.js: added kognai-phase2a-gate-regen cron (06:56 UTC daily, runs generate-phase2a-gate.ts).
+- Test: npx ts-node scripts/update-gate-tracker.ts — gate-tracker.md shows Phase 1.5 PASS + Phase 2A PASS correctly
+- Swarm used: no (wrote directly)
+- Timestamp: 2026-03-26T10:30:00.000Z
