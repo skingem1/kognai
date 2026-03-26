@@ -77,3 +77,45 @@
 {"ts":"2026-03-25T18:06:01.117Z","agentId":"coder","taskId":"gate-readiness-check","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
 {"ts":"2026-03-25T18:06:01.117Z","agentId":"coder","taskId":"gate-readiness-check","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
 {"ts":"2026-03-25T18:08:48.933Z","agentId":"coder","taskId":"gate-readiness-check","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-26T05:50:08.670Z","agentId":"coder","taskId":"1435-legacy-run-cleanup","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T05:50:08.671Z","agentId":"coder","taskId":"1435-legacy-run-cleanup","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T05:50:08.708Z","agentId":"coder","taskId":"1435-legacy-run-cleanup","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-26T05:56:10.395Z","agentId":"coder","taskId":"1436-test-artifact-cleanup","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T05:56:10.395Z","agentId":"coder","taskId":"1436-test-artifact-cleanup","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T05:56:10.421Z","agentId":"coder","taskId":"1436-test-artifact-cleanup","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-26T06:33:25.307Z","agentId":"coder","taskId":"1438-achiri-analytics-export","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T06:33:25.308Z","agentId":"coder","taskId":"1438-achiri-analytics-export","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T06:33:25.338Z","agentId":"coder","taskId":"1438-achiri-analytics-export","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-26T06:33:25.341Z","agentId":"coder","taskId":"1438-validate-analytics","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T06:33:25.341Z","agentId":"coder","taskId":"1438-validate-analytics","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T06:33:25.346Z","agentId":"coder","taskId":"1438-validate-analytics","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-26T06:47:58.316Z","agentId":"coder","taskId":"1439-health-fix","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T06:47:58.316Z","agentId":"coder","taskId":"1439-health-fix","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T06:47:58.333Z","agentId":"coder","taskId":"1439-health-fix","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: local"}
+{"ts":"2026-03-26T06:47:58.333Z","agentId":"coder","taskId":"1439-health-fix","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T06:47:58.333Z","agentId":"coder","taskId":"1439-health-fix","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T06:47:58.333Z","agentId":"coder","taskId":"1439-health-fix","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: local"}
+{"ts":"2026-03-26T06:47:58.333Z","agentId":"coder","taskId":"1439-health-fix","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T06:47:58.333Z","agentId":"coder","taskId":"1439-health-fix","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T06:47:58.334Z","agentId":"coder","taskId":"1439-health-fix","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: local"}
+{"ts":"2026-03-26T06:47:58.334Z","agentId":"coder","taskId":"1439-health-fix","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T06:47:58.334Z","agentId":"coder","taskId":"1439-health-fix","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T06:47:58.334Z","agentId":"coder","taskId":"1439-health-fix","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: local"}
+{"ts":"2026-03-26T06:47:58.334Z","agentId":"coder","taskId":"1439-health-fix","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T06:47:58.334Z","agentId":"coder","taskId":"1439-health-fix","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T06:47:58.335Z","agentId":"coder","taskId":"1439-health-fix","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: local"}
+{"ts":"2026-03-26T06:47:58.335Z","agentId":"coder","taskId":"1439-health-fix","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T06:47:58.335Z","agentId":"coder","taskId":"1439-health-fix","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T06:47:58.336Z","agentId":"coder","taskId":"1439-health-fix","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: local"}
+{"ts":"2026-03-26T06:47:58.336Z","agentId":"coder","taskId":"1439-health-fix","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T06:47:58.336Z","agentId":"coder","taskId":"1439-health-fix","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T06:47:58.336Z","agentId":"coder","taskId":"1439-health-fix","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: local"}
+{"ts":"2026-03-26T06:47:58.336Z","agentId":"coder","taskId":"1439-health-fix","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T06:47:58.336Z","agentId":"coder","taskId":"1439-health-fix","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T06:47:58.336Z","agentId":"coder","taskId":"1439-health-fix","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: local"}
+{"ts":"2026-03-26T06:47:58.336Z","agentId":"coder","taskId":"1439-health-fix","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T06:47:58.336Z","agentId":"coder","taskId":"1439-health-fix","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T06:47:58.337Z","agentId":"coder","taskId":"1439-health-fix","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: local"}
+{"ts":"2026-03-26T06:47:58.337Z","agentId":"coder","taskId":"1439-health-fix","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T06:47:58.337Z","agentId":"coder","taskId":"1439-health-fix","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T06:47:58.338Z","agentId":"coder","taskId":"1439-health-fix","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: local"}

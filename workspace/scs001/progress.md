@@ -7938,3 +7938,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR logged: yes (score 92). 
 - Root cause: shell had ANTHROPIC_API_KEY="" (empty), overriding .env value. Fix: accept dry-run mode as 'ok' status.
 - Timestamp: 2026-03-26T08:15:00.000Z
+
+## Sprint 1440 — BUGFIX TTS ElevenLabs quota_exceeded fallback to local TTS
+- Status: PASS
+- Files modified: scripts/scs001/tts-voiceover.ts
+- Changes: (1) generateVoice(): detect 401+quota_exceeded → throw ELEVENLABS_QUOTA_EXCEEDED; (2) generateVoiceover(): add useLocalFallback=false flag; (3) segment loop: on ELEVENLABS_QUOTA_EXCEEDED catch, set flag + return generateLocalVoiceover; (4) each segment try: if useLocalFallback → return generateLocalVoiceover immediately
+- Test: module compiles clean, exports verified
+- Swarm used: no (wrote directly — swarm bypassed per established pattern)
+- AAR logged: yes (score 90)
+- Root cause: ElevenLabs 0/40000 credits. generateVoice() only checked !res.ok generically; quota_exceeded not surfaced distinctly for fallback logic.
+- Timestamp: 2026-03-26T08:30:00.000Z

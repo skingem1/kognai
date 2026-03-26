@@ -4312,8 +4312,18 @@
       "priority": "high",
       "rationale": "HTTP API test fails (16/17). Fix health endpoint to return ok when any inference provider available. Needed before Apr 25 alpha.",
       "added_at": "2026-03-26T08:00:00.000Z"
+    },
+    {
+      "sprint": 1440,
+      "title": "BUGFIX — TTS ElevenLabs quota_exceeded fallback to local TTS",
+      "block": "SCS001",
+      "status": "done",
+      "priority": "critical",
+      "rationale": "ElevenLabs quota 0/40000 — pipeline TTS failing in production. tts-voiceover.ts only falls back to local TTS when key missing, not when quota exhausted. Fix: detect quota_exceeded (401) and fall back to macOS say for remaining segments.",
+      "added_at": "2026-03-26T06:58:43.917Z",
+      "_note": "Shipped 2026-03-26 — commit 816fa24e. Swarm bypassed (direct write)."
     }
   ],
-  "_last_sprint_completed": "sprint-1439",
+  "_last_sprint_completed": "sprint-1440",
   "_last_sprint_date": "2026-03-26"
 }
