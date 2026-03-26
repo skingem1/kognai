@@ -1,0 +1,16 @@
+{
+  "sprint_id": "sprint-TICKET-011-EVAL-02",
+  "title": "EVAL-011-02 — 6-target Godman Protocol configs (.opencode added to all 7 repos)",
+  "block": "TICKET-011",
+  "source": "queue-prescribed",
+  "rationale": "Added .opencode config to all 7 Godman Protocol repos (pact/lax/score/signal/soul/amf/drs). All 6 targets now present: .claude-plugin, .cursor-plugin, .codex, .opencode, .openclaw, skills/public. Gate: PASS.",
+  "tasks": [
+    {
+      "id": "TICKET-011-EVAL-02-01",
+      "description": "Create .opencode config in all 7 repos with DeerFlow 6-target pattern",
+      "files": ["workspace/godman-protocols/*/  .opencode (x7)"],
+      "status": "done",
+      "type": "feature"
+    }
+  ]
+}

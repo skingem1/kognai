@@ -21,10 +21,11 @@
       "sprint": "TICKET-011-EVAL-02",
       "title": "EVAL-011-02 — 6-target Godman Protocol configs (.claude-plugin + .cursor-plugin + .codex + .opencode + .openclaw + skills/public)",
       "block": "TICKET-011",
-      "status": "queued",
+      "status": "done",
       "priority": "P0-CRITICAL",
       "rationale": "EVAL-011 P0 CRITICAL Sprint 2/3. Add 6-target config files to all 7 Godman Protocol repos: .claude-plugin, .cursor-plugin, .codex, .opencode, .openclaw, skills/public. Per INTEL-015 DeerFlow pattern + EVAL-011 spec. Gate: all 7 repos have all 6 config targets present.",
-      "added_at": "2026-03-26T11:13:43.042092Z"
+      "added_at": "2026-03-26T11:13:43.042092Z",
+      "completed_at": "2026-03-26T11:24:46.462Z"
     },
     {
       "sprint": "TICKET-011-EVAL-03",
