@@ -370,7 +370,7 @@ async function main(): Promise<void> {
       `📦 ${timeLabel} Auto-Deliver [${b + 1}/${batchSize}] ${vsStr}${spkStr}${hookStr}${ageStr}\n\n` +
       `${caption}\n\n` +
       `📊 ${manualPosts.length}/${GATE_TARGET} posts · ${daysLeft}d left · ${dailyTarget}/day\n\n` +
-      `Save video → post to TikTok → /record ${videoId} 0`;
+      `Save video → post to TikTok → /record ${videoId} 0 <tiktok_url>`;  // Sprint 1379: include URL placeholder
 
     console.log(`[auto-deliver] Sending ${videoId} [${b + 1}/${batchSize}] (${mp4Path})`);
 

@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1379",
+  "title": "BUGFIX — Auto-deliver message still uses /record <id> 0 format (missing tiktok_url prompt)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Sprint 1373 fixed /record prompts in cmd-delivery.ts (Telegram bot commands), but posting-auto-deliver.ts:373 still sends '/record ${videoId} 0' without the tiktok_url placeholder. Auto-deliver is the PRIMARY delivery mechanism (3x/day via PM2 cron: 07:30, 12:00, 18:00). Every auto-deliver message the operator receives shows /record <id> 0 without URL — so the operator copies it and records without a URL. This is why all 16 posts have tiktok_url: undefined and views are stuck at 0.",
+  "tasks": [
+    {
+      "id": "1379-auto-deliver-url-prompt",
+      "description": "In scripts/scs001/posting-auto-deliver.ts line 373: change 'Save video → post to TikTok → /record ${videoId} 0' to 'Save video → post to TikTok → /record ${videoId} 0 <tiktok_url>'.",
+      "file": "scripts/scs001/posting-auto-deliver.ts",
+      "status": "done",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
