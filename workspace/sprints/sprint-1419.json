@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1419",
+  "title": "BUGFIX — ecosystem.config.js: replace hardcoded Mac paths with __dirname",
+  "block": "DEPLOY",
+  "source": "self-directed",
+  "rationale": "ecosystem.config.js had 60+ hardcoded Mac paths (/Users/tarekmnif/kognai) as cwd, TS_NODE_PROJECT, error_file, out_file, and SCS_CLIPS_DIR values. On Hetzner (/home/invoica/apps/kognai), pm2 start ecosystem.config.js would fail with path-not-found errors for any Kognai process. __dirname is already used on line 3 of the file (for dotenv). Fix: replace all /Users/tarekmnif/kognai occurrences with __dirname or __dirname + '/subpath'. Validated: node -e require() shows VALID — 81 apps.",
+  "tasks": [
+    {
+      "id": "1419-ecosystem-dynamic-cwd",
+      "description": "Replace all occurrences of /Users/tarekmnif/kognai in ecosystem.config.js with __dirname (Node.js __dirname resolves to the directory of the .js file at runtime). Affected fields: cwd (63), TS_NODE_PROJECT (54), error_file (63), out_file (63), SCS_CLIPS_DIR (2). Dashboard path /Users/tarekmnif/kognai/dashboard → __dirname + '/dashboard'. 0 occurrences of tarekmnif remain. Syntax validated: 81 apps parse correctly.",
+      "files": ["ecosystem.config.js"],
+      "status": "done",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
