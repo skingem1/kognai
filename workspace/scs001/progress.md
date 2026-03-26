@@ -8079,3 +8079,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Recommendation: mlx-lm is the correct fine-tuning stack for Mac M4 vault.
 - Swarm used: no (direct write + shell benchmark)
 - Timestamp: 2026-03-26T13:00:00.000Z
+
+## Sprint TICKET-007-AMD15-SPEC — AMD-15 Spec + 75/25 Corpus Rule
+- Status: PASS
+- Commit: 7cd3cc0c
+- Files created: docs/governance/amd-15-spec.md (190 lines), workspace/sprints/sprint-TICKET-007-AMD15-SPEC.json
+- Files modified: scripts/scs001/validate-lora-corpus.ts (75/25 reasoning ratio check added)
+- Key finding: Unsloth NOT viable on macOS (per TICKET-007-UNSLOTH-INSTALL). mlx-lm is correct choice.
+- Swarm used: no (direct write — governance sprint)
+- Timestamp: 2026-03-26T13:30:00.000Z
