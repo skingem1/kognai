@@ -7929,3 +7929,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR logged: yes (score 85 for export, 90 for validator). Crystallise: done.
 - Output: reports/achiri-analytics.json — 1 real user, 6 sessions, 100% retention
 - Timestamp: 2026-03-26T07:45:00.000Z
+
+## Sprint 1439 — BUGFIX Achiri /health degraded when ANTHROPIC_API_KEY empty in shell
+- Status: PASS
+- Files modified: agents/achiri/server.ts (health endpoint: dry_run || ollama || anthropic_key.trim())
+- Test: validate-http-api.ts 5/5 PASS | run-all-tests.ts 17/17 PASS
+- Swarm used: yes (CTO approved), but task_target='local' caused pre-flight fail. Wrote directly.
+- AAR logged: yes (score 92). 
+- Root cause: shell had ANTHROPIC_API_KEY="" (empty), overriding .env value. Fix: accept dry-run mode as 'ok' status.
+- Timestamp: 2026-03-26T08:15:00.000Z
