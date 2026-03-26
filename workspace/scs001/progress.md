@@ -8283,3 +8283,25 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm: not used (direct edit — one-file surgical fix)
 - Issues: 'standard' was not valid TextComplexity — fixed to 'power'
 - Timestamp: 2026-03-26T13:00:00Z
+
+## Sprint 1475 — BUGFIX Achiri MIN_USER_ID filter
+- Status: PASS
+- Commit: 99d1ecf1
+- (logged by prior session)
+
+## Sprint 1476 — SCS-001 cleanup-pipeline-runs.ts
+- Status: PASS
+- Commit: 261baf8b
+- (logged by prior session)
+
+## Sprint 1477 — SCS-001 diagnose-publish-stall.ts
+- Status: PASS
+- Commit: 622d9545
+- Files created: scripts/scs001/diagnose-publish-stall.ts, workspace/sprints/sprint-1477.json
+- Files modified: none
+- Validation: npx ts-node diagnose-publish-stall.ts — PASS. Output: 36 pending, 0 posted, TIKTOK_ACCESS_TOKEN missing (primary stall), 30/36 video files missing from disk (deleted by Sprint 1476 cleanup), Telegram summary sent.
+- Swarm: ran but produced no files (qwen3:14b — 0/2 tasks). Wrote diagnose-publish-stall.ts directly.
+- AAR: aar-middleware module not found (non-blocking)
+- Issues: verify-bot-token.ts already existed from Sprint 1458 — only diagnose-publish-stall.ts was new
+- Key finding: 30/36 queue entries reference video files deleted by Sprint 1476 cleanup. Queue needs purging of stale entries. TikTok token needed for any auto-publish.
+- Timestamp: 2026-03-26T13:30:00Z
