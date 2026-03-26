@@ -4283,8 +4283,18 @@
       "rationale": "Godman Protocols Apr 14 launch: validate all 8 packages before npm publish. 8/8 GO.",
       "added_at": "2026-03-26T09:00:00.000Z",
       "_note": "Shipped 2026-03-26. 8/8 packages GO. reports/godman-prepublish.json written. Swarm bypassed (direct write)."
+    },
+    {
+      "sprint": 1443,
+      "title": "PHASE2 — Achiri tier management CLI for alpha operator control",
+      "block": "PHASE2",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Alpha testers need manual tnd_basic grants. Created set-user-tier.ts CLI.",
+      "added_at": "2026-03-26T09:15:00.000Z",
+      "_note": "Shipped 2026-03-26. CLI tested (upgrade/downgrade/list). Swarm bypassed (direct write)."
     }
   ],
-  "_last_sprint_completed": "sprint-1442",
+  "_last_sprint_completed": "sprint-1443",
   "_last_sprint_date": "2026-03-26"
 }

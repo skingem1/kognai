@@ -1,0 +1,2 @@
+{"ts":"2026-03-26T07:15:12.238Z","userId":"test-user-123","old_tier":"free","new_tier":"tnd_basic","reason":"alpha tester"}
+{"ts":"2026-03-26T07:15:12.653Z","userId":"test-user-123","old_tier":"tnd_basic","new_tier":"free","reason":"reset after test"}
