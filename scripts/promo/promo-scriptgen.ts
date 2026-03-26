@@ -46,19 +46,27 @@ export interface PromoScript {
 }
 
 const TONE_GUIDE: Record<Tone, string> = {
-  professional: 'Clear, authoritative, benefit-focused. No slang.',
-  enthusiastic: 'High energy, excited, emotional appeal. Use power words.',
-  conversational: 'Friendly, casual, relatable. Like talking to a friend.',
+  professional: 'Clear, authoritative, benefit-focused. No slang. Command respect.',
+  enthusiastic: 'High energy, excited, emotional appeal. Use power words like "game-changer", "transform", "finally".',
+  conversational: 'Friendly, casual, relatable. Like talking to a trusted friend who found a great deal.',
 };
 
-const BEAT_GUIDE: Record<Beat, { desc: string; duration: string }> = {
-  hook:     { desc: 'Grab attention immediately with a bold claim or question', duration: '5-7s' },
-  problem:  { desc: 'Identify the pain point the viewer has', duration: '5-8s' },
-  solution: { desc: 'Introduce the product as the solution', duration: '7-10s' },
-  benefit1: { desc: 'First key benefit — most important feature', duration: '6-9s' },
-  benefit2: { desc: 'Second key benefit — supporting feature', duration: '5-8s' },
-  proof:    { desc: 'Social proof (rating, reviews, number of customers)', duration: '5-7s' },
-  cta:      { desc: 'Clear call to action — what to do now', duration: '4-6s' },
+// PROMO-05: Enhanced with hook strength + CTA clarity criteria
+const BEAT_GUIDE: Record<Beat, { desc: string; duration: string; quality: string }> = {
+  hook:     { desc: 'Grab attention with a BOLD CLAIM, shocking stat, or provocative question', duration: '5-7s',
+              quality: 'Must start with "Did you know...", a number, a question, or a power statement. NO generic openers.' },
+  problem:  { desc: 'Name the specific pain point — make viewer feel seen', duration: '5-8s',
+              quality: 'Be specific about the frustration. Use "tired of...", "stop wasting...", "what if..."' },
+  solution: { desc: 'Introduce product as THE answer — confident, not tentative', duration: '7-10s',
+              quality: 'Use product name explicitly. "Introducing [name]..." or "[Name] is the solution."' },
+  benefit1: { desc: 'Most important feature — quantify if possible (hours saved, $ saved, % better)', duration: '6-9s',
+              quality: 'Use numbers: "saves 3 hours", "lasts 5x longer", "rated #1". Do not use vague adjectives alone.' },
+  benefit2: { desc: 'Supporting feature that addresses a secondary concern', duration: '5-8s',
+              quality: 'Complement benefit1. If benefit1 is performance, benefit2 should be convenience or value.' },
+  proof:    { desc: 'Social proof: rating + review count + one specific positive claim', duration: '5-7s',
+              quality: 'Format: "X stars from Y customers. [Quote or stat from reviews]."' },
+  cta:      { desc: 'Clear action verb + urgency signal', duration: '4-6s',
+              quality: 'Must include: action verb (Get/Order/Shop/Try) + urgency (today/now/limited/link in bio). NO "check it out".' },
 };
 
 function buildPrompt(product: Record<string, unknown>, tone: Tone): string {
@@ -79,7 +87,7 @@ Available images: ${imageCount} product images (indices 0 to ${imageCount - 1})
 TONE: ${tone.toUpperCase()} — ${TONE_GUIDE[tone]}
 
 BEATS TO GENERATE:
-${AIDA_BEATS.map(b => `- ${b}: ${BEAT_GUIDE[b].desc} (target ${BEAT_GUIDE[b].duration})`).join('\n')}
+${AIDA_BEATS.map(b => `- ${b}: ${BEAT_GUIDE[b].desc} (target ${BEAT_GUIDE[b].duration})\n  Quality rule: ${BEAT_GUIDE[b].quality}`).join('\n')}
 
 RULES:
 - Each beat must be 1-2 short sentences spoken aloud (for video voiceover)

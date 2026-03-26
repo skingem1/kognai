@@ -14,6 +14,7 @@
 import { join } from 'path';
 import { existsSync, statSync } from 'fs';
 import { randomBytes } from 'crypto';
+import { hasCredits, deductCredit, getCredits, createStripePaymentLink, formatCreditMessage } from '../../scripts/promo/promo-credits';
 
 const ROOT = join(__dirname, '..', '..');
 const PROMO_JOBS_DIR = join(ROOT, 'workspace', 'promo-jobs');
@@ -63,8 +64,23 @@ export async function handlePromo(chatId: number | string, text: string, ownerCh
     return;
   }
 
+  // ── Credit gate ───────────────────────────────────────────────────────────
+  const userId = String(chatId);
+  if (!hasCredits(userId)) {
+    const { url: paymentUrl, error: payErr } = createStripePaymentLink(userId);
+    if (paymentUrl) {
+      await _sendMessage(chatId,
+        `💳 *No promo credits remaining*\nPurchase 10 videos for $9.99:\n${paymentUrl}`);
+    } else {
+      await _sendMessage(chatId,
+        `❌ No credits remaining. Contact support to top up. (${payErr || 'payment link unavailable'})`);
+    }
+    return;
+  }
+
   const jobId = `promo-${randomBytes(4).toString('hex')}`;
-  await _sendMessage(chatId, `🚀 *Promo job started*\nJob: \`${jobId}\`\nURL: ${url.slice(0, 80)}${dryRun ? '\n⚠️ Dry-run mode' : ''}`);
+  const creditsBefore = getCredits(userId);
+  await _sendMessage(chatId, `🚀 *Promo job started*\nJob: \`${jobId}\`\nURL: ${url.slice(0, 80)}\n${formatCreditMessage(creditsBefore)}${dryRun ? '\n⚠️ Dry-run mode' : ''}`);
 
   let lastStep = '';
 
@@ -98,8 +114,10 @@ export async function handlePromo(chatId: number | string, text: string, ownerCh
       return;
     }
 
+    // Deduct credit on success
+    const creditsAfter = deductCredit(userId);
     const sizeMb = (statSync(outputPath).size / 1024 / 1024).toFixed(1);
-    const caption = `🎬 *${productName}*\nDuration: ${durationS}s | Size: ${sizeMb}MB\nJob: \`${jobId}\``;
+    const caption = `🎬 *${productName}*\nDuration: ${durationS}s | Size: ${sizeMb}MB\nJob: \`${jobId}\`\n${formatCreditMessage(creditsAfter)}`;
 
     // Telegram video limit is 50MB for sendVideo
     if (parseFloat(sizeMb) < 50 && _sendVideo) {

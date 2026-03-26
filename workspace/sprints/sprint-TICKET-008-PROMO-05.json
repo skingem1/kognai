@@ -1,0 +1,45 @@
+{
+  "sprint_id": "sprint-TICKET-008-PROMO-05",
+  "title": "PROMO-05 — Quality pass: script tone tuning, image timing polish, Stripe per-video billing",
+  "block": "TICKET-008",
+  "source": "queue-prescribed",
+  "rationale": "TICKET-008 P1-PROMO Sprint 5/5. Tune promo-scriptgen prompt (hook/CTA). Add promo-credits.ts (Stripe payment link on 0 credits, free tier=1 video). Wire credit gate into promo-command.ts. Add score-promo.ts for hook strength scoring. Gate: hook strength >=70%, Stripe deduction + payment link work.",
+  "tasks": [
+    {
+      "id": "PROMO-05-tune-prompt",
+      "description": "Improve promo-scriptgen.ts system prompt: add hook strength criteria (bold claim, question, or shocking stat), CTA must include action verb + urgency. Add beat-level quality hints to BEAT_GUIDE.",
+      "files": ["scripts/promo/promo-scriptgen.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "improvement"
+    },
+    {
+      "id": "PROMO-05-credits",
+      "description": "Create scripts/promo/promo-credits.ts — credit balance (workspace/promo-credits/{userId}.json), init free tier (1 credit), deduct on completion, generate Stripe Payment Link when balance=0.",
+      "files": ["scripts/promo/promo-credits.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "PROMO-05-wire-credits",
+      "description": "Wire credit gate into agents/telegram-bot/promo-command.ts: check credits before run, deduct after success, send payment link message when 0.",
+      "files": ["agents/telegram-bot/promo-command.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "PROMO-05-scorer",
+      "description": "Create scripts/promo/score-promo.ts — scores a script.json: hook strength (0-100), CTA clarity (0-100), avg score. Outputs PASS if avg>=70.",
+      "files": ["scripts/promo/score-promo.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "validation"
+    }
+  ]
+}

@@ -85,9 +85,10 @@ function buildBeatSegment(
 
   if (imagePath && existsSync(imagePath)) {
     // Split-screen: avatar (648×1920) left + Ken Burns product image (432×1920) right
-    const zoomEnd = 1.25;
+    // PROMO-05: more dynamic zoom (1.0→1.35) with subtle pan for visual interest
+    const zoomEnd = 1.35;
     const zoomSpeed = (zoomEnd - 1.0) / frames;
-    const zoompan = `zoompan=z='min(zoom+${zoomSpeed.toFixed(6)},${zoomEnd})':d=${frames}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)',scale=${PRODUCT_W}:${H}:force_original_aspect_ratio=increase,crop=${PRODUCT_W}:${H}`;
+    const zoompan = `zoompan=z='min(zoom+${zoomSpeed.toFixed(6)},${zoomEnd})':d=${frames}:x='iw/2-(iw/zoom/2)+${(0.5).toFixed(1)}*on':y='iw/2-(ih/zoom/2)',scale=${PRODUCT_W}:${H}:force_original_aspect_ratio=increase,crop=${PRODUCT_W}:${H}`;
 
     const args = [
       '-y',
