@@ -357,7 +357,25 @@ async function generateTTSBackbone(monologue: string, outPath: string): Promise<
       console.warn(`  [produce-vlog] ElevenLabs failed (${elevenErr.message?.slice(0, 60)}) — using macOS say`);
     }
   } else {
-    console.warn('  [produce-vlog] ELEVENLABS_API_KEY not set — using macOS say TTS');
+    console.warn('  [produce-vlog] ELEVENLABS_API_KEY not set — trying edge-tts');
+  }
+
+  // Sprint 1470 (TICKET-009-Q01-02): edge-tts — neural quality, $0.00, no API key needed
+  if (!audioGenerated) {
+    try {
+      execSync("python3 -c \"import edge_tts\"", { stdio: 'pipe', timeout: 5000 });
+      const EDGE_VOICE = process.env.EDGE_TTS_VOICE || 'en-US-JennyNeural';
+      const edgeText = monologue.slice(0, 2000);
+      const pyCode = `import asyncio, edge_tts; asyncio.run(edge_tts.Communicate(${JSON.stringify(edgeText)}, "${EDGE_VOICE}").save(${JSON.stringify(audioPath)}))`;
+      execSync(`python3 -c '${pyCode.replace(/'/g, "'\\''")}'`, { stdio: 'pipe', timeout: 60000 });
+      const { statSync } = require('fs') as typeof import('fs');
+      if (existsSync(audioPath) && statSync(audioPath).size > 1000) {
+        audioGenerated = true;
+        console.log(`  edge-tts audio generated (${EDGE_VOICE})`);
+      }
+    } catch (edgeErr: any) {
+      console.warn(`  [produce-vlog] edge-tts failed (${edgeErr.message?.slice(0, 60)}) — falling back to macOS say`);
+    }
   }
 
   // macOS say fallback ($0.00, always available on Mac)

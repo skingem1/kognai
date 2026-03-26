@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-1470",
+  "title": "BUGFIX — wire edge-tts into produce-vlog.ts TTS backbone",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "Sprint TICKET-009-Q01-02 updated tts-voiceover.ts with edge-tts fallback, but produce-vlog.ts has its own inline TTS in generateTTSBackbone() that only has ElevenLabs → macOS say. When ElevenLabs quota is exhausted (as it is), TTS backbone falls to macOS say. If macOS say produces silent/small audio, the 06:00 run fails has_audio. Fix: add edge-tts as intermediate fallback in produce-vlog.ts generateTTSBackbone(), matching the tts-voiceover.ts pattern.",
+  "inputs": ["scripts/scs001/produce-vlog.ts"],
+  "outputs": ["scripts/scs001/produce-vlog.ts (generateTTSBackbone: ElevenLabs → edge-tts → macOS say)"],
+  "success_criteria": [
+    "generateTTSBackbone uses edge-tts when ElevenLabs fails/not set",
+    "edge-tts produces audio >10KB",
+    "macOS say remains as last-resort",
+    "No new imports beyond execSync (already imported)"
+  ],
+  "tasks": [
+    {
+      "id": "1470-edgetts-backbone",
+      "description": "produce-vlog.ts generateTTSBackbone(): add edge-tts fallback between ElevenLabs and macOS say",
+      "files": ["scripts/scs001/produce-vlog.ts"],
+      "status": "done",
+      "priority": "P0",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
