@@ -1040,10 +1040,19 @@ async function handleMessage(chatId: string, text: string, firstName: string, us
     await sendMessage(chatId, reply);
   } catch (err: any) {
     console.error(`[Achiri-TG] Error for ${chatId}: ${err.message}`);
-    await sendMessage(chatId,
-      `⚠️ Mawjoud un problème technique. 3awed b3d chwaya!\n` +
-      `_(Technical issue — try again in a moment)_`
-    );
+    // Sprint 1464: differentiate timeout from other errors with a warmer Derja message
+    const isTimeout = err?.name === 'AbortError' || (err?.message || '').toLowerCase().includes('abort');
+    if (isTimeout) {
+      await sendMessage(chatId,
+        `⏳ Sber chwaya — rasi meshghoul! 3awed iktbli b3d lahtha.\n` +
+        `_(I'm a bit busy right now, message me again in a moment)_`
+      );
+    } else {
+      await sendMessage(chatId,
+        `⚠️ Mawjoud un problème technique. 3awed b3d chwaya!\n` +
+        `_(Technical issue — try again in a moment)_`
+      );
+    }
   }
 }
 

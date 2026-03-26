@@ -1,0 +1,29 @@
+{
+  "sprint_id": "sprint-1464",
+  "title": "BUGFIX — Achiri timeout: send warm Derja retry message instead of generic error",
+  "block": "ACHIRI",
+  "source": "queue-empty-autonomous",
+  "rationale": "09:03 log confirmed: qwen3:4b times out at 60s during pipeline hours (Ollama saturated). telegram-bot.ts outer catch already sends a message, but it's the same generic message for all errors. Fix: detect AbortError specifically and send a warmer Derja retry message ('Sber chwaya — rasi meshghoul!') so users know the bot is busy, not broken. One surgical edit to the catch block in handleMessage().",
+  "inputs": [
+    "agents/achiri/telegram-bot.ts"
+  ],
+  "outputs": [
+    "agents/achiri/telegram-bot.ts (updated catch block)"
+  ],
+  "success_criteria": [
+    "AbortError / timeout sends Derja busy-message, not generic error",
+    "Other errors still send generic error message",
+    "No functional change to non-timeout paths"
+  ],
+  "tasks": [
+    {
+      "id": "1464-timeout-message",
+      "description": "agents/achiri/telegram-bot.ts: differentiate AbortError timeout from other catch errors, send Derja retry message on timeout",
+      "files": ["agents/achiri/telegram-bot.ts"],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
