@@ -8096,3 +8096,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Logic: constitutional_flag=true + complexity!='apex' → qwen3:14b thinking mode ($0). Uncertainty markers → escalate to T3 APEX. Apex complexity preserves T3 APEX path.
 - Swarm used: no (direct write — routing change)
 - Timestamp: 2026-03-26T14:00:00.000Z
+
+## Sprint TICKET-007-GRPO-RESEARCH — GRPO Research Note
+- Status: PASS
+- Commit: 90f56e83
+- Files created: workspace/spikes/TICKET-007-grpo-research.md (168 lines), workspace/sprints/sprint-TICKET-007-GRPO-RESEARCH.json
+- Key finding: SFT only for now. GRPO viable in Phase 3 (~Q3 2026) when mlx-lm gets GRPO trainer. Sherlock 4-dim score = natural GRPO reward function.
+- Swarm used: no (direct write — research sprint)
+- Timestamp: 2026-03-26T14:30:00.000Z
