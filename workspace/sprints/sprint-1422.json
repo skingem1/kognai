@@ -1,0 +1,22 @@
+{
+  "sprint_id": "sprint-1422",
+  "title": "BUGFIX — Replace remaining hardcoded /Users/tarekmnif paths in SCS-001 scripts",
+  "block": "DEPLOY",
+  "source": "self-directed",
+  "rationale": "Sprint 1419 fixed ecosystem.config.js but missed 3 TypeScript script files that still contained hardcoded /Users/tarekmnif paths. On Hetzner (/home/invoica/apps/kognai), these paths are invalid. code-demo.ts and produce-vlog.ts used /Users/tarekmnif/Downloads/kognai-avatar-test as a convenience copy destination (wrapped in try/catch, so non-fatal but wrong). cmd-spielberg.ts had a HOME fallback of '/Users/tarekmnif'. Fixed all 3 files to use os.homedir() which resolves correctly on both Mac and Linux.",
+  "tasks": [
+    {
+      "id": "1422-homedir-scripts",
+      "description": "Replace /Users/tarekmnif with os.homedir() in: scripts/scs001/pipelines/code-demo.ts (lines 115-117 — Downloads copy), scripts/scs001/produce-vlog.ts (line 968 — dlDir), scripts/telegram-commands/cmd-spielberg.ts (line 157 — HOME env fallback). Added 'import { homedir } from os' to each file. Verified: grep for tarekmnif in scripts/ returns 0 matches.",
+      "files": [
+        "scripts/scs001/pipelines/code-demo.ts",
+        "scripts/scs001/produce-vlog.ts",
+        "scripts/telegram-commands/cmd-spielberg.ts"
+      ],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

@@ -18,6 +18,7 @@
  */
 
 import { mkdirSync, writeFileSync } from 'fs';
+import { homedir } from 'os';
 import { join } from 'path';
 import type { PipelineRunner, PipelineInput, PipelineRunResult, PipelineConfig } from '../pipeline-registry';
 import { generateCodeDemoScript } from '../code-demo-scriptgen';
@@ -112,9 +113,9 @@ async function produceCodeDemo(input: PipelineInput): Promise<PipelineRunResult>
 
   // Copy to Downloads
   try {
-    mkdirSync('/Users/tarekmnif/Downloads/kognai-avatar-test', { recursive: true });
+    mkdirSync(`${homedir()}/Downloads/kognai-avatar-test`, { recursive: true });
     require('child_process').execSync(
-      `cp "${finalPath}" "/Users/tarekmnif/Downloads/kognai-avatar-test/${runId}.mp4"`,
+      `cp "${finalPath}" "${homedir()}/Downloads/kognai-avatar-test/${runId}.mp4"`,
       { stdio: 'pipe' }
     );
   } catch {}

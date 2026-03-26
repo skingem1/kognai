@@ -4,6 +4,7 @@
  */
 
 import * as fs from 'fs';
+import { homedir } from 'os';
 import * as path from 'path';
 import * as https from 'https';
 import * as http from 'http';
@@ -154,7 +155,7 @@ export function cmdAchiriDeploy(mode: string = ''): string {
     const args = isDryRun ? '--dry-run' : '';
     const output = execSync(
       `bash ${scriptPath} ${args}`,
-      { cwd: ROOT, encoding: 'utf-8', timeout: 60000, env: { ...process.env, HOME: process.env.HOME || '/Users/tarekmnif' } }
+      { cwd: ROOT, encoding: 'utf-8', timeout: 60000, env: { ...process.env, HOME: process.env.HOME || homedir() } }
     );
 
     const lines = output.split('\n').filter(l => l.trim());

@@ -26,6 +26,7 @@
 
 import { execSync } from 'child_process';
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'fs';
+import { homedir } from 'os';
 import { join } from 'path';
 
 const ROOT = join(__dirname, '..', '..');
@@ -965,7 +966,7 @@ async function produceVlog(topic: string, mode: 'avatar' | 'tts' = 'avatar'): Pr
     produced_at: new Date().toISOString(),
   }, null, 2));
 
-  const dlDir = `/Users/tarekmnif/Downloads/kognai-avatar-test`;
+  const dlDir = `${homedir()}/Downloads/kognai-avatar-test`;
   try {
     mkdirSync(dlDir, { recursive: true });
     execSync(`cp "${finalPath}" "${dlDir}/${runId}.mp4"`, { stdio: 'pipe' });
