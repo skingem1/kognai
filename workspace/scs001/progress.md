@@ -7720,3 +7720,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Fix: Changed srtStyle join(',') to join('\\,') and removed force_style='...' single-quote wrapping. Same FFmpeg 8.1 bug as sprint-1406.
 - Swarm used: no (direct surgical edit — 1 block change)
 - Timestamp: 2026-03-26T04:10:00Z
+
+## Sprint 1408 — BUGFIX Pipeline qualification fallback when viral downloader returns 0
+- Status: PASS
+- Commit: 85452ed4
+- Files modified: agents/scs001-orchestrator/index.ts
+- Root cause: When RapidAPI unsubscribed (403), viralClipsCount=0, clips[]=[], qualifiedClips=0 → pipeline produced 0 videos in 2.3s every run
+- Fix: synthesise pre-qualified ClipQualityScore[] from discovery metadata when viralClipsCount=0. InsightAgent→ScriptAgent can now run from topic metadata alone.
+- Impact: CRITICAL — pipeline was dead every run since RapidAPI lapse. This restores content production regardless of RapidAPI status.
+- Swarm used: no (file 749 lines, too large for swarm)
+- Timestamp: 2026-03-26T04:20:00Z
