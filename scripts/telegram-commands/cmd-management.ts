@@ -2938,8 +2938,10 @@ export function cmdSetUrl(args: string): string {
   const content = entries.map((e: any) => JSON.stringify(e)).join('\n') + '\n';
   fs.writeFileSync(manualPostsPath, content, 'utf-8');
 
-  const withUrl = entries.filter((e: any) => e.tiktok_url).length;
-  const total = entries.length;
+  // Sprint 1393: use readRealPosts for display count (excludes dry-runs, same as Sprint 1391)
+  const realPosts = readRealPosts();
+  const withUrl = realPosts.filter((e: any) => e.tiktok_url).length;
+  const total = realPosts.length;
 
   return (
     `✅ *TikTok URL set!*\n\n` +

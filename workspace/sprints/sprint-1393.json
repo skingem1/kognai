@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1393",
+  "title": "BUGFIX — cmdSetUrl display count includes dry-run posts",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "cmdSetUrl() shows '${withUrl}/${total} posts have URLs' where total = readLines() — all entries including 3 dry-runs. Should use readRealPosts() for display count (same pattern as Sprint 1391 fix in cmdPosted/cmdUpdateViews). With 18 total lines and 3 dry-runs, display shows wrong denominator.",
+  "tasks": [
+    {
+      "id": "1393-seturl-count",
+      "description": "In scripts/telegram-commands/cmd-management.ts cmdSetUrl(): replace readLines-based withUrl/total count with readRealPosts() after writing. Display should show real posts only (excludes dry-runs).",
+      "files": ["scripts/telegram-commands/cmd-management.ts"],
+      "status": "pending",
+      "priority": "low",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
