@@ -128,10 +128,11 @@
       "sprint": "TICKET-008-PROMO-03",
       "title": "PROMO-03 \u2014 product-visual-assembler.ts: FFmpeg Ken Burns animation + split-screen compositor",
       "block": "TICKET-008",
-      "status": "pending",
+      "status": "done",
       "priority": "P1",
       "rationale": "TICKET-008 P1-PROMO Sprint 3/5. Animates product images with Ken Burns (FFmpeg zoompan filter, no new deps). Layout: 60% avatar left / 40% product image right during product beats; full-width avatar during hook/problem/CTA. Image transitions: 0.3s crossfade. Per-beat MP4 segments then concat. Output: 1080x1920 vertical. Gate: test video from mock ProductData+PromoScript, 45-65s MP4, Ken Burns visible, split-screen layout correct per beat map.",
-      "added_at": "2026-03-26T09:10:28.926160Z"
+      "added_at": "2026-03-26T09:10:28.926160Z",
+      "completed_at": "2026-03-26T00:00:00Z"
     },
     {
       "sprint": "TICKET-008-PROMO-04",
