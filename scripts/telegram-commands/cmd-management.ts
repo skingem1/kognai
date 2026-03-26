@@ -475,7 +475,7 @@ export function cmdExport(args: string): string {
     manifestLines.push(`Hook: ${exp.hook_formula}`);
     manifestLines.push(`Caption:`);
     manifestLines.push(caption);
-    manifestLines.push(`After posting: /record ${v.video_id} 0`);
+    manifestLines.push(`After posting: /record ${v.video_id} 0 <tiktok_url>`);  // Sprint 1382
     manifestLines.push('');
   }
 

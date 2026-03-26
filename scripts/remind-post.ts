@@ -129,7 +129,7 @@ function main(): void {
 
   // Sprint 1018: also send the mp4 file so operator can post directly from phone
   if (next?.mp4_path) {
-    sendVideoFile(next.mp4_path, `/record ${next.video_id} 0`).catch(() => {});
+    sendVideoFile(next.mp4_path, `/record ${next.video_id} 0 <tiktok_url>`).catch(() => {});  // Sprint 1382
   }
 
   console.log(`[remind] sent — ${postsRemaining} remaining, ${daysRemaining}d left`);

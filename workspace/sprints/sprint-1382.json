@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1382",
+  "title": "BUGFIX — Last 2 /record 0 instances without tiktok_url (cmd-management manifest, remind-post)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "After sweeping all known locations across Sprints 1373/1379/1380/1381, two more /record <id> 0 occurrences found: cmd-management.ts:478 (batch export manifest) and remind-post.ts:132 (reminder video file send). Both fixed with <tiktok_url> placeholder. Complete sweep now done.",
+  "tasks": [
+    {
+      "id": "1382-final-two",
+      "description": "Fix cmd-management.ts:478 and remind-post.ts:132.",
+      "files": ["scripts/telegram-commands/cmd-management.ts", "scripts/remind-post.ts"],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
