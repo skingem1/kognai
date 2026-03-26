@@ -7672,3 +7672,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Fix: Added isSubscriptionLapsed()/markSubscriptionLapsed() helpers writing data/rapidapi-lapse.json. When RapidAPI returns 403, lapse is persisted for 24h. Subsequent pipeline runs skip all searches immediately. Pre-seeded lapse file for current subscription outage.
 - Swarm bypassed: yes (complex TS file with multiple insertion points). AAR/crystallise modules not found.
 - Timestamp: 2026-03-26T00:10:00Z
+
+## Sprint 1384 — BUGFIX fal.ai ETIMEDOUT circuit breaker
+- Status: PASS
+- Commit: 3991b560
+- Files modified: scripts/scs001/fal-video-client.ts
+- Fix: Added circuit breaker (FAL_CIRCUIT_THRESHOLD=2). After 2 consecutive ETIMEDOUT errors, skip fal.ai immediately instead of waiting 150s per model. Reduces wasted time 30+ min → ~0 when fal.ai is unreachable.
+- Swarm used: no (direct surgical edit — single file, well-understood fix)
+- AAR: module not found, skipped
+- Timestamp: 2026-03-26T00:00:00Z
