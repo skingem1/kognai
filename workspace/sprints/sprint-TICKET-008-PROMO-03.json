@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-TICKET-008-PROMO-03",
+  "title": "PROMO-03 — product-visual-assembler.ts: FFmpeg Ken Burns animation + split-screen compositor",
+  "block": "TICKET-008",
+  "source": "queue-prescribed",
+  "rationale": "TICKET-008 P1-PROMO Sprint 3/5. Animates product images with FFmpeg zoompan (Ken Burns). Split-screen: 60% avatar left / 40% product right for image beats; full-width for null-image beats. Per-beat segments then xfade concat. Output 1080x1920 vertical MP4. Gate: 45-65s MP4, Ken Burns visible, layout correct per beat map.",
+  "tasks": [
+    {
+      "id": "PROMO-03-assembler",
+      "description": "Create scripts/promo/product-visual-assembler.ts — downloads product images, builds per-beat MP4 segments (Ken Burns via zoompan, split-screen via hstack), xfade concats to final.mp4 in workspace/promo-jobs/{jobId}/.",
+      "files": ["scripts/promo/product-visual-assembler.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "PROMO-03-validator",
+      "description": "Create scripts/promo/validate-product-visual-assembler.ts — generates video from mock data, checks output MP4 exists, probes duration (45-65s), width=1080, height=1920.",
+      "files": ["scripts/promo/validate-product-visual-assembler.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "validation"
+    }
+  ]
+}
