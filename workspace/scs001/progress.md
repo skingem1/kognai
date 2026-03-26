@@ -8070,3 +8070,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Deliverables: AMD-26 amendment draft, SIGNAL v2 hyperagent topic schema, constitutional compatibility report (all 5 principles: compatible)
 - Swarm used: no (direct write — architecture spike)
 - Timestamp: 2026-03-26T12:30:00.000Z
+
+## Sprint TICKET-007-UNSLOTH-INSTALL — Unsloth vs mlx-lm Benchmark
+- Status: PASS (with findings)
+- Commit: a60ad8e2
+- Files created: workspace/spikes/TICKET-007-unsloth-benchmark.md (149 lines), workspace/sprints/sprint-TICKET-007-UNSLOTH-INSTALL.json
+- Result: Unsloth FAILED on macOS (xformers OpenMP incompatibility). mlx-lm 0.29.1 installed. 3.14 TFLOPS matmul, 18.5ms/step LoRA at qwen3-14B dims.
+- Recommendation: mlx-lm is the correct fine-tuning stack for Mac M4 vault.
+- Swarm used: no (direct write + shell benchmark)
+- Timestamp: 2026-03-26T13:00:00.000Z
