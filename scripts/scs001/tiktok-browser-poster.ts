@@ -28,6 +28,7 @@
 import { existsSync, readFileSync, appendFileSync, mkdirSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { execSync } from 'child_process';
+import * as https from 'https';
 
 const ROOT = join(__dirname, '..', '..');
 
@@ -157,12 +158,33 @@ function resolveVideoPath(): { videoPath: string; videoId: string } | null {
   return null;
 }
 
-function checkWarmup(): boolean {
-  if (!existsSync(WARMUP_STATUS)) return false;
+function checkWarmup(): { verified: boolean; startedAt: string | null; daysIn: number } {
+  if (!existsSync(WARMUP_STATUS)) return { verified: false, startedAt: null, daysIn: 0 };
   try {
     const s = JSON.parse(readFileSync(WARMUP_STATUS, 'utf-8'));
-    return s.verified === true;
-  } catch { return false; }
+    const startedAt = s.warmup_started_at || null;
+    const daysIn = startedAt
+      ? Math.floor((Date.now() - new Date(startedAt).getTime()) / 86_400_000)
+      : 0;
+    return { verified: s.verified === true, startedAt, daysIn };
+  } catch { return { verified: false, startedAt: null, daysIn: 0 }; }
+}
+
+function sendTelegramSync(text: string): void {
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId   = process.env.OWNER_TELEGRAM_CHAT_ID;
+  if (!botToken || !chatId) return;
+  try {
+    const body = JSON.stringify({ chat_id: chatId, text, parse_mode: 'Markdown' });
+    const req = https.request({
+      hostname: 'api.telegram.org',
+      path: `/bot${botToken}/sendMessage`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) },
+    });
+    req.write(body);
+    req.end();
+  } catch {}
 }
 
 function recordPost(videoId: string, mode: string): void {
@@ -178,6 +200,8 @@ function main(): void {
   if (!resolved) process.exit(1);
   const { videoPath, videoId } = resolved;
 
+  const warmup = checkWarmup();
+
   // DRY RUN — just log and exit success
   if (DRY_RUN) {
     const result = {
@@ -185,7 +209,7 @@ function main(): void {
       video_id: videoId,
       mode: 'dry-run',
       video_path: videoPath,
-      warmup_verified: checkWarmup(),
+      warmup_verified: warmup.verified,
       note: 'DRY_RUN=1 — no browser invoked',
     };
     console.log(JSON.stringify(result));
@@ -193,17 +217,17 @@ function main(): void {
     return;
   }
 
-  // WARMUP GATE — block live posting until 2026-03-29
-  if (!checkWarmup()) {
-    const result = {
-      ok: false,
-      error: 'Warmup not complete. Run /warmup-complete after 2026-03-29.',
-      video_id: videoId,
-      mode: 'blocked',
-    };
-    console.error(JSON.stringify(result));
-    logEvent({ event: 'warmup_blocked', ...result });
-    process.exit(2);
+  // WARMUP GATE — block live posting until verified. Exit 0 to avoid PM2 error spam.
+  if (!warmup.verified) {
+    const daysRemaining = Math.max(0, 3 - warmup.daysIn);
+    const msg = daysRemaining > 0
+      ? `⏳ *WARMUP-01 in progress* (day ${warmup.daysIn}/3)\n\nBrowser posting held. ~${daysRemaining} day(s) remaining.\nRun \`/warmup-complete ${warmup.daysIn} <score>\` when done.`
+      : `⏳ *WARMUP-01 ready to verify* (day ${warmup.daysIn})\n\nRun \`/warmup-complete 3 <score 0-10>\` to unlock browser posting.`;
+    const result = { ok: true, video_id: videoId, mode: 'warmup-pending', days_in: warmup.daysIn, days_remaining: daysRemaining };
+    console.log(JSON.stringify(result));
+    logEvent({ event: 'warmup_pending', ...result });
+    sendTelegramSync(msg);
+    return;  // exit 0 — not an error, just waiting
   }
 
   // VENV CHECK

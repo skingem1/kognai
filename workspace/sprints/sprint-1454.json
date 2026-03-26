@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1454",
+  "title": "Browser poster: remove hardcoded dry-run override, add warmup-blocked notification",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "SPRINT-508 added kognai-tiktok-browser-poster cron with AUTO_POST_DRY_RUN=1 hardcoded. This means the user must manually edit ecosystem.config.js after warmup (2026-03-29). Better: remove the env override and let tiktok-browser-poster.ts's warmup gate handle it. When warmup-status.json verified=true, next cron fires live. Also: when blocked by warmup, send a Telegram notification with days remaining (not just exit code 2 / silent PM2 error). Clean self-activating pipeline.",
+  "tasks": [
+    {
+      "id": "1454-ecosystem-fix",
+      "description": "Remove AUTO_POST_DRY_RUN from kognai-tiktok-browser-poster env in ecosystem.config.js. Keep env block but without the dry-run flag. This lets warmup-status.json control activation.",
+      "files": ["ecosystem.config.js"],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "1454-warmup-notify",
+      "description": "Update scripts/scs001/tiktok-browser-poster.ts: when warmup gate blocks, exit 0 (not 2, so PM2 doesn't log error) and send Telegram message: 'WARMUP-01 in progress. Browser posting held. Run /warmup-complete <days> <score> when done.' Include days remaining if warmup_started_at is known.",
+      "files": ["scripts/scs001/tiktok-browser-poster.ts"],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "improvement"
+    }
+  ]
+}

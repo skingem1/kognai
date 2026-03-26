@@ -989,7 +989,8 @@ module.exports = {
       env: {
         TS_NODE_TRANSPILE_ONLY: "true",
         TS_NODE_PROJECT: __dirname + "/tsconfig.scripts.json",
-        AUTO_POST_DRY_RUN: "1",  // CHANGE TO "0" after WARMUP-01 complete (2026-03-29)
+        // AUTO_POST_DRY_RUN removed (Sprint 1454): warmup-status.json controls activation.
+        // When verified=true (after /warmup-complete), cron posts live automatically.
       },
       error_file: __dirname + "/logs/tiktok-browser-poster-error.log",
       out_file: __dirname + "/logs/tiktok-browser-poster-out.log",
