@@ -11,6 +11,7 @@ import { execSync } from 'child_process';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import type { EntertainmentScript, EntertainmentScene } from './entertainment-scriptgen';
+import { fetchStockScene } from './stock-footage-fetcher';
 
 const ROOT = join(__dirname, '..', '..');
 const FFMPEG = '/opt/homebrew/bin/ffmpeg';
@@ -131,20 +132,37 @@ export async function assembleEntertainmentVideo(
   const runDir = join(outputPath, '..', '_assembly');
   mkdirSync(join(runDir, 'scenes'), { recursive: true });
 
-  // 1. Generate AI video for each scene
-  console.log(`  Generating ${script.scenes.length} AI video scenes...`);
+  // 1. Generate video for each scene
+  // Sprint 1421: Scene 1 (hero) → always Kling AI. Scene 2+ → try Pexels free stock first, AI fallback.
+  console.log(`  Generating ${script.scenes.length} video scenes...`);
   const sceneClips: Array<{ scene: EntertainmentScene; path: string }> = [];
+  let stockCount = 0;
+  let aiCount = 0;
 
   for (let i = 0; i < script.scenes.length; i++) {
     const scene = script.scenes[i];
     const clipPath = join(runDir, 'scenes', `${scene.scene_id}.mp4`);
     console.log(`    Scene ${i + 1}/${script.scenes.length}: "${scene.visual_prompt.slice(0, 50)}..." (${scene.duration_s}s)`);
 
-    const ok = await generateSceneClip(scene, i, clipPath);
+    let ok = false;
+
+    // Non-hero scenes: try free Pexels stock footage first
+    if (i > 0) {
+      ok = await fetchStockScene(scene.visual_prompt, scene.duration_s, clipPath);
+      if (ok) stockCount++;
+    }
+
+    // Hero scene or stock miss: generate with AI
+    if (!ok) {
+      ok = await generateSceneClip(scene, i, clipPath);
+      if (ok) aiCount++;
+    }
+
     if (ok && existsSync(clipPath)) {
       sceneClips.push({ scene, path: clipPath });
     }
   }
+  console.log(`  Sources: ${stockCount} stock ($0.00) + ${aiCount} AI`);
 
   if (sceneClips.length === 0) throw new Error('All scene generations failed');
   console.log(`  ${sceneClips.length}/${script.scenes.length} scenes generated`);
