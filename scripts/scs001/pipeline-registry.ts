@@ -18,7 +18,7 @@ const LEDGER_PATH = join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
 
 // ── Types ────────────────────────────────────────────
 
-export type PipelineName = 'educational' | 'code-demo' | 'entertainment';
+export type PipelineName = 'educational' | 'code-demo' | 'entertainment' | 'bizarre';
 
 export interface PipelineConfig {
   name: PipelineName;
@@ -167,6 +167,14 @@ export async function initRegistry(): Promise<void> {
     registerPipeline(entertainmentRunner);
   } catch (err: any) {
     console.warn(`[registry] Failed to load entertainment pipeline: ${err.message?.slice(0, 60)}`);
+  }
+
+  // Sprint 1415: Pipeline 4 — Kognai Bizarre Series
+  try {
+    const { bizarreRunner } = await import('./pipelines/bizarre');
+    registerPipeline(bizarreRunner);
+  } catch (err: any) {
+    console.warn(`[registry] Failed to load bizarre pipeline: ${err.message?.slice(0, 60)}`);
   }
 
   console.log(`[registry] ${pipelines.size} pipeline(s) registered: ${Array.from(pipelines.keys()).join(', ')}`);

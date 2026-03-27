@@ -125,7 +125,9 @@ function generateVoiceover(script: EntertainmentScript, outDir: string): string 
 export async function assembleEntertainmentVideo(
   script: EntertainmentScript,
   outputPath: string,
+  opts?: { seriesLabel?: string },
 ): Promise<string> {
+  const seriesLabel = opts?.seriesLabel ?? 'Entertainment Series';
   const runDir = join(outputPath, '..', '_assembly');
   mkdirSync(join(runDir, 'scenes'), { recursive: true });
 
@@ -230,8 +232,11 @@ export async function assembleEntertainmentVideo(
   }
   if (existsSync(captionedPath)) currentPath = captionedPath;
 
-  // 6. Add Kognai outro (Entertainment Series tagline)
-  const outroPng = join(ROOT, 'assets', 'branding', 'outro-entertainment.png');
+  // 6. Add Kognai outro (series-specific tagline — seriesLabel controls branding)
+  const outroKey = seriesLabel === 'Entertainment Series'
+    ? 'outro-entertainment'
+    : `outro-${seriesLabel.toLowerCase().replace(/\s+/g, '-')}`;
+  const outroPng = join(ROOT, 'assets', 'branding', `${outroKey}.png`);
   // Generate entertainment-specific outro if it doesn't exist
   if (!existsSync(outroPng)) {
     try {
@@ -268,7 +273,7 @@ ty = cy + size + 80
 title = 'K O G N A I'
 bb = draw.textbbox((0, 0), title, font=tf)
 draw.text(((W - (bb[2]-bb[0])) // 2, ty), title, fill=(255,255,255), font=tf)
-sub = 'Entertainment Series'
+sub = '${seriesLabel}'
 bb2 = draw.textbbox((0, 0), sub, font=sf)
 draw.text(((W - (bb2[2]-bb2[0])) // 2, ty + 120), sub, fill=(160, 180, 200), font=sf)
 draw.line([(W//2 - 90, ty + 175), (W//2 + 90, ty + 175)], fill=accent, width=3)

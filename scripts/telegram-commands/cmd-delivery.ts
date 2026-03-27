@@ -1437,3 +1437,72 @@ export async function cmdProduceEntertainment(chatId: string, args: string): Pro
     }
   });
 }
+
+/**
+ * Sprint 1415: /produce-bizarre [topic] — Kognai Bizarre Series video.
+ * Real bizarre facts, counterintuitive science, unusual historical events.
+ * Uses fal.ai Kling/Wan for scene generation. Requires FAL_KEY in .env.
+ */
+export async function cmdProduceBizarre(chatId: string, args: string): Promise<void> {
+  const topic = args.trim() || '';
+  const topicDisplay = topic || 'auto-select bizarre real fact';
+
+  await sendMessage(chatId, [
+    `🤯 *Producing Bizarre Series Video...*`,
+    '',
+    `📝 Topic: ${topicDisplay}`,
+    `🤖 Pipeline: AI scene generation (fal.ai Kling/Wan)`,
+    `⏱️ Est. 5-12 minutes`,
+    '',
+    `_Will send the video when done._`,
+  ].join('\n'));
+
+  const { spawn } = require('child_process');
+  const scriptPath = path.join(ROOT, 'scripts', 'scs001', 'produce-bizarre.ts');
+  const spawnArgs = ['ts-node', '--transpile-only', scriptPath];
+  if (topic) spawnArgs.push('--topic', topic);
+
+  const child = spawn('npx', spawnArgs, {
+    cwd: ROOT,
+    env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
+    stdio: ['ignore', 'pipe', 'pipe'],
+    detached: false,
+  });
+
+  let stdout = '';
+  let stderr = '';
+  child.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
+  child.stderr.on('data', (d: Buffer) => { stderr += d.toString(); });
+
+  child.on('close', async (code: number) => {
+    try {
+      if (code === 0) {
+        const outputMatch = stdout.match(/Output:\s*(.+\.mp4)/);
+        const mp4Path = outputMatch?.[1]?.trim();
+        if (mp4Path && fs.existsSync(mp4Path)) {
+          const videoId = path.basename(path.dirname(mp4Path));
+          const sizeMb = (fs.statSync(mp4Path).size / 1_048_576).toFixed(1);
+          await sendMessage(chatId, [
+            `✅ *Bizarre Series video produced!* — \`${videoId}\``,
+            `📦 Size: ${sizeMb}MB`,
+            ``,
+            `_Caption: /caption-next · Post: /deliver-next_`,
+          ].join('\n'));
+          try {
+            await sendVideoFile(chatId, mp4Path, `${videoId} — /record ${videoId} 0 <tiktok_url>`);
+          } catch (err: any) {
+            await sendMessage(chatId, `⚠️ Could not send video: ${err.message?.slice(0, 100)}\n📁 \`${mp4Path}\``);
+          }
+        } else {
+          const lastLines = stdout.trim().split('\n').slice(-3).join('\n');
+          await sendMessage(chatId, `✅ *Bizarre Series produced* (no mp4 path found)\n\`\`\`\n${lastLines}\n\`\`\``);
+        }
+      } else {
+        const errSnippet = (stderr || stdout).trim().split('\n').slice(-5).join('\n').slice(0, 300);
+        await sendMessage(chatId, `❌ *Bizarre Series production failed* (exit ${code})\n\`\`\`\n${errSnippet}\n\`\`\``);
+      }
+    } catch (e: any) {
+      await sendMessage(chatId, `❌ Error handling bizarre result: ${e.message}`);
+    }
+  });
+}
