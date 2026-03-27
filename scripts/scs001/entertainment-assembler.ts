@@ -335,8 +335,10 @@ function burnWhisperCaptions(videoPath: string, outputPath: string): void {
   }
 }
 
+// Sprint 1420: Word-by-word TikTok-style captions — each word appears individually as it is spoken.
+// Large yellow text, black stroke, centered, no background box. Mimics TikTok auto-caption style.
 const WHISPER_CAPTION_PY = `
-import json, subprocess, os, shutil, sys, warnings, re
+import json, subprocess, os, shutil, sys, warnings
 warnings.filterwarnings("ignore")
 
 config = json.load(open(sys.argv[1]))
@@ -348,7 +350,7 @@ ffprobe = config["ffprobe"]
 frame_dir = "/tmp/whisper_ent_frames"
 os.makedirs(frame_dir, exist_ok=True)
 
-# Extract audio and run Whisper
+# Extract audio and run Whisper with word-level timestamps
 wav = os.path.join(frame_dir, "audio.wav")
 subprocess.run([ffmpeg, "-y", "-i", video_path, "-vn", "-acodec", "pcm_s16le", "-ar", "16000", "-ac", "1", wav], capture_output=True, timeout=30)
 
@@ -359,25 +361,16 @@ result = model.transcribe(wav, word_timestamps=True, language="en")
 words = []
 for seg in result["segments"]:
     for w in seg.get("words", []):
-        words.append({"word": w["word"].strip(), "start": w["start"], "end": w["end"]})
+        word = w["word"].strip()
+        if word:
+            words.append({"word": word, "start": w["start"], "end": w["end"]})
 
 if not words:
     shutil.copy2(video_path, output_path)
     print("WARN no words")
     sys.exit()
 
-# Group into chunks at punctuation
-chunks = []
-current = []
-for w in words:
-    current.append(w)
-    if w["word"].endswith((".", "!", "?")) or (w["word"].endswith(",") and len(current) >= 5) or len(current) >= 10:
-        chunks.append({"words": current, "start": current[0]["start"], "end": current[-1]["end"]})
-        current = []
-if current:
-    chunks.append({"words": current, "start": current[0]["start"], "end": current[-1]["end"]})
-
-# Probe video
+# Probe video dimensions
 info = subprocess.run([ffprobe, "-v", "quiet", "-print_format", "json", "-show_streams", "-show_entries", "format=duration", video_path], capture_output=True, text=True)
 meta = json.loads(info.stdout)
 W = int(meta["streams"][0].get("width", 1080))
@@ -390,68 +383,50 @@ from PIL import Image, ImageDraw, ImageFont
 font = None
 for fp in ["/System/Library/Fonts/Supplemental/Arial Bold.ttf", "/System/Library/Fonts/Helvetica.ttc"]:
     if os.path.exists(fp):
-        try: font = ImageFont.truetype(fp, 48); break
+        try: font = ImageFont.truetype(fp, 88); break
         except: pass
 if font is None: font = ImageFont.load_default()
 
-hl = {"fail","hype","scale","roi","investors","vaporware","customers","solutions","buzzwords","talent","companies","problems","startups","ai","real","data","users","money","replace","replacing","never","always","secret","truth","shocking","exposed","biggest","worst","best","future","agents","developers","machines","race","build","solve","million","billion","free","every","tools","deploy","click","generate","automate","save","hours","percent","jobs","startup","founder","saas","product","products","code","coding","api","sdk","software","engineer","engineers","learn","fast","faster","powerful","dangerous","broken","dead","game","changer","revolution","disruption","eliminate","destroy","growth","revenue","cost","profit","efficient","productivity","today","tomorrow","now","instantly","guaranteed","proven","behind","ahead","winning","losing","wrong","right","stop","start","dark","truth","algorithms","social","media","hidden","control","manipulation","addicted","toxic","dangerous"}
-
+# Map each frame to the word being spoken at that moment (word-by-word, one at a time)
 frame_map = {}
-for ci, c in enumerate(chunks):
-    sf = int(c["start"] * fps)
-    ef = min(int(c["end"] * fps) + 1, total_frames)
-    for f in range(sf, ef): frame_map[f] = ci
+for wi, w in enumerate(words):
+    sf = int(w["start"] * fps)
+    ef = min(int(w["end"] * fps) + 1, total_frames)
+    for f in range(sf, ef):
+        frame_map[f] = wi
 
 cache = {}
-mtw = int(W * 0.9)
-byb = H - 60
 
 for fn in sorted(frame_map.keys()):
-    ci = frame_map[fn]
+    wi = frame_map[fn]
     dst = os.path.join(frame_dir, f"f_{fn:06d}.png")
-    if ci in cache: os.link(cache[ci], dst); continue
+    if wi in cache: os.link(cache[wi], dst); continue
 
-    c = chunks[ci]
-    aw = [w["word"].upper() for w in c["words"]]
+    word = words[wi]["word"].upper().strip()
     img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    lines, cl = [], []
-    for w in aw:
-        test = " ".join(cl + [w])
-        bb = draw.textbbox((0, 0), test, font=font)
-        if bb[2] - bb[0] > mtw and cl: lines.append(cl); cl = [w]
-        else: cl.append(w)
-    if cl: lines.append(cl)
-    if len(lines) > 2: lines = lines[:2]
+    # Measure word and center it horizontally in lower third
+    bb = draw.textbbox((0, 0), word, font=font)
+    tw = bb[2] - bb[0]
+    th = bb[3] - bb[1]
+    x = (W - tw) // 2
+    y = H - 300 - th
 
-    lh = 60
-    tth = len(lines) * lh
-    bt = byb - tth - 20
-    draw.rectangle([0, bt - 10, W, byb + 10], fill=(0, 0, 0, 170))
+    # Thick black stroke for readability on any background
+    stroke = 5
+    for dx in range(-stroke, stroke + 1):
+        for dy in range(-stroke, stroke + 1):
+            if dx == 0 and dy == 0: continue
+            draw.text((x + dx, y + dy), word, fill=(0, 0, 0, 255), font=font)
 
-    for li, lw in enumerate(lines):
-        lt = " ".join(lw)
-        bb = draw.textbbox((0, 0), lt, font=font)
-        lwidth = bb[2] - bb[0]
-        xs = (W - lwidth) // 2
-        y = bt + li * lh
-        xc = xs
-        for word in lw:
-            clean = re.sub(r"[^a-zA-Z]", "", word).lower()
-            color = (0, 200, 255, 255) if clean in hl else (255, 255, 255, 255)
-            for dx in [-2,-1,0,1,2]:
-                for dy in [-2,-1,0,1,2]:
-                    if abs(dx)+abs(dy)>3: continue
-                    draw.text((xc+dx,y+dy), word, fill=(0,0,0,255), font=font)
-            draw.text((xc, y), word, fill=color, font=font)
-            wbb = draw.textbbox((0, 0), word + " ", font=font)
-            xc += wbb[2] - wbb[0]
+    # Word in bright TikTok yellow
+    draw.text((x, y), word, fill=(255, 230, 0, 255), font=font)
 
     img.save(dst)
-    cache[ci] = dst
+    cache[wi] = dst
 
-# Fill gaps
+# Fill gaps (between words) with transparent frames
 empty = Image.new("RGBA", (W, H), (0, 0, 0, 0))
 ep = os.path.join(frame_dir, "_e.png")
 empty.save(ep)
@@ -464,7 +439,7 @@ subprocess.run([ffmpeg, "-y", "-framerate", str(fps), "-i", os.path.join(frame_d
 
 if os.path.exists(ov):
     r = subprocess.run([ffmpeg, "-y", "-i", video_path, "-i", ov, "-filter_complex", "[0:v][1:v]overlay=0:0:shortest=1[v]", "-map", "[v]", "-map", "0:a?", "-c:v", "libx264", "-preset", "fast", "-crf", "20", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", output_path], capture_output=True, timeout=300)
-    if r.returncode == 0: print(f"OK chunks={len(chunks)}")
+    if r.returncode == 0: print(f"OK words={len(words)}")
     else: shutil.copy2(video_path, output_path)
 else:
     shutil.copy2(video_path, output_path)

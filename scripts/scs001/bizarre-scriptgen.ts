@@ -56,7 +56,7 @@ CRITICAL RULE: Only use verifiable real facts. No fiction. No fabrication. The b
 Create a 30-45 second video about: "${topic}"
 
 Kognai Bizarre Series formula (MANDATORY):
-1. BIZARRE HOOK (scene 1, 3-5s): Open with the most counterintuitive or shocking statement — hit immediately. No build-up. Something that sounds impossible but happened or is true.
+1. STOP-SCROLL HOOK (scene 1, 3-5s): The FIRST WORD out of the speaker's mouth IS the shocking fact — no warmup, no setup, no intro. Start mid-statement, as if the viewer walked in mid-sentence. Pattern: [SHOCKING SUBJECT] [IMPOSSIBLE VERB/FACT]. Examples: "A TEASPOON WEIGHS ONE BILLION TONS." / "CLEOPATRA NEVER SAW THE PYRAMIDS BUILT." / "THIS BUG LIVED FOR 300 MILLION YEARS." The viewer cannot scroll past in the first 2 seconds. No "This is actually real", no "Wait until you hear this", no "Fun fact" — those are BANNED.
 2. THE TWIST (scenes 2-3): Layer the strangeness. Add the context that makes it even weirder. Show scale, implication, or comparison that boggles the mind.
 3. THE DEEPEST PART (scene 4): The fact that most people will NEVER believe — the most extreme, counterintuitive, or overlooked element of the story.
 4. THE REFRAME (scene 5, optional): End with a sentence that forces the viewer to re-evaluate something they thought they understood. "Share this" energy.
@@ -66,7 +66,7 @@ Technical rules:
 - Total duration: 30-45 seconds
 - visual_prompt: AI video generator — NO screens, text, signs, UI, documents, books, newspapers. Use: space nebulae, microscopic details, geological formations, ancient architecture (no inscriptions), animals, oceans, weather phenomena, crowds, human hands, industrial machinery, nature macro shots.
 - caption_text: ALL CAPS, max 8 words, jaw-dropping — the thing they'll screenshot
-${opts.withVoiceover ? '- voiceover_text: conversational whisper-to-friend tone. Open with "This is actually real..." or "Nobody talks about this, but..." or "Wait until you hear this..."' : '- No voiceover needed'}
+${opts.withVoiceover ? '- voiceover_text: BANNED openers: "This is actually real", "Wait until you hear", "Nobody talks about", "Fun fact", "Did you know". Start WITH THE FACT. Lead immediately with the shocking subject. Short punchy sentences. Max 20 words per scene. The first word must be the shocking statement itself.' : '- No voiceover needed'}
 - Transitions: "cut" for shocking reveals, "fade" for mind-settling moments
 
 Return JSON only:
@@ -96,8 +96,8 @@ Return JSON only:
           scene_id: 's1',
           visual_prompt: 'cinematic aerial shot of the Great Pyramid of Giza at golden hour, vast desert stretching to the horizon, ancient stones casting long shadows, no text or writing visible, photorealistic, cinematic, vertical 9:16',
           duration_s: 6,
-          voiceover_text: opts.withVoiceover ? 'This is actually real — and it will break your sense of time forever.' : undefined,
-          caption_text: 'THIS WILL BREAK YOUR BRAIN',
+          voiceover_text: opts.withVoiceover ? 'Cleopatra lived closer to the iPhone than to the Pyramids being built.' : undefined,
+          caption_text: 'CLEOPATRA CLOSER TO IPHONE',
           transition: 'cut',
         },
         {
@@ -139,8 +139,8 @@ Return JSON only:
           scene_id: 's1',
           visual_prompt: 'cinematic macro shot of a metal teaspoon resting on a plain surface, dramatic studio lighting, simple and clean composition, no text or writing visible, photorealistic, cinematic, vertical 9:16',
           duration_s: 5,
-          voiceover_text: opts.withVoiceover ? 'This teaspoon. That is all we need. Just one teaspoon.' : undefined,
-          caption_text: 'ONE TEASPOON OF THIS',
+          voiceover_text: opts.withVoiceover ? 'A teaspoon of neutron star weighs one billion tons on Earth.' : undefined,
+          caption_text: 'ONE TEASPOON = ONE BILLION TONS',
           transition: 'cut',
         },
         {
@@ -182,8 +182,8 @@ Return JSON only:
           scene_id: 's1',
           visual_prompt: 'cinematic macro shot of thick amber honey slowly dripping from a wooden honeycomb frame, golden light refracting through honey, rich color, no text or writing visible, photorealistic, cinematic, vertical 9:16',
           duration_s: 5,
-          voiceover_text: opts.withVoiceover ? 'Archaeologists found honey inside ancient Egyptian tombs. Over three thousand years old.' : undefined,
-          caption_text: '3000-YEAR-OLD HONEY',
+          voiceover_text: opts.withVoiceover ? 'Three-thousand-year-old honey found in Egyptian tombs was still perfectly edible.' : undefined,
+          caption_text: '3000-YEAR-OLD HONEY STILL EDIBLE',
           transition: 'cut',
         },
         {
