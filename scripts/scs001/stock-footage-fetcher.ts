@@ -5,11 +5,18 @@
  *   Scene 1 (hero): Always AI-generated (Kling — best quality)
  *   Scene 2+:       Try Pexels first → fall back to AI if no match
  *
+ * Keyword extraction uses voiceover_text as the primary source of topic keywords
+ * (it directly states what the scene is about), with visual_prompt as supplement.
+ * A minimum of 2 distinct topic words is required — single-word searches are too
+ * generic and return irrelevant stock. If no specific match is found, the caller
+ * falls back to LTX AI generation.
+ *
  * Pexels API is free with no attribution required for commercial use.
  * Portrait videos are downloaded, cropped to 1080x1920, trimmed to duration_s.
  * Photo fallback applies Ken Burns (slow zoom) when no video is found.
  *
  * Sprint 1421 — Stock footage integration for P3/P4 cost reduction
+ * Sprint 1422 — Voiceover-first keyword extraction for strict topic relevance
  */
 
 import { execSync } from 'child_process';
@@ -40,34 +47,96 @@ const SHOT_TERMS = [
 const FILLER_RE = /\b(of|a|an|the|in|on|at|with|from|and|or|to|into|as|mid|shot|view|angle|perspective|scene|frame|detail|focus|look|feel|atmosphere|mood|style|color|light|lighting|glow|dark|bright|blur|effect|dramatic|spectacular|breathtaking|beautiful|stunning|amazing|incredible|vast|huge|tiny|small|large|big|speed|fast|slow|motion|movement|glowing|iridescent|golden|cinematic|macro|micro|photo|realistic|vertical|contrast|vivid|rich|deep|sharp|soft|high|low|wide|narrow)\b/gi;
 
 /**
- * Extract 2-4 keyword search terms from a visual_prompt.
- * Strips cinematography jargon, takes the core subject.
+ * Common English stop words — stripped from voiceover keyword extraction.
+ * We keep domain-specific nouns (animals, places, people names, etc.).
  */
-export function extractKeywords(visualPrompt: string): string {
-  let text = visualPrompt.toLowerCase();
+const STOP_WORDS = new Set([
+  'the', 'a', 'an', 'in', 'on', 'at', 'with', 'from', 'and', 'or', 'to', 'into',
+  'as', 'of', 'it', 'its', 'is', 'are', 'was', 'were', 'be', 'been', 'has', 'have',
+  'had', 'do', 'did', 'does', 'not', 'no', 'but', 'if', 'for', 'by', 'this', 'that',
+  'than', 'then', 'so', 'more', 'most', 'can', 'could', 'would', 'should', 'will',
+  'just', 'even', 'also', 'about', 'after', 'before', 'during', 'while', 'when',
+  'where', 'which', 'who', 'what', 'how', 'why', 'time', 'year', 'years', 'day',
+  'days', 'way', 'same', 'first', 'last', 'once', 'twice', 'never', 'always', 'often',
+  'today', 'now', 'still', 'already', 'only', 'very', 'much', 'many', 'few',
+  'lot', 'lots', 'each', 'every', 'all', 'some', 'any', 'our', 'your', 'their',
+  'his', 'her', 'we', 'they', 'you', 'he', 'she', 'born', 'built', 'made',
+  'took', 'found', 'known', 'called', 'used', 'closer', 'close', 'number',
+  'fact', 'true', 'false', 'right', 'left', 'back', 'front', 'thing', 'things',
+]);
 
-  // Strip shot-type terms (longest first to avoid partial matches)
+/**
+ * Extract 2-4 topic-relevant keyword search terms.
+ *
+ * Strategy (voiceover-first):
+ *   1. Voiceover proper nouns (capitalised mid-sentence) — most specific
+ *   2. Voiceover content words (non-stopword, length > 3) from first sentence
+ *   3. Visual prompt subject (after stripping cinematography jargon) as supplement
+ *
+ * Returns empty string if fewer than 2 distinct meaningful words can be extracted,
+ * which causes fetchStockScene to skip Pexels and go straight to AI.
+ *
+ * @param visualPrompt  Full visual prompt from the script
+ * @param voiceoverText Voiceover narration for this scene (primary topic source)
+ */
+export function extractKeywords(visualPrompt: string, voiceoverText?: string): string {
+  const candidates: string[] = [];
+
+  // ── 1. Voiceover-first: primary source of topic keywords ───────────────────
+  if (voiceoverText) {
+    // Use only the first sentence — most topically concentrated
+    const firstSentence = voiceoverText.split(/[.!?]/)[0] || voiceoverText;
+    const rawWords = firstSentence.trim().split(/\s+/);
+
+    // Proper nouns: capitalised mid-sentence (index > 0) are almost always
+    // named entities — people, places, civilisations, species, technologies
+    for (let i = 1; i < rawWords.length; i++) {
+      const clean = rawWords[i].replace(/[^a-zA-Z]/g, '');
+      if (clean.length > 2 && /^[A-Z]/.test(clean) && !STOP_WORDS.has(clean.toLowerCase())) {
+        candidates.push(clean.toLowerCase());
+      }
+    }
+
+    // Content nouns: non-stopword words of length > 3 from the first sentence
+    const voiceClean = firstSentence
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    for (const w of voiceClean.split(/\s+/)) {
+      if (w.length > 3 && !STOP_WORDS.has(w) && !candidates.includes(w)) {
+        candidates.push(w);
+        if (candidates.length >= 5) break; // cap voiceover contribution at 5
+      }
+    }
+  }
+
+  // ── 2. Visual prompt: supplement with core subject ─────────────────────────
+  let text = visualPrompt.toLowerCase();
   const sortedTerms = [...SHOT_TERMS].sort((a, b) => b.length - a.length);
   for (const term of sortedTerms) {
     text = text.replace(new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), ' ');
   }
-
   // Strip possessives and hyphenated compound prefixes (mid-, no-, etc.)
   text = text.replace(/'\w+/g, '').replace(/\b\w+-/g, '').replace(/-\w+/g, '');
 
   // Take first meaningful chunk (before first comma) — that's the subject
   const firstChunk = text.split(',')[0].trim();
-
-  // Strip filler words
-  const cleaned = firstChunk
+  const visualCleaned = firstChunk
     .replace(FILLER_RE, ' ')
-    .replace(/[^a-z0-9\s]/g, ' ')   // remove remaining punctuation
+    .replace(/[^a-z0-9\s]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 
-  // Take first 4 significant words (length > 2)
-  const words = cleaned.split(/\s+/).filter(w => w.length > 2).slice(0, 4);
-  return words.join(' ');
+  for (const w of visualCleaned.split(/\s+/)) {
+    if (w.length > 2 && !STOP_WORDS.has(w) && !candidates.includes(w)) {
+      candidates.push(w);
+    }
+  }
+
+  // ── 3. Return top 4 — voiceover proper nouns always come first ─────────────
+  return candidates.slice(0, 4).join(' ');
 }
 
 // ── HTTP download ─────────────────────────────────────────────────────────────
@@ -211,19 +280,31 @@ async function fetchPexelsPhoto(
  *
  * Returns true if a stock clip was produced, false if caller should use AI.
  *
+ * Keyword extraction uses voiceover_text as the primary topic source to ensure
+ * the stock footage is strictly relevant to what is being narrated.
+ * A minimum of 2 distinct words is required — single-word queries return
+ * generic, unrelated results and are rejected in favour of AI generation.
+ *
  * @param visualPrompt  Full visual prompt from the script
+ * @param voiceoverText Voiceover narration for this scene (primary topic source)
  * @param durationS     Target duration in seconds
  * @param outputPath    Where to write the normalised MP4
  */
 export async function fetchStockScene(
   visualPrompt: string,
+  voiceoverText: string | undefined,
   durationS: number,
   outputPath: string,
 ): Promise<boolean> {
   if (!PEXELS_API_KEY) return false;
 
-  const keywords = extractKeywords(visualPrompt);
-  if (!keywords || keywords.replace(/\s+/g, '').length < 4) return false;
+  const keywords = extractKeywords(visualPrompt, voiceoverText);
+
+  // Require at least 2 distinct words — single-word searches are too generic
+  // and produce irrelevant stock that breaks topic consistency
+  if (!keywords) return false;
+  const wordCount = keywords.trim().split(/\s+/).length;
+  if (wordCount < 2 || keywords.replace(/\s+/g, '').length < 6) return false;
 
   console.log(`    [stock] Searching Pexels: "${keywords}"`);
 

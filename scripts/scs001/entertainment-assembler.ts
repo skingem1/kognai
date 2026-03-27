@@ -49,12 +49,13 @@ function normalizeClip(input: string, output: string, duration: number): void {
 
 /** Generate AI video clip for a scene.
  * Hero scene (index 0) uses Kling for best quality.
- * All other scenes use Wan 2.1 for cost efficiency. */
+ * All other scenes use LTX-Video (Wan 2.1 removed — 100% empty-JSON failure rate). */
 async function generateSceneClip(scene: EntertainmentScene, sceneIndex: number, outPath: string): Promise<boolean> {
   try {
     const { generateBrollVideo } = await import('./fal-video-client');
-    // BUGFIX-FAL-AI-TIMEOUT: hero scene uses Kling (best quality), rest use Wan 2.1 (cost-efficient, ~$0.05/s)
-    const model: 'kling' | 'wan' = sceneIndex === 0 ? 'kling' : 'wan';
+    // Sprint 1422: Wan 2.1 removed (100% failure — empty JSON every call, wastes ~12s per scene).
+    // Hero → Kling (best quality). All others → LTX directly.
+    const model: 'kling' | 'ltx' = sceneIndex === 0 ? 'kling' : 'ltx';
     await generateBrollVideo(scene.visual_prompt, scene.duration_s, outPath, model);
 
     // Normalize to canonical format (two-pass for Kling/Wan format quirks)
@@ -147,8 +148,9 @@ export async function assembleEntertainmentVideo(
     let ok = false;
 
     // Non-hero scenes: try free Pexels stock footage first
+    // Sprint 1422: pass voiceover_text as primary keyword source for strict topic relevance
     if (i > 0) {
-      ok = await fetchStockScene(scene.visual_prompt, scene.duration_s, clipPath);
+      ok = await fetchStockScene(scene.visual_prompt, scene.voiceover_text, scene.duration_s, clipPath);
       if (ok) stockCount++;
     }
 
