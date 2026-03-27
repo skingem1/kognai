@@ -48,7 +48,7 @@ export const bizarreRunner: PipelineRunner = {
       videoPath: finalPath,
       title: script.title,
       duration_s: script.total_duration_s,
-      cost_usd: 0.30, // ~2 Kling + 4 Wan clips estimate (same as P3)
+      cost_usd: 0.28, // ~1 Kling hero ($0.35 capped at 5s) + 4 LTX scenes (~$0.20) + Pexels free stock
       quality_score: 7,
       metadata: {
         topic,

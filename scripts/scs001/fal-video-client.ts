@@ -78,7 +78,7 @@ function loadFalKey(): string {
 
 export interface BrollResult {
   path: string;
-  source: 'kling' | 'ltx' | 'wan';
+  source: 'kling' | 'ltx';
   cost_usd: number;
   duration_s: number;
 }
@@ -101,20 +101,20 @@ function isTimeoutError(err: any): boolean {
 
 const MODEL_SLUGS = {
   kling: 'fal-ai/kling-video/v2.5-turbo/pro/text-to-video',
-  ltx: 'fal-ai/ltx-2.3/text-to-video',
-  wan: 'fal-ai/wan/v2.1/text-to-video',
+  ltx:   'fal-ai/ltx-2.3/text-to-video',
 } as const;
 
 /**
  * Generate a B-roll video clip via fal.ai.
- * Tries Kling first (180s timeout), falls back to Wan 2.1, then LTX if all fail.
- * Sprint BUGFIX-FAL-AI-TIMEOUT: raised from 85s → 180s + Wan 2.1 fallback added.
+ * Tries Kling first (180s timeout), falls back to LTX if Kling fails.
+ * Sprint 1422: Wan 2.1 removed — 100% empty-JSON failure rate, wastes 180s per attempt.
+ * Sprint BUGFIX-FAL-AI-TIMEOUT: raised timeout from 85s → 180s.
  */
 export async function generateBrollVideo(
   prompt: string,
   durationS: number = 5,
   outPath: string,
-  preferredModel: 'kling' | 'ltx' | 'wan' = 'kling',
+  preferredModel: 'kling' | 'ltx' = 'kling',
 ): Promise<BrollResult> {
   const falKey = loadFalKey();
   if (!falKey) throw new Error('FAL_KEY not set in .env');
@@ -123,13 +123,13 @@ export async function generateBrollVideo(
 
   mkdirSync(dirname(outPath), { recursive: true });
 
-  // Fallback chain: preferred → wan → ltx (kling is most expensive/slowest, wan is mid, ltx is fastest/cheapest)
-  const modelChain: Record<string, Array<'kling' | 'ltx' | 'wan'>> = {
-    kling: ['kling', 'wan', 'ltx'],
-    wan:   ['wan', 'ltx', 'kling'],
-    ltx:   ['ltx', 'wan', 'kling'],
+  // Fallback chain: kling (best quality) → ltx (fastest/cheapest).
+  // Sprint 1422: Wan 2.1 removed — 100% empty-JSON failure confirmed across all video runs.
+  const modelChain: Record<string, Array<'kling' | 'ltx'>> = {
+    kling: ['kling', 'ltx'],
+    ltx:   ['ltx', 'kling'],
   };
-  const models = modelChain[preferredModel] ?? ['kling', 'wan', 'ltx'];
+  const models = modelChain[preferredModel] ?? ['kling', 'ltx'];
   const MAX_RETRIES_PER_MODEL = 2;
 
   for (const model of models) {
@@ -152,9 +152,8 @@ export async function generateBrollVideo(
 
       if (model === 'kling') {
         args.duration = String(durationS >= 8 ? 10 : 5); // Kling only accepts '5' or '10'
-      } else if (model === 'wan') {
-        args.duration = String(Math.min(Math.max(durationS, 1), 10)); // Wan 2.1: 1–10s
       } else {
+        // LTX
         args.num_frames = Math.min(Math.max(durationS * 16, 49), 161);
         args.resolution = '1080p';
       }
@@ -224,7 +223,7 @@ export async function generateBrollVideo(
 
       if (!existsSync(outPath)) throw new Error(`${model}: download failed`);
 
-      const costPerSec = model === 'kling' ? 0.07 : model === 'wan' ? 0.05 : 0.04; // Wan 2.1 ~$0.05/s
+      const costPerSec = model === 'kling' ? 0.07 : 0.04; // Kling ~$0.07/s, LTX ~$0.04/s
       const cost = costPerSec * durationS;
 
       console.log(`  [fal.ai] ✅ ${model} video saved: ${outPath} (~$${cost.toFixed(2)})`);
