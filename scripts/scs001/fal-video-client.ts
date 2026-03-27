@@ -78,7 +78,7 @@ function loadFalKey(): string {
 
 export interface BrollResult {
   path: string;
-  source: 'kling' | 'ltx';
+  source: 'kling' | 'ltx' | 'wan';
   cost_usd: number;
   duration_s: number;
 }
@@ -102,17 +102,19 @@ function isTimeoutError(err: any): boolean {
 const MODEL_SLUGS = {
   kling: 'fal-ai/kling-video/v2.5-turbo/pro/text-to-video',
   ltx: 'fal-ai/ltx-2.3/text-to-video',
+  wan: 'fal-ai/wan/v2.1/text-to-video',
 } as const;
 
 /**
  * Generate a B-roll video clip via fal.ai.
- * Tries Kling first, falls back to LTX if Kling fails.
+ * Tries Kling first (180s timeout), falls back to Wan 2.1, then LTX if all fail.
+ * Sprint BUGFIX-FAL-AI-TIMEOUT: raised from 85s → 180s + Wan 2.1 fallback added.
  */
 export async function generateBrollVideo(
   prompt: string,
   durationS: number = 5,
   outPath: string,
-  preferredModel: 'kling' | 'ltx' = 'kling',
+  preferredModel: 'kling' | 'ltx' | 'wan' = 'kling',
 ): Promise<BrollResult> {
   const falKey = loadFalKey();
   if (!falKey) throw new Error('FAL_KEY not set in .env');
@@ -121,9 +123,14 @@ export async function generateBrollVideo(
 
   mkdirSync(dirname(outPath), { recursive: true });
 
-  const models: Array<'kling' | 'ltx'> = preferredModel === 'kling'
-    ? ['kling', 'ltx']
-    : ['ltx', 'kling'];
+  // Fallback chain: preferred → wan → ltx (kling is most expensive/slowest, wan is mid, ltx is fastest/cheapest)
+  const modelChain: Record<string, Array<'kling' | 'ltx' | 'wan'>> = {
+    kling: ['kling', 'wan', 'ltx'],
+    wan:   ['wan', 'ltx', 'kling'],
+    ltx:   ['ltx', 'wan', 'kling'],
+  };
+  const models = modelChain[preferredModel] ?? ['kling', 'wan', 'ltx'];
+  const MAX_RETRIES_PER_MODEL = 2;
 
   for (const model of models) {
     // Circuit breaker: fal.ai unreachable this run — skip immediately
@@ -131,8 +138,10 @@ export async function generateBrollVideo(
       throw new Error(`fal.ai circuit open after ${falConsecutiveTimeouts} consecutive timeouts — skipping`);
     }
 
+    let lastModelErr: any;
+    for (let attempt = 1; attempt <= MAX_RETRIES_PER_MODEL; attempt++) {
     try {
-      console.log(`  [fal.ai] Generating ${model} video: "${prompt.slice(0, 50)}..."`);
+      console.log(`  [fal.ai] Generating ${model} video (attempt ${attempt}/${MAX_RETRIES_PER_MODEL}): "${prompt.slice(0, 50)}..."`);
 
       const fullPrompt = prompt.replace(/['"]/g, '') + ' cinematic vertical 9:16, high quality, trending style';
 
@@ -143,6 +152,8 @@ export async function generateBrollVideo(
 
       if (model === 'kling') {
         args.duration = String(durationS >= 8 ? 10 : 5); // Kling only accepts '5' or '10'
+      } else if (model === 'wan') {
+        args.duration = String(Math.min(Math.max(durationS, 1), 10)); // Wan 2.1: 1–10s
       } else {
         args.num_frames = Math.min(Math.max(durationS * 16, 49), 161);
         args.resolution = '1080p';
@@ -178,7 +189,7 @@ export async function generateBrollVideo(
         '    stdout=subprocess.PIPE, stderr=subprocess.PIPE,',
         '    start_new_session=True)',
         'try:',
-        '    out, err = proc.communicate(timeout=85)',
+        '    out, err = proc.communicate(timeout=180)',
         '    data = json.loads(out.decode().strip())',
         '    print(json.dumps(data))',
         'except subprocess.TimeoutExpired:',
@@ -186,7 +197,7 @@ export async function generateBrollVideo(
         '    except Exception: proc.kill()',
         '    try: proc.wait(timeout=3)',
         '    except subprocess.TimeoutExpired: pass',
-        '    raise TimeoutError("fal.ai subscribe timed out after 85s")',
+        '    raise TimeoutError("fal.ai subscribe timed out after 180s")',
         'except Exception as e:',
         '    try: os.killpg(os.getpgid(proc.pid), signal.SIGKILL)',
         '    except Exception: proc.kill()',
@@ -199,7 +210,7 @@ export async function generateBrollVideo(
       writeFileSync(outerScript, outerCode);
 
       const result = execSync(`python3 "${outerScript}"`, {
-        timeout: 150000,  // Sprint 1370: 150s (Python 85s+group kill+3s wait = ~88s; 62s margin)
+        timeout: 250000,  // BUGFIX-FAL-AI-TIMEOUT: 250s (Python 180s+group kill+3s wait = ~183s; 67s margin)
         encoding: 'utf-8',
       });
 
@@ -213,7 +224,7 @@ export async function generateBrollVideo(
 
       if (!existsSync(outPath)) throw new Error(`${model}: download failed`);
 
-      const costPerSec = model === 'kling' ? 0.07 : 0.04;
+      const costPerSec = model === 'kling' ? 0.07 : model === 'wan' ? 0.05 : 0.04; // Wan 2.1 ~$0.05/s
       const cost = costPerSec * durationS;
 
       console.log(`  [fal.ai] ✅ ${model} video saved: ${outPath} (~$${cost.toFixed(2)})`);
@@ -223,16 +234,20 @@ export async function generateBrollVideo(
       return { path: outPath, source: model, cost_usd: cost, duration_s: durationS };
 
     } catch (err: any) {
+      lastModelErr = err;
       if (isTimeoutError(err)) {
         falConsecutiveTimeouts++;
-        console.warn(`  [fal.ai] ❌ ${model} ETIMEDOUT (consecutive: ${falConsecutiveTimeouts}/${FAL_CIRCUIT_THRESHOLD})`);
-        if (falConsecutiveTimeouts >= FAL_CIRCUIT_THRESHOLD) tripPersistedCircuit(); // Sprint 1404
+        console.warn(`  [fal.ai] ❌ ${model} ETIMEDOUT attempt ${attempt}/${MAX_RETRIES_PER_MODEL} (consecutive: ${falConsecutiveTimeouts}/${FAL_CIRCUIT_THRESHOLD})`);
+        if (falConsecutiveTimeouts >= FAL_CIRCUIT_THRESHOLD) { tripPersistedCircuit(); break; } // circuit open — stop retrying this model
       } else {
-        console.warn(`  [fal.ai] ❌ ${model} failed: ${err.message?.slice(0, 200)}`);
+        console.warn(`  [fal.ai] ❌ ${model} attempt ${attempt}/${MAX_RETRIES_PER_MODEL} failed: ${err.message?.slice(0, 200)}`);
+        break; // non-timeout error — don't retry, try next model
       }
-      if (model === models[models.length - 1]) {
-        throw new Error(`All fal.ai models failed. Last error: ${err.message?.slice(0, 200)}`);
-      }
+    }
+    } // end retry loop
+    // If we got here all retries for this model failed — try next model
+    if (model === models[models.length - 1]) {
+      throw new Error(`All fal.ai models failed. Last error: ${lastModelErr?.message?.slice(0, 200)}`);
     }
   }
 
