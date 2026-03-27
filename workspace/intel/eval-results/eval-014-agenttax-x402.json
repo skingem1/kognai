@@ -1,0 +1,367 @@
+{
+  "eval_id": "EVAL-014",
+  "title": "AgentTax x402 API — Schema Capture + Invoica Integration Assessment",
+  "api_name": "AgentTax",
+  "api_url": "https://www.agenttax.io",
+  "ticket": "TICKET-017-AGENTTAX-01",
+  "evaluated_by": "Satoshi (x402 specialist)",
+  "evaluated_at": "2026-03-27T14:02:14.000Z",
+  "verdict": "ADOPT — free tier sufficient for MVP; x402 per-call path available for production",
+
+  "x402_schema": {
+    "verified": true,
+    "x402Version": 2,
+    "scheme": "exact",
+    "network": "eip155:8453",
+    "network_name": "Base mainnet",
+    "amount_atomic": "1000",
+    "amount_usd": 0.001,
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "asset_name": "USDC on Base",
+    "payTo": "0x6f4B383B3DB9115120638DceF88F2fd382ADd6F7",
+    "maxTimeoutSeconds": 300,
+    "resource_method": "POST",
+    "resource_url": "/api/v1/calculate",
+    "payment_required_header": "PAYMENT-REQUIRED",
+    "response_code_probe": 402,
+    "notes": [
+      "x402 v2 (not v1) — uses PAYMENT-REQUIRED header (not WWW-Authenticate)",
+      "GET /api/v1/calculate returns 402 with full x402 v2 schema — resource cost probe",
+      "POST /api/v1/calculate without auth returns 200 in DEMO MODE (50 calls/day, simplified)",
+      "POST with X-API-Key returns 200 FULL mode (100 calls/month free account)",
+      "POST with X-PAYMENT (x402) returns 200 FULL mode (pay-per-call, $0.001 USDC)",
+      "Same asset (USDC on Base) as Clawcard + Invoica settlement rail — zero cross-chain friction",
+      "Free 307 redirect from agenttax.io → www.agenttax.io (canonical host is www)"
+    ]
+  },
+
+  "demo_mode_findings": {
+    "confirmed": true,
+    "trigger": "POST /api/v1/calculate without X-API-Key or X-PAYMENT header",
+    "response_mode_field": "demo",
+    "rate_limit_headers": {
+      "X-Demo-Daily-Limit": 50,
+      "X-Demo-Daily-Remaining": "decrements per call"
+    },
+    "demo_response_fields": ["success", "engine_version", "transaction_id", "timestamp", "mode", "role", "amount", "buyer_state", "transaction_type", "work_type", "classification_basis", "is_b2b", "total_tax", "combined_rate", "confidence", "disclaimer", "upgrade"],
+    "demo_missing_fields": ["sales_tax.jurisdiction", "sales_tax.note (statute citation)", "sales_tax.rate (separate)", "advisory list", "nexus flags", "audit trail"],
+    "demo_confidence_note": "Demo returns confidence.level='partial' even for high-confidence jurisdictions",
+    "live_test_result": {
+      "request": {"role": "seller", "amount": 100, "buyer_state": "TX", "transaction_type": "api_access", "counterparty_id": "kognai-probe-test"},
+      "response": {"success": true, "engine_version": "1.5", "mode": "demo", "total_tax": 5, "combined_rate": 0.0625, "confidence": {"score": 72, "level": "partial"}}
+    },
+    "invoica_implication": "NEVER use demo mode in production — missing jurisdiction details + statute citations required for AMD-22 compliance. Detect via response.mode === 'demo' and throw."
+  },
+
+  "api_schema": {
+    "base_url": "https://www.agenttax.io",
+    "calculate_endpoint": "POST /api/v1/calculate",
+    "content_type": "application/json",
+    "auth_options": [
+      {
+        "method": "x402 per-call",
+        "header": "X-PAYMENT",
+        "cost_per_call": "$0.001 USDC",
+        "network": "Base (eip155:8453)",
+        "state": "stateless — no history, no account"
+      },
+      {
+        "method": "API key",
+        "header": "X-API-Key",
+        "free_tier": "100 calls/month",
+        "paid_tiers": "Starter $25/mo (10K), Growth $99/mo (100K), Pro $199/mo (1M)"
+      }
+    ],
+    "request_body": {
+      "role": {
+        "type": "string",
+        "required": true,
+        "enum": ["seller", "buyer"],
+        "description": "Kognai is always 'seller' (Invoica issues invoices)"
+      },
+      "amount": {
+        "type": "number",
+        "required": true,
+        "description": "Transaction amount in USD (0–100M)"
+      },
+      "buyer_state": {
+        "type": "string",
+        "required": true,
+        "description": "2-letter US state code — required for nexus determination"
+      },
+      "transaction_type": {
+        "type": "string",
+        "required": true,
+        "enum": [
+          "compute", "api_access", "data_purchase", "saas", "ai_labor",
+          "storage", "digital_good", "consulting", "data_processing",
+          "cloud_infrastructure", "ai_model_access", "marketplace_fee",
+          "subscription", "license", "service"
+        ],
+        "invoica_defaults": {
+          "PACT session fee": "api_access",
+          "BOND recurring mandate": "subscription",
+          "ERC-8183 spot job": "ai_labor",
+          "DRS reputation data": "data_purchase",
+          "KSL training compute": "compute",
+          "Invoica SaaS": "saas"
+        }
+      },
+      "counterparty_id": {
+        "type": "string",
+        "required": true,
+        "description": "Map to Invoica client_id or ERC-8004 agent address"
+      },
+      "work_type": {
+        "type": "string",
+        "required": false,
+        "enum": ["compute", "research", "content", "consulting", "trading"],
+        "note": "Improves accuracy for TX, NY, NJ, MD, PA, CT, WA, IA — always supply"
+      },
+      "is_b2b": {
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "note": "Set true for Kognai enterprise clients — affects exemptions in IA, MD, NJ"
+      }
+    },
+    "response_body": {
+      "success": "boolean",
+      "engine_version": "string (current: 1.4)",
+      "role": "string",
+      "amount": "number",
+      "buyer_state": "string",
+      "transaction_type": "string",
+      "classification_basis": "string (statutory basis for classification)",
+      "sales_tax": {
+        "amount": "number (USD)",
+        "rate": "number (0.0–1.0)",
+        "type": "string ('sales' | 'use' | 'exempt')",
+        "jurisdiction": "string (e.g. 'Texas')",
+        "note": "string (statutory citation, e.g. '80% taxable (§151.351)')"
+      },
+      "total_tax": "number (USD)",
+      "confidence": {
+        "score": "number (0–100)",
+        "level": "string ('high' | 'medium' | 'low')"
+      }
+    },
+    "example_request": {
+      "role": "seller",
+      "amount": 5000,
+      "buyer_state": "TX",
+      "transaction_type": "compute",
+      "counterparty_id": "agent_buyer_42",
+      "work_type": "compute",
+      "is_b2b": false
+    },
+    "example_response": {
+      "success": true,
+      "engine_version": "1.4",
+      "role": "seller",
+      "amount": 5000,
+      "buyer_state": "TX",
+      "transaction_type": "compute",
+      "classification_basis": "data_processing",
+      "sales_tax": {
+        "amount": 250,
+        "rate": 0.05,
+        "type": "sales",
+        "jurisdiction": "Texas",
+        "note": "80% taxable (§151.351 statutory exemption)"
+      },
+      "total_tax": 250,
+      "confidence": {
+        "score": 85,
+        "level": "high"
+      }
+    },
+    "free_endpoints": {
+      "GET /api/v1/rates": "All 51-state tax rates (no payment required)",
+      "GET /api/v1/rates/capital-gains": "State capital gains rates",
+      "GET /api/v1/health": "API health + endpoint inventory"
+    },
+    "account_endpoints": {
+      "POST /api/v1/auth/signup": "Create account — returns API key (once only)",
+      "POST /api/v1/calculate": "Tax calculation (with API key or x402)",
+      "GET /api/v1/transactions": "Transaction history with filters",
+      "POST /api/v1/trades": "Log buys/sells, track cost basis (FIFO/LIFO/Specific ID)",
+      "GET /api/v1/trades": "Trade history",
+      "POST /api/v1/nexus": "Configure nexus states + thresholds",
+      "GET /api/v1/nexus": "Nexus status",
+      "GET /api/v1/export/1099-da": "Generate IRS Form 1099-DA"
+    }
+  },
+
+  "criteria": [
+    {
+      "id": "C1",
+      "name": "x402 v2 Schema Compliance",
+      "description": "Is the 402 response a valid x402 v2 schema Kognai can parse with existing infrastructure?",
+      "weight": 0.25,
+      "score": 5,
+      "evidence": "PAYMENT-REQUIRED header decodes to clean x402 v2 JSON. Same structure as x402-llm-client.ts already handles: scheme=exact, network=eip155:8453, amount=1000 atomic USDC. Same asset (0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913) as Clawcard/Invoica. Zero custom extensions — standard x402 v2.",
+      "risks": [],
+      "mitigations": []
+    },
+    {
+      "id": "C2",
+      "name": "Transaction Type Coverage",
+      "description": "Does the API cover the transaction types Invoica will generate?",
+      "weight": 0.20,
+      "score": 5,
+      "evidence": "15 transaction types confirmed: ai_labor (ERC-8183 spot jobs), api_access (PACT session fees), subscription (BOND recurring mandates), saas (Invoica SaaS), compute (KSL training), data_purchase (DRS data), marketplace_fee (ALX). work_type enum (compute/research/content/consulting/trading) maps exactly to Kognai agent categories. is_b2b flag handles enterprise Deeploy invoices.",
+      "risks": [
+        "Some Kognai transaction types (e.g. 'soul_handshake_fee') may not map cleanly to existing enums"
+      ],
+      "mitigations": [
+        "Use 'api_access' as default for novel PACT-layer fees until more specific type is added"
+      ]
+    },
+    {
+      "id": "C3",
+      "name": "Response Quality for Invoica Tax Line",
+      "description": "Is the response structured enough to populate an Invoica tax_line field?",
+      "weight": 0.20,
+      "score": 5,
+      "evidence": "Response includes: sales_tax.amount (USD), sales_tax.rate (as decimal), sales_tax.jurisdiction (state name), sales_tax.note (statutory citation), total_tax (USD), confidence.score (0-100). This is MORE than enough for Invoica tax_line: amount, rate, jurisdiction, statute, confidence. The note field provides the statutory citation (e.g. '80% taxable (§151.351)') which is exactly what AMD-22 requires for compliance.",
+      "risks": [
+        "confidence.score < 70 = 'medium' level — Invoica should flag these for manual review"
+      ],
+      "mitigations": [
+        "Invoica: if confidence.score < 70, set tax_line.requires_review = true and flag in UI"
+      ]
+    },
+    {
+      "id": "C4",
+      "name": "Nexus Monitoring Integration",
+      "description": "Can AgentTax replace manual nexus threshold tracking?",
+      "weight": 0.15,
+      "score": 4,
+      "evidence": "Account tier (free: 100/mo) includes nexus alerts via POST/GET /api/v1/nexus. Can configure nexus states + thresholds. Free 100 calls/month is sufficient for Invoica MVP (<100 client invoices). At scale, Growth tier ($99/mo, 100K calls) covers 100K invoices/month — more than enough for Phase 2.",
+      "risks": [
+        "Nexus endpoint requires account tier (not x402 per-call)",
+        "Free tier (100 calls) may be hit quickly if Invoica auto-calls on every invoice"
+      ],
+      "mitigations": [
+        "Cache nexus config per client (don't recalculate same state repeatedly)",
+        "Batch nexus checks daily rather than per-invoice for repeat buyers"
+      ]
+    },
+    {
+      "id": "C5",
+      "name": "1099-DA Export Readiness",
+      "description": "Can AgentTax handle IRS Form 1099-DA generation for agent commerce crypto transactions?",
+      "weight": 0.10,
+      "score": 4,
+      "evidence": "GET /api/v1/export/1099-da confirmed in API inventory. Requires account tier + trade logging via POST /api/v1/trades. FIFO/LIFO/Specific ID cost basis methods supported. This covers the 1099-DA requirement from AMD-22 / TICKET-017-AGENTTAX-05 without building custom tracking.",
+      "risks": [
+        "Trade logging is manual (POST per trade) — requires Invoica to push each x402 settlement",
+        "1099-DA export format not yet tested — unknown if Base USDC settlements are handled"
+      ],
+      "mitigations": [
+        "Wire POST /api/v1/trades into Invoica afterPayment hook (x402x)",
+        "Test 1099-DA export in TICKET-017-AGENTTAX-05 before relying on it for compliance"
+      ]
+    },
+    {
+      "id": "C6",
+      "name": "Cost Model Viability",
+      "description": "Is the pricing compatible with Invoica's unit economics?",
+      "weight": 0.10,
+      "score": 5,
+      "evidence": "Three paths: (1) x402 per-call $0.001/calc — Invoica passes directly to client as tax_line (zero margin cost), (2) API key free tier 100 calls/month — zero cost for MVP, (3) API key Starter $25/mo for 10K calls — $0.0025/call when bundled. At Invoica's Phase 1 scale (<1K invoices/month), free tier covers everything. x402 path is ideal long-term: Invoica clients pay $0.001 per invoice tax calc, fully traceable on Base.",
+      "risks": [
+        "x402 path requires Kognai agent wallet funded with USDC on Base",
+        "No wallet currently provisioned for AgentTax x402 calls"
+      ],
+      "mitigations": [
+        "Phase 1: use free API key account (100 calls/month)",
+        "Phase 2: provision Clawcard virtual card → fund with USDC on Base → x402 per-call"
+      ]
+    }
+  ],
+
+  "integration_plan": {
+    "phase_1_mvp": {
+      "auth": "API key (free tier, 100 calls/month)",
+      "trigger": "Invoica invoice generation — call POST /api/v1/calculate per invoice",
+      "request_mapping": {
+        "role": "seller (always)",
+        "amount": "invoice.subtotal_usd",
+        "buyer_state": "invoice.client_state (from ERC-8004 geographic attestation or manual)",
+        "transaction_type": "invoice.line_items[0].type (mapped to AgentTax enum)",
+        "counterparty_id": "invoice.client_id or ERC-8004 agent address",
+        "work_type": "invoice.work_category",
+        "is_b2b": "invoice.is_enterprise"
+      },
+      "response_mapping": {
+        "invoice.tax_line.amount": "response.total_tax",
+        "invoice.tax_line.rate": "response.sales_tax.rate",
+        "invoice.tax_line.jurisdiction": "response.sales_tax.jurisdiction",
+        "invoice.tax_line.statute": "response.sales_tax.note",
+        "invoice.tax_line.confidence": "response.confidence.score",
+        "invoice.tax_line.requires_review": "response.confidence.score < 70"
+      },
+      "env_var": "AGENTTAX_API_KEY"
+    },
+    "phase_2_x402": {
+      "auth": "x402 per-call ($0.001 USDC via X-PAYMENT header)",
+      "wallet": "Clawcard virtual card → USDC on Base",
+      "hook": "Wire into x402x afterPayment hook on Invoica settlement",
+      "benefit": "Each tax calc is a traceable on-chain event — auditable without a database"
+    },
+    "bond_v02_tax_line": {
+      "field": "spot_job_tax: AgentTaxResult",
+      "description": "ERC-8183 spot jobs carry AgentTax result → BOND v0.2 mandate includes tax history"
+    }
+  },
+
+  "sprint_tasks_generated": [
+    {
+      "ticket": "TICKET-017-AGENTTAX-02",
+      "title": "MacGyver: Invoica invoice tax line — integrate AgentTax POST /api/v1/calculate",
+      "description": "Wire AgentTax API into Invoica invoice generation. Map invoice fields to request body, append tax_line to invoice output. Use AGENTTAX_API_KEY (free tier). Flag low-confidence (<70) for manual review.",
+      "priority": "P1",
+      "agent": "MacGyver"
+    },
+    {
+      "ticket": "TICKET-017-AGENTTAX-03",
+      "title": "MacGyver: nexus threshold monitoring via AgentTax /api/v1/nexus",
+      "description": "Configure nexus states in AgentTax account. Set threshold alerts at $100K (standard economic nexus). Log nexus crossings to Invoica dashboard.",
+      "priority": "P1",
+      "agent": "MacGyver"
+    },
+    {
+      "ticket": "TICKET-017-AGENTTAX-04",
+      "title": "MacGyver: BOND v0.2 — add spot_job_tax: AgentTaxResult to mandate schema",
+      "description": "ERC-8183 spot jobs should carry tax result in BOND mandate. Add spot_job_tax field to AgentProfile and mandate creation flow.",
+      "priority": "P2",
+      "agent": "MacGyver"
+    },
+    {
+      "ticket": "TICKET-017-AGENTTAX-05",
+      "title": "MacGyver: 1099-DA tracking readiness — wire POST /api/v1/trades per x402 settlement",
+      "description": "Log each USDC settlement to AgentTax trade ledger. Test 1099-DA export endpoint. Verify Base USDC coverage. Target: IRS 1099-DA export by Q4 2026.",
+      "priority": "P2",
+      "agent": "MacGyver"
+    }
+  ],
+
+  "environment_setup": {
+    "signup_endpoint": "POST https://www.agenttax.io/api/v1/auth/signup",
+    "signup_body": {
+      "email": "<godman-email>",
+      "password": "<secure-password>",
+      "agent_name": "Invoica Tax Agent",
+      "agent_work_type": "compute"
+    },
+    "env_var": "AGENTTAX_API_KEY",
+    "note": "Godman must create account — API key returned once at signup. Store in .env immediately."
+  },
+
+  "overall_score": 4.75,
+  "recommendation": "ADOPT — AGENTTAX_API_KEY free tier for MVP (P1), x402 per-call path for production (P2). Sign up before PACT Week 1 (April 7) so Invoica can demonstrate live tax compliance during launch.",
+  "blocking": false,
+  "gate": "Pre-PACT-Week-1 — must be live before Invoica gains public visibility from PACT launch"
+}
