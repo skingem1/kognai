@@ -41,6 +41,17 @@ try { require('dotenv').config({ path: join(ROOT, '.env') }); } catch {}
 // ── Avatar creator rotation ──────────────────────────
 
 const AVATAR_CREATORS = ['Jason', 'Kate', 'Jake', 'Kira', 'Luke', 'Selene', 'Ethan', 'Liam'];
+// Sprint 1483: TTS voice pool — each creator maps to a distinct edge-tts voice for avatar alternation
+const CREATOR_VOICE_MAP: Record<string, string> = {
+  Jason:  'en-US-JasonNeural',
+  Kate:   'en-US-AriaNeural',
+  Jake:   'en-US-GuyNeural',
+  Kira:   'en-US-JennyNeural',
+  Luke:   'en-US-TonyNeural',
+  Selene: 'en-US-SaraNeural',
+  Ethan:  'en-US-DavisNeural',
+  Liam:   'en-US-EricNeural',
+};
 const CREATOR_STATE_PATH = join(WORKSPACE, '.creator-rotation.json');
 
 function getNextCreator(): string {
@@ -271,7 +282,7 @@ async function generateAvatar(monologue: string, outPath: string, creator: strin
     video_inputs: [{
       character: { type: 'avatar', avatar_id: avatarInfo.avatarId, avatar_style: 'normal' },
       voice: { type: 'text', input_text: monologue, voice_id: avatarInfo.voiceId },
-      background: { type: 'color', value: '#1a2332' },
+      background: { type: 'color', value: '#00b140' },  // chroma-green — keyed out in overlayNeonLogo
     }],
     dimension: { width: 1080, height: 1920 },
   });
@@ -328,7 +339,7 @@ async function generateAvatar(monologue: string, outPath: string, creator: strin
 
 // ── Step 2b: TTS fallback (ElevenLabs voiceover + dark background) ──
 
-async function generateTTSBackbone(monologue: string, outPath: string): Promise<void> {
+async function generateTTSBackbone(monologue: string, outPath: string, voice?: string): Promise<void> {
   console.log(`🎤 Generating TTS backbone (ElevenLabs + gradient bg)...`);
 
   const audioPath = outPath.replace('.mp4', '_tts.mp3');
@@ -364,7 +375,7 @@ async function generateTTSBackbone(monologue: string, outPath: string): Promise<
   if (!audioGenerated) {
     try {
       execSync("python3 -c \"import edge_tts\"", { stdio: 'pipe', timeout: 5000 });
-      const EDGE_VOICE = process.env.EDGE_TTS_VOICE || 'en-US-JennyNeural';
+      const EDGE_VOICE = voice || process.env.EDGE_TTS_VOICE || 'en-US-JennyNeural';
       const edgeText = monologue.slice(0, 2000);
       const pyCode = `import asyncio, edge_tts; asyncio.run(edge_tts.Communicate(${JSON.stringify(edgeText)}, "${EDGE_VOICE}").save(${JSON.stringify(audioPath)}))`;
       execSync(`python3 -c '${pyCode.replace(/'/g, "'\\''")}'`, { stdio: 'pipe', timeout: 60000 });
@@ -423,35 +434,66 @@ async function generateTTSBackbone(monologue: string, outPath: string): Promise<
 
 // ── Step 2b: Overlay Kognai neon logo (cosmetic brand, "sign on the wall") ──
 //
-// Composites the fluorescent teal KOGNAI neon PNG into the dark background
-// area of the HeyGen avatar video. Positioned upper-centre (~y=140) so it
-// reads as a glowing neon sign on the wall behind the presenter.
-// Opacity: 38% — decorative, not distracting.
-// Falls back to plain avatar if the logo PNG is missing or FFmpeg fails.
+// Two modes:
+//   useChromaKey=true  (HeyGen avatar, green-screen bg #00b140):
+//     - Reconstruct dark bg (#0a0a1a) → logo at y=400 (chest level) → chroma-key avatar at y=200
+//     - Avatar shifts down 200px so face has headroom; logo genuinely behind the person.
+//   useChromaKey=false (TTS backbone, opaque dark bg):
+//     - Simple overlay at y=140 (existing behaviour).
+// Falls back to plain avatar copy if logo PNG is missing or FFmpeg fails.
 
-function overlayNeonLogo(inputPath: string, outputPath: string): void {
+function overlayNeonLogo(inputPath: string, outputPath: string, useChromaKey: boolean = false): void {
   if (!existsSync(NEON_LOGO_PATH)) {
     console.warn('  ⚠️  Neon logo not found — skipping brand overlay');
     execSync(`cp "${inputPath}" "${outputPath}"`, { stdio: 'pipe' });
     return;
   }
   console.log('✨ Overlaying Kognai neon logo (fluorescent sign on the wall)...');
-  try {
-    // Scale logo to 480px wide (44% of 1080 frame), centre horizontally,
-    // position at y=140 so it sits in the dark wall area above the avatar head.
-    // colorchannelmixer aa=0.38 multiplies alpha → 38% opacity.
-    execSync(
-      `${FFMPEG} -y -i "${inputPath}" -i "${NEON_LOGO_PATH}" ` +
-      `-filter_complex "[1:v]scale=480:-1,format=rgba,colorchannelmixer=aa=0.38[logo];` +
-      `[0:v][logo]overlay=x=(main_w-overlay_w)/2:y=140" ` +
-      `-c:v libx264 -preset fast -crf 20 -pix_fmt yuv420p ` +
-      `-c:a aac -b:a 128k -ar 44100 -ac 2 "${outputPath}"`,
-      { stdio: 'pipe', timeout: 60000 }
-    );
-    console.log('  ✅ Neon logo overlaid (480px wide, 38% opacity, y=140)');
-  } catch (err: any) {
-    console.warn(`  ❌ Neon overlay failed: ${(err as Error).message?.slice(0, 80)} — plain avatar`);
-    execSync(`cp "${inputPath}" "${outputPath}"`, { stdio: 'pipe' });
+
+  if (useChromaKey) {
+    // Chroma-key pipeline: logo genuinely behind avatar
+    // Layer order: dark background → logo at y=400 → chroma-keyed avatar offset y=200
+    try {
+      const duration = parseFloat(
+        execSync(
+          `${FFPROBE} -v quiet -show_entries format=duration -of csv=p=0 "${inputPath}"`,
+          { encoding: 'utf-8' }
+        ).trim()
+      ) || 30;
+      execSync(
+        `${FFMPEG} -y -i "${inputPath}" -i "${NEON_LOGO_PATH}" ` +
+        `-filter_complex ` +
+        `"color=c=0x0a0a1a:s=1080x1920:d=${(duration + 1).toFixed(1)}:r=30,format=yuv420p[bg];` +
+        `[1:v]scale=480:-1,format=rgba,colorchannelmixer=aa=0.38[logo];` +
+        `[bg][logo]overlay=x=(main_w-overlay_w)/2:y=400[bg_logo];` +
+        `[0:v]chromakey=color=0x00b140:similarity=0.35:blend=0.05[av_keyed];` +
+        `[bg_logo][av_keyed]overlay=0:200[vout]" ` +
+        `-map "[vout]" -map "0:a" ` +
+        `-c:v libx264 -preset fast -crf 20 -pix_fmt yuv420p ` +
+        `-c:a aac -b:a 128k -ar 44100 -ac 2 -shortest "${outputPath}"`,
+        { stdio: 'pipe', timeout: 120000 }
+      );
+      console.log('  ✅ Neon logo composited behind avatar (chroma-key, avatar shifted down 200px)');
+    } catch (err: any) {
+      console.warn(`  ❌ Chroma-key composite failed: ${(err as Error).message?.slice(0, 80)} — plain avatar`);
+      execSync(`cp "${inputPath}" "${outputPath}"`, { stdio: 'pipe' });
+    }
+  } else {
+    // Simple overlay for TTS backbone (opaque dark background, no person to key)
+    try {
+      execSync(
+        `${FFMPEG} -y -i "${inputPath}" -i "${NEON_LOGO_PATH}" ` +
+        `-filter_complex "[1:v]scale=480:-1,format=rgba,colorchannelmixer=aa=0.38[logo];` +
+        `[0:v][logo]overlay=x=(main_w-overlay_w)/2:y=140" ` +
+        `-c:v libx264 -preset fast -crf 20 -pix_fmt yuv420p ` +
+        `-c:a aac -b:a 128k -ar 44100 -ac 2 "${outputPath}"`,
+        { stdio: 'pipe', timeout: 60000 }
+      );
+      console.log('  ✅ Neon logo overlaid (480px wide, 38% opacity, y=140)');
+    } catch (err: any) {
+      console.warn(`  ❌ Neon overlay failed: ${(err as Error).message?.slice(0, 80)} — plain avatar`);
+      execSync(`cp "${inputPath}" "${outputPath}"`, { stdio: 'pipe' });
+    }
   }
 }
 
@@ -917,12 +959,14 @@ async function produceVlog(topic: string, mode: 'avatar' | 'tts' = 'avatar'): Pr
   const runDir = join(WORKSPACE, 'vlog-runs', runId);
   mkdirSync(join(runDir, 'broll'), { recursive: true });
 
-  const creator = mode === 'avatar' ? getNextCreator() : 'TTS';
+  // Sprint 1483: Always rotate creator so TTS voice alternates per run (simulates avatar alternation)
+  const creator = getNextCreator();
+  const ttsVoice = CREATOR_VOICE_MAP[creator] || 'en-US-JennyNeural';
 
   console.log(`\n${'='.repeat(50)}`);
   console.log(`Vlog Producer — ${runId}`);
   console.log(`Topic: ${topic}`);
-  console.log(`Mode: ${mode}${mode === 'avatar' ? ` (Avatar: ${creator})` : ' (ElevenLabs)'}`);
+  console.log(`Mode: ${mode} (Creator: ${creator}, Voice: ${ttsVoice})`);
   console.log(`${'='.repeat(50)}\n`);
 
   const startTime = Date.now();
@@ -933,21 +977,24 @@ async function produceVlog(topic: string, mode: 'avatar' | 'tts' = 'avatar'): Pr
 
   // 2. Generate backbone video (avatar or TTS)
   const avatarPath = join(runDir, 'avatar.mp4');
+  let usedHeyGen = false;
   if (mode === 'tts') {
-    await generateTTSBackbone(script.full_monologue, avatarPath);
+    await generateTTSBackbone(script.full_monologue, avatarPath, ttsVoice);
   } else {
     // Sprint 1334: Fall back to TTS backbone if HeyGen is unavailable
     try {
       await generateAvatar(script.full_monologue, avatarPath, creator);
+      usedHeyGen = true;
     } catch (avatarErr: any) {
       console.warn(`[produce-vlog] HeyGen failed (${avatarErr.message?.slice(0, 80)}) — falling back to TTS backbone`);
-      await generateTTSBackbone(script.full_monologue, avatarPath);
+      await generateTTSBackbone(script.full_monologue, avatarPath, ttsVoice);
     }
   }
 
   // 2b. Overlay Kognai neon logo behind avatar ("sign on the wall" branding)
+  // useChromaKey=true when HeyGen succeeded (green screen bg) so logo is genuinely behind the avatar
   const avatarBrandedPath = join(runDir, 'avatar_branded.mp4');
-  overlayNeonLogo(avatarPath, avatarBrandedPath);
+  overlayNeonLogo(avatarPath, avatarBrandedPath, usedHeyGen);
   const avatarForComposite = existsSync(avatarBrandedPath) ? avatarBrandedPath : avatarPath;
 
   // 3. Generate B-roll cutaways
