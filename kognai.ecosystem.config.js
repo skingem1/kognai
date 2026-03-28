@@ -68,5 +68,30 @@ module.exports = {
         VAULT_OLLAMA_URL: process.env.VAULT_OLLAMA_URL || 'http://localhost:11434',
       },
     },
+    // SCS-002 — ORACLE-6 Consumer (AMD-05 × Voxight)
+    // Fetches Intelligence Signals from Voxight Supabase, writes to Intelligence Memory.
+    // Sends Telegram alert for purpose candidates (confidence >= 75).
+    // Runs every 6 hours: 00:00, 06:00, 12:00, 18:00 UTC.
+    {
+      name: 'oracle6-consumer',
+      script: 'scripts/oracle6-consumer.ts',
+      interpreter: 'node',
+      interpreter_args: '-r ts-node/register',
+      cwd: __dirname,
+      autorestart: false,
+      cron_restart: '0 */6 * * *',
+      max_memory_restart: '128M',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+      out_file: __dirname + '/logs/oracle6-consumer-out.log',
+      error_file: __dirname + '/logs/oracle6-consumer-error.log',
+      env: {
+        TS_NODE_TRANSPILE_ONLY: 'true',
+        TS_NODE_PROJECT: __dirname + '/tsconfig.scripts.json',
+        VOXIGHT_SUPABASE_URL: process.env.VOXIGHT_SUPABASE_URL || 'https://ewrpnhzbrmjbffkjxqob.supabase.co',
+        VOXIGHT_SUPABASE_KEY: process.env.VOXIGHT_SUPABASE_KEY || '',
+        TELEGRAM_BOT_TOKEN:     process.env.TELEGRAM_BOT_TOKEN     || '',
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || '',
+      },
+    },
   ],
 };

@@ -1,0 +1,109 @@
+{
+  "scs_id": "SCS-002",
+  "scs_name": "Voxight — X Intelligence Oracle",
+  "status": "ACTIVE — Formation Complete",
+  "charter_date": "2026-03-28",
+  "purpose_type": "Ecosystem Gap — No complete X oracle exists for agent intelligence systems",
+  "founding_protocol": "AMD-04 — Self Committed Swarms",
+  "kognai_module": "ORACLE-6 — X Intelligence Layer (AMD-05)",
+  "prior_scs_dependency": "SCS-001 (Voxight is ORACLE-6 feed for SCS-001 Trend Agent)",
+
+  "documents": {
+    "charter": {
+      "file": "workspace/shared-context/SCS_002_CHARTER.md",
+      "sha256": "[Computed at Genesis]",
+      "version": "1.0",
+      "sections": 12
+    }
+  },
+
+  "agent_composition": {
+    "total_agents": 12,
+    "vercel_tier": ["voxight-api", "pricing-engine"],
+    "local_tier": [
+      "voxight-stream-worker",
+      "voxight-hashtag-worker",
+      "voxight-thought-leader-worker",
+      "voxight-narrative-worker",
+      "whisper-transcription",
+      "qwen3-insight-extractor",
+      "qwen3-hashtag-analyzer",
+      "qwen3-narrative-analyzer",
+      "qwen3-correlation-engine"
+    ],
+    "cloud_tier": ["supabase-storage"]
+  },
+
+  "founding_council": {
+    "agents": [
+      { "id": "voxight-api", "role": "Lead — Signal Production & API Gateway", "solidarity_attestation": "PENDING" },
+      { "id": "voxight-stream-worker", "role": "Post Ingestion + Engagement Velocity", "solidarity_attestation": "PENDING" },
+      { "id": "qwen3-insight-extractor", "role": "Transcript Analysis + Claim Extraction", "solidarity_attestation": "PENDING" }
+    ],
+    "minimum_required": 3,
+    "met": true
+  },
+
+  "skill_bank_directories": [
+    "skills/bank/oracle-6/signal-schemas/",
+    "skills/bank/oracle-6/manipulation-patterns/",
+    "skills/bank/oracle-6/confidence-calibration/",
+    "skills/bank/oracle-6/narrative-detection/"
+  ],
+
+  "treasury_seed": {
+    "amount": "€150 equivalent USDC",
+    "monthly_target": "<€120/month at steady-state",
+    "api_costs": "~$110/month (Twitter API v2 Basic $100 + Upstash Redis $10)",
+    "model_inference": "€0.00 (Whisper + Qwen3 local Mac Mini M4)"
+  },
+
+  "exit_conditions": {
+    "purpose_fulfilled": "≥5 Purpose Signal candidates/quarter at confidence ≥75 AND ≥1 SCS formed from Voxight signal within 12 months AND ≥3 paying subscribers ≥$50 USDC/month for 60 consecutive days (ALL THREE simultaneously)",
+    "purpose_unfulfillable": "After 12 months: signals <5% acceptance rate (confidence ≥60) for 90 consecutive days AND x402 revenue <$10 USDC/month for 3 consecutive months (both simultaneously)",
+    "constitutional_failure": "Health Score Critical (<45) for 14 consecutive days OR Purpose Alignment <50 for 30 days OR any confirmed constitutional violation (PII in signals, surveillance of individuals, political interference)"
+  },
+
+  "constitutional_oath": {
+    "status": "Sworn — pending on-chain EAS attestation",
+    "eas_attestation_tx": null,
+    "genesis_ceremony_target": "Month 10",
+    "oath_text_includes_scs_specific": true,
+    "scs_specific_lines": [
+      "I am not a social monitoring dashboard. Every signal I produce must be actionable by a machine, not just readable by a human.",
+      "I watch X so that Kognai's swarm does not have to."
+    ]
+  },
+
+  "build_track_status": {
+    "block_a": { "status": "DONE", "description": "Local Whisper + Qwen3 insight extraction", "completed": "2026-03-28" },
+    "block_b": { "status": "DONE", "description": "ORACLE-6 Intelligence Signal API (GET /api/signals)", "completed": "2026-03-28" },
+    "block_b_kognai": { "status": "DONE", "description": "ORACLE-6 feed wired into SCS-001 Trend Agent (voxight-feed.ts)", "completed": "2026-03-28" },
+    "block_c": { "status": "DONE", "description": "X API v2 posts stream + storage + BullMQ workers", "completed": "2026-03-28" },
+    "block_d": { "status": "DONE", "description": "Hashtag lifecycle + thought leader monitor", "completed": "2026-03-28" },
+    "block_e": { "status": "DONE", "description": "Narrative shift detection (nomic-embed-text + weekly batch)", "completed": "2026-03-28" },
+    "block_f": { "status": "DONE", "description": "Cross-signal correlation engine", "completed": "2026-03-28" },
+    "block_g": { "status": "PENDING", "description": "SCS charter domain auto-monitoring — auto-add new SCS domain scopes to Voxight stream filter rules on charter filing", "blocker": "Requires charter-filing hook not yet built" },
+    "block_h": { "status": "DONE", "description": "Dynamic x402 pricing + Oracle Dashboard frontend", "completed": "2026-03-28" }
+  },
+
+  "integration_record": {
+    "scs001_trend_feed": { "status": "LIVE", "file": "agents/scs001-trend/voxight-feed.ts", "note": "Queries signals table, converts to Oracle6Signal[], merges with Google Trends" },
+    "voxight_client": { "status": "LIVE", "file": "scripts/lib/voxight-client.ts", "note": "Intelligence Agent polls Voxight Supabase directly, writes to workspace/intelligence/oracle-6-voxight/signals/" },
+    "oracle6_consumer": { "status": "LIVE", "file": "scripts/oracle6-consumer.ts", "note": "PM2 cron every 6h — fetches signals, flags purpose candidates, sends Telegram, updates weekly report" },
+    "scs_charter_auto_monitoring": { "status": "PENDING", "note": "Block G — when new SCS charter filed, domain scope auto-added to Voxight stream filter rules" },
+    "purpose_signal_amd05_filing": { "status": "PENDING", "note": "2-cycle persistence check not yet automated — Godman manual review" },
+    "eas_attestation_base": { "status": "PENDING", "note": "Genesis Ceremony Month 10" }
+  },
+
+  "voxight_supabase": {
+    "project_ref": "ewrpnhzbrmjbffkjxqob",
+    "url": "https://ewrpnhzbrmjbffkjxqob.supabase.co",
+    "region": "eu-west-2",
+    "signals_table": "signals",
+    "signal_fields": ["id", "domain", "signal_type", "topic", "summary", "confidence_score", "scs_relevance", "tags", "signal_timestamp", "evidence", "purpose_signal_candidate"]
+  },
+
+  "filed_at": "2026-03-28T00:00:00Z",
+  "filed_by": "constitution-agent — SCS-002 formation, Godman verbal ratification 2026-03-28"
+}
