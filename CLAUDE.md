@@ -52,6 +52,7 @@ Kognai is a sovereign AI runtime that powers multiple products via a shared agen
 8. **Summer Yu rule** — safety constraints must be in bootstrap files (AGENTS.md, SOUL.md, policy/*.txt), NEVER chat-only. They must survive context compaction.
 9. **Kill switches** — respect non-negotiable triggers: account banned, <500 views/30 posts, retention <20% after 2 fixes, approval <80%, memory >22GB, >6h/day oversight
 10. **Shared changes → update shared-infra.md** — infra changes OR reusable code written/modified → update so Invoica session stays in sync
+11. **Harvey reads intel-briefs index first** — before starting any research task, read `workspace/intel/intel-briefs.md` to check existing briefs and staleness dates. See full protocol in `rules/intel-briefs.md`.
 
 ## RELATIONSHIP TO INVOICA
 
