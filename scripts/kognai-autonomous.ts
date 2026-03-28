@@ -204,7 +204,7 @@ function generateSprintFile(item: QueueItem): string {
   const sprint: SprintFile = {
     sprint_id:     `sprint-${sprintId}`,
     title:         item.title || `Sprint ${sprintId}`,
-    source:        'queue-auto-generated',
+    source:        'queue-prescribed',
     generated_by:  'kognai-autonomous',
     generated_at:  new Date().toISOString(),
     tasks: [
