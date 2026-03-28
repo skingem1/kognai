@@ -1,0 +1,304 @@
+{
+  "eval_id": "eval-015",
+  "name": "Trust Zones x402 MCP Compile Test",
+  "agent": "MacGyver",
+  "date": "2026-03-28",
+  "ticket": "TICKET-020",
+  "blocks": "TICKET-020 Godman decision on PACT Chamber 4 third output type",
+
+  "repo_status": {
+    "url": "github.com/spengrah/synthesis-hackathon",
+    "is_locally_cloned": false,
+    "package_json_found": true,
+    "x402_service_path": "packages/x402-service/",
+    "npm_published": false,
+    "audit_status": "none",
+    "hackathon_date": "2026-03-13 to 2026-03-22",
+    "monorepo_packages": [
+      "agents", "bonfires", "cli", "compiler", "contracts",
+      "e2e", "ponder", "sdk", "skill", "viz", "x402-service"
+    ],
+    "package_name": "@trust-zones/x402-service",
+    "package_version": "0.0.0",
+    "workspace_dependencies": ["@trust-zones/compiler", "@trust-zones/sdk"],
+    "notes": "Private monorepo (private: true). No npm-published packages. All packages use workspace:* protocol. Cannot install via npm without forking or cloning the full repo."
+  },
+
+  "compile_tool": {
+    "tool_name": "compile",
+    "x402_price_usdc": 0.01,
+    "network": "Base Sepolia (eip155:84532)",
+    "network_env_var": "X402_NETWORK",
+    "input_arg_name": "tzSchemaDoc",
+    "input_type": "TZSchemaDocument",
+    "output_fields": ["proposalData", "termsHash"],
+    "output_validation": {
+      "proposalData": "hex string matching /^0x/, length > 10 (ABI-encoded calldata)",
+      "termsHash": "hex string matching /^0x/ (32-byte keccak256 hash)"
+    },
+    "available_tools": ["compile", "decompile", "encode", "graphql", "staking_info", "ping"],
+    "all_tools_with_pricing": {
+      "compile": "$0.01 — compile TZSchemaDocument to ABI-encoded ProposalData",
+      "decompile": "$0.01 — reverse: ABI-encoded data back to schema",
+      "encode": "$0.005 — generate submitInput() calldata",
+      "decode_event": "$0.005 — parse contract event logs",
+      "graphql": "$0.005 — query Ponder GraphQL API",
+      "explain": "$0.01 — summarize agreement state in natural language",
+      "staking_info": "$0.005 — retrieve eligibility module staking details",
+      "ping": "free — health check, returns server name + version + tool list"
+    },
+    "error_cases": ["Unsupported schema version"],
+    "schema_version_constant": "0.1.0",
+    "payment_facilitators": ["Coinbase CDP (primary)", "custom FACILITATOR_URL (fallback)"],
+    "transport": "StreamableHTTP at /mcp endpoint",
+    "server_name": "trust-zones",
+    "server_version": "0.1.0"
+  },
+
+  "schema_types": {
+    "TZSchemaDocument": {
+      "version": "string (required, must be '0.1.0')",
+      "termsDocUri": "string (optional, URI to off-chain terms document)",
+      "zones": "ZoneSchema[] (required)",
+      "adjudicator": "AdjudicatorSchema (required)",
+      "deadline": "number (required, Unix timestamp)"
+    },
+    "ZoneSchema": {
+      "actor": "ActorSchema (required)",
+      "maxActors": "number (required)",
+      "description": "string (required)",
+      "constraints": "MechanismEntry[] (optional)",
+      "eligibilities": "MechanismEntry[] (optional)",
+      "incentives": "MechanismEntry[] (optional)",
+      "permissions": "PermissionEntry[] (optional)",
+      "responsibilities": "ResponsibilityEntry[] (optional)",
+      "directives": "DirectiveEntry[] (optional)"
+    },
+    "ActorSchema": {
+      "address": "Address (EVM hex address)",
+      "agentId": "number (numeric agent identifier)"
+    },
+    "AdjudicatorSchema": "union: { template: string } | { address: Address }",
+    "PermissionEntry": {
+      "resource": "string (required, resource identifier)",
+      "value": "bigint | number | string (optional, rate limit value)",
+      "period": "string (optional, e.g. 'day', 'hour')",
+      "expiry": "number (optional, Unix timestamp)",
+      "params": "Record<string, unknown> | Hex (optional)"
+    },
+    "DirectiveEntry": {
+      "rule": "string (required, human-readable rule text)",
+      "severity": "string (optional, e.g. 'severe', 'critical', 'high')",
+      "params": "Record<string, unknown> (optional)"
+    },
+    "ResponsibilityEntry": {
+      "obligation": "string (required)",
+      "criteria": "string (optional)",
+      "deadline": "number (optional, Unix timestamp)"
+    }
+  },
+
+  "test_schema_from_repo": {
+    "description": "Exact schema used in packages/x402-service/test/http-transport.test.ts compile test",
+    "schema_document": {
+      "version": "0.1.0",
+      "zones": [
+        {
+          "actor": {
+            "address": "0xFBEE1e3d2c4488CbFfd2E2b9Cae7C7e2D56b0aA4",
+            "agentId": 1
+          },
+          "maxActors": 1,
+          "description": "Zone A",
+          "permissions": [
+            { "resource": "tweet-post", "value": 10, "period": "day" }
+          ],
+          "directives": [
+            { "rule": "Do not spam", "severity": "severe" }
+          ]
+        },
+        {
+          "actor": {
+            "address": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "agentId": 2
+          },
+          "maxActors": 1,
+          "description": "Zone B",
+          "permissions": [
+            { "resource": "data-api-read", "value": 100, "period": "hour" }
+          ],
+          "directives": [
+            { "rule": "Do not redistribute data", "severity": "severe" }
+          ]
+        }
+      ],
+      "adjudicator": { "address": "0x0000000000000000000000000000000000000000" },
+      "deadline": 1711000000
+    },
+    "expected_outputs": {
+      "proposalData": "hex string starting with 0x, length > 10",
+      "termsHash": "hex string starting with 0x"
+    }
+  },
+
+  "pact_compatibility_schema": {
+    "description": "PACT Chamber 4 compliance agreement: Kognai agent granted capability by Invoica service, with enforceable constraints on invoice_create and payment_receive operations",
+    "design_notes": [
+      "Zone 0 = Invoica (capability grantor, the party defining what is permitted)",
+      "Zone 1 = Kognai agent (capability recipient, the party operating under constraints)",
+      "Adjudicator = Kognai perm-judge (EVM address placeholder — replace with actual perm-judge contract address at Sprint 535)",
+      "deadline = Unix timestamp 30 days from schema creation (1745107200 = approx May 2026)",
+      "directives encode PACT behavioral constraints as Trust Zones rules",
+      "params on directives encode structured constraint data (max_calls_per_day, max_amount_usdc)",
+      "termsDocUri should point to the PACT session attestation URI once Chamber 4 is live"
+    ],
+    "schema_document": {
+      "version": "0.1.0",
+      "termsDocUri": "ipfs://QmPACTChamber4KognaiInvoica",
+      "zones": [
+        {
+          "actor": {
+            "address": "0x0000000000000000000000000000000000000001",
+            "agentId": 1001
+          },
+          "maxActors": 1,
+          "description": "Invoica Service — capability grantor. Grants invoice_create and payment_receive to the Kognai agent under defined constraints.",
+          "permissions": [
+            {
+              "resource": "invoice_create",
+              "value": 1000,
+              "period": "day",
+              "params": { "max_amount_usdc": 500, "currency": "USDC" }
+            },
+            {
+              "resource": "payment_receive",
+              "value": 1000,
+              "period": "day",
+              "params": { "max_amount_usdc": 500, "currency": "USDC" }
+            }
+          ],
+          "directives": [
+            {
+              "rule": "Invoica must process all valid Kognai agent requests within 5 seconds",
+              "severity": "high",
+              "params": { "sla_seconds": 5 }
+            }
+          ]
+        },
+        {
+          "actor": {
+            "address": "0x0000000000000000000000000000000000000002",
+            "agentId": 2001
+          },
+          "maxActors": 1,
+          "description": "Kognai Agent — capability recipient. Operates under must_log_all_calls and must_not_exceed_daily_limit constraints.",
+          "permissions": [
+            {
+              "resource": "invoice_create",
+              "value": 1000,
+              "period": "day",
+              "params": { "max_amount_usdc": 500 }
+            },
+            {
+              "resource": "payment_receive",
+              "value": 1000,
+              "period": "day",
+              "params": { "max_amount_usdc": 500 }
+            }
+          ],
+          "directives": [
+            {
+              "rule": "must_log_all_calls: Every invoice_create and payment_receive call must produce an AAR log entry",
+              "severity": "high",
+              "params": {
+                "directive_id": "must_log_all_calls",
+                "target_resources": ["invoice_create", "payment_receive"],
+                "log_destination": "aar-middleware"
+              }
+            },
+            {
+              "rule": "must_not_exceed_daily_limit: Agent must not exceed 1000 calls per day or $500 USDC total per day",
+              "severity": "critical",
+              "params": {
+                "directive_id": "must_not_exceed_daily_limit",
+                "max_calls_per_day": 1000,
+                "max_amount_usdc": 500,
+                "enforcement": "transaction-revert"
+              }
+            }
+          ],
+          "responsibilities": [
+            {
+              "obligation": "Agent must submit AAR receipt hash to perm-judge within 60 seconds of each call",
+              "criteria": "receipt_hash matches on-chain AARMiddleware JSONL entry",
+              "deadline": 60
+            }
+          ]
+        }
+      ],
+      "adjudicator": {
+        "address": "0x0000000000000000000000000000000000000003"
+      },
+      "deadline": 1745107200
+    },
+    "placeholder_addresses_to_replace": {
+      "zone_0_invoica": "0x0000000000000000000000000000000000000001 → replace with Invoica service wallet",
+      "zone_1_kognai_agent": "0x0000000000000000000000000000000000000002 → replace with Kognai agent ERC-8004 identity address (from CHAIN_REGISTRY.json)",
+      "adjudicator": "0x0000000000000000000000000000000000000003 → replace with perm-judge contract address on Base Sepolia",
+      "termsDocUri": "replace with IPFS CID of PACT session transcript or attestation"
+    }
+  },
+
+  "pact_chamber4_assessment": {
+    "integration_viable": true,
+    "integration_readiness": "deferred_pending_audit",
+    "sprint_insertion_point": "Sprint 535-536 (PACT Chamber 4 build) — Trust Zones as optional third output type, not blocking",
+    "routing_decision": {
+      "x402_spot": "one-off API calls — single payment, no ongoing relationship, no capability grant",
+      "bond_mandate": "recurring billing — subscription or installment mandates, EIP-712 + EAS attestation",
+      "trust_zones": "capability delegation with enforceable constraints — grants specific resource access with rate limits, directives that auto-revert at transaction level on violation"
+    },
+    "differentiation_from_acp": {
+      "acp_model": "Violation detection is post-hoc: ACP score reduction after the fact",
+      "trust_zones_model": "Violation prevention is at transaction level: Rhinestone HookMultiPlexer reverts the transaction before it settles",
+      "implication": "Trust Zones is stronger than ACP for enforceable constraints. ACP score still needed for agent reputation across sessions. These are complementary."
+    },
+    "gaps_vs_current_pact": [
+      "PACT Chamber 4 (Soul Handshake) currently outputs only session attestation + Helixa score update — no capability grant mechanism",
+      "No current PACT output type for structured resource permissions with rate limits (PermissionEntry model not in PACT spec v1)",
+      "PACT spec v1 has no concept of enforcement via transaction revert — only ACP score penalty",
+      "Trust Zones adjudicator address must be a deployed EVM contract — perm-judge is currently not deployed on-chain",
+      "PACT Chamber 4 spec references Helixa Cred Score API but not Trust Zones schema compilation",
+      "No current mechanism in PACT to anchor termsHash (Trust Zones output) to EAS attestation (AMD-19 output)"
+    ],
+    "changes_needed": [
+      "PACT spec v1 amendment: Add Section 4.3 'Capability Delegation Output' — optional third output type alongside x402 receipt and BOND mandate",
+      "Chamber 4 Soul Handshake: After Helixa score check, if score >= 70 (STANDARD ceiling), offer Trust Zones capability grant as alternative to plain session attestation",
+      "New PACT field: session.trustZonesTermsHash (hex) — populated when capability delegation output is selected",
+      "perm-judge must be deployed as an EVM contract on Base Sepolia to serve as adjudicator (Sprint 535 dependency)",
+      "AAR middleware integration: termsHash anchored in AAR log entry for PACT sessions that use Trust Zones output",
+      "EAS integration (AMD-19): New EAS schema for Trust Zones capability grant — attests {sessionId, termsHash, proposalData, adjudicator}",
+      "Kognai agent ERC-8004 addresses (from CHAIN_REGISTRY.json) must be used as zone actor addresses — no placeholder zeros in production"
+    ],
+    "timeline_risk": "MEDIUM-HIGH. Trust Zones is a hackathon prototype (0.0.0 version, no audit, no npm release). Core compilation logic appears functional (test passes with real hex output), but the Rhinestone HookMultiPlexer enforcement mechanism is unaudited. Integrating into PACT Chamber 4 before an audit introduces smart contract risk to PACT sessions. Recommend deferring hard dependency on Trust Zones enforcement until audit announcement. PACT spec amendment can be drafted now (no cost), but Sprint 535-536 should treat Trust Zones as optional/experimental output type rather than required path.",
+    "monitoring_signals": [
+      "npm publish: watch for @trust-zones/compiler and @trust-zones/x402-service on npmjs.com — currently not published",
+      "Audit announcement: watch spengrah GitHub and Hats Protocol Twitter/X for security audit engagement (Trail of Bits, OpenZeppelin, or Cantina)",
+      "Rhinestone HookMultiPlexer audit status: check rhinestone.wtf — this is the enforcement substrate, not Trust Zones itself",
+      "SCHEMA_VERSION bump from 0.1.0: any bump signals breaking change — PACT integration must revalidate",
+      "GitHub stars/activity on synthesis-hackathon repo: low activity post-hackathon = abandoned prototype risk",
+      "Hats Protocol v2 mainnet deployment: Trust Zones depends on Hats for actor eligibility — monitor hatsprotocol.xyz"
+    ],
+    "install_constraint": "Cannot install via npm. Requires full monorepo clone (git clone spengrah/synthesis-hackathon) + pnpm workspace install. All packages are private workspace:* dependencies. This means any integration requires vendor/ directory cloning or waiting for npm publish."
+  },
+
+  "recommendation": {
+    "short_term": "Draft PACT spec amendment adding Section 4.3 Capability Delegation Output (zero cost, no sprint time). Clone synthesis-hackathon into /Users/tarekmnif/kognai/vendor/synthesis-hackathon for offline reference. Do NOT integrate Trust Zones as a hard dependency in Sprint 535-536 until audit exists.",
+    "medium_term": "At Sprint 535-536 (PACT Chamber 4 build), implement Trust Zones as an optional third output type. The schema document structure (TZSchemaDocument) is well-defined and compatible with PACT's existing data model. The compile MCP call at $0.01 is trivial cost. Gate production use on: (1) npm publish OR audited vendor copy, (2) perm-judge EVM contract deployment, (3) Rhinestone HookMultiPlexer audit status confirmed.",
+    "godman_decision_input": "Trust Zones adds genuine value as PACT Chamber 4 third output type: it upgrades capability grants from ACP-score-only enforcement to transaction-level enforcement via Rhinestone HookMultiPlexer. The routing logic (x402=spot, BOND=recurring, TrustZones=capability+constraints) is clean and non-overlapping. The schema model fits naturally — DirectiveEntry maps to PACT behavioral constraints, PermissionEntry maps to resource rate limits already tracked in Invoica. The blocker is prototype maturity: no audit, no npm, version 0.0.0. Recommend: APPROVE as experimental output type in Sprint 535-536 spec, with production gate requiring audit. Add spengrah monitoring to Harvey INTEL queue."
+  },
+
+  "verdict": "VIABLE_DEFERRED",
+
+  "notes": "Repo has 11 packages in monorepo. Tools count from server.ts is 8 (not 6 as stated in INTEL-026 — decode_event and explain are additional tools beyond the 6 in the test). The test file validates 6 tools via listTools() but server.ts registers 8. SCHEMA_VERSION is a constant ('0.1.0') — the compile tool will throw 'Unsupported schema version' for any other value. The test schema uses agentId as a plain number (1, 2) not a large hat ID — the HAT_ID_SENTINEL constant (2^256-1) is only used when hat ID resolution is deferred to contract deployment. The perm-judge adjudicator in the PACT schema uses address form (not template form) since Kognai's perm-judge will be a deployed contract, not a named template in the Trust Zones compiler config."
+}

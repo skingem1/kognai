@@ -1,0 +1,124 @@
+{
+  "eval_id": "eval-016",
+  "name": "Sentinel x402 Per-Agent Spend Governance — Invoica Staging",
+  "agent": "MacGyver",
+  "date": "2026-03-28",
+  "ticket": "TICKET-022",
+
+  "package_status": {
+    "package_name": "@x402sentinel/x402",
+    "version": "0.2.0",
+    "npm_published": true,
+    "release_date": "2026-02-24",
+    "all_versions": ["0.1.0", "0.1.1", "0.1.2", "0.1.3", "0.1.4", "0.2.0"],
+    "install_command": "npm install @x402sentinel/x402",
+    "github_url": "https://github.com/valeo-cash/Sentinel",
+    "author": "Valeo",
+    "license": "MIT",
+    "peer_deps": ["@x402/core >=0.1.0", "@x402/fetch >=0.1.0 (optional)"],
+    "main_api": "wrapWithSentinel(fetch, config) — wraps fetch for automatic x402 payment tracking",
+    "note": "Package IS published on npm. Install command is unblocked."
+  },
+
+  "invoica_integration": {
+    "config_file_created": "/Users/tarekmnif/Documents/Invoica/src/services/sentinel-config.ts",
+    "config_file_lines": 81,
+    "fp007_compliant": true,
+    "integration_approach": "wrapWithSentinel() wraps the fetch instance used inside ClawRouter calls. Each ClawRouter response already surfaces costUsdc (from X-Payment-Amount header via clawrouter-client.ts). Sentinel intercepts at the fetch layer — no changes to orchestrate-agents-v2.ts required for basic policy enforcement. Advanced integration: call buildSentinelConfig(policy) once per agent at orchestrator startup; replace raw fetch with the Sentinel-wrapped variant for that agent's callClawRouter scope.",
+    "hook_point": "scripts/lib/clawrouter-client.ts — wrap the internal httpRequest fetch at module init. Alternatively, instrument the three walletState.spentThisMonth += crResult.costUsdc sites in orchestrate-agents-v2.ts (lines 675, 1438, 1616, 1931) to also call a sentinel trackSpend() side-channel after existing wallet-state save.",
+    "audit_output_path": "logs/sentinel/YYYY-MM-DD.jsonl",
+    "audit_format": "JSONL, one record per x402 payment, HMAC-signed via FileStorage. Each record includes: agentId, endpoint, tx_hash, amount_usdc, policy_result (PASS/WARN/BLOCK), timestamp.",
+    "storage_backend": "FileStorage (local, rotateDaily: true). Upgrade path: ApiStorage → sentinel.valeocash.com dashboard for cross-run aggregation.",
+    "init_order": "1. initSentinelStorage() at orchestrator process start. 2. For each agent task, buildSentinelConfig(policy) to get per-agent config. 3. wrapWithSentinel(fetch, config) scoped to that agent's LLM calls.",
+    "existing_wallet_state": "Invoica already tracks spentThisMonth (monthly, team-level) in logs/wallet/state.json via wallet-state.ts. Sentinel complements this with per-agent DAILY caps and HMAC-signed immutable audit records — not a replacement."
+  },
+
+  "agent_budget_policies": [
+    { "agentId": "macgyver",  "dailyCapUSDC": 50,  "spikeAlertPercent": 20, "spikeWindowMinutes": 30, "maxPerHour": 12.50 },
+    { "agentId": "bloomberg", "dailyCapUSDC": 100, "spikeAlertPercent": 20, "spikeWindowMinutes": 30, "maxPerHour": 25.00 },
+    { "agentId": "sherlock",  "dailyCapUSDC": 25,  "spikeAlertPercent": 30, "spikeWindowMinutes": 60, "maxPerHour": 6.25  },
+    { "agentId": "satoshi",   "dailyCapUSDC": 50,  "spikeAlertPercent": 20, "spikeWindowMinutes": 30, "maxPerHour": 12.50 }
+  ],
+
+  "team_ceiling_usdc": 225,
+  "team_ceiling_note": "Sum of per-agent daily caps = 225 USDC. Enforce via Sentinel team field 'invoica-core' + aggregate query on audit log at day boundary.",
+
+  "sentinel_api_summary": {
+    "core_function": "wrapWithSentinel(fetch, config): typeof fetch",
+    "zero_config_alias": "sentinel(fetch, options?)",
+    "budget_object_keys": ["maxPerCall", "maxPerHour", "maxPerDay", "maxTotal", "spikeThreshold", "allowedEndpoints", "blockedEndpoints", "requireApproval"],
+    "spike_detection": "Flags payments exceeding spikeThreshold × rolling average. spikeThreshold is a numeric multiplier (e.g., 3.0). The spikeAlertPercent in AGENT_BUDGET_POLICIES maps to multiplier via: multiplier = spikeAlertPercent / 10.",
+    "storage_backends": ["MemoryStorage (default)", "FileStorage (local JSONL, HMAC-signed)", "ApiStorage (sentinel.valeocash.com, cross-run dashboard)"],
+    "error_class": "SentinelBudgetError with violation.type and violation.limit fields",
+    "predefined_policies": ["conservativePolicy()", "standardPolicy()", "liberalPolicy()", "unlimitedPolicy()", "customPolicy(overrides)"]
+  },
+
+  "satoshi_treasury_integration": {
+    "audit_trail_format": "JSONL at logs/sentinel/YYYY-MM-DD.jsonl. Each line: { agentId, endpoint, amount_usdc, policy_result, tx_hash, timestamp }. FileStorage writes are HMAC-signed — tamper-evident.",
+    "morning_report_hook": "Satoshi's morning treasury report (run-cfo.ts) should: (1) read logs/sentinel/$(date +%Y-%m-%d).jsonl at startup, (2) aggregate per-agent daily totals, (3) flag any WARN or BLOCK records, (4) compare each agent's total vs dailyCapUSDC from AGENT_BUDGET_POLICIES, (5) compare team total vs TEAM_DAILY_CEILING_USDC=225, (6) include sentinel summary section in Telegram report.",
+    "query_api": "FileStorage supports query by agentId and time range — use audit.query({ agentId: 'satoshi', since: startOfDay }) for per-agent slice.",
+    "export_formats": "CSV and JSON export available via audit logger for monthly reconciliation."
+  },
+
+  "invoica_agent_mapping": {
+    "note": "Invoica uses agent directory names (ceo, cfo, cto, etc.), not the Kognai names. TICKET-022 caps apply to the Kognai swarm agents operating inside the Invoica project scope.",
+    "agentId_mapping": {
+      "macgyver": "Engineering eval + implementation agent (this agent)",
+      "bloomberg": "Market intelligence / research agent",
+      "sherlock": "Quality gate / audit agent (lower cap, longer spike window — expected slow burn)",
+      "satoshi": "CFO treasury agent — also the consumer of audit data"
+    }
+  },
+
+  "env_vars_required": [
+    { "name": "SENTINEL_HMAC_SECRET", "required": true, "description": "Secret key for HMAC-signed audit records. Generate with: openssl rand -hex 32" },
+    { "name": "SENTINEL_SPONSOR_EMAIL", "required": false, "default": "ops@invoica.ai", "description": "Human sponsor email for high-value approval requests" }
+  ],
+
+  "blockers": [],
+
+  "next_steps": [
+    {
+      "step": 1,
+      "id": "SENTINEL-INSTALL",
+      "action": "npm install @x402sentinel/x402",
+      "location": "/Users/tarekmnif/Documents/Invoica/",
+      "note": "Package is published (v0.2.0, 2026-02-24). Unblocked."
+    },
+    {
+      "step": 2,
+      "id": "SENTINEL-ENV",
+      "action": "Add SENTINEL_HMAC_SECRET to .env — generate with: openssl rand -hex 32",
+      "location": "/Users/tarekmnif/Documents/Invoica/.env",
+      "note": "Never hardcode. Required before initSentinelStorage() will work."
+    },
+    {
+      "step": 3,
+      "id": "SENTINEL-WIRE",
+      "action": "In scripts/lib/clawrouter-client.ts: import { wrapWithSentinel } from '@x402sentinel/x402'; import { buildSentinelConfig, AGENT_BUDGET_POLICIES, initSentinelStorage } from '../../src/services/sentinel-config'; export the sentinel-wrapped fetch factory.",
+      "location": "/Users/tarekmnif/Documents/Invoica/scripts/lib/clawrouter-client.ts",
+      "note": "Do NOT modify during eval. Wire in a dedicated sprint to avoid orchestrator regression."
+    },
+    {
+      "step": 4,
+      "id": "SENTINEL-CFO",
+      "action": "Update run-cfo.ts to read logs/sentinel/YYYY-MM-DD.jsonl, aggregate per-agent totals, and include Sentinel section in morning Telegram report.",
+      "location": "/Users/tarekmnif/Documents/Invoica/scripts/run-cfo.ts"
+    },
+    {
+      "step": 5,
+      "id": "SENTINEL-TEST",
+      "action": "Integration test: run a single ClawRouter call through a Sentinel-wrapped fetch, confirm JSONL record written to logs/sentinel/, confirm HMAC signature valid.",
+      "priority": "P1 before production use"
+    },
+    {
+      "step": 6,
+      "id": "SENTINEL-TEAM-CEILING",
+      "action": "Implement team ceiling enforcement: after each individual agent budget check, query aggregate daily spend across all 4 agents. Reject if sum >= TEAM_DAILY_CEILING_USDC (225).",
+      "note": "Can be done in requireApproval hook or via a daily cron that freezes all agents when ceiling is hit."
+    }
+  ],
+
+  "verdict": "READY",
+  "verdict_rationale": "@x402sentinel/x402 v0.2.0 is published on npm (2026-02-24). Policy config file created at /Users/tarekmnif/Documents/Invoica/src/services/sentinel-config.ts (81 lines, valid TypeScript, FP-007 compliant). isSentinelAvailable() gracefully handles pre-install state. No existing Invoica files modified. All four TICKET-022 agent caps encoded. Integration is two steps from live: npm install + wire into clawrouter-client.ts."
+}
