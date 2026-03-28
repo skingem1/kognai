@@ -92,6 +92,145 @@ async function sendTelegram(text: string): Promise<void> {
   });
 }
 
+// ─── Constitutional Filter (Five Principles — Cerberus Airlock) ──────────────
+//
+// Applied to every signal before it enters Intelligence Memory.
+// Source: workspace/shared-context/FIVE_PRINCIPLES.md (binding on all ORACLE-6 signals)
+//
+// Rule 1 — Principle 3 (Protect Dignity & Reduce Suffering):
+//   No signal containing PII or individual targeting enters Intelligence Memory.
+//   Thought-leader signals must be professional-activity only — never personal.
+//
+// Rule 2 — Manipulation Resistance:
+//   Signals showing coordinated amplification, astroturfing, or synthetic origin
+//   are flagged as noise and NOT amplified. They are archived in rejections/.
+//
+// Rejections written to: workspace/intelligence/oracle-6-voxight/rejections/YYYY-MM-DD.json
+
+const PII_PATTERNS = [
+  /\b(home address|personal email|phone number|date of birth|SSN|passport number|medical record|diagnosis|salary|net worth|bank account)\b/i,
+  /\b(location of|whereabouts of|tracking)\b.{0,40}\b(individual|person|user|account|handle)\b/i,
+];
+
+const MANIPULATION_PATTERNS = [
+  /\b(astroturf|bot.?network|coordinated.?inauthentic|synthetic.?amplif|paid.?campaign|sockpuppet|troll.?farm|influence.?operation)\b/i,
+];
+
+const PERSONAL_TARGETING_PATTERN =
+  /\b(harass|dox|stalk|personal life|private address|home address|medical|romantic|family member)\b/i;
+
+export interface ConstitutionalRejection {
+  signal_id:   string;
+  topic:       string;
+  confidence:  number;
+  reason:      'P3_PII_RISK' | 'P3_TARGETING_INDIVIDUAL' | 'MANIPULATION_AMPLIFICATION';
+  detail:      string;
+  rejected_at: string;
+}
+
+function constitutionalFilter(signals: Oracle6DirectSignal[]): {
+  clean:    Oracle6DirectSignal[];
+  rejected: ConstitutionalRejection[];
+} {
+  const clean:    Oracle6DirectSignal[]     = [];
+  const rejected: ConstitutionalRejection[] = [];
+
+  for (const s of signals) {
+    const signalText   = `${s.topic} ${s.summary}`;
+    const evidenceText = JSON.stringify(s.evidence ?? []);
+    const fullText     = `${signalText} ${evidenceText}`;
+
+    // ── Rule 1a: PII in signal content (Principle 3) ─────────────────────────
+    const piiHit = PII_PATTERNS.find(re => re.test(fullText));
+    if (piiHit) {
+      rejected.push({
+        signal_id:   s.signal_id,
+        topic:       s.topic,
+        confidence:  s.confidence,
+        reason:      'P3_PII_RISK',
+        detail:      'PII pattern detected in topic, summary, or evidence — blocked by Principle 3',
+        rejected_at: new Date().toISOString(),
+      });
+      continue;
+    }
+
+    // ── Rule 1b: Individual targeting in thought-leader signals ───────────────
+    if (s.signal_type === 'thought_leader_alert' && PERSONAL_TARGETING_PATTERN.test(fullText)) {
+      rejected.push({
+        signal_id:   s.signal_id,
+        topic:       s.topic,
+        confidence:  s.confidence,
+        reason:      'P3_TARGETING_INDIVIDUAL',
+        detail:      'thought_leader_alert contains personal/non-professional targeting — blocked by Principle 3',
+        rejected_at: new Date().toISOString(),
+      });
+      continue;
+    }
+
+    // ── Rule 2: Manipulation / coordinated amplification ─────────────────────
+    const manipHit = MANIPULATION_PATTERNS.find(re => re.test(fullText));
+    if (manipHit) {
+      rejected.push({
+        signal_id:   s.signal_id,
+        topic:       s.topic,
+        confidence:  s.confidence,
+        reason:      'MANIPULATION_AMPLIFICATION',
+        detail:      'Signal origin shows coordinated or synthetic amplification — not amplified per constitutional mandate',
+        rejected_at: new Date().toISOString(),
+      });
+      continue;
+    }
+
+    clean.push(s);
+  }
+
+  return { clean, rejected };
+}
+
+async function writeRejectionLog(rejected: ConstitutionalRejection[]): Promise<void> {
+  if (rejected.length === 0) return;
+
+  const dateStr   = today();
+  const rejDir    = path.join(INTEL_DIR, 'oracle-6-voxight', 'rejections');
+  const filePath  = path.join(rejDir, `${dateStr}.json`);
+
+  interface RejectionFile {
+    date:           string;
+    updated_at:     string;
+    total_rejected: number;
+    principle:      string;
+    rejections:     ConstitutionalRejection[];
+  }
+
+  const existing = readJSON<RejectionFile>(filePath, {
+    date: dateStr, updated_at: new Date().toISOString(),
+    total_rejected: 0,
+    principle: 'FIVE_PRINCIPLES.md — Principle 3 (Dignity) + Manipulation Resistance',
+    rejections: [],
+  });
+
+  const existingIds = new Set(existing.rejections.map(r => r.signal_id));
+  const newOnes     = rejected.filter(r => !existingIds.has(r.signal_id));
+  if (newOnes.length === 0) return;
+
+  writeJSON(filePath, {
+    ...existing,
+    updated_at:     new Date().toISOString(),
+    total_rejected: existing.total_rejected + newOnes.length,
+    rejections:     [...existing.rejections, ...newOnes],
+  });
+
+  log(`Constitutional filter: ${newOnes.length} signal(s) rejected → ${filePath}`);
+
+  // Telegram alert for rejections (constitutional violations surface immediately)
+  const lines = newOnes.map(r => `• \`${r.reason}\` — ${r.topic}`).join('\n');
+  await sendTelegram(
+    `🛡️ *ORACLE-6 Constitutional Filter*\n` +
+    `${newOnes.length} signal(s) blocked at airlock:\n${lines}\n\n` +
+    `_Rejection log: \`${path.relative(ROOT, filePath)}\`_`
+  );
+}
+
 // ─── Daily Signal File (oracle-6-voxight/signals/YYYY-MM-DD.json) ────────────
 
 interface DailySignalFile {
@@ -288,17 +427,31 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  // 2. Write all signals to Intelligence Memory
+  // 2. Constitutional filter — Five Principles airlock (Principle 3 + Manipulation Resistance)
+  //    Applied before ANYTHING enters Intelligence Memory. Rejected signals never reach Oracle.
+  const { clean: cleanSignals, rejected: rejectedSignals } = constitutionalFilter(result.signals);
+  await writeRejectionLog(rejectedSignals);
+
+  if (rejectedSignals.length > 0) {
+    log(`Airlock: ${result.signal_count} in → ${cleanSignals.length} clean, ${rejectedSignals.length} rejected`);
+  }
+
+  // Replace result payload with constitutionally clean signals only
+  result.signals           = cleanSignals;
+  result.signal_count      = cleanSignals.length;
+  result.purpose_candidates = cleanSignals.filter(s => s.purpose_signal_candidate).length;
+
+  // 3. Write all signals to Intelligence Memory
   await writeIntelligenceMemory(result);
 
-  // 3. Flag purpose signal candidates
+  // 4. Flag purpose signal candidates
   const candidates = result.signals.filter(s => s.purpose_signal_candidate);
   await writePurposeCandidates(candidates);
 
-  // 4. Update weekly report (Mondays only)
+  // 5. Update weekly report (Mondays only)
   await updateWeeklyReport(result);
 
-  // 5. Summary Telegram (only if there are purpose candidates or it's Monday)
+  // 6. Summary Telegram (only if there are purpose candidates or it's Monday)
   if (candidates.length > 0 || isMonday()) {
     const summary =
       `📡 *ORACLE-6 Weekly Digest* — ${today()}\n\n` +
