@@ -4751,7 +4751,11 @@
       "rationale": "Phase 0 IMMEDIATE. ORACLE-6 is running on mock data only. Block A-01: download Space recordings from Voxight API, run Whisper base model locally, output timestamped transcripts to voxight-data/transcripts/YYYY-MM-DD.jsonl. Batch mode, idempotent.",
       "added_at": "2026-03-27T00:00:00.000Z",
       "agent": "Messi",
-      "phase": "Phase0"
+      "phase": "Phase0",
+      "started_at": "2026-03-28T20:47:10.117Z",
+      "completed_at": "2026-03-28T20:51:25.782Z",
+      "exit_code": 0,
+      "duration_minutes": 4
     },
     {
       "sprint": "VOXIGHT-BLOCK-A-02",
@@ -4762,7 +4766,11 @@
       "rationale": "Phase 0 IMMEDIATE. Block A-02: transcript store with queryable interface. Index by date, domain, speaker. REST endpoint GET /transcripts?domain=&from=&to=. Feeds Block B signal production. Deploy to voxight-api.vercel.app.",
       "added_at": "2026-03-27T00:00:00.000Z",
       "agent": "Messi",
-      "phase": "Phase0"
+      "phase": "Phase0",
+      "started_at": "2026-03-28T20:53:45.827Z",
+      "completed_at": "2026-03-28T20:54:05.531Z",
+      "exit_code": 1,
+      "duration_minutes": 0
     },
     {
       "sprint": "VOXIGHT-BLOCK-B-01",

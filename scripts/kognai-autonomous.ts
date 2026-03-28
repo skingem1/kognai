@@ -413,7 +413,9 @@ function generateSprintFile(item: QueueItem): string {
         description: taskDesc,
         status:      'pending',
         agent:       normalizeAgentName(item.agent),
-        type:        'code',
+        // 'create' bypasses the CodingAgent pre-flight check that requires files to
+        // already exist. VOXIGHT tasks always create NEW files in the Voxight repo.
+        type:        voxCtx ? 'create' : 'code',
         priority:    item.priority || 'P1',
         ...(filesRead.length   > 0 ? { files_to_read:   filesRead   } : {}),
         ...(filesModify.length > 0 ? { deliverables: filesModify } : {}),

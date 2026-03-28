@@ -1640,8 +1640,9 @@ class CodingAgent {
       /^src\/agents\//, // no src/agents/ dir
     ];
     for (const filepath of deliverables) {
-      // Root-level dotfiles and config files are always valid
-      const isRootFile = !filepath.includes('/') || filepath.startsWith('.');
+      // Root-level dotfiles, config files, and absolute paths are always valid.
+      // Absolute paths (starting with /) indicate cross-project tasks (e.g., Voxight).
+      const isRootFile = !filepath.includes('/') || filepath.startsWith('.') || filepath.startsWith('/');
       const isValidPrefix = isRootFile || VALID_PATH_PREFIXES.some(p => filepath.startsWith(p));
       const isInvalidPattern = INVALID_PATH_PATTERNS.some(r => r.test(filepath));
       if (!isValidPrefix || isInvalidPattern) {
