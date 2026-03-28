@@ -216,6 +216,163 @@ function normalizeAgentName(name: string | undefined): string {
   return AGENT_NAME_MAP[key] ?? 'coder'; // unknown names fall back to coder
 }
 
+// ─── Cross-project context injection ─────────────────────────────────────────
+
+/**
+ * Absolute path to the Voxight backend project on this machine.
+ * The Kognai swarm's coder agent runs from ROOT (~/kognai/) as CWD.
+ * For VOXIGHT sprints, we inject absolute paths so the coder writes
+ * files into the correct project rather than producing nothing.
+ */
+const VOXIGHT_ROOT = '/Users/tarekmnif/Documents/Voxight';
+
+interface ProjectContext {
+  files_to_read:   string[];
+  files_to_modify: string[];
+  description_suffix: string;
+}
+
+/**
+ * Per-sprint context for Voxight blocks.
+ * files_to_read  → loaded by brief-generator and injected into the coder prompt
+ * files_to_modify → the target file(s) the coder must produce / update
+ * description_suffix → appended to the task description so the coder knows
+ *                       the project root and the exact file path to create.
+ */
+const VOXIGHT_SPRINT_CONTEXT: Record<string, ProjectContext> = {
+  'VOXIGHT-BLOCK-A-01': {
+    files_to_read: [
+      `${VOXIGHT_ROOT}/src/services/whisperLocal.js`,
+      `${VOXIGHT_ROOT}/src/services/twitterApi.js`,
+      `${VOXIGHT_ROOT}/src/services/database.js`,
+    ],
+    files_to_modify: [
+      `${VOXIGHT_ROOT}/src/scripts/batch-transcribe.js`,
+    ],
+    description_suffix:
+      `\n\nProject root: ${VOXIGHT_ROOT}` +
+      `\nTarget file to CREATE: ${VOXIGHT_ROOT}/src/scripts/batch-transcribe.js` +
+      `\nRead whisperLocal.js and twitterApi.js first for API signatures.` +
+      `\nThe script must: (1) query Supabase spaces table for all spaces with recording_url, ` +
+      `(2) for each space call transcribeLocal(audioPath) from whisperLocal.js, ` +
+      `(3) write JSONL output to ${VOXIGHT_ROOT}/voxight-data/transcripts/YYYY-MM-DD.jsonl, ` +
+      `(4) be idempotent — skip spaces already in transcripts table. ` +
+      `Use ES module syntax (import/export). Include a main() guard.`,
+  },
+  'VOXIGHT-BLOCK-A-02': {
+    files_to_read: [
+      `${VOXIGHT_ROOT}/src/services/database.js`,
+      `${VOXIGHT_ROOT}/src/server.js`,
+      `${VOXIGHT_ROOT}/src/routes/space.js`,
+      `${VOXIGHT_ROOT}/src/middleware/x402Payment.js`,
+    ],
+    files_to_modify: [
+      `${VOXIGHT_ROOT}/src/routes/transcripts.js`,
+    ],
+    description_suffix:
+      `\n\nProject root: ${VOXIGHT_ROOT}` +
+      `\nTarget file to CREATE: ${VOXIGHT_ROOT}/src/routes/transcripts.js` +
+      `\nAlso MODIFY: ${VOXIGHT_ROOT}/src/server.js to register the new route.` +
+      `\nBuild GET /api/transcripts with query params: domain, from (ISO date), speaker.` +
+      `\nQuery Supabase transcripts table. Apply x402 payment gate ($0.03 USDC).` +
+      `\nReturn paginated JSON array of transcript objects with timestamps.` +
+      `\nUse same pattern as routes/space.js for structure.`,
+  },
+  'VOXIGHT-BLOCK-B-01': {
+    files_to_read: [
+      `${VOXIGHT_ROOT}/src/services/qwen3Insights.js`,
+      `${VOXIGHT_ROOT}/src/services/oracleSignals.js`,
+      `${VOXIGHT_ROOT}/src/services/database.js`,
+    ],
+    files_to_modify: [
+      `${VOXIGHT_ROOT}/src/scripts/produce-signals.js`,
+    ],
+    description_suffix:
+      `\n\nProject root: ${VOXIGHT_ROOT}` +
+      `\nTarget file to CREATE: ${VOXIGHT_ROOT}/src/scripts/produce-signals.js` +
+      `\nRead qwen3Insights.js and oracleSignals.js first for API signatures.` +
+      `\nThe script must: (1) query transcripts table for unprocessed transcripts ` +
+      `(no corresponding row in insights table), (2) for each call extractInsights() ` +
+      `from qwen3Insights.js, (3) call createSignal() from oracleSignals.js to write ` +
+      `IntelligenceSignal to signals table, (4) mark transcript as processed. ` +
+      `IntelligenceSignal fields: domain, signal_type, topic, summary, evidence, confidence_score. ` +
+      `Use ES module syntax. Include a main() guard with error handling.`,
+  },
+  'VOXIGHT-BLOCK-C-01': {
+    files_to_read: [
+      `${VOXIGHT_ROOT}/src/services/postsStream.js`,
+      `${VOXIGHT_ROOT}/src/services/database.js`,
+      `${VOXIGHT_ROOT}/src/services/twitterApi.js`,
+    ],
+    files_to_modify: [
+      `${VOXIGHT_ROOT}/src/scripts/scrape-posts.js`,
+    ],
+    description_suffix:
+      `\n\nProject root: ${VOXIGHT_ROOT}` +
+      `\nTarget file to CREATE: ${VOXIGHT_ROOT}/src/scripts/scrape-posts.js` +
+      `\nThe script must: (1) use twitterApi.js fetchRecentSearch() to pull posts for ` +
+      `each tracked domain (AI, crypto, regulation, web3), (2) score sentiment via ` +
+      `Ollama qwen3:4b with a short prompt, (3) tag each post by domain, (4) upsert ` +
+      `into Supabase posts table. Include deduplication by post_id. ES module syntax.`,
+  },
+  'VOXIGHT-BLOCK-C-02': {
+    files_to_read: [
+      `${VOXIGHT_ROOT}/src/services/hashtagIntelligence.js`,
+      `${VOXIGHT_ROOT}/src/services/baselineComputation.js`,
+      `${VOXIGHT_ROOT}/src/services/database.js`,
+    ],
+    files_to_modify: [
+      `${VOXIGHT_ROOT}/src/services/hashtagIntelligence.js`,
+    ],
+    description_suffix:
+      `\n\nProject root: ${VOXIGHT_ROOT}` +
+      `\nTarget file to MODIFY: ${VOXIGHT_ROOT}/src/services/hashtagIntelligence.js` +
+      `\nAdd computeVelocity(tag, windowHours) that returns posts/hour for the given ` +
+      `tag over the rolling window. Add computeEngagementRate(tag) = avg (likes+RTs)/post. ` +
+      `Expose detectEmergingTrends() that combines baseline comparison with velocity ` +
+      `and returns tags crossing the isSignificantTrend() threshold from baselineComputation.js.`,
+  },
+  'VOXIGHT-BLOCK-D-01': {
+    files_to_read: [
+      `${VOXIGHT_ROOT}/src/services/oracleSignals.js`,
+      `${VOXIGHT_ROOT}/src/services/crossSignalCorrelation.js`,
+      `${VOXIGHT_ROOT}/src/services/database.js`,
+    ],
+    files_to_modify: [
+      `${VOXIGHT_ROOT}/src/scripts/merge-signals.js`,
+    ],
+    description_suffix:
+      `\n\nProject root: ${VOXIGHT_ROOT}` +
+      `\nTarget file to CREATE: ${VOXIGHT_ROOT}/src/scripts/merge-signals.js` +
+      `\nThe script must: (1) fetch Space signals (signal_type=spaces_insight) and ` +
+      `Post signals (signal_type=hashtag_emergence, thought_leader_alert) from ` +
+      `oracleSignals.js, (2) apply confidence-weighted merge: if same topic appears ` +
+      `in both ≥2 signal types within 7 days, boost confidence += 15 and set ` +
+      `purpose_signal_candidate=true, (3) apply decay_rate_hours: reduce confidence ` +
+      `by 5% per elapsed decay window, (4) write merged view back to signals table. ` +
+      `Run via crossSignalCorrelation.js patterns. ES module syntax.`,
+  },
+  'VOXIGHT-BLOCK-D-02': {
+    files_to_read: [
+      `${VOXIGHT_ROOT}/src/services/oracleSignals.js`,
+      `${VOXIGHT_ROOT}/src/routes/signals.js`,
+      `${VOXIGHT_ROOT}/src/services/database.js`,
+    ],
+    files_to_modify: [
+      `${VOXIGHT_ROOT}/src/scripts/weekly-oracle-report.js`,
+    ],
+    description_suffix:
+      `\n\nProject root: ${VOXIGHT_ROOT}` +
+      `\nTarget file to CREATE: ${VOXIGHT_ROOT}/src/scripts/weekly-oracle-report.js` +
+      `\nThe script generates a weekly Oracle intelligence report: ` +
+      `(1) query top 5 signals per domain (AI, crypto, regulation, web3) by confidence, ` +
+      `(2) list all purpose_signal_candidate=true signals, ` +
+      `(3) list SCS-001 topic recommendations (top signals relevant to content creation), ` +
+      `(4) write report as Markdown to ${VOXIGHT_ROOT}/reports/oracle/YYYY-MM-DD.md, ` +
+      `(5) also store report JSON in Supabase for API access. ES module syntax.`,
+  },
+};
+
 function sprintFilePath(sprintId: string): string {
   return path.join(SPRINTS_DIR, `sprint-${sprintId}.json`);
 }
@@ -227,8 +384,20 @@ function sprintFileExists(sprintId: string): boolean {
 function generateSprintFile(item: QueueItem): string {
   const sprintId  = getSprintId(item);
   const filePath  = sprintFilePath(sprintId);
-  const taskDesc  = item.rationale || item.description || item.title || `Execute sprint ${sprintId}`;
+  let   taskDesc  = item.rationale || item.description || item.title || `Execute sprint ${sprintId}`;
   const taskFiles = item.files_to_modify || item.files_to_read || [];
+
+  // ── Cross-project context injection ──────────────────────────────────────
+  // For Voxight sprints the coder runs in ~/kognai/ but must write files into
+  // the Voxight project.  Without explicit paths, the agent produces nothing.
+  const voxCtx = VOXIGHT_SPRINT_CONTEXT[sprintId];
+  if (voxCtx) {
+    taskDesc += voxCtx.description_suffix;
+    log(`🗺  Injecting Voxight project context for ${sprintId}`);
+  }
+
+  const filesRead   = voxCtx ? voxCtx.files_to_read   : taskFiles;
+  const filesModify = voxCtx ? voxCtx.files_to_modify  : [];
 
   const sprint: SprintFile = {
     sprint_id:     `sprint-${sprintId}`,
@@ -244,7 +413,8 @@ function generateSprintFile(item: QueueItem): string {
         agent:       normalizeAgentName(item.agent),
         type:        'code',
         priority:    item.priority || 'P1',
-        ...(taskFiles.length > 0 ? { files_to_read: taskFiles } : {}),
+        ...(filesRead.length   > 0 ? { files_to_read:   filesRead   } : {}),
+        ...(filesModify.length > 0 ? { files_to_modify: filesModify } : {}),
         sprint_id:   `sprint-${sprintId}`,
       },
     ],
