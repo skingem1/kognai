@@ -9,6 +9,7 @@
 import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { randomUUID } from 'crypto';
+import { VoxightFeedProvider } from './voxight-feed';
 
 interface Oracle6Signal {
   signal_id: string;
@@ -198,6 +199,18 @@ export class LiveFeedProvider {
 
     console.log('[LiveFeedProvider] Live feed: ' + deduped.length + ' unique signals (' +
       deduped.filter(s => s.scs_relevant).length + ' SCS-relevant)');
+
+    // Merge Voxight real signals (VOXIGHT-BLOCK-B-01)
+    try {
+      const voxight = new VoxightFeedProvider();
+      const voxightFeed = await voxight.fetch();
+      if (voxightFeed.signals.length > 0) {
+        deduped.push(...voxightFeed.signals);
+        console.log('[LiveFeed] Merged ' + voxightFeed.signals.length + ' Voxight signals');
+      }
+    } catch (e: any) {
+      console.warn('[LiveFeed] Voxight merge failed: ' + e.message);
+    }
 
     return {
       feed_id: 'live-' + new Date().toISOString().slice(0, 10) + '-' + randomUUID().slice(0, 6),
