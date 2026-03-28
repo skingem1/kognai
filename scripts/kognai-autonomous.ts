@@ -187,6 +187,35 @@ function updateQueueStatus(queue: QueueItem[], sprintId: string, status: string,
 
 // ─── Sprint file generation ───────────────────────────────────────────────────
 
+/**
+ * Maps informal agent nicknames (used in sprint queue) to actual agent
+ * directory names under agents/ (as loaded by orchestrate-agents-v2.ts).
+ * The orchestrator registers agents via `agents.set(name, ...)` where `name`
+ * is the directory name — informal names cause "Agent not found" rejections.
+ */
+const AGENT_NAME_MAP: Record<string, string> = {
+  // Coding / implementation agents
+  messi:    'coder',
+  macgyver: 'coder',
+  coder:    'coder',
+  // Strategy / oversight agents
+  harvey:    'ceo',
+  ceo:       'ceo',
+  // QA / review agents
+  sherlock:   'supervisor',
+  supervisor: 'supervisor',
+  // Specialised agents (pass-through)
+  intelligence: 'intelligence',
+  chomsky:      'chomsky',
+  constitution: 'constitution',
+};
+
+function normalizeAgentName(name: string | undefined): string {
+  if (!name) return 'coder';
+  const key = name.toLowerCase().trim();
+  return AGENT_NAME_MAP[key] ?? 'coder'; // unknown names fall back to coder
+}
+
 function sprintFilePath(sprintId: string): string {
   return path.join(SPRINTS_DIR, `sprint-${sprintId}.json`);
 }
@@ -212,7 +241,7 @@ function generateSprintFile(item: QueueItem): string {
         id:          sprintId,
         description: taskDesc,
         status:      'pending',
-        agent:       item.agent || 'coder',
+        agent:       normalizeAgentName(item.agent),
         type:        'code',
         priority:    item.priority || 'P1',
         ...(taskFiles.length > 0 ? { files_to_read: taskFiles } : {}),
