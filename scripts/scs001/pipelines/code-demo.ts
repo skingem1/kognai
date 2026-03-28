@@ -87,7 +87,7 @@ async function produceCodeDemo(input: PipelineInput): Promise<PipelineRunResult>
 
   // 3. Assemble final video
   const finalPath = join(runDir, `${runId}.mp4`);
-  const withVoiceover = input.options?.withVoiceover !== false;
+  const withVoiceover = false;  // P2: title card → code → outro with music, no voiceover
   assembleCodeDemo(script, stepVideos, finalPath, { withVoiceover, withOutro: true });
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(0);
