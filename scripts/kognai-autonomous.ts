@@ -79,8 +79,10 @@ interface SprintTask {
   type?:       string;
   priority?:   string;
   files_to_read?: string[];
-  files_to_modify?: string[];
+  files_to_modify?: string[];    // kept for reference; orchestrator reads `deliverables`
+  deliverables?: string[] | { code?: string[]; tests?: string[]; docs?: string[] };
   sprint_id?:  string;
+  context?:    string;
 }
 
 // ─── Logging ──────────────────────────────────────────────────────────────────
@@ -414,7 +416,7 @@ function generateSprintFile(item: QueueItem): string {
         type:        'code',
         priority:    item.priority || 'P1',
         ...(filesRead.length   > 0 ? { files_to_read:   filesRead   } : {}),
-        ...(filesModify.length > 0 ? { files_to_modify: filesModify } : {}),
+        ...(filesModify.length > 0 ? { deliverables: filesModify } : {}),
         sprint_id:   `sprint-${sprintId}`,
       },
     ],
