@@ -7,10 +7,11 @@ module.exports = {
   apps: [
     {
       name: 'kognai-router',
-      script: 'runtime/router_server.py',
+      script: 'router_server.py',
       interpreter: 'python3',
       cwd: __dirname + '/runtime',
       autorestart: true,
+      stop_exit_codes: [0],   // exit(0) = port already owned — don't restart
       watch: false,
       max_memory_restart: '256M',
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
@@ -66,6 +67,32 @@ module.exports = {
         TS_NODE_TRANSPILE_ONLY: 'true',
         TS_NODE_PROJECT: __dirname + '/tsconfig.scripts.json',
         VAULT_OLLAMA_URL: process.env.VAULT_OLLAMA_URL || 'http://localhost:11434',
+      },
+    },
+    // ─── Kognai Self-Starter — Autonomous Sprint Executor ───────────────────
+    // Reads sprint-queue.json, picks the next pending sprint, generates a
+    // sprint file if needed, runs the swarm, and updates queue status.
+    // Runs every 4 hours: 00:00, 04:00, 08:00, 12:00, 16:00, 20:00 UTC.
+    // Lock file: workspace/.autonomous-lock prevents concurrent execution.
+    {
+      name: 'kognai-autonomous',
+      script: 'scripts/kognai-autonomous.ts',
+      interpreter: 'node',
+      interpreter_args: '-r ts-node/register',
+      cwd: __dirname,
+      autorestart: false,
+      cron_restart: '0 */4 * * *',
+      max_memory_restart: '256M',
+      kill_timeout: 3700000, // 61 minutes — matches swarm hard cap
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+      out_file: __dirname + '/logs/kognai-autonomous-out.log',
+      error_file: __dirname + '/logs/kognai-autonomous-error.log',
+      env: {
+        TS_NODE_TRANSPILE_ONLY: 'true',
+        TS_NODE_PROJECT: __dirname + '/tsconfig.scripts.json',
+        VAULT_OLLAMA_URL: process.env.VAULT_OLLAMA_URL || 'http://localhost:11434',
+        TELEGRAM_BOT_TOKEN:     process.env.TELEGRAM_BOT_TOKEN     || '',
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || '',
       },
     },
     // SCS-002 — ORACLE-6 Consumer (AMD-05 × Voxight)

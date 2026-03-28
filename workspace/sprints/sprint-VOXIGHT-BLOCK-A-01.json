@@ -1,0 +1,25 @@
+{
+  "sprint_id": "sprint-VOXIGHT-BLOCK-A-01",
+  "title": "VOXIGHT Block A — Whisper batch transcription pipeline (Space recordings → timestamped transcripts JSONL)",
+  "source": "queue-auto-generated",
+  "generated_by": "kognai-autonomous",
+  "generated_at": "2026-03-28T19:58:09.332Z",
+  "tasks": [
+    {
+      "id": "VOXIGHT-BLOCK-A-01",
+      "description": "Phase 0 IMMEDIATE. ORACLE-6 is running on mock data only. Block A-01: download Space recordings from Voxight API, run Whisper base model locally, output timestamped transcripts to voxight-data/transcripts/YYYY-MM-DD.jsonl. Batch mode, idempotent.",
+      "status": "pending",
+      "agent": "Messi",
+      "type": "code",
+      "priority": "P0",
+      "sprint_id": "sprint-VOXIGHT-BLOCK-A-01"
+    }
+  ],
+  "cto_gate": {
+    "approved": false,
+    "reason": "The sprint does not map to any item in the execution plan or work plan and is not a critical bug fix or blocker. It introduces new functionality not aligned with the current phase goals.",
+    "plan_reference": "NOT_IN_PLAN",
+    "confidence": 85,
+    "timestamp": "2026-03-28T20:00:27.674Z"
+  }
+}
