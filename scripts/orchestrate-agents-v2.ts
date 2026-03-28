@@ -1722,7 +1722,7 @@ Write ONLY the content for "${filepath}". Rules:
 - No explanatory text — output file content only`;
       try {
         const startTime = Date.now();
-        const response = await callLLM(provider, model, this.systemPrompt, userPrompt, 180000);
+        const response = await callLLM(provider, model, this.systemPrompt, userPrompt, 480000); // 8 min — qwen3:14b needs time for large files
         const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
         let content = response.choices?.[0]?.message?.content || '';
         // Strip MiniMax <think>...</think> tags that leak into responses
