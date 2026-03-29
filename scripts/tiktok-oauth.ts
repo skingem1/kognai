@@ -34,7 +34,9 @@ const PORT          = parseInt(process.env.TIKTOK_OAUTH_PORT || '3456', 10);
 const REDIRECT_URI  = process.env.TIKTOK_REDIRECT_URI  || `http://localhost:${PORT}/callback`;
 const ENV_PATH      = path.join(process.cwd(), '.env');
 
-const SCOPES = 'user.info.basic,video.publish';
+// video.publish scope requires TikTok App Review approval (rejected 2026-03-18).
+// Use user.info.basic only for view count fetching until resubmission (Sprint 174) is approved.
+const SCOPES = 'user.info.basic';
 
 if (!CLIENT_KEY || !CLIENT_SECRET) {
   console.error('[tiktok-oauth] TIKTOK_CLIENT_KEY and TIKTOK_CLIENT_SECRET must be set in .env');
