@@ -17,6 +17,15 @@
  *
  * After success, TIKTOK_ACCESS_TOKEN and TIKTOK_REFRESH_TOKEN are
  * written to .env and the server shuts down.
+ *
+ * === TIKTOK DEVELOPER PORTAL PRE-REQUISITES ===
+ * Before running this script, the app in https://developers.tiktok.com must:
+ *   1. App name: "Kognai" (NOT "Kognai TikTok" — TikTok trademarked name forbidden)
+ *   2. Terms of Service URL:  https://skingem1.github.io/kognai-legal/tos/
+ *   3. Privacy Policy URL:    https://skingem1.github.io/kognai-legal/privacy/
+ *   4. Scopes: user.info.basic ONLY (video.publish pending re-review Sprint 174)
+ *   5. Redirect URI: http://localhost:3456/callback  (must match TIKTOK_REDIRECT_URI)
+ * =============================================
  */
 
 import * as http from 'http';
