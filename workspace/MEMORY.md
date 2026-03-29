@@ -1,4 +1,11 @@
 # MEMORY.md — Curated Long-Term Memory
+
+> ⚠️ **TRANSITIONING TO AMF v1.0 — See `~/Documents/Kognai/Master Documents/amf_protocol_v1.md`**
+> This file is now a **read-only human-readable index**. All new persistent agent memory writes go to AMF directly.
+> Full deprecation after ARCH-001 ships (~3–4 weeks). Genesis Records #0 (SOUL) + #1 (Constitution) already live.
+> AMF root: `~/kognai/workspace/memory/amf-records/` · Index: `~/kognai/workspace/memory/amf-index.json`
+> Ratified: 2026-03-29 · Godman Protocol #4
+
 **Distilled from daily logs by Sherlock. Not raw logs. Updated on compression cycle.**
 **Load in direct sessions only — not in shared group contexts.**
 

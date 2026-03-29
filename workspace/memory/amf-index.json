@@ -1,0 +1,113 @@
+{
+  "amf_version": "1.0",
+  "generated_at": "2026-03-29T19:40:57.808919+00:00",
+  "partition": "kognai.*",
+  "root": "~/kognai/workspace/memory/amf-records/",
+  "domains": {
+    "kognai.soul": {
+      "layer": "L1",
+      "file": "amf-records/L1/soul/soul.jsonl",
+      "record_count": 1,
+      "last_write": "2026-03-29T19:40:57.808919+00:00",
+      "status": "active",
+      "retention_tier": "PERMANENT"
+    },
+    "kognai.constitution": {
+      "layer": "L1",
+      "file": "amf-records/L1/constitution/constitution.jsonl",
+      "record_count": 1,
+      "last_write": "2026-03-29T19:40:57.808919+00:00",
+      "status": "active",
+      "retention_tier": "PERMANENT"
+    },
+    "kognai.skills": {
+      "layer": "L2",
+      "file": "amf-records/L2/procedural/",
+      "record_count": 0,
+      "last_write": null,
+      "status": "empty",
+      "retention_tier": "WARM"
+    },
+    "kognai.episodic": {
+      "layer": "L3",
+      "file": "amf-records/L3/episodic/",
+      "record_count": 0,
+      "last_write": null,
+      "status": "empty",
+      "retention_tier": "WARM"
+    },
+    "kognai.semantic": {
+      "layer": "L3",
+      "file": "amf-records/L3/semantic/",
+      "record_count": 0,
+      "last_write": null,
+      "status": "empty",
+      "retention_tier": "COLD"
+    },
+    "kognai.dka.trading": {
+      "layer": "L4",
+      "file": "amf-records/L4/trading.jsonl",
+      "record_count": 0,
+      "last_write": null,
+      "status": "empty",
+      "retention_tier": "WARM"
+    },
+    "kognai.dka.bizdev": {
+      "layer": "L4",
+      "file": "amf-records/L4/bizdev.jsonl",
+      "record_count": 0,
+      "last_write": null,
+      "status": "empty",
+      "retention_tier": "WARM"
+    },
+    "kognai.dka.research": {
+      "layer": "L4",
+      "file": "amf-records/L4/research.jsonl",
+      "record_count": 0,
+      "last_write": null,
+      "status": "empty",
+      "retention_tier": "WARM"
+    },
+    "kognai.dka.content": {
+      "layer": "L4",
+      "file": "amf-records/L4/content.jsonl",
+      "record_count": 0,
+      "last_write": null,
+      "status": "empty",
+      "retention_tier": "WARM"
+    },
+    "kognai.dka.regulatory": {
+      "layer": "L4",
+      "file": "amf-records/L4/regulatory.jsonl",
+      "record_count": 0,
+      "last_write": null,
+      "status": "empty",
+      "retention_tier": "COLD"
+    }
+  },
+  "genesis_records": [
+    {
+      "record_number": 0,
+      "record_id": "a174db38-9935-4fa6-bc69-647545eba930",
+      "domain": "kognai.soul",
+      "source": "genesis",
+      "timestamp": "2026-03-29T19:40:57.808919+00:00",
+      "constitutional_hash": "620a22a4fb396980723c369d67dbc7fae57786bbe75a63a9a8fa83275b1a8c7a"
+    },
+    {
+      "record_number": 1,
+      "record_id": "0764820e-ec73-4802-bec0-cb28adf090e5",
+      "domain": "kognai.constitution",
+      "source": "genesis",
+      "timestamp": "2026-03-29T19:40:57.808919+00:00",
+      "constitutional_hash": "0728093491c80c64937bac0ee479aae37fb7c1a6cabac33d5d5a4c8f68b41f81"
+    }
+  ],
+  "stats": {
+    "total_records": 2,
+    "total_domains": 10,
+    "permanent_records": 2,
+    "warm_records": 0,
+    "cold_records": 0
+  }
+}
