@@ -47,18 +47,30 @@ function generateState(): string {
   return crypto.randomBytes(16).toString('hex');
 }
 
-function buildAuthUrl(state: string): string {
+// PKCE helpers — required by TikTok v2 OAuth
+function generateCodeVerifier(): string {
+  // 32 random bytes → base64url = 43-char verifier (within 43-128 allowed range)
+  return crypto.randomBytes(32).toString('base64url');
+}
+
+function generateCodeChallenge(verifier: string): string {
+  return crypto.createHash('sha256').update(verifier).digest('base64url');
+}
+
+function buildAuthUrl(state: string, codeChallenge: string): string {
   const params = new URLSearchParams({
     client_key: CLIENT_KEY,
     scope: SCOPES,
     response_type: 'code',
     redirect_uri: REDIRECT_URI,
     state,
+    code_challenge: codeChallenge,
+    code_challenge_method: 'S256',
   });
   return `https://www.tiktok.com/v2/auth/authorize/?${params.toString()}`;
 }
 
-async function exchangeCodeForToken(code: string): Promise<{
+async function exchangeCodeForToken(code: string, codeVerifier: string): Promise<{
   access_token: string;
   refresh_token: string;
   expires_in: number;
@@ -71,6 +83,7 @@ async function exchangeCodeForToken(code: string): Promise<{
     code,
     grant_type: 'authorization_code',
     redirect_uri: REDIRECT_URI,
+    code_verifier: codeVerifier,
   });
 
   const res = await fetch('https://open.tiktokapis.com/v2/oauth/token/', {
@@ -110,8 +123,9 @@ function upsertEnvVar(key: string, value: string): void {
 }
 
 function main(): void {
-  const state = generateState();
-  const authUrl = buildAuthUrl(state);
+  const state        = generateState();
+  const codeVerifier = generateCodeVerifier();
+  const authUrl      = buildAuthUrl(state, generateCodeChallenge(codeVerifier));
 
   console.log('\n══════════════════════════════════════════════');
   console.log(' TikTok OAuth 2.0 — Access Token Flow');
@@ -154,7 +168,7 @@ function main(): void {
 
       try {
         console.log('[tiktok-oauth] Exchanging code for token...');
-        const tokens = await exchangeCodeForToken(code);
+        const tokens = await exchangeCodeForToken(code, codeVerifier);
 
         // Save to .env
         upsertEnvVar('TIKTOK_ACCESS_TOKEN', tokens.access_token);
