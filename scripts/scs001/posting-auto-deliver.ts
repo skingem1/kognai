@@ -380,7 +380,7 @@ async function main(): Promise<void> {
       : '#viral #aitrends #tech #trending #futureofai';
     const tgCaption =
       `${pipelineLabel} [${b + 1}/${batchSize}] ${vsStr}${ageStr}\n\n` +
-      `*${title}*\n\n` +
+      `${title}\n\n` +
       `${pipelineHashtags}\n\n` +
       `📊 ${manualPostCount}/${GATE_TARGET} posts · ${daysLeft}d left\n\n` +
       `Post to TikTok → /record ${videoId} 0 <tiktok_url>`;
