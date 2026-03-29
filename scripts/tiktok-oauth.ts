@@ -23,8 +23,12 @@
  *   1. App name: "Kognai" (NOT "Kognai TikTok" — TikTok trademarked name forbidden)
  *   2. Terms of Service URL:  https://skingem1.github.io/kognai-legal/tos/
  *   3. Privacy Policy URL:    https://skingem1.github.io/kognai-legal/privacy/
- *   4. Scopes: user.info.basic ONLY (video.publish pending re-review Sprint 174)
+ *   4. Scopes: user.info.profile + user.info.stats  (video.publish pending re-review Sprint 174)
  *   5. Redirect URI: http://localhost:3456/callback  (must match TIKTOK_REDIRECT_URI)
+ *
+ * NOTE on scope naming: TikTok portal uses user.info.profile + user.info.stats.
+ * These are the granular scope names (formerly bundled as user.info.basic).
+ * The OAuth request below uses both to match exactly what the portal has approved.
  * =============================================
  */
 
@@ -43,9 +47,10 @@ const PORT          = parseInt(process.env.TIKTOK_OAUTH_PORT || '3456', 10);
 const REDIRECT_URI  = process.env.TIKTOK_REDIRECT_URI  || `http://localhost:${PORT}/callback`;
 const ENV_PATH      = path.join(process.cwd(), '.env');
 
-// video.publish scope requires TikTok App Review approval (rejected 2026-03-18).
-// Use user.info.basic only for view count fetching until resubmission (Sprint 174) is approved.
-const SCOPES = 'user.info.basic';
+// video.publish scope requires TikTok App Review approval (rejected 2026-03-18, Sprint 174 resubmission).
+// user.info.profile + user.info.stats = granular TikTok scope names (portal-approved).
+// These replace the legacy user.info.basic bundle in TikTok's v2 permission model.
+const SCOPES = 'user.info.profile,user.info.stats';
 
 if (!CLIENT_KEY || !CLIENT_SECRET) {
   console.error('[tiktok-oauth] TIKTOK_CLIENT_KEY and TIKTOK_CLIENT_SECRET must be set in .env');
