@@ -13,7 +13,7 @@ import { join } from 'path';
 import type { CodeDemoScript } from './code-demo-scriptgen';
 
 const ROOT = join(__dirname, '..', '..');
-const FFMPEG = '/opt/homebrew/bin/ffmpeg';
+const FFMPEG = '/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg';
 const FFPROBE = '/opt/homebrew/bin/ffprobe';
 
 function getVideoDuration(videoPath: string): number {
@@ -54,6 +54,31 @@ function generateStepVoiceovers(
   return results;
 }
 
+// Sprint 1483: Title card — 3s intro with script title + language badge
+function generateTitleCard(title: string, language: string, outPath: string): void {
+  const safeTitle = title.replace(/'/g, "\\'").replace(/:/g, '\\:').slice(0, 55);
+  const safeLang = language.toUpperCase().replace(/'/g, "\\'").slice(0, 20);
+  const fontPath = '/System/Library/Fonts/Helvetica.ttc';
+  const font = existsSync(fontPath) ? fontPath : '/System/Library/Fonts/Arial.ttf';
+
+  execSync(
+    `${FFMPEG} -y -f lavfi -i "color=c=0x0F0F19:size=1080x1920:rate=30" ` +
+    `-f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 ` +
+    `-filter_complex ` +
+    `"[0:v]` +
+    `drawtext=fontfile='${font}':text='💻 CODE DEMO':fontsize=42:fontcolor=0xA78BFA:x=(w-text_w)/2:y=780:` +
+    `shadowcolor=black:shadowx=2:shadowy=2,` +
+    `drawtext=fontfile='${font}':text='${safeTitle}':fontsize=58:fontcolor=white:x=(w-text_w)/2:y=860:` +
+    `shadowcolor=black:shadowx=2:shadowy=2:line_spacing=8,` +
+    `drawtext=fontfile='${font}':text='${safeLang}':fontsize=34:fontcolor=0x0F0F19:` +
+    `box=1:boxcolor=0xA78BFA:boxborderw=16:x=(w-text_w)/2:y=1020:` +
+    `fade=t=in:st=0:d=0.6,fade=t=out:st=2.4:d=0.6[vout]"` +
+    ` -map "[vout]" -map 1:a -c:v libx264 -preset fast -crf 20 -pix_fmt yuv420p ` +
+    `-c:a aac -b:a 128k -ar 44100 -ac 2 -t 3 "${outPath}"`,
+    { stdio: 'pipe', timeout: 15000 }
+  );
+}
+
 export interface CompositeOptions {
   withVoiceover: boolean;
   withOutro: boolean;
@@ -73,12 +98,24 @@ export function assembleCodeDemo(
   const runDir = join(outputPath, '..', '_assembly');
   mkdirSync(runDir, { recursive: true });
 
-  // Step 1: Concat all step videos
+  // Step 1a: Generate title card (3s intro)
+  const titleCardPath = join(runDir, 'title_card.mp4');
+  try {
+    generateTitleCard(script.title || 'Code Demo', script.language || 'code', titleCardPath);
+    console.log('    Title card generated');
+  } catch (tcErr: any) {
+    console.warn(`    Title card skipped: ${tcErr.message?.slice(0, 80)}`);
+  }
+
+  // Step 1b: Concat title card + all step videos
   const concatList = join(runDir, 'concat.txt');
   const validSteps = stepVideos.filter(s => existsSync(s.videoPath));
   if (validSteps.length === 0) throw new Error('No valid step videos to assemble');
 
-  writeFileSync(concatList, validSteps.map(s => `file '${s.videoPath}'`).join('\n'));
+  const concatEntries: string[] = [];
+  if (existsSync(titleCardPath)) concatEntries.push(`file '${titleCardPath}'`);
+  concatEntries.push(...validSteps.map(s => `file '${s.videoPath}'`));
+  writeFileSync(concatList, concatEntries.join('\n'));
 
   const concatPath = join(runDir, 'concat.mp4');
   execSync(
