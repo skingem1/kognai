@@ -305,10 +305,14 @@ async function main(): Promise<void> {
 
   // Find best unposted, un-delivered video with captioned mp4
   // Sprint 665: Dedupe by video_id — ledger can have multiple entries per video
+  // Sprint 1482: Only deliver new named-pipeline videos (educational/code-demo/entertainment).
+  //              Old archive-scraper and multiformat entries are permanently excluded.
+  const PIPELINE_NAMES = new Set(['educational', 'code-demo', 'entertainment']);
   const seenVids = new Set<string>();
   const candidates = ledger
     .filter((e: any) => {
       if (!e.video_id || seenVids.has(e.video_id)) return false;
+      if (!e.pipeline || !PIPELINE_NAMES.has(e.pipeline)) return false; // Sprint 1482: new pipeline only
       if (recordedIds.has(e.video_id) || deliveredAll.has(e.video_id)) return false;
       if ((failureCounts.get(e.video_id) || 0) >= MAX_DELIVERY_FAILURES) return false;
       if (!findCaptionedMp4(e.video_id, e)) return false;
@@ -357,22 +361,29 @@ async function main(): Promise<void> {
     if (pickIdx >= 0) candidates.splice(pickIdx, 1);
 
     const mp4Path = findCaptionedMp4(videoId, pick)!;
-    const caption = buildTikTokCaption(videoId);
     const vs = viralScores.get(videoId);
     const vsStr = vs != null ? `🧬 ${vs.toFixed(1)}` : '';
-    const speaker = speakerMap.get(videoId);
-    const spkStr = speaker ? ` · 🎙️ ${escapeTg(speaker)}` : '';
-    const hook = hookMap.get(videoId);
-    const hookStr = hook ? ` · 🎣 ${escapeTg(hook)}` : '';
     const pubAt = ledgerDates.get(videoId);
     const ageDays = pubAt ? Math.round((Date.now() - new Date(pubAt).getTime()) / 86_400_000) : 0;
     const ageStr = ageDays > 0 ? ` · ${ageDays}d old` : '';
 
+    // Sprint 1482: New pipeline caption — title + description + hashtags from ledger
+    const pipelineLabel = pick.pipeline === 'educational' ? '🎓 Educational'
+      : pick.pipeline === 'code-demo' ? '💻 Code Demo'
+      : pick.pipeline === 'entertainment' ? '🎬 Entertainment'
+      : '📦';
+    const title = escapeTg(pick.title || videoId);
+    const pipelineHashtags = pick.pipeline === 'educational'
+      ? '#ai #tech #coding #learntech #aitools'
+      : pick.pipeline === 'code-demo'
+      ? '#python #coding #developer #programming #learntocode'
+      : '#viral #aitrends #tech #trending #futureofai';
     const tgCaption =
-      `📦 ${timeLabel} Auto-Deliver [${b + 1}/${batchSize}] ${vsStr}${spkStr}${hookStr}${ageStr}\n\n` +
-      `${caption}\n\n` +
-      `📊 ${manualPostCount}/${GATE_TARGET} posts · ${daysLeft}d left · ${dailyTarget}/day\n\n` +
-      `Save video → post to TikTok → /record ${videoId} 0 <tiktok_url>`;  // Sprint 1379: include URL placeholder
+      `${pipelineLabel} [${b + 1}/${batchSize}] ${vsStr}${ageStr}\n\n` +
+      `*${title}*\n\n` +
+      `${pipelineHashtags}\n\n` +
+      `📊 ${manualPostCount}/${GATE_TARGET} posts · ${daysLeft}d left\n\n` +
+      `Post to TikTok → /record ${videoId} 0 <tiktok_url>`;
 
     console.log(`[auto-deliver] Sending ${videoId} [${b + 1}/${batchSize}] (${mp4Path})`);
 
@@ -385,8 +396,8 @@ async function main(): Promise<void> {
         video_id: videoId,
         delivered_at: now.toISOString(),
         viral_score: vs ?? null,
-        speaker: speaker ?? null,
-        hook_formula: hook ?? null,
+        speaker: pick.speaker ?? null,
+        hook_formula: pick.hook_formula ?? null,
         mp4_path: mp4Path,
       });
       appendFileSync(DELIVERED_LOG, entry + '\n');
