@@ -20,11 +20,12 @@
  *
  * === TIKTOK DEVELOPER PORTAL PRE-REQUISITES ===
  * Before running this script, the app in https://developers.tiktok.com must:
- *   1. App name: "Kognai" (NOT "Kognai TikTok" — TikTok trademarked name forbidden)
- *   2. Terms of Service URL:  https://skingem1.github.io/kognai-legal/tos/
- *   3. Privacy Policy URL:    https://skingem1.github.io/kognai-legal/privacy/
- *   4. Scopes: user.info.profile + user.info.stats  (video.publish pending re-review Sprint 174)
- *   5. Redirect URI: http://localhost:3456/callback  (must match TIKTOK_REDIRECT_URI)
+ *   1. App name: "Kael by Kognai" (confirmed 2026-03-28 — no TikTok trademark in name)
+ *   2. Web/Desktop URL:       https://skingem1.github.io/kognai-legal/
+ *   3. Terms of Service URL:  https://skingem1.github.io/kognai-legal/tos/
+ *   4. Privacy Policy URL:    https://skingem1.github.io/kognai-legal/privacy/
+ *   5. Scopes: user.info.profile + user.info.stats  (video.publish pending re-review Sprint 174)
+ *   6. Redirect URI: http://localhost:3456/callback  (must match TIKTOK_REDIRECT_URI — separate field from Web/Desktop URL)
  *
  * NOTE on scope naming: TikTok portal uses user.info.profile + user.info.stats.
  * These are the granular scope names (formerly bundled as user.info.basic).
