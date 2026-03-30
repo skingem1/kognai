@@ -5,13 +5,16 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as https from 'https';
-import { execSync } from 'child_process';
+import { execSync, spawn } from 'child_process';
 import {
   ROOT, readJSON, readLines, readRealPosts, getPm2List, fmtUptime, fmtMem, latestSprintFile,
   findCaptionedMp4, getExperimentData, buildTikTokCaption,
   loadSpeakerMap, diversifyBySpeaker, loadHookMap, diversifyByHook,
   freshnessScore, loadArchived, saveArchived, ARCHIVE_PATH,
 } from './shared';
+
+const YOUTUBE_LEDGER_PATH = path.join(ROOT, 'workspace', 'scs001', 'youtube-ledger.jsonl');
+const MULTIFORMAT_RUNS_DIR = path.join(ROOT, 'workspace', 'scs001', 'multiformat-runs');
 
 export function cmdMetrics(): string {
   const metricsPath = path.join(ROOT, 'reports', 'pipeline-metrics.json');
@@ -133,10 +136,19 @@ export function cmdPostPlan(): string {
   return lines.join('\n');
 }
 
-export function cmdYouTube(): string {
+export function cmdYouTube(args: string = ''): string {
   try {
     const { formatYouTubeStatus } = require('../scs001/youtube-shorts');
-    return formatYouTubeStatus();
+    const trimmed = args.trim();
+    const ledger = loadYouTubeLedgerEntries();
+    const detailLimit = trimmed.toLowerCase() === 'ledger' ? 8 : 3;
+    const sections = [
+      formatYouTubeStatus(),
+      buildLedgerSummary(ledger, detailLimit),
+      buildPendingSummary(getPendingVideos(ledger)),
+      `*Upload commands:*\n\u2022 \`/youtube upload\` \u2014 Dry run (max 5).\n\u2022 \`/youtube upload --live\` \u2014 Live upload.\n\u2022 \`/youtube upload --live --max=3\` \u2014 Live upload limited to 3 videos.\n\u2022 \`/youtube ledger\` \u2014 Detailed ledger history.`,
+    ].filter(Boolean);
+    return sections.join('\n\n');
   } catch (e: any) {
     return `❌ YouTube status error: ${e.message}`;
   }
@@ -1731,4 +1743,151 @@ export function cmdRemind(): string {
     lines.push(`_No unposted video on disk — use /deliver to get one_`);
   }
   return lines.join('\n');
+}
+
+type YouTubeLedgerEntry = {
+  video_path?: string;
+  youtube_id?: string;
+  uploaded_at?: string;
+  title?: string;
+  success?: boolean;
+  dry_run?: boolean;
+};
+
+function loadYouTubeLedgerEntries(): YouTubeLedgerEntry[] {
+  if (!fs.existsSync(YOUTUBE_LEDGER_PATH)) return [];
+  return fs.readFileSync(YOUTUBE_LEDGER_PATH, 'utf-8')
+    .split('\n')
+    .filter(line => line.trim())
+    .map((line) => {
+      try {
+        return JSON.parse(line) as YouTubeLedgerEntry;
+      } catch {
+        return null;
+      }
+    })
+    .filter((entry): entry is YouTubeLedgerEntry => Boolean(entry));
+}
+
+function buildLedgerSummary(entries: YouTubeLedgerEntry[], detailLimit: number): string {
+  const total = entries.length;
+  const successCount = entries.filter(e => e.success).length;
+  const failCount = entries.filter(e => e.success === false).length;
+  const dryCount = entries.filter(e => e.dry_run).length;
+  const lines: string[] = [];
+  lines.push(`*Ledger:* ${total} entries · ✅ ${successCount} · ❌ ${failCount} · ⏺️ ${dryCount} dry-run`);
+  if (total === 0) {
+    lines.push('_No uploads logged yet._');
+    return lines.join('\n');
+  }
+  const limit = Math.max(1, detailLimit);
+  const recent = entries.slice(-limit).reverse();
+  lines.push('*Recent uploads:*');
+  for (const entry of recent) {
+    lines.push(formatLedgerEntry(entry));
+  }
+  return lines.join('\n');
+}
+
+function formatLedgerEntry(entry: YouTubeLedgerEntry): string {
+  const status = entry.success ? '✅' : '❌';
+  const date = entry.uploaded_at ? entry.uploaded_at.slice(0, 10) : 'unknown date';
+  const relPath = entry.video_path ? path.relative(ROOT, entry.video_path) : 'unknown path';
+  const shortPath = relPath.length > 60 ? `...${relPath.slice(-57)}` : relPath;
+  const url = entry.youtube_id ? `https://youtube.com/shorts/${entry.youtube_id}` : 'YouTube ID missing';
+  const tags: string[] = [];
+  if (entry.dry_run) tags.push('dry-run');
+  if (entry.success === false) tags.push('failed');
+  const tagNote = tags.length ? ` (${tags.join(', ')})` : '';
+  const title = entry.title ? ` · ${entry.title.slice(0, 40)}` : '';
+  return `${status} ${date} · ${shortPath}${tagNote}\n   → ${url}${title}`;
+}
+
+function getPendingVideos(entries: YouTubeLedgerEntry[]): string[] {
+  const uploaded = new Set(entries.map(e => path.normalize(e.video_path ?? '')).filter(Boolean));
+  const finals = listFinalAvVideos();
+  return finals.filter((video) => {
+    const normalized = path.normalize(video);
+    return normalized && !uploaded.has(normalized);
+  });
+}
+
+function listFinalAvVideos(): string[] {
+  const found: string[] = [];
+  if (!fs.existsSync(MULTIFORMAT_RUNS_DIR)) return found;
+  for (const run of fs.readdirSync(MULTIFORMAT_RUNS_DIR)) {
+    const outDir = path.join(MULTIFORMAT_RUNS_DIR, run, 'output');
+    if (!fs.existsSync(outDir)) continue;
+    for (const file of fs.readdirSync(outDir)) {
+      if (!file.endsWith('_final_av.mp4')) continue;
+      const fullPath = path.join(outDir, file);
+      try {
+        if (fs.statSync(fullPath).isFile()) {
+          found.push(fullPath);
+        }
+      } catch {
+        /* skip */
+      }
+    }
+  }
+  return found;
+}
+
+function buildPendingSummary(pending: string[]): string {
+  const lines: string[] = [];
+  lines.push(`*Pending uploads:* ${pending.length}`);
+  if (pending.length === 0) {
+    lines.push('_No pending videos. Run the pipeline to generate new ones._');
+    return lines.join('\n');
+  }
+  const sample = pending.slice(0, 3);
+  for (let i = 0; i < sample.length; i++) {
+    lines.push(`• ${i + 1}. ${path.relative(ROOT, sample[i])}`);
+  }
+  if (pending.length > sample.length) {
+    lines.push(`_...and ${pending.length - sample.length} more pending videos._`);
+  }
+  return lines.join('\n');
+}
+
+function parseBatchUploadOptions(tokens: string[]): { live: boolean; max: number } {
+  let live = false;
+  let max = 5;
+  for (const token of tokens) {
+    const lower = token.toLowerCase();
+    if (lower === '--live' || lower === 'live') live = true;
+    const match = lower.match(/^--?max=(\d+)$/);
+    if (match) {
+      max = Math.min(20, Math.max(1, parseInt(match[1], 10)));
+    }
+  }
+  return { live, max };
+}
+
+function trimBatchOutput(text: string, limit = 3600): string {
+  const cleaned = text.replace(/\x1b\[[0-9;]*m/g, '').trim();
+  if (!cleaned) return '(no output)';
+  if (cleaned.length <= limit) return cleaned;
+  return '...(output truncated)...\n' + cleaned.slice(-limit).trim();
+}
+
+export async function runYouTubeBatchUpload(argString: string): Promise<string> {
+  const tokens = (argString || '').split(/\s+/).filter(Boolean);
+  const opts = parseBatchUploadOptions(tokens);
+  const spawnArgs = ['ts-node', 'scripts/scs001/batch-youtube-upload.ts', `--max=${opts.max}`];
+  if (opts.live) spawnArgs.push('--live');
+  return new Promise((resolve) => {
+    const proc = spawn('npx', spawnArgs, { cwd: ROOT, env: process.env });
+    let stdout = '';
+    let stderr = '';
+    proc.stdout.on('data', (chunk: Buffer) => { stdout += chunk.toString(); });
+    proc.stderr.on('data', (chunk: Buffer) => { stderr += chunk.toString(); });
+    proc.on('error', (err: Error) => resolve(`🚨 Batch YouTube upload failed to start: ${err.message}`));
+    proc.on('close', (code) => {
+      const combined = `${stdout}${stderr ? '\n' + stderr : ''}`;
+      const trimmed = trimBatchOutput(combined);
+      const header = `🚀 YouTube batch upload ${opts.live ? 'LIVE' : 'dry-run'} (max ${opts.max}) finished (exit ${code}).`;
+      resolve(`${header}\n\n${trimmed}`);
+    });
+  });
 }
