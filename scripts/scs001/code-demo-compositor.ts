@@ -56,7 +56,17 @@ function generateStepVoiceovers(
 
 // Sprint 1483: Title card — 3s intro with script title + language badge
 function generateTitleCard(title: string, language: string, outPath: string): void {
-  const safeTitle = title.replace(/'/g, "\\'").replace(/:/g, '\\:').slice(0, 55);
+  // BUGFIX-TITLECARD-ESCAPE: strip shell-dangerous chars (", $, `, \) that break
+  // the double-quoted -filter_complex arg → Command failed / non-zero exit.
+  // Also escape : and % which are special in FFmpeg drawtext filter syntax.
+  const safeTitle = title
+    .replace(/\\/g, '')        // remove backslash (avoid escaping artifacts)
+    .replace(/["$`]/g, '')     // strip shell specials inside double-quoted arg
+    .replace(/'/g, "\\'")      // FFmpeg: escape single quote
+    .replace(/:/g, '\\:')      // FFmpeg: escape colon
+    .replace(/%/g, '%%')       // FFmpeg drawtext: escape percent format specifier
+    .trim()
+    .slice(0, 55);
   const safeLang = language.toUpperCase().replace(/'/g, "\\'").slice(0, 20);
   const fontPath = '/System/Library/Fonts/Helvetica.ttc';
   const font = existsSync(fontPath) ? fontPath : '/System/Library/Fonts/Arial.ttf';

@@ -96,7 +96,10 @@ async function sendVideoTelegram(result: PipelineRunResult): Promise<void> {
     : result.pipeline === 'bizarre' ? '🤯 Bizarre Series'
     : '📦';
   const hashtags = PIPELINE_HASHTAGS[result.pipeline ?? ''] ?? '#ai #tech';
-  const caption = `${pipelineLabel} — *${result.title || result.runId}*\n\n${hashtags}\n\nPost to TikTok → /record ${result.runId} 0 <tiktok_url>`;
+  // Sprint BUGFIX-SENDVIDEO-ENTITY: drop Markdown parse_mode — title may contain
+  // special chars that trigger TS1002-style "Can't find end of entity at byte offset 1".
+  // This is a progress notification only; final delivery uses posting-auto-deliver.ts.
+  const caption = `${pipelineLabel} \u2014 ${result.title || result.runId}\n\n${hashtags}\n\nPost to TikTok \u2192 /record ${result.runId} 0 <tiktok_url>`;
 
   const boundary = '----TgBatchBoundary' + Date.now().toString(16);
   const fileData = readFileSync(videoPath);
@@ -105,7 +108,7 @@ async function sendVideoTelegram(result: PipelineRunResult): Promise<void> {
   const parts: Buffer[] = [];
   parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="chat_id"\r\n\r\n${TG_CHAT_ID}\r\n`));
   parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="caption"\r\n\r\n${caption}\r\n`));
-  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="parse_mode"\r\n\r\nMarkdown\r\n`));
+  // parse_mode intentionally omitted — plain text avoids entity-parse failures on emoji/special chars
   parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="video"; filename="${filename}"\r\nContent-Type: video/mp4\r\n\r\n`));
   parts.push(fileData);
   parts.push(Buffer.from(`\r\n--${boundary}--\r\n`));
