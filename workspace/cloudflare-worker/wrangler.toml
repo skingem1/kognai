@@ -2,18 +2,17 @@ name = "kognai-waitlist"
 main = "waitlist-worker.js"
 compatibility_date = "2024-01-01"
 
-# Run: wrangler kv:namespace create WAITLIST
+# Run: wrangler kv namespace create WAITLIST
 # Paste the returned id below
 [[kv_namespaces]]
 binding = "WAITLIST"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "7cf358fa759f463bb0d890cc2640491c"
 
 # Set via: wrangler secret put ADMIN_SECRET
 # [vars]
 # ADMIN_SECRET = "set-via-wrangler-secret"
 
-[routes]
-# After deploying, add this route in Cloudflare Pages > Functions > Routes
-# OR point kognai.ai/api/* → this worker via Workers Routes in dashboard
+# Routes: active once KV id is set. Points kognai.ai/api/* → this worker.
+[[routes]]
 pattern = "kognai.ai/api/*"
 zone_name = "kognai.ai"
