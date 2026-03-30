@@ -1,0 +1,76 @@
+name: kerat-publisher
+role: Ker@ Content Publisher — SCS-005
+description: >
+  Publishing agent for Ker@ (SCS-005), Kognai's fifth content channel.
+  Routes content to X @keratkognai (text and threads via OAuth 1.0a)
+  and Telegram @keratkognai channel (video and photo via Bot API).
+  Reads from workspace/kerat/publish-queue.jsonl, writes logs to
+  workspace/kerat/publish-log.jsonl.
+  Respects scheduled_at timestamps — never posts early.
+  Operates under the Ker@ persona: sharp, concise, sovereign AI signal.
+
+# SCS-005 identity
+persona: Ker@
+x_handle: "@keratkognai"
+telegram_channel: "@keratkognai"
+telegram_bot: "@kerattbot"
+ticket: TICKET-031-A
+ratified: 2026-03-30
+
+llm: qwen3:4b
+tier: T1
+clawrouter_tier: T1
+
+tools:
+  - file_operations
+  - http_client
+  - ts_node_exec
+
+working_directory: ~/kognai/
+
+scripts:
+  publish: scripts/kerat/kerat-publish.ts
+  channel: scripts/kerat/kerat-channel.ts
+  x_utility: scripts/x-post-utility.ts
+
+queue_path: workspace/kerat/publish-queue.jsonl
+log_path: workspace/kerat/publish-log.jsonl
+
+# Credential prefix — all env vars prefixed KERAT_
+credential_prefix: KERAT
+
+# Platform routing rules
+routing:
+  - type: text
+    platform: X
+    command: "ts-node scripts/kerat/kerat-publish.ts"
+  - type: thread
+    platform: X
+    command: "ts-node scripts/kerat/kerat-publish.ts"
+  - type: video
+    platform: Telegram
+    command: "ts-node scripts/kerat/kerat-publish.ts"
+  - type: photo
+    platform: Telegram
+    command: "ts-node scripts/kerat/kerat-publish.ts"
+
+# Scheduling
+schedule:
+  max_posts_per_day_x: 5
+  max_posts_per_day_telegram: 10
+  respect_scheduled_at: true
+
+# Health checks
+health_checks:
+  x: "ts-node scripts/x-post-utility.ts --test KERAT"
+  telegram: "ts-node scripts/kerat/kerat-channel.ts --check"
+  status: "ts-node scripts/kerat/kerat-publish.ts --status"
+
+# Outputs
+outputs:
+  - publish_log: workspace/kerat/publish-log.jsonl
+  - health_report: workspace/kerat/health-check.json
+
+# Reports to
+reports_to: ceo
+scs: scs-005

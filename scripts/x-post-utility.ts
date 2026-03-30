@@ -40,19 +40,29 @@ interface XCredentials {
   bearerToken: string;
 }
 
-function loadCredentials(): XCredentials {
-  const apiKey = process.env.X_API_KEY;
-  const apiSecret = process.env.X_API_SECRET;
-  const accessToken = process.env.X_ACCESS_TOKEN;
-  const accessTokenSecret = process.env.X_ACCESS_TOKEN_SECRET;
-  const bearerToken = process.env.X_BEARER_TOKEN;
+/**
+ * Load X API credentials from environment variables.
+ * @param prefix — optional account prefix, e.g. 'KERAT' reads KERAT_X_API_KEY etc.
+ *                 Leave empty (default) to use global X_API_KEY etc.
+ *
+ * Supported prefixes:
+ *   (none)  → @kognai_ai  (X_API_KEY, X_API_SECRET, ...)
+ *   'KERAT' → @keratkognai (KERAT_X_API_KEY, KERAT_X_API_SECRET, ...)
+ */
+function loadCredentials(prefix?: string): XCredentials {
+  const p = prefix ? `${prefix}_` : '';
+  const apiKey = process.env[`${p}X_API_KEY`];
+  const apiSecret = process.env[`${p}X_API_SECRET`];
+  const accessToken = process.env[`${p}X_ACCESS_TOKEN`];
+  const accessTokenSecret = process.env[`${p}X_ACCESS_TOKEN_SECRET`];
+  const bearerToken = process.env[`${p}X_BEARER_TOKEN`];
 
   const missing: string[] = [];
-  if (!apiKey) missing.push('X_API_KEY');
-  if (!apiSecret) missing.push('X_API_SECRET');
-  if (!accessToken) missing.push('X_ACCESS_TOKEN');
-  if (!accessTokenSecret) missing.push('X_ACCESS_TOKEN_SECRET');
-  if (!bearerToken) missing.push('X_BEARER_TOKEN');
+  if (!apiKey) missing.push(`${p}X_API_KEY`);
+  if (!apiSecret) missing.push(`${p}X_API_SECRET`);
+  if (!accessToken) missing.push(`${p}X_ACCESS_TOKEN`);
+  if (!accessTokenSecret) missing.push(`${p}X_ACCESS_TOKEN_SECRET`);
+  if (!bearerToken) missing.push(`${p}X_BEARER_TOKEN`);
 
   if (missing.length > 0) {
     throw new Error(
@@ -330,13 +340,17 @@ const API_BASE = 'https://api.twitter.com';
 
 /**
  * Post a single tweet.
+ * @param text        Tweet text (max 280 chars)
+ * @param replyToId   Optional tweet ID to reply to
+ * @param prefix      Credential prefix: 'KERAT' = @keratkognai, '' = @kognai_ai
  * Returns the created tweet's id and text.
  */
 export async function postTweet(
   text: string,
-  replyToId?: string
+  replyToId?: string,
+  prefix?: string
 ): Promise<{ id: string; text: string }> {
-  const creds = loadCredentials();
+  const creds = loadCredentials(prefix);
   const url = `${API_BASE}/2/tweets`;
 
   const payload: Record<string, any> = { text };
@@ -376,10 +390,13 @@ export async function postTweet(
 
 /**
  * Post a thread of tweets. Each tweet replies to the previous one.
+ * @param tweets  Array of tweet texts
+ * @param prefix  Credential prefix: 'KERAT' = @keratkognai, '' = @kognai_ai
  * Returns the list of created tweet IDs.
  */
 export async function postThread(
-  tweets: string[]
+  tweets: string[],
+  prefix?: string
 ): Promise<{ ids: string[] }> {
   if (tweets.length === 0) {
     throw new Error('Thread must contain at least one tweet.');
@@ -392,7 +409,7 @@ export async function postThread(
     const tweetText = tweets[i];
     console.log(`  [${i + 1}/${tweets.length}] Posting...`);
 
-    const result = await postTweet(tweetText, previousId);
+    const result = await postTweet(tweetText, previousId, prefix);
     ids.push(result.id);
     previousId = result.id;
 
@@ -445,14 +462,17 @@ export async function deleteTweet(tweetId: string): Promise<void> {
 
 /**
  * Get authenticated user info. Uses Bearer token (OAuth 2.0 App-Only).
+ * @param prefix  Credential prefix: 'KERAT' = @keratkognai, '' = @kognai_ai
  * Useful for verifying credentials.
  */
-export async function getMe(): Promise<{ id: string; name: string; username: string }> {
-  const creds = loadCredentials();
+export async function getMe(prefix?: string): Promise<{ id: string; name: string; username: string }> {
+  const creds = loadCredentials(prefix);
   const url = `${API_BASE}/2/users/me`;
 
+  // /2/users/me requires OAuth 1.0a User Context (not App-Only Bearer token)
+  const authHeader = buildAuthorizationHeader('GET', url, creds);
   const res = await httpsRequest('GET', url, {
-    Authorization: `Bearer ${creds.bearerToken}`,
+    Authorization: authHeader,
   });
 
   if (res.statusCode < 200 || res.statusCode >= 300) {
@@ -484,8 +504,11 @@ async function cli(): Promise<void> {
   try {
     switch (command) {
       case '--test': {
-        console.log('Verifying credentials with GET /2/users/me ...\n');
-        const me = await getMe();
+        // Optional second arg = credential prefix, e.g. --test KERAT
+        const testPrefix = args[1] && !args[1].startsWith('--') ? args[1] : undefined;
+        const prefixLabel = testPrefix ? `${testPrefix}_` : '(default) ';
+        console.log(`Verifying credentials [${prefixLabel}] with GET /2/users/me ...\n`);
+        const me = await getMe(testPrefix);
         console.log('Authentication successful!\n');
         console.log(`  ID:       ${me.id}`);
         console.log(`  Name:     ${me.name}`);
