@@ -7,8 +7,8 @@
     "kognai.soul": {
       "layer": "L1",
       "file": "amf-records/L1/soul/soul.jsonl",
-      "record_count": 1,
-      "last_write": "2026-03-29T19:40:57.808919+00:00",
+      "record_count": 2,
+      "last_write": "2026-03-29T19:50:33.491030+00:00",
       "status": "active",
       "retention_tier": "PERMANENT"
     },
@@ -101,12 +101,21 @@
       "source": "genesis",
       "timestamp": "2026-03-29T19:40:57.808919+00:00",
       "constitutional_hash": "0728093491c80c64937bac0ee479aae37fb7c1a6cabac33d5d5a4c8f68b41f81"
+    },
+    {
+      "record_number": 2,
+      "record_id": "8dde8cfb-2935-4be3-ac8a-0c0076ef9c03",
+      "domain": "kognai.soul",
+      "source": "founder_message",
+      "timestamp": "2026-03-29T19:50:33.491030+00:00",
+      "constitutional_hash": "eae30a7029487d3209f10781946c3d56ef84cf43321765f6e8e79cc9a9e1f6f8",
+      "acp_score_at_write": 100
     }
   ],
   "stats": {
-    "total_records": 2,
+    "total_records": 3,
     "total_domains": 10,
-    "permanent_records": 2,
+    "permanent_records": 3,
     "warm_records": 0,
     "cold_records": 0
   }
