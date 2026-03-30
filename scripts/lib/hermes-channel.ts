@@ -1,13 +1,15 @@
 /**
  * Hermes Channel — Persistence layer for Hermes Protocol exchanges
- * Sprint TICKET-032-A · 2026-03-30
+ * Sprint TICKET-032-A · 2026-03-30  |  TICKET-032-B · 2026-03-30
  *
- * Storage strategy (layered, both always attempted):
+ * Storage strategy (layered, all always attempted):
  *   1. Local JSONL  → logs/hermes/YYYY-MM-DD.jsonl  (always available, zero deps)
  *   2. Supabase     → sherlock_channel table         (async, non-blocking, best-effort)
+ *   3. Telegram     → Godman's chat via KognaiBot    (TICKET-032-B, non-blocking)
  *
  * The channel is the source of truth for active exchanges.
- * Supabase is the distributed mirror (required for TICKET-032-B Telegram bridge).
+ * Supabase is the distributed mirror.
+ * Telegram delivers real-time alerts to Godman for escalations + status changes.
  */
 
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
@@ -22,6 +24,7 @@ import {
   parseHermesMarkers,
   buildMessage,
 } from './hermes-protocol';
+import { notifyOnOpen, notifyOnStatusChange } from './hermes-notifier'; // TICKET-032-B
 
 const ROOT = join(__dirname, '../..');
 const LOG_DIR = join(ROOT, 'logs', 'hermes');
@@ -68,12 +71,14 @@ export class HermesChannel {
   writeOpen(exchange: HermesExchange): void {
     appendLog({ type: 'message', ts: new Date().toISOString(), exchange });
     this._syncToSupabase(exchange.messages[0], exchange.status).catch(() => {});
+    notifyOnOpen(exchange);                   // TICKET-032-B: fire-and-forget Telegram alert
   }
 
   /** Append a continuation message to an existing exchange */
   writeContinue(exchange: HermesExchange, msg: HermesMessage): void {
     appendLog({ type: 'message', ts: new Date().toISOString(), exchange });
     this._syncToSupabase(msg, exchange.status).catch(() => {});
+    notifyOnStatusChange(exchange);           // TICKET-032-B: notify only on terminal transitions
   }
 
   /** Load all open exchanges from today's log */
