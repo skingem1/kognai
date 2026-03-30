@@ -5,8 +5,8 @@
   --bg-dark: #06060a;
   --text: #e8e8ed;
   --text-muted: #8888a0;
-  --accent: #6366f1;
-  --accent-hover: #818cf8;
+  --accent: #14b8a6;
+  --accent-hover: #2dd4bf;
   --border: #1a1a2e;
   --card-bg: #111118;
 }
@@ -52,7 +52,7 @@ body {
 .hero {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
   text-align: center; padding: 6rem 2rem 4rem;
-  background: radial-gradient(ellipse at 50% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 50% 30%, rgba(20, 184, 166, 0.08) 0%, transparent 60%);
 }
 .hero-inner { max-width: 800px; }
 .hero-tag {
