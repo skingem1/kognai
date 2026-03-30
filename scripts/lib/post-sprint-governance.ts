@@ -12,6 +12,8 @@
  *   - Trust score update → acp/trust-scores.json
  *   - BrainX memory → PostgreSQL brainx_memories table
  *   - LoRA corpus update → vault/training/corpus-r1.jsonl (if approved task)
+ *   - Hermes marker scan → logs/hermes/YYYY-MM-DD.jsonl + sherlock_channel (TICKET-032-A)
+ *   - ACP Supabase sync → acp_scores table (TICKET-032-A)
  *
  * Non-blocking: all errors are caught and logged. Never breaks the sprint flow.
  */
@@ -31,16 +33,26 @@ interface GovernanceResult {
   trust_updated: boolean;
   brainx_stored: boolean;
   corpus_appended: boolean;
+  hermes_exchanges: number;  // TICKET-032-A: Hermes markers detected
+  acp_synced: boolean;       // TICKET-032-A: ACP scores pushed to Supabase
   errors: string[];
 }
 
-export async function runPostSprintGovernance(sprintId: string, agentId: string = 'coder', score: number = 75, outcome: 'success' | 'rejected' = 'success'): Promise<GovernanceResult> {
+export async function runPostSprintGovernance(
+  sprintId: string,
+  agentId: string = 'coder',
+  score: number = 75,
+  outcome: 'success' | 'rejected' = 'success',
+  agentOutput: string = '',   // TICKET-032-A: optional agent output for Hermes scan
+): Promise<GovernanceResult> {
   const result: GovernanceResult = {
     sprint_id: sprintId,
     aar_written: false,
     trust_updated: false,
     brainx_stored: false,
     corpus_appended: false,
+    hermes_exchanges: 0,
+    acp_synced: false,
     errors: [],
   };
 
@@ -136,6 +148,28 @@ export async function runPostSprintGovernance(sprintId: string, agentId: string 
     }
   }
 
+  // 5. TICKET-032-A: Hermes marker scan — detect [STATUS_REQUEST] / [REVIEW_REQUEST] /
+  //    [ESCALATION_NOTICE] / [ACK] embedded in agent output text.
+  if (agentOutput.trim().length > 0) {
+    try {
+      const { hermesChannel } = require('./hermes-channel');
+      const exchanges = hermesChannel.processOutput(agentOutput, agentId, sprintId);
+      result.hermes_exchanges = exchanges.length;
+    } catch (err: any) {
+      result.errors.push(`Hermes: ${err.message}`);
+    }
+  }
+
+  // 6. TICKET-032-A: ACP Supabase sync — mirror acp/trust-scores.json to acp_scores table.
+  //    Non-blocking; only runs when SUPABASE_URL is set.
+  try {
+    const { hermesChannel } = require('./hermes-channel');
+    hermesChannel.syncACPScores().catch(() => {});
+    result.acp_synced = true;
+  } catch (err: any) {
+    result.errors.push(`ACPSync: ${err.message}`);
+  }
+
   return result;
 }
 
@@ -149,7 +183,7 @@ if (require.main === module) {
   console.log(`[GOV] Running post-sprint governance for ${sprintId}...`);
   runPostSprintGovernance(sprintId, agentId, score, outcome)
     .then(result => {
-      console.log(`[GOV] AAR: ${result.aar_written ? '✅' : '❌'} | Trust: ${result.trust_updated ? '✅' : '❌'} | BrainX: ${result.brainx_stored ? '✅' : '❌'} | Corpus: ${result.corpus_appended ? '✅' : '❌'}`);
+      console.log(`[GOV] AAR: ${result.aar_written ? '✅' : '❌'} | Trust: ${result.trust_updated ? '✅' : '❌'} | BrainX: ${result.brainx_stored ? '✅' : '❌'} | Corpus: ${result.corpus_appended ? '✅' : '❌'} | Hermes: ${result.hermes_exchanges} exchanges | ACP sync: ${result.acp_synced ? '✅' : '❌'}`);
       if (result.errors.length > 0) {
         console.log(`[GOV] Errors: ${result.errors.join(', ')}`);
       }
