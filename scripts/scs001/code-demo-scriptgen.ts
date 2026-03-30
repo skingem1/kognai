@@ -74,11 +74,13 @@ export async function discoverCodeDemoTopic(): Promise<{ prompt: string; source:
   const discoveryPrompt = `You are a tech content scout. Find ONE trending topic from dev communities that would make a great 30-second code demo video.
 
 Focus areas (pick one):
-- A new or trending SaaS product API (e.g., Stripe, Supabase, Clerk)
-- A popular SDK or library getting buzz (e.g., LangChain, Hono, Drizzle ORM)
-- An AI/ML framework update (e.g., OpenAI SDK, Anthropic SDK, HuggingFace)
-- An agentic AI or payment protocol (e.g., x402, ERC-8004, AgentPay)
-- A dev tool trending on Hacker News or GitHub
+- A new or trending SaaS product API (e.g., Stripe, Supabase, Clerk, Resend)
+- A popular SDK or library getting buzz (e.g., LangChain, Hono, Drizzle ORM, Zod)
+- An AI/ML framework update (e.g., OpenAI SDK, Anthropic SDK, HuggingFace, Ollama)
+- A developer productivity tool (e.g., Bun, Deno, Turso, Neon)
+- A backend/infra tool trending on Hacker News or GitHub
+
+AVOID: cryptocurrency, blockchain, Web3, DeFi, NFTs, price trackers, wallets, token APIs. Pick topics that appeal broadly to software developers learning practical skills.
 
 Return JSON only:
 {
@@ -99,7 +101,7 @@ Return JSON only:
     }
   } catch {}
 
-  // Fallback: rotate through evergreen coding topics
+  // Fallback: rotate through evergreen coding topics (no crypto/blockchain)
   const fallbacks = [
     'Build a REST API with FastAPI and Pydantic',
     'Create a CLI tool with Python Click',
@@ -107,6 +109,12 @@ Return JSON only:
     'Query a Supabase database with TypeScript',
     'Build a LangChain agent with tool use',
     'Create an Anthropic Claude API call with streaming',
+    'Build a file upload API with Hono and Bun',
+    'Create a rate limiter middleware in Node.js',
+    'Set up email sending with Resend and TypeScript',
+    'Build a cron job scheduler with node-cron',
+    'Parse and validate data with Zod in TypeScript',
+    'Create a Redis cache layer with ioredis',
   ];
   const pick = fallbacks[Date.now() % fallbacks.length];
   return { prompt: pick, source: 'fallback-rotation' };

@@ -22,7 +22,7 @@ const ROOT = join(__dirname, '..', '..');
 
 try { require('dotenv').config({ path: join(ROOT, '.env') }); } catch {}
 
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+const BOT_TOKEN = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || '';
 const CHAT_ID = process.env.OWNER_TELEGRAM_CHAT_ID || '';
 const SCHEDULE_PATH = join(ROOT, 'reports', 'posting-schedule.json');
 const SENT_LOG = join(ROOT, 'logs', 'posting-reminders-sent.jsonl');

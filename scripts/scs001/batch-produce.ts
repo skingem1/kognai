@@ -1,10 +1,11 @@
 /**
  * SCS-001 — Batch Video Production (v2 — Pipeline Registry)
  *
- * Produces videos through the pipeline registry. Supports all 3 pipelines:
+ * Produces videos through the pipeline registry. Supports all 4 pipelines:
  *   --pipeline educational   (P1: avatar + B-roll)
  *   --pipeline code-demo     (P2: syntax-highlighted code walkthrough)
  *   --pipeline entertainment (P3: AI-generated trending video)
+ *   --pipeline bizarre       (P4: Kognai Bizarre Series — real mind-bending facts)
  *   --pipeline all           (round-robin across all registered pipelines)
  *
  * Usage:
@@ -16,8 +17,9 @@
  * Sprint 899 — Pipeline restructuring
  */
 
-import { join } from 'path';
+import { join, basename } from 'path';
 import { existsSync, readFileSync, writeFileSync, readdirSync, appendFileSync } from 'fs';
+import https from 'https';
 import { execSync } from 'child_process';
 import { initRegistry, runPipeline, listPipelines } from './pipeline-registry';
 import type { PipelineName, PipelineInput, PipelineRunResult } from './pipeline-registry';
@@ -70,6 +72,68 @@ function writeLedgerFallback(result: PipelineRunResult): void {
   } catch (e: any) {
     console.error(`[batch-produce] Ledger fallback FAILED: ${e.message}`);
   }
+}
+
+// Sprint 1483: Immediate Telegram notification after video production
+const TG_BOT_TOKEN = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || '';
+const TG_CHAT_ID = process.env.OWNER_TELEGRAM_CHAT_ID || '';
+
+const PIPELINE_HASHTAGS: Record<string, string> = {
+  educational:   '#ai #tech #coding #learntech #aitools',
+  'code-demo':   '#python #coding #developer #programming #learntocode',
+  entertainment: '#viral #aitrends #tech #trending #futureofai',
+  bizarre:       '#bizarre #mindblown #didyouknow #facts #waitwhat',
+};
+
+async function sendVideoTelegram(result: PipelineRunResult): Promise<void> {
+  if (!TG_BOT_TOKEN || !TG_CHAT_ID) return;
+  const videoPath = String(result.videoPath || '');
+  if (!videoPath || !existsSync(videoPath)) return;
+
+  const pipelineLabel = result.pipeline === 'educational' ? '🎓 Educational'
+    : result.pipeline === 'code-demo' ? '💻 Code Demo'
+    : result.pipeline === 'entertainment' ? '🎬 Entertainment'
+    : result.pipeline === 'bizarre' ? '🤯 Bizarre Series'
+    : '📦';
+  const hashtags = PIPELINE_HASHTAGS[result.pipeline ?? ''] ?? '#ai #tech';
+  const caption = `${pipelineLabel} — *${result.title || result.runId}*\n\n${hashtags}\n\nPost to TikTok → /record ${result.runId} 0 <tiktok_url>`;
+
+  const boundary = '----TgBatchBoundary' + Date.now().toString(16);
+  const fileData = readFileSync(videoPath);
+  const filename = basename(videoPath);
+
+  const parts: Buffer[] = [];
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="chat_id"\r\n\r\n${TG_CHAT_ID}\r\n`));
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="caption"\r\n\r\n${caption}\r\n`));
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="parse_mode"\r\n\r\nMarkdown\r\n`));
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="video"; filename="${filename}"\r\nContent-Type: video/mp4\r\n\r\n`));
+  parts.push(fileData);
+  parts.push(Buffer.from(`\r\n--${boundary}--\r\n`));
+  const body = Buffer.concat(parts);
+
+  await new Promise<void>((resolve, reject) => {
+    const req = https.request({
+      hostname: 'api.telegram.org',
+      path: `/bot${TG_BOT_TOKEN}/sendVideo`,
+      method: 'POST',
+      headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}`, 'Content-Length': body.length },
+      timeout: 180_000,
+    }, (res) => {
+      let data = '';
+      res.on('data', (c: Buffer) => (data += c.toString()));
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data) as { ok: boolean; description?: string };
+          if (!parsed.ok) reject(new Error(`sendVideo: ${parsed.description ?? data.slice(0, 200)}`));
+          else resolve();
+        } catch { reject(new Error(`sendVideo parse: ${data.slice(0, 200)}`)); }
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('sendVideo timeout')); });
+    req.write(body);
+    req.end();
+  });
 }
 
 const ROOT = join(__dirname, '..', '..');
@@ -228,6 +292,13 @@ async function main(): Promise<void> {
       results.push(result);
       // Sprint 1326: Fallback ledger write (in case pipeline-registry's write failed)
       writeLedgerFallback(result);
+      // Sprint 1483: Immediate Telegram notification — send video right after production
+      try {
+        await sendVideoTelegram(result);
+        console.log(`  [tg] Sent to Telegram: ${result.runId}`);
+      } catch (tgErr: any) {
+        console.warn(`  [tg] Telegram send failed (non-fatal): ${tgErr.message?.slice(0, 100)}`);
+      }
       // Sprint 1472: Disk guardian — delete intermediates after ledger write
       const bytesFreed = cleanupRunIntermediates(String(result.runId || ''));
       if (bytesFreed > 0) {

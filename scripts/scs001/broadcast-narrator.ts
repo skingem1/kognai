@@ -23,7 +23,7 @@ const ROOT = join(__dirname, '..', '..');
 
 try { require('dotenv').config({ path: join(ROOT, '.env') }); } catch {}
 
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+const BOT_TOKEN = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || '';
 const BROADCAST_CHAT_ID = process.env.BROADCAST_TELEGRAM_CHAT_ID || process.env.OWNER_TELEGRAM_CHAT_ID || '';
 const BROADCAST_DELAY_MS = Math.max(30, parseInt(process.env.BROADCAST_DELAY_SECONDS || '60', 10)) * 1000;
 const DRY_RUN = process.argv.includes('--dry-run');

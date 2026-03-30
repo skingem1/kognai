@@ -25,7 +25,7 @@ const MANUAL_PATH    = join(CWD, 'workspace', 'scs001', 'manual-posts.jsonl');
 const VERIFY_LOG     = join(CWD, 'logs', 'verify-posts.jsonl');
 
 const ACCESS_TOKEN   = process.env.TIKTOK_ACCESS_TOKEN || '';
-const BOT_TOKEN      = process.env.TELEGRAM_BOT_TOKEN || '';
+const BOT_TOKEN      = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || '';
 const OWNER_CHAT_ID  = process.env.OWNER_TELEGRAM_CHAT_ID || '';
 
 interface AutoPostEvent {

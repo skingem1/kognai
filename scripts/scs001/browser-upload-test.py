@@ -13,8 +13,12 @@ Prerequisites:
 Usage:
   source .venv-browser-use/bin/activate
   python scripts/scs001/browser-upload-test.py [--dry-run] [--video PATH]
+  python scripts/scs001/browser-upload-test.py --live --video PATH --caption "..." [--post]
 
-Dry-run mode (default): navigates to TikTok upload page but does NOT post.
+Modes:
+  (default/--dry-run): navigates to upload page, does NOT upload or post
+  --live:  uploads video + prepares caption, does NOT click Post
+  --post:  uploads video + sets caption + clicks Post (full automation, implies --live)
 """
 
 import argparse
@@ -52,17 +56,19 @@ def log_event(event: dict):
         f.write(json.dumps({**event, "timestamp": datetime.utcnow().isoformat()}) + "\n")
 
 
-async def test_tiktok_upload(video_path: str, dry_run: bool = True):
+async def test_tiktok_upload(video_path: str, dry_run: bool = True, caption: str = "", post_mode: bool = False):
     """Navigate to TikTok upload page using Chrome Default profile."""
     try:
         from browser_use import Agent
-        from langchain_openai import ChatOpenAI
+        from browser_use.browser.profile import BrowserProfile
+        from browser_use.llm import ChatOpenAI
     except ImportError:
         print("❌ browser-use not installed. Run: bash scripts/scs001/install-browser-use.sh")
         sys.exit(1)
 
     # Use Chrome Default profile (operator's logged-in session)
-    chrome_profile = os.path.expanduser("~/Library/Application Support/Google/Chrome/Default")
+    chrome_user_data = os.path.expanduser("~/Library/Application Support/Google/Chrome")
+    chrome_profile = os.path.join(chrome_user_data, "Default")
     if not Path(chrome_profile).exists():
         print(f"❌ Chrome Default profile not found at: {chrome_profile}")
         sys.exit(1)
@@ -77,29 +83,63 @@ async def test_tiktok_upload(video_path: str, dry_run: bool = True):
             "Report what you see on the page."
         )
     else:
+        post_caption = caption if caption else "AI content 🤖 #ai #tech"
+        # Split caption into title text and hashtags for TikTok's DraftEditor
+        import re
+        hashtag_matches = re.findall(r'#\w+', post_caption)
+        title_text = re.sub(r'#\w+', '', post_caption).strip()
+
+        if post_mode:
+            # Full automation: agent clicks Post
+            final_instruction = (
+                f"After all hashtags are added, scroll down to find the Post button. "
+                f"Click the Post button to publish the video. "
+                f"Wait for the confirmation that the post was submitted successfully "
+                f"(the page should redirect or show a success message). "
+                f"Take a final screenshot confirming the post was published."
+            )
+        else:
+            # Prepare-only mode
+            final_instruction = (
+                f"After all hashtags are added, take a screenshot of the caption field showing the full caption. "
+                f"DO NOT click the Post button under any circumstances. Just prepare the upload."
+            )
+
         task = (
             f"Navigate to https://www.tiktok.com/upload. "
             f"Upload the video file at: {video_path}. "
-            f"Add the caption: 'Test upload — will delete'. "
-            f"DO NOT click the Post button. Just prepare the upload and take a screenshot."
+            f"Wait for the video to finish uploading (the upload progress should reach 100%). "
+            f"Once the upload is complete and the caption editor is visible, click on the caption text input field. "
+            f"Type ONLY this title text first (no hashtags yet): '{title_text}'. "
+            f"Wait 1 second after typing the title. "
+            f"Then add each hashtag ONE AT A TIME: "
+            f"For each hashtag in [{', '.join(hashtag_matches)}], type it (e.g. '#ai'), "
+            f"wait for the hashtag suggestion dropdown to appear, "
+            f"then click the FIRST suggestion in the dropdown list that matches the hashtag you just typed. "
+            f"Wait 1 second between each hashtag. "
+            f"{final_instruction}"
         )
 
-    print(f"\n{'🧪 DRY RUN' if dry_run else '🚀 LIVE TEST'}: {task[:80]}...")
+    mode_label = "🧪 DRY RUN" if dry_run else ("📤 LIVE POST" if post_mode else "🚀 LIVE PREPARE")
+    print(f"\n{mode_label}: {task[:100]}...")
 
-    # Use OpenAI as the LLM for browser-use (cheapest option)
-    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+    # Use browser_use's native ChatOpenAI (wraps AsyncOpenAI directly, handles output_format)
+    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+
+    # BrowserProfile with Chrome Default (logged-in TikTok session)
+    browser_profile = BrowserProfile(
+        executable_path="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        user_data_dir=chrome_user_data,
+        profile_directory="Default",
+        headless=False,
+        disable_security=False,
+    )
 
     agent = Agent(
         task=task,
         llm=llm,
-        browser_config={
-            "headless": False,  # Need visible browser for Chrome profile
-            "chrome_instance_path": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-            "extra_chromium_args": [
-                f"--user-data-dir={os.path.expanduser('~/Library/Application Support/Google/Chrome')}",
-                "--profile-directory=Default",
-            ],
-        },
+        browser_profile=browser_profile,
+        available_file_paths=[video_path] if not dry_run else [],
     )
 
     result = await agent.run()
@@ -107,7 +147,9 @@ async def test_tiktok_upload(video_path: str, dry_run: bool = True):
     log_event({
         "event": "browser_upload_test",
         "dry_run": dry_run,
+        "post_mode": post_mode,
         "video_path": video_path,
+        "caption": caption,
         "result": str(result)[:500],
         "success": True,
     })
@@ -122,13 +164,22 @@ def main():
                         help="Navigate to upload page without uploading (default)")
     parser.add_argument("--live", action="store_true",
                         help="Prepare an actual upload (won't click Post)")
+    parser.add_argument("--post", action="store_true",
+                        help="Upload AND click Post to publish (full automation). Requires --live.")
     parser.add_argument("--video", type=str, default=str(TEST_VIDEO),
                         help="Path to video file for upload test")
+    parser.add_argument("--caption", type=str, default="",
+                        help="Caption to add to the TikTok post")
     parser.add_argument("--skip-warmup", action="store_true",
                         help="Skip warmup check (testing only)")
     args = parser.parse_args()
 
+    # --post implies --live
+    if args.post:
+        args.live = True
+
     dry_run = not args.live
+    post_mode = args.post
 
     print("══════════════════════════════════════════════════════")
     print("  BROWSER USE — TIKTOK UPLOAD TEST")
@@ -150,7 +201,7 @@ def main():
         sys.exit(1)
     print("✅ OPENAI_API_KEY set")
 
-    asyncio.run(test_tiktok_upload(args.video, dry_run))
+    asyncio.run(test_tiktok_upload(args.video, dry_run, args.caption, post_mode))
 
 
 if __name__ == "__main__":

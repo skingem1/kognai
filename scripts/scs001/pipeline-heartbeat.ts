@@ -42,7 +42,7 @@ function logEntry(entry: Record<string, unknown>): void {
 
 function sendTelegram(text: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const token = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.OWNER_TELEGRAM_CHAT_ID;
     if (!token || !chatId) {
       console.log('[heartbeat] TELEGRAM_BOT_TOKEN or OWNER_TELEGRAM_CHAT_ID not set — skipping send');

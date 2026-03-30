@@ -75,7 +75,7 @@ function getGateProgress(): { posted: number; target: number; totalViews: number
 
 function getEnvCheck(): Record<string, boolean> {
   const keys = [
-    'ANTHROPIC_API_KEY', 'TELEGRAM_BOT_TOKEN', 'OWNER_TELEGRAM_CHAT_ID',
+    'ANTHROPIC_API_KEY', 'KAEL_BOT_TOKEN', 'TELEGRAM_BOT_TOKEN', 'OWNER_TELEGRAM_CHAT_ID',
     'OLLAMA_HOST', 'SUPABASE_URL', 'SUPABASE_ANON_KEY',
     'STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET', 'STRIPE_WEBHOOK_PORT',
     'YOUTUBE_API_KEY', 'TIKTOK_CLIENT_KEY', 'TIKTOK_ACCESS_TOKEN', 'SCS_EDITING_MODE',

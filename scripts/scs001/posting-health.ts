@@ -204,7 +204,7 @@ function main() {
 
   // Telegram notification (optional)
   if (sendTelegram) {
-    const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+    const BOT_TOKEN = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || '';
     const CHAT_ID = process.env.OWNER_TELEGRAM_CHAT_ID || '';
     if (BOT_TOKEN && CHAT_ID) {
       const msg = [

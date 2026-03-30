@@ -434,9 +434,9 @@ async function generateTTSBackbone(monologue: string, outPath: string, voice?: s
 
 // ── Step 2b: Overlay Kognai neon logo (top-left corner, always) ──
 //
-// Composites the KOGNAI neon PNG at top-left (x=40, y=60), scaled to 200px wide.
+// Composites the KOGNAI neon PNG at top-left (x=30, y=40), scaled to 300px wide.
 // Position is safe regardless of avatar framing — never overlaps the face.
-// Opacity: 55% — visible but not distracting.
+// Opacity: 75% — clearly visible, strong brand presence.
 // Falls back to plain copy if the logo PNG is missing or FFmpeg fails.
 
 function overlayNeonLogo(inputPath: string, outputPath: string): void {
@@ -449,13 +449,13 @@ function overlayNeonLogo(inputPath: string, outputPath: string): void {
   try {
     execSync(
       `${FFMPEG} -y -i "${inputPath}" -i "${NEON_LOGO_PATH}" ` +
-      `-filter_complex "[1:v]scale=200:-1,format=rgba,colorchannelmixer=aa=0.55[logo];` +
-      `[0:v][logo]overlay=x=40:y=60" ` +
+      `-filter_complex "[1:v]scale=300:-1,format=rgba,colorchannelmixer=aa=0.75[logo];` +
+      `[0:v][logo]overlay=x=30:y=40" ` +
       `-c:v libx264 -preset fast -crf 20 -pix_fmt yuv420p ` +
       `-c:a aac -b:a 128k -ar 44100 -ac 2 "${outputPath}"`,
       { stdio: 'pipe', timeout: 60000 }
     );
-    console.log('  ✅ Neon logo overlaid (200px, top-left x=40 y=60)');
+    console.log('  ✅ Neon logo overlaid (300px, top-left x=30 y=40, 75% opacity)');
   } catch (err: any) {
     console.warn(`  ❌ Neon overlay failed: ${(err as Error).message?.slice(0, 80)} — plain avatar`);
     execSync(`cp "${inputPath}" "${outputPath}"`, { stdio: 'pipe' });

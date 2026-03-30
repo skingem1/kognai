@@ -22,7 +22,7 @@ const STRIPE_KEY = process.env.STRIPE_SECRET_KEY || '';
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || '';
 const PRICE_GROWTH = process.env.STRIPE_PRICE_GROWTH || '';
 const PRICE_PREMIUM = process.env.STRIPE_PRICE_PREMIUM || '';
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+const BOT_TOKEN = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || '';
 const OWNER_CHAT_ID = process.env.OWNER_TELEGRAM_CHAT_ID || '';
 
 interface Check {

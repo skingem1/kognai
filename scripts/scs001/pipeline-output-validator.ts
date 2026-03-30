@@ -127,7 +127,7 @@ function findVideos(): string[] {
 // ── Telegram ──────────────────────────────────────────
 
 function sendTelegramMessage(text: string): Promise<void> {
-  const token = process.env.CEO_TELEGRAM_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || '';
+  const token = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || '';
   const chatId = process.env.OWNER_TELEGRAM_CHAT_ID || process.env.CEO_TELEGRAM_CHAT_ID || '';
   if (!token || !chatId) return Promise.resolve();
 

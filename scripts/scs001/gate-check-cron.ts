@@ -25,7 +25,7 @@ interface GateData {
 
 function sendTelegram(text: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const token = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.OWNER_TELEGRAM_CHAT_ID;
     if (!token || !chatId) {
       console.log('[gate-check] TELEGRAM_BOT_TOKEN or OWNER_TELEGRAM_CHAT_ID not set — skipping send');

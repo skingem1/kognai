@@ -16,6 +16,7 @@
 import { execSync } from 'child_process';
 import { writeFileSync } from 'fs';
 import type { EntertainmentScript, EntertainmentScene } from './entertainment-scriptgen';
+import { getTikTokProtocolBlock, HOOK_FORMULAS, FREYTAG_STRUCTURE, RETENTION_RULES, COMPLETION_TARGETS } from './tiktok-guide-context';
 
 export type { EntertainmentScript, EntertainmentScene };
 
@@ -68,6 +69,10 @@ Technical rules:
 - caption_text: ALL CAPS, max 8 words, jaw-dropping — the thing they'll screenshot
 ${opts.withVoiceover ? '- voiceover_text: BANNED openers: "This is actually real", "Wait until you hear", "Nobody talks about", "Fun fact", "Did you know". Start WITH THE FACT. Lead immediately with the shocking subject. Short punchy sentences. Max 20 words per scene. The first word must be the shocking statement itself.' : '- No voiceover needed'}
 - Transitions: "cut" for shocking reveals, "fade" for mind-settling moments
+
+${FREYTAG_STRUCTURE}
+${RETENTION_RULES}
+${COMPLETION_TARGETS}
 
 Return JSON only:
 {

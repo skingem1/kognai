@@ -133,7 +133,7 @@ async function main(): Promise<void> {
   console.log(`\nPrimary stall reason: ${primaryReason}`);
 
   // 6. Send Telegram summary
-  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  const botToken = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.OWNER_TELEGRAM_CHAT_ID;
 
   if (!botToken || !chatId) {

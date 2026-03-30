@@ -29,8 +29,7 @@ import * as dotenv from 'dotenv';
 const ROOT = path.resolve(__dirname, '..', '..');
 dotenv.config({ path: path.join(ROOT, '.env') });
 
-const BOT_TOKEN = process.env.CEO_TELEGRAM_BOT_TOKEN
-              || process.env.TELEGRAM_BOT_TOKEN
+const BOT_TOKEN = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN
               || '';
 const OWNER_ID  = process.env.OWNER_TELEGRAM_CHAT_ID
               || process.env.CEO_TELEGRAM_CHAT_ID

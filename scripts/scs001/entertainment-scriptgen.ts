@@ -9,6 +9,7 @@
 
 import { execSync } from 'child_process';
 import { writeFileSync } from 'fs';
+import { FREYTAG_STRUCTURE, RETENTION_RULES, COMPLETION_TARGETS } from './tiktok-guide-context';
 
 export interface EntertainmentScene {
   scene_id: string;
@@ -60,21 +61,30 @@ export async function generateEntertainmentScript(
   const scriptId = `ent-${Date.now().toString(36)}`;
   console.log(`  Generating entertainment script for: "${topic}"`);
 
-  const prompt = `Create a 30-45 second TikTok entertainment video script about: "${topic}"
+  const prompt = `You are a viral TikTok scriptwriter. Create a 30-45 second video script inspired by the topic: "${topic}"
 
-The video will be entirely AI-generated (no real camera). Each scene is a separate AI video clip.
+DO NOT recap news or state facts. Instead, tell a SHORT STORY or reveal an UNEXPECTED ANGLE that makes people stop scrolling.
 
-Rules:
-- 4-6 scenes, each 4-8 seconds
+Viral storytelling formula (MANDATORY):
+1. HOOK (scene 1, 3-5s): Open with a shocking statement, provocative question, or unexpected visual. Something that makes the viewer say "wait, what?". The first 2 seconds must create INSTANT curiosity.
+2. TENSION (scenes 2-3): Build the story — introduce conflict, stakes, or a surprising twist. Reveal something counterintuitive.
+3. REVELATION (scene 4): The "I didn't know that" or "oh my god" moment. The payoff the viewer stayed for.
+4. IMPACT (scene 5, optional): Emotional resonance or call to action — leaves viewer thinking or wanting to share.
+
+The video will be entirely AI-generated. Each scene is a separate AI video clip.
+
+Technical rules:
+- 4-5 scenes, each 4-8 seconds
 - Total duration: 30-45 seconds
-- Each scene needs a visual_prompt describing what the AI video generator should create
-- CRITICAL: AI video generators CANNOT render readable text. visual_prompt must NEVER include screens, signs, documents, UI, code, charts, phones, laptops, whiteboards, or anything with text. Instead use: people, nature, cityscapes, abstract motion, technology hardware (no screens), hands, crowds, architecture, space, underwater, aerial shots.
-- Each scene needs a caption_text (what appears as subtitle on screen)
-- Hook scene first (attention-grabbing visual)
-- Build tension/interest through middle scenes
-- End with impact or call to action
-${opts.withVoiceover ? '- Include voiceover_text for each scene (spoken narration)' : '- No voiceover needed'}
-- Transitions: use "fade" between scenes for smooth flow, "cut" for dramatic moments
+- Each scene needs a visual_prompt for the AI video generator
+- CRITICAL: AI generators CANNOT render readable text. visual_prompt must NEVER include screens, signs, documents, UI, code, charts, phones, laptops, or whiteboards. Use: people, nature, cityscapes, abstract motion, technology hardware (no screens), hands, crowds, architecture, space, underwater, aerial shots.
+- Each scene needs a caption_text — punchy, max 8 words, creates intrigue or shock
+${opts.withVoiceover ? '- voiceover_text: spoken narration, conversational tone, like you\'re telling a friend something wild. Start with "Did you know..." OR a provocative statement.' : '- No voiceover needed'}
+- Transitions: "cut" for dramatic moments, "fade" between emotional scenes
+
+${FREYTAG_STRUCTURE}
+${RETENTION_RULES}
+${COMPLETION_TARGETS}
 
 Return JSON only:
 {
@@ -229,7 +239,7 @@ Return JSON only:
   let parsed: any;
 
   try {
-    const llmResponse = callOllama(prompt, { maxTokens: 2000, temperature: 0.7 });
+    const llmResponse = callOllama(prompt, { maxTokens: 2000, temperature: 0.9 });
     const first = llmResponse.indexOf('{');
     const last = llmResponse.lastIndexOf('}');
     if (first < 0 || last <= first) throw new Error('No JSON in entertainment script response');

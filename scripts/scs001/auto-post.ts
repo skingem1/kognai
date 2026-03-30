@@ -34,7 +34,7 @@ const LOG_PATH       = join(CWD, 'logs', 'auto-post.jsonl');
 const DRY_RUN        = process.env.AUTO_POST_DRY_RUN === '1';
 const MAX_PER_RUN    = parseInt(process.env.AUTO_POST_MAX || '1', 10);
 const ACCESS_TOKEN   = process.env.TIKTOK_ACCESS_TOKEN || '';
-const BOT_TOKEN      = process.env.TELEGRAM_BOT_TOKEN || '';
+const BOT_TOKEN      = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || '';
 const OWNER_CHAT_ID  = process.env.OWNER_TELEGRAM_CHAT_ID || '';
 
 interface LedgerEntry {

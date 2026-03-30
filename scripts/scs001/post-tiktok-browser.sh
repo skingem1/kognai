@@ -5,11 +5,12 @@
 # This wraps browser-upload-test.py for easy use from the publishing pipeline.
 #
 # Usage:
-#   bash scripts/scs001/post-tiktok-browser.sh <video_path> [caption]
+#   bash scripts/scs001/post-tiktok-browser.sh <video_path> [caption] [--post]
 #
 # Examples:
-#   bash scripts/scs001/post-tiktok-browser.sh /path/to/video.mp4 "AI is wild 🤖 #ai #tech"
-#   bash scripts/scs001/post-tiktok-browser.sh /path/to/video.mp4  # uses default caption
+#   bash scripts/scs001/post-tiktok-browser.sh /path/to/video.mp4 "AI is wild 🤖 #ai #tech" --post
+#   bash scripts/scs001/post-tiktok-browser.sh /path/to/video.mp4 "AI is wild 🤖 #ai #tech"  # prepare only
+#   bash scripts/scs001/post-tiktok-browser.sh /path/to/video.mp4  # default caption, prepare only
 #
 # Prerequisites:
 #   1. Run install-browser-use.sh first
@@ -26,9 +27,17 @@ LOG="$ROOT/logs/browser-post.jsonl"
 # Args
 VIDEO_PATH="${1:-}"
 CAPTION="${2:-}"
+POST_FLAG=""
+
+# Check for --post in any argument position
+for arg in "$@"; do
+  if [ "$arg" = "--post" ]; then
+    POST_FLAG="--post"
+  fi
+done
 
 if [ -z "$VIDEO_PATH" ]; then
-  echo "❌ Usage: post-tiktok-browser.sh <video_path> [caption]"
+  echo "❌ Usage: post-tiktok-browser.sh <video_path> [caption] [--post]"
   exit 1
 fi
 
@@ -57,6 +66,7 @@ echo "════════════════════════�
 echo ""
 echo "Video:   $VIDEO_PATH"
 echo "Caption: ${CAPTION:-<none provided>}"
+echo "Mode:    ${POST_FLAG:+PUBLISH (clicking Post)} ${POST_FLAG:-PREPARE ONLY}"
 echo ""
 
 # Check warmup
@@ -73,12 +83,22 @@ if [ "$VERIFIED" != "True" ]; then
 fi
 echo "✅ Warmup verified"
 
-# Run the upload (live mode, prepare but don't post)
-python "$SCRIPT" --live --video "$VIDEO_PATH"
+# Run the upload
+if [ -n "$CAPTION" ]; then
+  python "$SCRIPT" --live --video "$VIDEO_PATH" --caption "$CAPTION" $POST_FLAG
+else
+  python "$SCRIPT" --live --video "$VIDEO_PATH" $POST_FLAG
+fi
+
+EXIT_CODE=$?
 
 # Log
 mkdir -p "$(dirname "$LOG")"
-echo "{\"event\":\"browser_post\",\"video\":\"$VIDEO_PATH\",\"caption\":\"${CAPTION//\"/\\\"}\",\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> "$LOG"
+echo "{\"event\":\"browser_post\",\"video\":\"$VIDEO_PATH\",\"caption\":\"${CAPTION//\"/\\\"}\",\"post_mode\":${POST_FLAG:+true}${POST_FLAG:-false},\"exit_code\":$EXIT_CODE,\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> "$LOG"
 
 echo ""
-echo "✅ Upload prepared. Review in browser and click Post when ready."
+if [ -n "$POST_FLAG" ]; then
+  echo "✅ Post submitted (agent clicked Post button)."
+else
+  echo "✅ Upload prepared. Review in browser and click Post when ready."
+fi

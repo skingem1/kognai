@@ -426,12 +426,13 @@ for fn in sorted(frame_map.keys()):
     img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    # Measure word and center it horizontally in lower third
+    # Measure word and center it horizontally — placed in UPPER third
+    # (moved from bottom to top: TikTok's title/hashtag overlay covers bottom ~350px)
     bb = draw.textbbox((0, 0), word, font=font)
     tw = bb[2] - bb[0]
     th = bb[3] - bb[1]
     x = (W - tw) // 2
-    y = H - 300 - th
+    y = 160
 
     # Thick black stroke for readability on any background
     stroke = 5
@@ -559,8 +560,9 @@ for fn in sorted(frame_map.keys()):
 
     lh = 60
     tth = len(lines) * lh
-    bt = H - 80 - tth
-    draw.rectangle([0, bt - 16, W, H - 50], fill=(0, 0, 0, 170))
+    # Placed in UPPER third — TikTok's title/hashtag overlay covers bottom ~350px
+    bt = 160
+    draw.rectangle([0, bt - 16, W, bt + tth + 16], fill=(0, 0, 0, 170))
     for li, lw in enumerate(lines):
         lt = ' '.join(lw)
         bb = draw.textbbox((0, 0), lt, font=font)

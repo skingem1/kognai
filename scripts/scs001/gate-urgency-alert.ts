@@ -22,7 +22,7 @@ dotenv.config({ path: join(process.cwd(), '.env') });
 
 const CWD = process.cwd();
 const MANUAL_POSTS_PATH = join(CWD, 'workspace', 'scs001', 'manual-posts.jsonl');
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+const BOT_TOKEN = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || '';
 const OWNER_CHAT_ID = process.env.OWNER_TELEGRAM_CHAT_ID || '';
 
 const GATE_DATE = new Date('2026-04-07T00:00:00Z');

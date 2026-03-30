@@ -26,7 +26,7 @@ const CWD          = process.cwd();
 const MANUAL_PATH  = join(CWD, 'workspace', 'scs001', 'manual-posts.jsonl');
 const LOG_PATH     = join(CWD, 'logs', 'view-tracker.jsonl');
 const DRY_RUN      = process.env.VIEW_FETCH_DRY_RUN === '1';
-const BOT_TOKEN    = process.env.TELEGRAM_BOT_TOKEN || '';
+const BOT_TOKEN    = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || '';
 const OWNER_ID     = process.env.OWNER_TELEGRAM_CHAT_ID || '';
 
 const POSTS_TARGET = 30;

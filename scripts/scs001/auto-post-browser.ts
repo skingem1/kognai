@@ -23,6 +23,7 @@ import { readFileSync, existsSync, appendFileSync, mkdirSync, readdirSync } from
 import { join, dirname } from 'path';
 import { execSync } from 'child_process';
 import * as dotenv from 'dotenv';
+import { runScraperDetached } from './analytics-scraper';
 
 dotenv.config({ path: join(process.cwd(), '.env') });
 
@@ -36,7 +37,7 @@ const POST_SCRIPT    = join(CWD, 'scripts', 'scs001', 'post-tiktok-browser.sh');
 
 const DRY_RUN        = process.env.AUTO_POST_DRY_RUN === '1';
 const MAX_PER_RUN    = parseInt(process.env.AUTO_POST_MAX || '1', 10);
-const BOT_TOKEN      = process.env.TELEGRAM_BOT_TOKEN || '';
+const BOT_TOKEN      = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || '';
 const OWNER_CHAT_ID  = process.env.OWNER_TELEGRAM_CHAT_ID || '';
 
 interface VideoCandidate {
@@ -225,6 +226,14 @@ async function main(): Promise<void> {
         mp4_path: video.mp4_path,
       });
       posted++;
+
+      // Sprint BUGFIX-ANALYTICS-01: trigger analytics scrape 30 min after posting
+      // so Creator Center has time to register the new video.
+      // Detached — does not block posting flow.
+      setTimeout(() => {
+        console.log(`[auto-post-browser] ⏱ Triggering analytics scrape (30 min post-post delay)...`);
+        runScraperDetached(7);
+      }, 30 * 60 * 1000);
 
       const totalPosted = recordedIds.size + posted;
       const remaining = Math.max(0, 30 - totalPosted);

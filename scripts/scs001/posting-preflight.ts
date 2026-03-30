@@ -59,7 +59,7 @@ function runChecks(): Check[] {
     { name: 'TikTok Client Secret', key: 'TIKTOK_CLIENT_SECRET', blocker: true },
     { name: 'Supabase URL', key: 'SUPABASE_URL', blocker: true },
     { name: 'Supabase Service Key', key: 'SUPABASE_SERVICE_KEY', blocker: true },
-    { name: 'Telegram Bot Token', key: 'TELEGRAM_BOT_TOKEN', blocker: false },
+    { name: 'Kael Bot Token (SCS-001)', key: 'KAEL_BOT_TOKEN', blocker: false },
     { name: 'Owner Chat ID', key: 'OWNER_TELEGRAM_CHAT_ID', blocker: false },
     { name: 'Stripe Secret Key', key: 'STRIPE_SECRET_KEY', blocker: false },
   ];

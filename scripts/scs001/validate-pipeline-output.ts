@@ -67,7 +67,7 @@ function probeVideo(file: string): VideoResult {
 }
 
 function sendTelegram(message: string): void {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const token = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.OWNER_TELEGRAM_CHAT_ID;
   if (!token || !chatId) return;
 

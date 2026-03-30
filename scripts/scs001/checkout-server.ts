@@ -41,7 +41,7 @@ const STRIPE_KEY  = process.env.STRIPE_SECRET_KEY || '';
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || '';
 const SUCCESS_URL = process.env.STRIPE_SUCCESS_URL || `http://localhost:${PORT}/success`;
 const CANCEL_URL  = process.env.STRIPE_CANCEL_URL || 'https://t.me';
-const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+const TELEGRAM_TOKEN = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || '';
 const OWNER_CHAT_ID = process.env.OWNER_TELEGRAM_CHAT_ID || '';
 
 const SUBSCRIBERS_LOG = path.join(process.cwd(), 'workspace', 'scs001', 'subscribers.jsonl');

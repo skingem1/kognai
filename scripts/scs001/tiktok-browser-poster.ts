@@ -171,7 +171,7 @@ function checkWarmup(): { verified: boolean; startedAt: string | null; daysIn: n
 }
 
 function sendTelegramSync(text: string): void {
-  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  const botToken = process.env.KAEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN;
   const chatId   = process.env.OWNER_TELEGRAM_CHAT_ID;
   if (!botToken || !chatId) return;
   try {
