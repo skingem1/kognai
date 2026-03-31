@@ -466,8 +466,9 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
-      // Pipeline Auto-Run — Sprint 532. Runs pipeline + auto-deliver + metrics 4x/day.
-      // Produces 3 videos per run, delivers to Telegram, logs metrics.
+      // Pipeline Auto-Run — Sprint 532 → Updated 2026-03-29 (Godman).
+      // Runs 3 pipelines once daily at 10:00: P1 Hailuo + P3 Vlog + P4 Bizarre.
+      // Each pipeline produces 1 video. Auto-deliver posts up to 3 videos from queue.
       name: "kognai-pipeline-auto",
       script: "scripts/scs001/pipeline-cron.ts",
       interpreter: "node",
@@ -476,7 +477,7 @@ module.exports = {
       cwd: __dirname,
       autorestart: false,
       watch: false,
-      cron_restart: "0 6,10,14,18 * * *",
+      cron_restart: "0 10 * * *",
       env: {
         TS_NODE_TRANSPILE_ONLY: "true",
         TS_NODE_PROJECT: __dirname + "/tsconfig.scripts.json",
@@ -1727,6 +1728,83 @@ module.exports = {
       },
       error_file: __dirname + "/logs/scs001-entertainment-error.log",
       out_file: __dirname + "/logs/scs001-entertainment-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+
+    // ─── TICKET-032-C: Hermes Protocol monitor + ACP integration ─────────────
+    // hermes-monitor: Supabase Realtime subscriber — reacts to ESCALATION_NOTICE,
+    //   applies ACP score penalty, sends Telegram alert.  Persistent process.
+    {
+      name: "hermes-monitor",
+      script: "scripts/lib/hermes-monitor.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: __dirname,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "128M",
+      min_uptime: "5s",
+      max_restarts: 10,
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: __dirname + "/tsconfig.scripts.json",
+        SUPABASE_URL:       process.env.SUPABASE_URL       || "",
+        SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY || "",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+        TELEGRAM_CHAT_ID:   process.env.TELEGRAM_CHAT_ID   || "",
+      },
+      error_file: __dirname + "/logs/hermes-monitor-error.log",
+      out_file:   __dirname + "/logs/hermes-monitor-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+
+    // sherlock-cron: 15-min scan of sprint outputs, emits REVIEW_REQUEST /
+    //   ESCALATION_NOTICE / ACK to sherlock_channel + records acp_scores.
+    {
+      name: "sherlock-cron",
+      script: "scripts/lib/sherlock-cron.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: __dirname,
+      autorestart: false,
+      watch: false,
+      cron_restart: "*/15 * * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: __dirname + "/tsconfig.scripts.json",
+        SUPABASE_URL:       process.env.SUPABASE_URL       || "",
+        SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY || "",
+        OLLAMA_HOST: process.env.OLLAMA_HOST || "http://127.0.0.1:11434",
+      },
+      error_file: __dirname + "/logs/sherlock-cron-error.log",
+      out_file:   __dirname + "/logs/sherlock-cron-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+
+    // harvey-responder: 30s poll loop — reads pending Hermes messages addressed
+    //   to 'harvey', responds with REVIEW_REQUEST or ACK.  Persistent process.
+    {
+      name: "harvey-responder",
+      script: "scripts/lib/harvey-responder.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: __dirname,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "128M",
+      min_uptime: "5s",
+      max_restarts: 10,
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: __dirname + "/tsconfig.scripts.json",
+        SUPABASE_URL:       process.env.SUPABASE_URL       || "",
+        SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY || "",
+        OLLAMA_HOST: process.env.OLLAMA_HOST || "http://127.0.0.1:11434",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+        TELEGRAM_CHAT_ID:   process.env.TELEGRAM_CHAT_ID   || "",
+      },
+      error_file: __dirname + "/logs/harvey-responder-error.log",
+      out_file:   __dirname + "/logs/harvey-responder-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
   ]

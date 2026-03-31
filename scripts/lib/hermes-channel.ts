@@ -243,4 +243,81 @@ export class HermesChannel {
 
     await this.supabase.from('sherlock_channel').insert(escalationMsg);
   }
+
+  // ── processOutput (TICKET-032-C) ──────────────────────────────────────────
+
+  /**
+   * Parse Hermes markers from a block of agent output text and post each to
+   * sherlock_channel.  Returns the exchange_id(s) created.
+   *
+   * Used by post-sprint-governance.ts after every sprint execution.
+   */
+  async processOutput(text: string, fromAgent: string, sprintId: string): Promise<string[]> {
+    const parsed = parseMarkers(text);
+    if (parsed.length === 0) return [];
+
+    const exchangeId = randomUUID();
+    for (const p of parsed) {
+      await this.post({
+        from_agent:  fromAgent,
+        to_agent:    p.to_agent ?? (p.marker === '[ESCALATION_NOTICE]' ? 'godman' : 'sherlock'),
+        marker:      p.marker,
+        message:     [p.body, `sprint:${sprintId}`].filter(Boolean).join(' | ') || undefined,
+        exchange_id: exchangeId,
+      });
+    }
+
+    return [exchangeId];
+  }
+
+  // ── syncACPScores (TICKET-032-C) ──────────────────────────────────────────
+
+  /**
+   * Mirror composite ACP trust scores from acp/trust-scores.json into the
+   * acp_scores Supabase table (idempotent upsert).
+   *
+   * Called by post-sprint-governance.ts after each sprint.
+   */
+  async syncACPScores(): Promise<void> {
+    if (!process.env.SUPABASE_URL) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const nodePath = require('path');
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const fs = require('fs');
+    const trustFile = nodePath.resolve(process.cwd(), 'acp/trust-scores.json');
+    if (!fs.existsSync(trustFile)) return;
+
+    let scores: Record<string, { composite?: number }>;
+    try {
+      const raw = JSON.parse(fs.readFileSync(trustFile, 'utf-8'));
+      scores = raw.scores ?? {};
+    } catch {
+      return;
+    }
+
+    const rows = Object.entries(scores)
+      .filter(([, v]) => typeof (v as { composite?: number })?.composite === 'number')
+      .map(([agentName, v]) => ({
+        agent_name:  agentName,
+        sprint_id:   'ACP-SYNC',
+        score:       (v as { composite: number }).composite,
+        gate_passed: (v as { composite: number }).composite >= 60,
+        notes:       'Synced from acp/trust-scores.json',
+      }));
+
+    if (rows.length === 0) return;
+
+    // Batch upsert in chunks of 20
+    for (let i = 0; i < rows.length; i += 20) {
+      const batch = rows.slice(i, i + 20);
+      const { error } = await this.supabase
+        .from('acp_scores')
+        .upsert(batch, { onConflict: 'agent_name,sprint_id', ignoreDuplicates: true });
+      if (error) console.warn('[Hermes] syncACPScores upsert error:', error.message);
+    }
+  }
 }
+
+// ── Singleton export ───────────────────────────────────────────────────────────
+export const hermesChannel = new HermesChannel();

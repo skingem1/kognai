@@ -10,7 +10,7 @@
  *   5. If gate fails: emits [ESCALATION_NOTICE] → godman
  *
  * Run via PM2:
- *   pm2 start scripts/lib/sherlock-cron.ts --name sherlock-cron --cron "*/15 * * * *"
+ *   pm2 start scripts/lib/sherlock-cron.ts --name sherlock-cron --cron "* /15 * * * *"  (remove space)
  *
  * Or with ts-node directly:
  *   npx ts-node scripts/lib/sherlock-cron.ts
