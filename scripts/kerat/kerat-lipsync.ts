@@ -281,7 +281,8 @@ function runLivePortraitWarp(
   driverVideo: string,
   outputVideo: string,
   portrait: string,
-  device: string
+  device: string,
+  audioWav: string,
 ): boolean {
   log(`Step 3.5a — LivePortrait warp (source-pixel, zero colour injection)`);
   log(`  driver:   ${driverVideo}`);
@@ -300,6 +301,7 @@ function runLivePortraitWarp(
       LP_WARP_SCRIPT,
       '--portrait', portrait,
       '--driver',   driverVideo,
+      '--audio',    audioWav,
       '--output',   outputVideo,
       '--device',   device,
     ],
@@ -315,8 +317,12 @@ function runLivePortraitWarp(
   if (result.stderr) process.stderr.write(result.stderr);
 
   if (result.status !== 0 || result.error) {
-    log(`Step 3.5a ⚠️  LP warp failed (exit ${result.status}) — falling back to raw LatentSync output`);
-    log(`  Error: ${result.error?.message ?? 'non-zero exit'}`);
+    if (result.status === 2) {
+      log(`Step 3.5a ⚠️  LivePortrait unavailable (exit 2) — falling back to Reinhard grade`);
+    } else {
+      log(`Step 3.5a ⚠️  LP warp failed (exit ${result.status}) — falling back to raw LatentSync output`);
+      log(`  Error: ${result.error?.message ?? 'non-zero exit'}`);
+    }
     return false;
   }
 
@@ -391,7 +397,7 @@ function parseArgs() {
     process.stderr.write(
       'Usage: ts-node kerat-lipsync.ts --text "..." ' +
       '[--portrait path] [--out path] [--inference-steps N] [--device mps] ' +
-      '[--lp-warp] [--grade-strength 1.0] [--skip-grade] [--enable-gfpgan]\n'
+      '[--mode latentsync|liveportrait] [--lp-warp] [--grade-strength 1.0] [--skip-grade] [--enable-gfpgan]\n'
     );
     process.exit(1);
   }
@@ -408,6 +414,7 @@ function parseArgs() {
     skipGrade:     args.includes('--skip-grade'),
     enableGfpgan:  args.includes('--enable-gfpgan'),
     lpWarp:        args.includes('--lp-warp'),
+    mode:          get('--mode', 'latentsync')!,   // 'latentsync' | 'liveportrait'
   };
 }
 
@@ -430,8 +437,8 @@ async function main() {
 
   const wavPath = join(tmpDir, `tts_${ts}.wav`);
 
-  // --lp-warp and Reinhard grade are mutually exclusive; LP warp takes priority
-  const lpWarpEnabled = cfg.lpWarp;
+  // --lp-warp / --mode liveportrait and Reinhard grade are mutually exclusive; LP warp takes priority
+  const lpWarpEnabled = cfg.lpWarp || cfg.mode === 'liveportrait';
   const gradeEnabled  = !cfg.skipGrade && !lpWarpEnabled;
   const gfpganEnabled = cfg.enableGfpgan && existsSync(GFPGAN_MODEL) && existsSync(GFPGAN_SCRIPT);
 
@@ -470,12 +477,25 @@ async function main() {
     const lpTarget = gfpganEnabled
       ? resolve(dirname(outVideo), `${basename(outVideo, '.mp4')}.lpwarp.mp4`)
       : outVideo;
-    step35Applied = runLivePortraitWarp(latentSyncOut, lpTarget, cfg.portrait, cfg.device);
+    step35Applied = runLivePortraitWarp(latentSyncOut, lpTarget, cfg.portrait, cfg.device, wavPath);
     if (step35Applied) {
       step35Out = lpTarget;
       // Remove LS intermediate now that LP warp succeeded
       if (existsSync(latentSyncOut) && latentSyncOut !== outVideo) {
         try { require('fs').unlinkSync(latentSyncOut); } catch {}
+      }
+    } else if (!cfg.skipGrade) {
+      // LP unavailable or failed (exit 2) — fall through to Reinhard grade as fallback
+      log(`Step 3.5 — LP warp fallback: attempting Reinhard grade`);
+      const gradeTarget = gfpganEnabled
+        ? resolve(dirname(outVideo), `${basename(outVideo, '.mp4')}.graded.mp4`)
+        : outVideo;
+      step35Applied = runColorGrade(latentSyncOut, gradeTarget, cfg.portrait, cfg.gradeStrength);
+      if (step35Applied) {
+        step35Out = gradeTarget;
+        if (existsSync(latentSyncOut) && latentSyncOut !== outVideo) {
+          try { require('fs').unlinkSync(latentSyncOut); } catch {}
+        }
       }
     }
   } else if (gradeEnabled) {
