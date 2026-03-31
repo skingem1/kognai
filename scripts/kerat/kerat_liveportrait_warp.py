@@ -274,6 +274,39 @@ def compute_masked_lab_stats(img_bgr: np.ndarray, mask: np.ndarray):
     return stats
 
 
+def build_lip_boundary_ring(lmk_crop: np.ndarray, size: int = 512,
+                            inner_dilate_px: int = 4,
+                            outer_dilate_px: int = 22) -> np.ndarray:
+    """Annular ring of skin pixels immediately surrounding the lip blend zone.
+
+    Sampling the ring (rather than the lip interior) gives the colour transfer
+    the correct target for dark/colour-graded portraits where the lip interior
+    has a different Lab distribution than the surrounding skin.
+
+    inner_dilate_px: small dilation — just clears the lip edge itself
+    outer_dilate_px: how wide the ring extends outward into cheek/chin skin
+
+    Returns float32 mask (size, size), 1.0 inside ring, 0.0 elsewhere.
+    """
+    pts = lmk_crop[LIP_ALL].astype(np.int32)
+    hull = cv2.convexHull(pts.reshape(-1, 1, 2))
+
+    def _dilated(px: int) -> np.ndarray:
+        m = np.zeros((size, size), dtype=np.uint8)
+        cv2.fillConvexPoly(m, hull, 255)
+        if px > 0:
+            k = cv2.getStructuringElement(
+                cv2.MORPH_ELLIPSE, (2 * px + 1, 2 * px + 1)
+            )
+            m = cv2.dilate(m, k)
+        return m
+
+    inner = _dilated(inner_dilate_px)
+    outer = _dilated(outer_dilate_px)
+    ring = np.clip(outer.astype(np.float32) - inner.astype(np.float32), 0, 255)
+    return (ring / 255.0).astype(np.float32)
+
+
 def prepare_portrait(portrait_bgr: np.ndarray, cropper):
     """Run face detection on source portrait and build all needed data structures.
 
@@ -324,11 +357,17 @@ def prepare_portrait(portrait_bgr: np.ndarray, cropper):
     # Build feathered lip mask in crop space
     lip_mask = build_polygon_mask(lmk_crop, LIP_ALL, size=512, dilate_px=6, blur_px=19)
 
-    # Compute Lab stats from the lip region of the source portrait crop
-    lip_stats = compute_masked_lab_stats(crop_512, lip_mask)
+    # Compute Lab stats from the annular ring SURROUNDING the lip boundary.
+    # For dark/colour-graded portraits the lip interior has very different Lab
+    # values from the surrounding skin; sampling the ring ensures the Reinhard
+    # transfer targets the actual skin tone at the blend edge, not the lips.
+    boundary_ring = build_lip_boundary_ring(lmk_crop, size=512,
+                                            inner_dilate_px=4,
+                                            outer_dilate_px=22)
+    lip_stats = compute_masked_lab_stats(crop_512, boundary_ring)
 
     print(f"[lp_warp] Portrait face detected. Crop shape: {crop_512.shape}")
-    print(f"[lp_warp] Lip region L mean={lip_stats[0][0]:.1f}  a mean={lip_stats[1][0]:.1f}")
+    print(f"[lp_warp] Boundary ring L mean={lip_stats[0][0]:.1f}  a mean={lip_stats[1][0]:.1f}")
 
     return {
         "crop_512":  crop_512,
