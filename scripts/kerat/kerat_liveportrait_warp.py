@@ -34,8 +34,10 @@ Usage:
       --portrait  /path/to/portrait.jpg \
       --driver    /path/to/latentsync.mp4 \
       --output    /path/to/liveportrait.mp4 \
+      [--audio    /path/to/original.wav] # if set, mux this audio; else use driver audio
       [--device   mps|cpu]              # default: auto (mps if available)
       [--dtype    fp32|fp16]            # default: fp32 (fp16 can be used on CUDA)
+      # Exit codes: 0=ok, 1=input/runtime error, 2=liveportrait_unavailable (caller may fallback)
 """
 
 # ─── 0. Inject comfy + folder_paths mocks BEFORE any LP import ────────────────
@@ -131,17 +133,22 @@ LP_ROOT = os.path.expanduser(
 )
 sys.path.insert(0, LP_ROOT)
 
-from liveportrait.live_portrait_pipeline import LivePortraitPipeline
-from liveportrait.live_portrait_wrapper import LivePortraitWrapper
-from liveportrait.utils.cropper import CropperFaceAlignment
-from liveportrait.utils.landmark_runner import LandmarkRunnerTorch
-from liveportrait.utils.crop import _transform_img_kornia
-from liveportrait.utils.camera import get_rotation_matrix
-from liveportrait.modules.appearance_feature_extractor import AppearanceFeatureExtractor
-from liveportrait.modules.motion_extractor import MotionExtractor
-from liveportrait.modules.warping_network import WarpingNetwork
-from liveportrait.modules.spade_generator import SPADEDecoder
-from liveportrait.modules.stitching_retargeting_network import StitchingRetargetingNetwork
+try:
+    from liveportrait.live_portrait_pipeline import LivePortraitPipeline
+    from liveportrait.live_portrait_wrapper import LivePortraitWrapper
+    from liveportrait.utils.cropper import CropperFaceAlignment
+    from liveportrait.utils.landmark_runner import LandmarkRunnerTorch
+    from liveportrait.utils.crop import _transform_img_kornia
+    from liveportrait.utils.camera import get_rotation_matrix
+    from liveportrait.modules.appearance_feature_extractor import AppearanceFeatureExtractor
+    from liveportrait.modules.motion_extractor import MotionExtractor
+    from liveportrait.modules.warping_network import WarpingNetwork
+    from liveportrait.modules.spade_generator import SPADEDecoder
+    from liveportrait.modules.stitching_retargeting_network import StitchingRetargetingNetwork
+    _LP_AVAILABLE = True
+except Exception as _lp_import_err:
+    _LP_AVAILABLE = False
+    _LP_IMPORT_ERROR = str(_lp_import_err)
 
 # ─── 1.5. PyTorch 2.6+ compat: patch landmark_runner to load with weights_only=False
 # landmark_model.pth is a torch.fx.GraphModule — torch.load needs weights_only=False.
@@ -237,6 +244,9 @@ def parse_args():
     p.add_argument("--dtype",    default="fp32",
                    choices=["fp32", "fp16"],
                    help="Model precision (fp32 recommended for MPS, fp16 for CUDA)")
+    p.add_argument("--audio",    default=None,
+                   help="Original audio file to mux into output (WAV/MP3/AAC). "
+                        "If not set, audio is taken from the driver video.")
     return p.parse_args()
 
 
@@ -532,6 +542,17 @@ def mux_audio(raw_video: str, audio_source: str, output_path: str):
 def main():
     args = parse_args()
 
+    # ── Guard: fail fast with exit code 2 if LivePortrait could not be imported
+    if not _LP_AVAILABLE:
+        import json as _json
+        print(_json.dumps({
+            "ok": False,
+            "error": "liveportrait_unavailable",
+            "detail": _LP_IMPORT_ERROR,
+            "fallback": "reinhard",
+        }))
+        sys.exit(2)
+
     # Device
     if args.device == "auto":
         device = _autodetect_device()
@@ -606,7 +627,8 @@ def main():
     )
 
     # ── Mux audio from driver
-    mux_audio(tmp_video, args.driver, args.output)
+    audio_src = args.audio if args.audio else args.driver
+    mux_audio(tmp_video, audio_src, args.output)
 
     # ── Cleanup
     try:
@@ -615,8 +637,10 @@ def main():
         pass
 
     size_mb = os.path.getsize(args.output) / 1024 / 1024
-    print(f"[lp_warp] ✅ Done → {args.output}  ({size_mb:.1f}MB)")
-    print(f'{{"ok": true, "output": "{args.output}", "size_mb": {size_mb:.2f}}}')
+    n_frames = len(out_list)
+    print(f"[lp_warp] ✅ Done → {args.output}  ({size_mb:.1f}MB)  frames={n_frames}", file=sys.stderr)
+    import json as _json
+    print(_json.dumps({"ok": True, "output": args.output, "frames": n_frames, "size_mb": round(size_mb, 2)}))
 
 
 if __name__ == "__main__":
