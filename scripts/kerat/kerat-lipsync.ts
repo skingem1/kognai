@@ -1,20 +1,21 @@
 #!/usr/bin/env ts-node
 /**
- * TICKET-030-B + TICKET-030-Addendum: Ker@ Text → Lip-synced + Enhanced Video Pipeline
+ * TICKET-030-B/C + TICKET-030-Addendum: Ker@ Text → Lip-synced + Enhanced Video Pipeline
  *
- * Text → Kokoro am_echo TTS → LatentSync 1.6 → Reinhard Grade → [GFPGAN] → output.mp4
+ * Text → Kokoro am_echo TTS → LatentSync 1.6 → [LP Warp | Reinhard Grade] → [GFPGAN] → output.mp4
  *
  * Steps:
- *  1. TTS      — python3.12 tts_kokoro.py        →  24kHz WAV (am_echo)
- *  2. Prep     — ffmpeg still image               →  512×512 25fps H.264 video
- *  3. Sync     — comfyui-env LatentSync           →  lip-synced .mp4
- *  3.5 Grade   — kerat_color_grade.py             →  Reinhard Lab colour-graded .mp4
- *                (transfers source portrait colour palette to entire output frame —
- *                 eliminates the bright-face-on-dark-background seam artifact)
+ *  1. TTS      — python3.12 tts_kokoro.py            →  24kHz WAV (am_echo)
+ *  2. Prep     — ffmpeg still image                   →  512×512 25fps H.264 video
+ *  3. Sync     — comfyui-env LatentSync               →  lip-synced .mp4
+ *  3.5a LPWarp — kerat_liveportrait_warp.py (--lp-warp)  →  source-pixel warp .mp4
+ *                RECOMMENDED for dark/stylised portraits: warps source portrait's OWN
+ *                pixels via LivePortrait 3-D keypoints — zero colour mismatch by construction.
+ *  3.5b Grade  — kerat_color_grade.py (default ON when no --lp-warp)
+ *                →  Reinhard Lab colour-graded .mp4 (post-hoc fix, less reliable on dark faces)
  *  3.7 GFPGAN  — gfpgan_enhance.py (opt-in only) →  face-restored .mp4
  *                NOTE: GFPGAN is DISABLED by default for dark/stylised portraits.
- *                      It undoes the Lab colour correction by restoring faces to
- *                      "natural" brightness.  Use --enable-gfpgan ONLY with
+ *                      It undoes colour correction.  Use --enable-gfpgan ONLY with
  *                      well-lit, neutral portraits.
  *
  * Usage:
@@ -24,9 +25,10 @@
  *     [--out workspace/kerat/output/kerat_001.mp4] \
  *     [--inference-steps 20] \
  *     [--device mps] \
- *     [--grade-strength 1.0]   (0.0 = no grade, 1.0 = full Reinhard, default 1.0)
+ *     [--lp-warp]              ← RECOMMENDED for dark/stylised portraits (TICKET-030-C)
+ *     [--grade-strength 1.0]   (Reinhard strength, used only without --lp-warp)
  *     [--enable-gfpgan]        (only for well-lit portraits)
- *     [--skip-grade]           (skip Reinhard grade, raw LatentSync output)
+ *     [--skip-grade]           (skip Reinhard grade when not using --lp-warp)
  *
  * Portrait guidance:
  *   - Dark / stylised (L < 50): default grade works well, skip GFPGAN
@@ -56,6 +58,7 @@ const TTS_SCRIPT            = join(__dirname, 'tts_kokoro.py');
 const COLOR_GRADE_SCRIPT    = join(__dirname, 'kerat_color_grade.py');
 const GFPGAN_SCRIPT         = join(__dirname, 'gfpgan_enhance.py');
 const GFPGAN_MODEL          = join(ROOT, 'workspace/kerat/GFPGANv1.4.pth');
+const LP_WARP_SCRIPT        = join(__dirname, 'kerat_liveportrait_warp.py');
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -272,6 +275,61 @@ function runColorGrade(
   return true;
 }
 
+// ─── Step 3.5a: LivePortrait Warp (TICKET-030-C) ─────────────────────────────
+
+function runLivePortraitWarp(
+  driverVideo: string,
+  outputVideo: string,
+  portrait: string,
+  device: string
+): boolean {
+  log(`Step 3.5a — LivePortrait warp (source-pixel, zero colour injection)`);
+  log(`  driver:   ${driverVideo}`);
+  log(`  portrait: ${portrait}`);
+  log(`  output:   ${outputVideo}`);
+  log(`  device:   ${device}`);
+
+  if (!existsSync(LP_WARP_SCRIPT)) {
+    log(`Step 3.5a ⚠️  LP warp script not found at ${LP_WARP_SCRIPT} — skipping`);
+    return false;
+  }
+
+  const result = spawnSync(
+    COMFYUI_ENV,
+    [
+      LP_WARP_SCRIPT,
+      '--portrait', portrait,
+      '--driver',   driverVideo,
+      '--output',   outputVideo,
+      '--device',   device,
+    ],
+    {
+      encoding: 'utf8',
+      timeout: 3_600_000,   // 1h — LP inference on MPS is slow
+      stdio: ['pipe', 'pipe', 'pipe'],
+      maxBuffer: 50 * 1024 * 1024,
+    }
+  );
+
+  if (result.stdout) process.stdout.write(result.stdout);
+  if (result.stderr) process.stderr.write(result.stderr);
+
+  if (result.status !== 0 || result.error) {
+    log(`Step 3.5a ⚠️  LP warp failed (exit ${result.status}) — falling back to raw LatentSync output`);
+    log(`  Error: ${result.error?.message ?? 'non-zero exit'}`);
+    return false;
+  }
+
+  if (!existsSync(outputVideo)) {
+    log(`Step 3.5a ⚠️  LP warp output not found — falling back to raw LatentSync output`);
+    return false;
+  }
+
+  const sizeMB = (statSync(outputVideo).size / 1024 / 1024).toFixed(1);
+  log(`Step 3.5a ✅  LP-warped output: ${outputVideo}  (${sizeMB}MB)`);
+  return true;
+}
+
 // ─── Step 3.7: GFPGAN Face Restoration (opt-in only) ─────────────────────────
 
 function runGFPGAN(inputVideo: string, outputVideo: string): boolean {
@@ -333,7 +391,7 @@ function parseArgs() {
     process.stderr.write(
       'Usage: ts-node kerat-lipsync.ts --text "..." ' +
       '[--portrait path] [--out path] [--inference-steps N] [--device mps] ' +
-      '[--grade-strength 1.0] [--skip-grade] [--enable-gfpgan]\n'
+      '[--lp-warp] [--grade-strength 1.0] [--skip-grade] [--enable-gfpgan]\n'
     );
     process.exit(1);
   }
@@ -349,6 +407,7 @@ function parseArgs() {
     gradeStrength: parseFloat(get('--grade-strength', '1.0')!),
     skipGrade:     args.includes('--skip-grade'),
     enableGfpgan:  args.includes('--enable-gfpgan'),
+    lpWarp:        args.includes('--lp-warp'),
   };
 }
 
@@ -371,7 +430,9 @@ async function main() {
 
   const wavPath = join(tmpDir, `tts_${ts}.wav`);
 
-  const gradeEnabled  = !cfg.skipGrade;
+  // --lp-warp and Reinhard grade are mutually exclusive; LP warp takes priority
+  const lpWarpEnabled = cfg.lpWarp;
+  const gradeEnabled  = !cfg.skipGrade && !lpWarpEnabled;
   const gfpganEnabled = cfg.enableGfpgan && existsSync(GFPGAN_MODEL) && existsSync(GFPGAN_SCRIPT);
 
   log(`═══════════════════════════════════════════`);
@@ -380,7 +441,8 @@ async function main() {
   log(`Portrait: ${cfg.portrait}`);
   log(`Out:      ${outVideo}`);
   log(`Steps:    ${cfg.steps}  Device: ${cfg.device}`);
-  log(`Grade:    ${gradeEnabled ? `ON (strength=${cfg.gradeStrength.toFixed(2)})` : 'OFF (--skip-grade)'}`);
+  log(`LP Warp:  ${lpWarpEnabled ? 'ON (--lp-warp, TICKET-030-C)' : 'OFF'}`);
+  log(`Grade:    ${gradeEnabled ? `ON (strength=${cfg.gradeStrength.toFixed(2)})` : lpWarpEnabled ? 'OFF (superseded by --lp-warp)' : 'OFF (--skip-grade)'}`);
   log(`GFPGAN:   ${gfpganEnabled ? 'ON (--enable-gfpgan)' : 'OFF (default — not safe for dark portraits)'}`);
   log(`═══════════════════════════════════════════`);
 
@@ -392,23 +454,38 @@ async function main() {
 
   // Step 3: LatentSync
   // Always write LS output to a .latentsync.mp4 intermediate when further steps follow
-  const anyPostProcess = gradeEnabled || gfpganEnabled;
+  const anyPostProcess = lpWarpEnabled || gradeEnabled || gfpganEnabled;
   const latentSyncOut = anyPostProcess
     ? resolve(dirname(outVideo), `${basename(outVideo, '.mp4')}.latentsync.mp4`)
     : outVideo;
 
   runLatentSync(portraitVideo, wavPath, latentSyncOut, cfg.steps, cfg.device);
 
-  // Step 3.5: Reinhard Lab colour grade (default ON, eliminates paste-boundary seam)
-  let gradeApplied = false;
-  let gradeOut = latentSyncOut;
-  if (gradeEnabled) {
+  // Step 3.5: LP Warp (3.5a) OR Reinhard grade (3.5b) — mutually exclusive
+  let step35Applied = false;
+  let step35Out = latentSyncOut;
+
+  if (lpWarpEnabled) {
+    // 3.5a — LivePortrait warp: warp source portrait's OWN pixels, zero colour mismatch
+    const lpTarget = gfpganEnabled
+      ? resolve(dirname(outVideo), `${basename(outVideo, '.mp4')}.lpwarp.mp4`)
+      : outVideo;
+    step35Applied = runLivePortraitWarp(latentSyncOut, lpTarget, cfg.portrait, cfg.device);
+    if (step35Applied) {
+      step35Out = lpTarget;
+      // Remove LS intermediate now that LP warp succeeded
+      if (existsSync(latentSyncOut) && latentSyncOut !== outVideo) {
+        try { require('fs').unlinkSync(latentSyncOut); } catch {}
+      }
+    }
+  } else if (gradeEnabled) {
+    // 3.5b — Reinhard Lab colour grade: post-hoc full-frame colour transfer
     const gradeTarget = gfpganEnabled
       ? resolve(dirname(outVideo), `${basename(outVideo, '.mp4')}.graded.mp4`)
       : outVideo;
-    gradeApplied = runColorGrade(latentSyncOut, gradeTarget, cfg.portrait, cfg.gradeStrength);
-    if (gradeApplied) {
-      gradeOut = gradeTarget;
+    step35Applied = runColorGrade(latentSyncOut, gradeTarget, cfg.portrait, cfg.gradeStrength);
+    if (step35Applied) {
+      step35Out = gradeTarget;
       // Remove LS intermediate now that grade succeeded
       if (existsSync(latentSyncOut) && latentSyncOut !== outVideo) {
         try { require('fs').unlinkSync(latentSyncOut); } catch {}
@@ -418,20 +495,19 @@ async function main() {
 
   // Step 3.7: GFPGAN face restoration (opt-in only — safe for well-lit portraits)
   let gfpganApplied = false;
-  let finalOut = gradeApplied ? gradeOut : latentSyncOut;
+  let finalOut = step35Applied ? step35Out : latentSyncOut;
   if (gfpganEnabled) {
     gfpganApplied = runGFPGAN(finalOut, outVideo);
     if (gfpganApplied) {
-      // Remove graded intermediate now that GFPGAN succeeded
-      if (existsSync(gradeOut) && gradeOut !== outVideo) {
-        try { require('fs').unlinkSync(gradeOut); } catch {}
+      // Remove step35 intermediate now that GFPGAN succeeded
+      if (existsSync(step35Out) && step35Out !== outVideo) {
+        try { require('fs').unlinkSync(step35Out); } catch {}
       }
       finalOut = outVideo;
     }
   }
 
-  // If neither grade nor GFPGAN produced outVideo, the LS output IS the final output
-  // (already at outVideo if no post-processing, or at latentSyncOut if both steps failed)
+  // If no post-processing produced outVideo, the LS output is the final output
   log('');
   log(`✅ Pipeline complete → ${finalOut}`);
 
@@ -444,7 +520,8 @@ async function main() {
     duration_s: duration,
     inference_steps: cfg.steps,
     voice: cfg.voice,
-    grade_applied: gradeApplied,
+    lp_warp_applied: lpWarpEnabled && step35Applied,
+    grade_applied: !lpWarpEnabled && step35Applied,
     grade_strength: cfg.gradeStrength,
     gfpgan_applied: gfpganApplied,
   }));
