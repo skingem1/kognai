@@ -478,43 +478,41 @@ async function poll(): Promise<void> {
             });
           }
           // ─── SCS-001 Video Review ─────────────────────────────────────────────
-          if (cbChatId && cbData.startsWith('approve:')) {
+          const reviewsPath = path.join(ROOT, 'workspace', 'scs001', 'video-reviews.jsonl');
+          if (cbData.startsWith('approve:')) {
             const videoId = cbData.slice(8);
+            console.log(`[Bot] Review APPROVE: ${videoId} from ${cbChatId}`);
             answerCallbackQuery(cb.id, '✅ Approved!').catch(() => {});
-            const reviewsPath = path.join(ROOT, 'workspace', 'scs001', 'video-reviews.jsonl');
             try {
               fs.mkdirSync(path.dirname(reviewsPath), { recursive: true });
               fs.appendFileSync(reviewsPath, JSON.stringify({ video_id: videoId, action: 'approve', reviewed_at: new Date().toISOString() }) + '\n', 'utf-8');
-            } catch { /* ignore */ }
+            } catch (e: any) { console.error(`[Bot] Review write error: ${e.message}`); }
             await sendMessage(cbChatId,
               `✅ *Approved* \`${videoId}\`\n\nPipeline unblocked — Kognai can now post.`
             ).catch(() => {});
-            // Trigger scs001-heartbeat (idempotent — safe if already running)
             try {
               spawnSync('pm2', ['start', 'ecosystem.config.js', '--only', 'scs001-heartbeat'], { cwd: ROOT, stdio: 'ignore', timeout: 30000 });
               spawnSync('pm2', ['save'], { cwd: ROOT, stdio: 'ignore', timeout: 10000 });
             } catch { /* pm2 not available — ignore */ }
-          }
-          if (cbChatId && cbData.startsWith('reject:')) {
+          } else if (cbData.startsWith('reject:')) {
             const videoId = cbData.slice(7);
+            console.log(`[Bot] Review REJECT: ${videoId} from ${cbChatId}`);
             answerCallbackQuery(cb.id, '❌ Rejected').catch(() => {});
-            const reviewsPath = path.join(ROOT, 'workspace', 'scs001', 'video-reviews.jsonl');
             try {
               fs.mkdirSync(path.dirname(reviewsPath), { recursive: true });
               fs.appendFileSync(reviewsPath, JSON.stringify({ video_id: videoId, action: 'reject', reviewed_at: new Date().toISOString() }) + '\n', 'utf-8');
-            } catch { /* ignore */ }
+            } catch (e: any) { console.error(`[Bot] Review write error: ${e.message}`); }
             await sendMessage(cbChatId,
               `❌ *Rejected* \`${videoId}\`\n\nVideo will not be posted.`
             ).catch(() => {});
-          }
-          if (cbChatId && cbData.startsWith('rework:')) {
+          } else if (cbData.startsWith('rework:')) {
             const videoId = cbData.slice(7);
+            console.log(`[Bot] Review REWORK: ${videoId} from ${cbChatId}`);
             answerCallbackQuery(cb.id, '🔧 Rework noted').catch(() => {});
-            const reviewsPath = path.join(ROOT, 'workspace', 'scs001', 'video-reviews.jsonl');
             try {
               fs.mkdirSync(path.dirname(reviewsPath), { recursive: true });
               fs.appendFileSync(reviewsPath, JSON.stringify({ video_id: videoId, action: 'rework', reviewed_at: new Date().toISOString() }) + '\n', 'utf-8');
-            } catch { /* ignore */ }
+            } catch (e: any) { console.error(`[Bot] Review write error: ${e.message}`); }
             await sendMessage(cbChatId,
               `🔧 *Rework queued* \`${videoId}\`\n\nFeedback noted — will be re-processed.`
             ).catch(() => {});
