@@ -1,13 +1,14 @@
 #!/usr/bin/env ts-node
 /**
- * TICKET-030-B: Ker@ Text → Lip-synced Video Pipeline
+ * TICKET-030-B + TICKET-030-Addendum: Ker@ Text → Lip-synced + Enhanced Video Pipeline
  *
- * Text → Kokoro am_echo TTS → LatentSync 1.6 → output.mp4
+ * Text → Kokoro am_echo TTS → LatentSync 1.6 → GFPGAN → output.mp4
  *
  * Steps:
- *  1. TTS — python3.12 tts_kokoro.py  →  24kHz WAV (am_echo)
- *  2. Portrait prep — ffmpeg still image → 512×512 25fps H.264 video (if portrait is not a video)
- *  3. Lip-sync — comfyui-env LatentSync inference.py  →  lip-synced .mp4
+ *  1. TTS    — python3.12 tts_kokoro.py  →  24kHz WAV (am_echo)
+ *  2. Prep   — ffmpeg still image → 512×512 25fps H.264 video (if portrait is not a video)
+ *  3. Sync   — comfyui-env LatentSync inference.py  →  lip-synced .mp4
+ *  3.5 GFPGAN — comfyui-env gfpgan_enhance.py  →  face-restored .mp4  (removes seam artifacts)
  *
  * Usage:
  *   cd ~/kognai && ts-node scripts/kerat/kerat-lipsync.ts \
@@ -15,9 +16,10 @@
  *     [--portrait workspace/kerat/avatar-test/real_face.jpg] \
  *     [--out workspace/kerat/output/kerat_001.mp4] \
  *     [--inference-steps 20] \
- *     [--device mps]
+ *     [--device mps] \
+ *     [--skip-gfpgan]
  *
- * Note: inference-steps 10 for speed (~50% slower than 20-step, but faster per run).
+ * Note: --skip-gfpgan disables face restoration (useful for quick tests).
  *       20 steps = higher quality. Default: 20.
  */
 
@@ -38,9 +40,11 @@ const LATENTSYNC_DIR = join(
 const COMFYUI_ENV = join(process.env.HOME!, 'comfyui-env/bin/python');
 const CHECKPOINT = join(LATENTSYNC_DIR, 'checkpoints/latentsync_unet.pt');
 const UNET_CONFIG = join(LATENTSYNC_DIR, 'configs/unet/stage2.yaml');
-const DEFAULT_PORTRAIT = join(ROOT, 'workspace/kerat/avatar-test/real_face.jpg');
-const DEFAULT_OUT_DIR  = join(ROOT, 'workspace/kerat/output');
-const TTS_SCRIPT = join(__dirname, 'tts_kokoro.py');
+const DEFAULT_PORTRAIT  = join(ROOT, 'workspace/kerat/avatar-test/real_face.jpg');
+const DEFAULT_OUT_DIR   = join(ROOT, 'workspace/kerat/output');
+const TTS_SCRIPT        = join(__dirname, 'tts_kokoro.py');
+const GFPGAN_SCRIPT     = join(__dirname, 'gfpgan_enhance.py');
+const GFPGAN_MODEL      = join(ROOT, 'workspace/kerat/GFPGANv1.4.pth');
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -203,6 +207,52 @@ function runLatentSync(
   log(`Step 3 ✅  Output: ${outVideo}  (${sizeMB}MB)`);
 }
 
+// ─── Step 3.5: GFPGAN Face Restoration ───────────────────────────────────────
+
+function runGFPGAN(inputVideo: string, outputVideo: string): void {
+  log(`Step 3.5 — GFPGAN face restoration: removing seam artifacts`);
+  log(`  input:  ${inputVideo}`);
+  log(`  output: ${outputVideo}`);
+
+  if (!existsSync(GFPGAN_SCRIPT)) {
+    log(`Step 3.5 ⚠️  GFPGAN script not found at ${GFPGAN_SCRIPT} — skipping`);
+    return;
+  }
+
+  if (!existsSync(GFPGAN_MODEL)) {
+    log(`Step 3.5 ⚠️  GFPGAN model not found at ${GFPGAN_MODEL} — skipping`);
+    return;
+  }
+
+  const result = spawnSync(
+    COMFYUI_ENV,
+    [GFPGAN_SCRIPT, '--input', inputVideo, '--output', outputVideo, '--model', GFPGAN_MODEL],
+    {
+      encoding: 'utf8',
+      timeout: 1_800_000,  // 30min max
+      stdio: ['pipe', 'pipe', 'pipe'],
+      maxBuffer: 10 * 1024 * 1024,
+    }
+  );
+
+  if (result.stdout) process.stdout.write(result.stdout);
+  if (result.stderr) process.stderr.write(result.stderr);
+
+  if (result.status !== 0 || result.error) {
+    log(`Step 3.5 ⚠️  GFPGAN failed (exit ${result.status}) — using LatentSync output as-is`);
+    log(`  Error: ${result.error?.message ?? 'non-zero exit'}`);
+    return;
+  }
+
+  if (!existsSync(outputVideo)) {
+    log(`Step 3.5 ⚠️  GFPGAN output not found — using LatentSync output as-is`);
+    return;
+  }
+
+  const sizeMB = (statSync(outputVideo).size / 1024 / 1024).toFixed(1);
+  log(`Step 3.5 ✅  GFPGAN output: ${outputVideo}  (${sizeMB}MB)`);
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 function parseArgs() {
@@ -220,12 +270,13 @@ function parseArgs() {
 
   return {
     text,
-    portrait: get('--portrait', DEFAULT_PORTRAIT)!,
-    out:      get('--out')!,  // will be resolved below
-    steps:    parseInt(get('--inference-steps', '20')!, 10),
-    voice:    get('--voice', 'am_echo')!,
-    speed:    parseFloat(get('--speed', '1.0')!),
-    device:   get('--device', 'mps')!,
+    portrait:    get('--portrait', DEFAULT_PORTRAIT)!,
+    out:         get('--out')!,  // will be resolved below
+    steps:       parseInt(get('--inference-steps', '20')!, 10),
+    voice:       get('--voice', 'am_echo')!,
+    speed:       parseFloat(get('--speed', '1.0')!),
+    device:      get('--device', 'mps')!,
+    skipGfpgan:  args.includes('--skip-gfpgan'),
   };
 }
 
@@ -263,20 +314,38 @@ async function main() {
   const portraitVideo = preparePortraitVideo(cfg.portrait, duration, tmpDir);
 
   // Step 3: LatentSync
-  runLatentSync(portraitVideo, wavPath, outVideo, cfg.steps, cfg.device);
+  // LatentSync writes to outVideo. If GFPGAN follows, write LS output to .latentsync.mp4 first.
+  const gfpganEnabled = !cfg.skipGfpgan && existsSync(GFPGAN_MODEL) && existsSync(GFPGAN_SCRIPT);
+  const latentSyncOut = gfpganEnabled
+    ? resolve(dirname(outVideo), `${basename(outVideo, '.mp4')}.latentsync.mp4`)
+    : outVideo;
+
+  runLatentSync(portraitVideo, wavPath, latentSyncOut, cfg.steps, cfg.device);
+
+  // Step 3.5: GFPGAN face restoration
+  let finalOut = latentSyncOut;
+  if (gfpganEnabled) {
+    runGFPGAN(latentSyncOut, outVideo);
+    finalOut = existsSync(outVideo) ? outVideo : latentSyncOut;
+    // If GFPGAN succeeded, remove the intermediate latentsync file
+    if (finalOut === outVideo && existsSync(latentSyncOut)) {
+      try { require('fs').unlinkSync(latentSyncOut); } catch {}
+    }
+  }
 
   log('');
-  log(`✅ Pipeline complete → ${outVideo}`);
+  log(`✅ Pipeline complete → ${finalOut}`);
 
   // Print JSON result for programmatic callers
   console.log(JSON.stringify({
     ok: true,
-    output: outVideo,
+    output: finalOut,
     audio_wav: wavPath,
     portrait_video: portraitVideo,
     duration_s: duration,
     inference_steps: cfg.steps,
     voice: cfg.voice,
+    gfpgan_applied: gfpganEnabled && finalOut === outVideo,
   }));
 }
 
