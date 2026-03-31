@@ -2,21 +2,21 @@
   "concepts": [
     {
       "name": "Circuit Sovereign",
-      "mood": "A minimalist, high-tech aura with a focus on clean circuitry and precision.",
-      "positive_prompt": "futuristic portrait, sharp lines, glowing circuit patterns on skin, metallic eyes, black and silver color scheme, high contrast, no background, 8k resolution",
-      "negative_prompt": "blurry, cartoonish, anime style, extra limbs, low resolution, over-exposed, generic sci-fi"
+      "mood": "High-tech precision — real skin with metallic silver circuit-trace overlays.",
+      "positive_prompt": "photorealistic portrait of a young woman, neutral expression, face directly at camera, faint silver metallic circuit board traces on cheek skin, sharp silver-grey eyes, subtle chrome facial highlights, dark seamless background, cinematic studio lighting, 4k, hyperrealistic, ultra-sharp",
+      "negative_prompt": "cartoon, anime, illustration, abstract, transparent face, glowing bald head, covered mouth, no mouth, dark mouth, artifact, distorted, blurry, low quality, extra limbs, CGI robot"
     },
     {
       "name": "Signal Nexus",
-      "mood": "A sleek, data-driven aesthetic with a sense of connection and integration.",
-      "positive_prompt": "modern portrait, glowing data streams overlaying face, monochrome with neon blue accents, abstract neural network patterns, clean, no background, ultra-detailed",
-      "negative_prompt": "overly complex, anime style, cartoonish, extra features, low contrast, generic"
+      "mood": "Data-driven — real face with subtle neon blue neural-network light traces on skin.",
+      "positive_prompt": "photorealistic portrait of a young woman, neutral expression, face directly at camera, subtle glowing neon blue light streaks tracing across cheekbones and forehead skin, faint blue circuit tattoo lines on face, bright blue-grey eyes, dark studio background, soft blue rim lighting, cinematic, 4k, hyperrealistic, ultra-sharp",
+      "negative_prompt": "cartoon, anime, illustration, abstract, transparent face, glowing bald head, covered mouth, no mouth, dark mouth, artifact, distorted, blurry, low quality, skull, skeleton, CGI alien"
     },
     {
       "name": "Quantum Cipher",
-      "mood": "Mysterious and analytical, with a focus on cryptographic symbols and quantum motifs.",
-      "positive_prompt": "mysterious portrait, quantum symbols embedded in skin, dark background, glowing binary code, sharp facial features, monochrome with cyan highlights, ultra-realistic",
-      "negative_prompt": "blurry, cartoonish, anime style, extra limbs, generic, low detail, over-saturated"
+      "mood": "Cryptographic mystery — real face with dark glowing cyan binary code skin overlay.",
+      "positive_prompt": "photorealistic portrait of a young woman, neutral expression, face directly at camera, faint glowing cyan binary digits and cryptographic symbols projected onto skin, sharp defined features, pale cyan eyes, dark near-black background, dramatic low-key lighting, cinematic, 4k, hyperrealistic, ultra-sharp",
+      "negative_prompt": "cartoon, anime, illustration, abstract, transparent face, glowing bald head, covered mouth, no mouth, dark mouth, artifact, distorted, blurry, low quality, skull, skeleton"
     }
   ]
 }
