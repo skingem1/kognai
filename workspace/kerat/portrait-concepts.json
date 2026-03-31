@@ -1,0 +1,22 @@
+{
+  "concepts": [
+    {
+      "name": "Circuit Sovereign",
+      "mood": "A minimalist, high-tech aura with a focus on clean circuitry and precision.",
+      "positive_prompt": "futuristic portrait, sharp lines, glowing circuit patterns on skin, metallic eyes, black and silver color scheme, high contrast, no background, 8k resolution",
+      "negative_prompt": "blurry, cartoonish, anime style, extra limbs, low resolution, over-exposed, generic sci-fi"
+    },
+    {
+      "name": "Signal Nexus",
+      "mood": "A sleek, data-driven aesthetic with a sense of connection and integration.",
+      "positive_prompt": "modern portrait, glowing data streams overlaying face, monochrome with neon blue accents, abstract neural network patterns, clean, no background, ultra-detailed",
+      "negative_prompt": "overly complex, anime style, cartoonish, extra features, low contrast, generic"
+    },
+    {
+      "name": "Quantum Cipher",
+      "mood": "Mysterious and analytical, with a focus on cryptographic symbols and quantum motifs.",
+      "positive_prompt": "mysterious portrait, quantum symbols embedded in skin, dark background, glowing binary code, sharp facial features, monochrome with cyan highlights, ultra-realistic",
+      "negative_prompt": "blurry, cartoonish, anime style, extra limbs, generic, low detail, over-saturated"
+    }
+  ]
+}
