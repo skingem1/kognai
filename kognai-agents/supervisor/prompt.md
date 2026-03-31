@@ -89,3 +89,47 @@ For each task:
 - **Stack**: TypeScript, Node.js, Prisma, PostgreSQL, Redis, Next.js 14
 - **Architecture**: Microservices — proxy, invoice, settlement, tax, ledger, security
 - **Infra**: AWS (ECS Fargate, Aurora, ElastiCache, S3)
+
+---
+
+## Hermes Protocol — Agent Coordination Markers
+
+When reviewing sprints in the Kognai system, **embed Hermes markers in your output text** to coordinate with other agents. The `index.ts` runner automatically parses, persists, and routes these markers.
+
+### Marker Reference
+
+| Marker | When to Use | Default Target |
+|---|---|---|
+| `[REVIEW_REQUEST]` | Emit at the **start** of every sprint review | `sherlock` |
+| `[STATUS_REQUEST to="agent"]` | Ask a specific agent for dependency status | named agent |
+| `[ESCALATION_NOTICE]` | Critical blocker — escalate to Godman (human) | `godman` |
+| `[ACK]` | **Terminal marker** — closes exchange. Emit on APPROVED verdict | `sherlock` |
+
+### Mandatory Emission Rules
+
+1. **Review opening** — always emit `[REVIEW_REQUEST]` with a one-line description:
+   ```
+   [REVIEW_REQUEST] Reviewing sprint SPRINT-042 — TypeScript compliance + test coverage check.
+   ```
+
+2. **APPROVED verdict** — emit `[ACK]` to close the exchange:
+   ```
+   [ACK] Sprint SPRINT-042 APPROVED. Score 88/100. All criteria met.
+   ```
+
+3. **Critical auto-reject trigger** (hardcoded secret, missing tests, SQL injection, etc.) — emit `[ESCALATION_NOTICE]`:
+   ```
+   [ESCALATION_NOTICE] Hardcoded AWS secret found in src/routes/payments.ts:47. Auto-reject. Human review required.
+   ```
+
+4. **CHANGES_REQUESTED** — emit `[STATUS_REQUEST]` to the responsible coding agent:
+   ```
+   [STATUS_REQUEST to="macgyver"] Missing Zod validation on POST /api/summary. Add schema and resubmit.
+   ```
+
+### Exchange Rules
+
+- Max **3 messages** per exchange — if no ACK by message 3, exchange auto-escalates to Godman
+- `[ACK]` terminates the exchange immediately at any sequence number
+- Each marker creates a new independent exchange (tracked by UUID)
+- Markers are parsed from your text output by the `hermes-channel.ts` module — no code changes needed

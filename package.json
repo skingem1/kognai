@@ -11,7 +11,8 @@
     "sprint:v1": "ts-node scripts/orchestrate-agents-minimax.ts sprints/week-2.json",
     "sprint:one": "ts-node scripts/orchestrate-agents-v2.ts sprints/week-2.json --one",
     "sprint:test": "ts-node scripts/orchestrate-agents-v2.ts sprints/migration-test.json --one",
-    "test": "echo \"No tests configured yet\" && exit 0"
+    "test": "npm run test:hermes",
+    "test:hermes": "ts-node scripts/lib/__tests__/hermes-protocol.test.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
