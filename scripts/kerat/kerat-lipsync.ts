@@ -13,10 +13,9 @@
  *                pixels via LivePortrait 3-D keypoints — zero colour mismatch by construction.
  *  3.5b Grade  — kerat_color_grade.py (default ON when no --lp-warp)
  *                →  Reinhard Lab colour-graded .mp4 (post-hoc fix, less reliable on dark faces)
- *  3.7 GFPGAN  — gfpgan_enhance.py (opt-in only) →  face-restored .mp4
- *                NOTE: GFPGAN is DISABLED by default for dark/stylised portraits.
- *                      It undoes colour correction.  Use --enable-gfpgan ONLY with
- *                      well-lit, neutral portraits.
+ *  3.7 GFPGAN  — gfpgan_enhance.py (default ON) →  face-restored .mp4
+ *                Reinstated as standard step per TICKET-030-Addendum.
+ *                Use --skip-gfpgan to bypass on dark/stylised portraits.
  *
  * Usage:
  *   cd ~/kognai && ts-node scripts/kerat/kerat-lipsync.ts \
@@ -397,7 +396,7 @@ function parseArgs() {
     process.stderr.write(
       'Usage: ts-node kerat-lipsync.ts --text "..." ' +
       '[--portrait path] [--out path] [--inference-steps N] [--device mps] ' +
-      '[--mode latentsync|liveportrait] [--lp-warp] [--grade-strength 1.0] [--skip-grade] [--enable-gfpgan]\n'
+      '[--mode latentsync|liveportrait] [--lp-warp] [--grade-strength 1.0] [--skip-grade] [--skip-gfpgan]\n'
     );
     process.exit(1);
   }
@@ -412,7 +411,7 @@ function parseArgs() {
     device:        get('--device', 'mps')!,
     gradeStrength: parseFloat(get('--grade-strength', '1.0')!),
     skipGrade:     args.includes('--skip-grade'),
-    enableGfpgan:  args.includes('--enable-gfpgan'),
+    skipGfpgan:    args.includes('--skip-gfpgan'),
     lpWarp:        args.includes('--lp-warp'),
     mode:          get('--mode', 'latentsync')!,   // 'latentsync' | 'liveportrait'
   };
@@ -440,7 +439,7 @@ async function main() {
   // --lp-warp / --mode liveportrait and Reinhard grade are mutually exclusive; LP warp takes priority
   const lpWarpEnabled = cfg.lpWarp || cfg.mode === 'liveportrait';
   const gradeEnabled  = !cfg.skipGrade && !lpWarpEnabled;
-  const gfpganEnabled = cfg.enableGfpgan && existsSync(GFPGAN_MODEL) && existsSync(GFPGAN_SCRIPT);
+  const gfpganEnabled = !cfg.skipGfpgan && existsSync(GFPGAN_MODEL) && existsSync(GFPGAN_SCRIPT);
 
   log(`═══════════════════════════════════════════`);
   log(`Ker@ Lip-sync Pipeline`);
@@ -450,7 +449,7 @@ async function main() {
   log(`Steps:    ${cfg.steps}  Device: ${cfg.device}`);
   log(`LP Warp:  ${lpWarpEnabled ? 'ON (--lp-warp, TICKET-030-C)' : 'OFF'}`);
   log(`Grade:    ${gradeEnabled ? `ON (strength=${cfg.gradeStrength.toFixed(2)})` : lpWarpEnabled ? 'OFF (superseded by --lp-warp)' : 'OFF (--skip-grade)'}`);
-  log(`GFPGAN:   ${gfpganEnabled ? 'ON (--enable-gfpgan)' : 'OFF (default — not safe for dark portraits)'}`);
+  log(`GFPGAN:   ${gfpganEnabled ? 'ON (standard — use --skip-gfpgan to disable)' : 'OFF (--skip-gfpgan | model/script not found)'}`);
   log(`═══════════════════════════════════════════`);
 
   // Step 1: TTS
