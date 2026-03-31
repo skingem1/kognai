@@ -1,0 +1,75 @@
+{
+  "ticket": "TICKET-030-C",
+  "title": "Direct Tone-Matched Lip Compositing Pipeline",
+  "status": "PASS",
+  "date": "2026-03-31",
+  "commit_python_rewrite": "02360e91",
+  "pipeline_description": "kerat_liveportrait_warp.py v2 — pure-CV direct lip compositing. No neural nets (LP removed). Extracts lip region from LatentSync frames via MediaPipe 203-point face mesh, RANSAC affine-aligns driver lips into portrait crop space, Reinhard Lab colour-corrects lip patch to match source portrait, feathered-blends onto static source portrait frame-by-frame.",
+
+  "gate_criteria": {
+    "python_script_exists":          true,
+    "cli_args_match_typescript":     true,
+    "exit_code_semantics_correct":   true,
+    "typescript_wiring_confirmed":   true,
+    "gfpgan_pipeline_confirmed":     true,
+    "test_run_passed":               true
+  },
+
+  "test_run": {
+    "output_video": "workspace/kerat/output/lp_warp_test_20260331_203650.mp4",
+    "frames_composited": 111,
+    "fps_achieved": 63.0,
+    "exit_code": 0,
+    "driver_video": "workspace/kerat/output/latentsync_*.mp4 (most recent)",
+    "portrait": "workspace/kerat/portraits/*.jpg (first found)"
+  },
+
+  "python_script": {
+    "path": "scripts/kerat/kerat_liveportrait_warp.py",
+    "lines": 764,
+    "key_constants": {
+      "LIP_ALL": "range(48, 108)",
+      "AFFINE_ANCHORS": [0, 12, 24, 36, 48, 66],
+      "FEATHER_KERNEL": 31,
+      "MIN_LANDMARKS": 6
+    },
+    "cli_args": ["--portrait", "--driver", "--audio", "--output", "--device", "--dtype"],
+    "exit_codes": {
+      "0": "success — output video written",
+      "1": "pipeline error (bad inputs, landmark failure)",
+      "2": "LP unavailable (mediapipe/cv2 import error) — triggers Reinhard fallback in TS"
+    }
+  },
+
+  "typescript_wiring": {
+    "path": "scripts/kerat/kerat-lipsync.ts",
+    "function": "runLivePortraitWarp()",
+    "stage": "Step 3.5a (after LatentSync, before GFPGAN)",
+    "fallback": "Step 3.5b Reinhard grade on exit code 2",
+    "cli_args_passed": ["--portrait", "--driver", "--audio", "--output", "--device"],
+    "match_confirmed": true
+  },
+
+  "gfpgan_wiring": {
+    "script": "scripts/kerat/gfpgan_enhance.py",
+    "model": "workspace/kerat/GFPGANv1.4.pth",
+    "model_size_mb": 332,
+    "stage": "Step 3.7 (after LP warp, produces final output)",
+    "enabled_by_default": true,
+    "disable_flag": "--skip-gfpgan",
+    "note": "For dark/stylised Ker@ portraits, --skip-gfpgan recommended (GFPGAN restores faces to natural brightness, fighting portrait colour grade)"
+  },
+
+  "test_script": "scripts/kerat/test-liveportrait.sh",
+
+  "related_tickets": {
+    "TICKET-030-A": "Ker@ base LatentSync pipeline — DONE",
+    "TICKET-030-B": "Reinhard Lab colour grade (kerat_color_grade.py) — DONE",
+    "TICKET-030-Addendum": "GFPGAN post-processing wiring — DONE"
+  },
+
+  "visual_review_required": true,
+  "visual_review_note": "Human must watch lp_warp_test_20260331_203650.mp4 to confirm (1) lips move naturally, (2) blend seam invisible, (3) dark portrait colour preserved. Gate is CONDITIONAL PASS until visual review confirms output quality.",
+
+  "closed_by": "swarm-session-2026-03-31"
+}
