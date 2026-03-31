@@ -1,43 +1,33 @@
 #!/usr/bin/env python3
 """
-TICKET-030-C: LivePortrait Warp Pipeline — Source Pixel Warp, No Injection
+TICKET-030-C v2: Direct Tone-Matched Lip Compositing
 
-Root cause of previous artifacts (TICKET-030-A/B):
-  LatentSync INJECTS newly-generated face pixels that are bright/studio-tone
-  onto a dark, colour-graded source portrait.  No colour correction can fully
-  hide the boundary because the injected pixels fundamentally differ from the
-  source in texture and statistics.
+Root cause of LP approach failure (confirmed):
+  LivePortrait's Motion Extractor cannot extract clean lip motion from
+  LatentSync output because LatentSync re-renders the ENTIRE face (not just
+  lips). The ME interprets the bright rectangular patch as general face noise,
+  not lip shape changes → zero lip motion in output.
 
-LivePortrait fix:
-  Instead of generating new face pixels, LivePortrait WARPS the source
-  portrait's own pixels using implicit 3-D keypoint motion extracted from the
-  LatentSync driving video.  Since every output pixel originates from the dark
-  source portrait, there is zero colour mismatch by construction.
-
-Pipeline:
-  source portrait (static image)
-        │
-        ▼  CropperFaceAlignment  →  256×256 face crop + affine M_o2c
-        │  LivePortraitWrapper   →  appearance features f_s, keypoints x_s
-        │
-  LatentSync output video (driving frames)
-        │  LivePortraitPipeline.execute()
-        │    • extracts lip motion delta per driving frame
-        │    • warps source appearance features → 512×512 output crop
-        │
-        ▼  inverse affine M_c2o + gaussian feather mask → composite on source frame
-        │
-  ffmpeg mux audio → final output
+Direct compositing approach:
+  1. Extract 512×512 face crop from source portrait (CropperFaceAlignment)
+  2. For each LatentSync frame:
+       a. Detect 203-pt facial landmarks in LS frame
+       b. Compute affine: LS native space → portrait crop space (RANSAC, 6 anchors)
+       c. Warp LS frame to align with portrait crop coordinate space
+       d. Reinhard Lab colour-transfer: LS lip stats → portrait lip stats
+       e. Blend lip region (feathered convex-hull mask, indices 48–107) onto crop
+  3. Composite blended 512×512 crop onto full-resolution portrait (M_c2o)
+  4. Mux audio → final mp4
 
 Usage:
   python3 kerat_liveportrait_warp.py \
       --portrait  /path/to/portrait.jpg \
       --driver    /path/to/latentsync.mp4 \
-      --output    /path/to/liveportrait.mp4 \
-      [--audio    /path/to/original.wav] # if set, mux this audio; else use driver audio
-      [--device   mps|cpu]              # default: auto (mps if available)
-      [--dtype    fp32|fp16]            # default: fp32 (fp16 can be used on CUDA)
-      # Exit codes: 0=ok, 1=input/runtime error, 2=liveportrait_unavailable (caller may fallback)
+      --output    /path/to/output.mp4 \
+      [--audio    /path/to/original.wav]
+      [--device   mps|cpu]
+      [--dtype    fp32|fp16]          # kept for CLI compat, not used
+  # Exit codes: 0=ok, 1=input/runtime error, 2=liveportrait_unavailable
 """
 
 # ─── 0. Inject comfy + folder_paths mocks BEFORE any LP import ────────────────
@@ -57,7 +47,6 @@ import torch.fx.graph_module  # required for landmark_model.pth safe-global regi
 # PyTorch ≥2.6 made weights_only=True the default.  landmark_model.pth is a
 # compiled torch.fx.GraphModule — its pickled representation uses
 # reduce_graph_module which is not in the default allowlist.
-# Register it before ANY torch.load call executes (including inside LP library).
 torch.serialization.add_safe_globals([torch.fx.graph_module.reduce_graph_module])
 
 def _autodetect_device():
@@ -120,12 +109,10 @@ import argparse
 import subprocess
 import shutil
 import gc
-from contextlib import nullcontext
 from pathlib import Path
 
 import cv2
 import numpy as np
-import yaml
 from tqdm import tqdm
 
 LP_ROOT = os.path.expanduser(
@@ -134,39 +121,25 @@ LP_ROOT = os.path.expanduser(
 sys.path.insert(0, LP_ROOT)
 
 try:
-    from liveportrait.live_portrait_pipeline import LivePortraitPipeline
-    from liveportrait.live_portrait_wrapper import LivePortraitWrapper
     from liveportrait.utils.cropper import CropperFaceAlignment
     from liveportrait.utils.landmark_runner import LandmarkRunnerTorch
-    from liveportrait.utils.crop import _transform_img_kornia
-    from liveportrait.utils.camera import get_rotation_matrix
-    from liveportrait.modules.appearance_feature_extractor import AppearanceFeatureExtractor
-    from liveportrait.modules.motion_extractor import MotionExtractor
-    from liveportrait.modules.warping_network import WarpingNetwork
-    from liveportrait.modules.spade_generator import SPADEDecoder
-    from liveportrait.modules.stitching_retargeting_network import StitchingRetargetingNetwork
+    from liveportrait.utils.crop import _transform_pts
     _LP_AVAILABLE = True
 except Exception as _lp_import_err:
     _LP_AVAILABLE = False
     _LP_IMPORT_ERROR = str(_lp_import_err)
 
 # ─── 1.5. PyTorch 2.6+ compat: patch landmark_runner to load with weights_only=False
-# landmark_model.pth is a torch.fx.GraphModule — torch.load needs weights_only=False.
-# Patching only the reference inside landmark_runner avoids global scope changes.
 import liveportrait.utils.landmark_runner as _lr_mod
 _torch_load_orig = torch.load
 def _torch_load_weights_compat(path, *args, **kwargs):
-    # Default to weights_only=False for .pth files that contain compiled GraphModules
-    # (these are official LP checkpoints from a trusted source)
     if "weights_only" not in kwargs and str(path).endswith(".pth"):
         kwargs["weights_only"] = False
     return _torch_load_orig(path, *args, **kwargs)
 _lr_mod.torch.load = _torch_load_weights_compat
 
 # Patch to_ndarray: MPS/CUDA tensors that have requires_grad=True cannot call
-# .numpy() directly.  Must call .detach() first.  LandmarkRunnerTorch.run() calls
-# the module-level to_ndarray() from its __globals__ dict — replacing the name in
-# the module dict is enough to fix all call sites in that module.
+# .numpy() directly.  Must call .detach() first.
 def _to_ndarray_detach(obj):
     if isinstance(obj, torch.Tensor):
         return obj.cpu().detach().numpy()
@@ -177,34 +150,8 @@ def _to_ndarray_detach(obj):
 _lr_mod.to_ndarray = _to_ndarray_detach
 
 # ─── 1.6. Fix "from ...face_alignment" relative import in CropperFaceAlignment ──
-# cropper.py is liveportrait.utils.cropper.  The `from ...face_alignment` import
-# needs 3 package levels above the module:
-#   liveportrait.utils  →  liveportrait  →  (no parent, top-level) = ERROR
-#
-# Python's _resolve_name() does:
-#   bits = package.rsplit('.', level-1)   # 'liveportrait.utils'.rsplit('.', 2) → 2 parts
-#   if len(bits) < level: raise ImportError('beyond top-level package')
-#
-# TWO-PHASE FIX:
-#
-# Phase A — fix cropper.py's relative import:
-#   (a) Load LP's bundled face_alignment (LP_ROOT is first in sys.path → LP version)
-#   (b) Register synthetic parent package 'ComfyUI_LivePortraitKJ' (underscore form)
-#       + register face_alignment under it
-#   (c) Patch cropper.__package__ to 'ComfyUI_LivePortraitKJ.liveportrait.utils' →
-#       rsplit gives 3 parts → _resolve_name returns 'ComfyUI_LivePortraitKJ.face_alignment'
-#       which is already in sys.modules → import succeeds.
-#
-# Phase B — fix api.py's dynamic importlib.import_module call:
-#   face_alignment/api.py:78 computes package_directory_name from __file__ path:
-#     os.path.basename(os.path.dirname(os.path.dirname(__file__)))
-#     = os.path.basename('/…/ComfyUI-LivePortraitKJ') = 'ComfyUI-LivePortraitKJ'
-#   Then calls: importlib.import_module('.face_alignment.detection.sfd',
-#                                       package='ComfyUI-LivePortraitKJ')
-#   → resolves to 'ComfyUI-LivePortraitKJ.face_alignment.detection.sfd' (hyphen form)
-#   Register the HYPHEN form too so Python can walk the package hierarchy.
 import importlib as _importlib
-_fa_mod = _importlib.import_module('face_alignment')   # LP's bundled version (LP_ROOT first)
+_fa_mod = _importlib.import_module('face_alignment')   # LP's bundled version
 
 # ── Phase A: underscore form (for cropper.py relative import) ────────────────
 _klp_pkg_us = types.ModuleType('ComfyUI_LivePortraitKJ')
@@ -213,27 +160,37 @@ sys.modules.setdefault('ComfyUI_LivePortraitKJ', _klp_pkg_us)
 sys.modules['ComfyUI_LivePortraitKJ.face_alignment'] = _fa_mod
 
 # ── Phase B: hyphen form (for api.py's importlib.import_module) ──────────────
-# Python can store any string key in sys.modules.  By pre-registering the parent
-# package and the face_alignment subpackage, Python's dynamic import will walk
-# _fa_mod.__path__ to find detection/sfd without needing a valid identifier name.
 _klp_pkg_hy = types.ModuleType('ComfyUI-LivePortraitKJ')
 _klp_pkg_hy.__path__ = [LP_ROOT]
 sys.modules.setdefault('ComfyUI-LivePortraitKJ', _klp_pkg_hy)
 sys.modules['ComfyUI-LivePortraitKJ.face_alignment'] = _fa_mod
 
 # ── Patch cropper.__package__ for Phase A ────────────────────────────────────
-# Gives 3 components: ComfyUI_LivePortraitKJ · liveportrait · utils
-# _resolve_name returns 'ComfyUI_LivePortraitKJ.face_alignment' → found above.
 sys.modules['liveportrait.utils.cropper'].__package__ = (
     'ComfyUI_LivePortraitKJ.liveportrait.utils'
 )
 
 
-# ─── 2. Args ──────────────────────────────────────────────────────────────────
+# ─── 2. Constants ─────────────────────────────────────────────────────────────
+
+MODEL_DIR = os.path.expanduser("~/ComfyUI/models/liveportrait")
+
+# LP 203-point landmark indices for the lip region (48–107):
+#   48-66  outer upper lip
+#   67-84  outer lower lip
+#   85-107 inner lip
+LIP_ALL = list(range(48, 108))
+
+# Six anchor landmark indices used for affine estimation between LS and crop spaces.
+# Chosen to span the face broadly (nose bridge, cheekbones, chin corners, lip corners).
+AFFINE_ANCHORS = [0, 12, 24, 36, 48, 66]
+
+
+# ─── 3. Args ──────────────────────────────────────────────────────────────────
 
 def parse_args():
     p = argparse.ArgumentParser(
-        description="LivePortrait warp: animate portrait using LatentSync driving video"
+        description="TICKET-030-C: Direct tone-matched lip compositing"
     )
     p.add_argument("--portrait", required=True, help="Source portrait image (jpg/png)")
     p.add_argument("--driver",   required=True, help="LatentSync output video (driving frames)")
@@ -243,101 +200,17 @@ def parse_args():
                    help="Compute device (default: auto)")
     p.add_argument("--dtype",    default="fp32",
                    choices=["fp32", "fp16"],
-                   help="Model precision (fp32 recommended for MPS, fp16 for CUDA)")
+                   help="Kept for CLI compat, not used in compositing pipeline")
     p.add_argument("--audio",    default=None,
                    help="Original audio file to mux into output (WAV/MP3/AAC). "
                         "If not set, audio is taken from the driver video.")
     return p.parse_args()
 
 
-# ─── 3. Model loading ─────────────────────────────────────────────────────────
-
-MODEL_DIR = os.path.expanduser("~/ComfyUI/models/liveportrait")
-NODE_DIR  = LP_ROOT
-YAML_PATH = os.path.join(NODE_DIR, "liveportrait", "config", "models.yaml")
-MASK_PATH = os.path.join(
-    NODE_DIR, "liveportrait", "utils", "resources", "mask_template.png"
-)
-
-
-def load_models(device: torch.device, dtype_str: str):
-    dtype = torch.float16 if dtype_str == "fp16" else torch.float32
-    use_half = dtype_str == "fp16"
-
-    with open(YAML_PATH, "r") as f:
-        cfg = yaml.safe_load(f)
-
-    def _load(path):
-        sd = _load_torch_file(path)
-        return sd
-
-    print("[lp_warp] Loading appearance feature extractor …")
-    params = cfg["model_params"]["appearance_feature_extractor_params"]
-    afe = AppearanceFeatureExtractor(**params).to(device).eval()
-    afe.load_state_dict(_load(os.path.join(MODEL_DIR, "appearance_feature_extractor.safetensors")))
-
-    print("[lp_warp] Loading motion extractor …")
-    params = cfg["model_params"]["motion_extractor_params"]
-    me = MotionExtractor(**params).to(device).eval()
-    me.load_state_dict(_load(os.path.join(MODEL_DIR, "motion_extractor.safetensors")))
-
-    print("[lp_warp] Loading warping module …")
-    params = cfg["model_params"]["warping_module_params"]
-    wm = WarpingNetwork(**params).to(device).eval()
-    wm.load_state_dict(_load(os.path.join(MODEL_DIR, "warping_module.safetensors")))
-
-    print("[lp_warp] Loading SPADE generator …")
-    params = cfg["model_params"]["spade_generator_params"]
-    sg = SPADEDecoder(**params).to(device).eval()
-    sg.load_state_dict(_load(os.path.join(MODEL_DIR, "spade_generator.safetensors")))
-
-    print("[lp_warp] Loading stitching + retargeting module …")
-    sr_cfg = cfg["model_params"]["stitching_retargeting_module_params"]
-    ckpt   = _load(os.path.join(MODEL_DIR, "stitching_retargeting_module.safetensors"))
-
-    def _filter(ckpt, prefix):
-        return {k.replace(prefix + "_module.", ""): v
-                for k, v in ckpt.items() if k.startswith(prefix)}
-
-    stitcher = StitchingRetargetingNetwork(**sr_cfg["stitching"]).to(device).eval()
-    stitcher.load_state_dict(_filter(ckpt, "retarget_shoulder"))
-
-    lip = StitchingRetargetingNetwork(**sr_cfg["lip"]).to(device).eval()
-    lip.load_state_dict(_filter(ckpt, "retarget_mouth"))
-
-    eye = StitchingRetargetingNetwork(**sr_cfg["eye"]).to(device).eval()
-    eye.load_state_dict(_filter(ckpt, "retarget_eye"))
-
-    sr_module = {"stitching": stitcher, "lip": lip, "eye": eye}
-
-    # InferenceConfig defined inline (mirrors nodes.py class)
-    class InferenceCfg:
-        def __init__(self):
-            self.flag_use_half_precision   = use_half
-            self.flag_lip_zero             = False  # KEEP False: zeroing suppresses motion (tested — reduces to 28% of driver)
-            self.lip_zero_threshold        = 0.03
-            self.flag_eye_retargeting      = False
-            self.flag_lip_retargeting      = False  # KEEP False: full-body ME drive delivers 2.23× driver lip motion
-                                                     # lip_retargeting=True only uses narrow keypoint delta — inferior for LatentSync output
-            self.flag_stitching            = True
-            self.input_shape               = (256, 256)
-            self.device_id                 = device
-            self.flag_do_rot               = True
-            self.eyes_retargeting_multiplier = 1.0
-            self.lip_retargeting_multiplier  = 1.0   # not used when flag_lip_retargeting=False
-
-    inf_cfg = InferenceCfg()
-
-    pipeline = LivePortraitPipeline(afe, me, wm, sg, sr_module, inf_cfg)
-    print("[lp_warp] All models loaded ✓")
-    return pipeline
-
-
-# ─── 4. Face detection + cropping ────────────────────────────────────────────
+# ─── 4. Build cropper ─────────────────────────────────────────────────────────
 
 def build_cropper(device: torch.device):
     """Build CropperFaceAlignment using face_alignment (no insightface needed)."""
-    # LandmarkRunnerTorch uses landmark_model.pth (already downloaded)
     lm_path = os.path.join(MODEL_DIR, "landmark_model.pth")
     print(f"[lp_warp] Loading landmark runner from {lm_path} …")
     cropper = CropperFaceAlignment(
@@ -350,11 +223,73 @@ def build_cropper(device: torch.device):
     return cropper
 
 
-def get_crop_info(portrait_bgr: np.ndarray, cropper, pipeline):
-    """Run face detection + 3D keypoint extraction on source portrait."""
-    portrait_rgb = cv2.cvtColor(portrait_bgr, cv2.COLOR_BGR2RGB)
+# ─── 5. Portrait preparation ──────────────────────────────────────────────────
 
-    crop_info, cropped_256 = cropper.crop_single_image(
+def build_polygon_mask(lmk_crop: np.ndarray, indices: list, size: int = 512,
+                       dilate_px: int = 8, blur_px: int = 21) -> np.ndarray:
+    """Build a feathered convex-hull mask for a subset of landmarks.
+
+    Args:
+        lmk_crop: (N, 2) landmark array in crop coordinate space
+        indices:  indices into lmk_crop to include in the hull
+        size:     output mask size (square)
+        dilate_px: dilation radius in pixels
+        blur_px:   Gaussian blur kernel size (must be odd)
+
+    Returns:
+        float32 mask, shape (size, size), values in [0, 1]
+    """
+    pts = lmk_crop[indices].astype(np.float32)
+    hull = cv2.convexHull(pts.reshape(-1, 1, 2).astype(np.int32))
+    mask = np.zeros((size, size), dtype=np.uint8)
+    cv2.fillConvexPoly(mask, hull, 255)
+
+    if dilate_px > 0:
+        kernel = cv2.getStructuringElement(
+            cv2.MORPH_ELLIPSE, (2 * dilate_px + 1, 2 * dilate_px + 1)
+        )
+        mask = cv2.dilate(mask, kernel)
+
+    # Ensure blur_px is odd
+    bk = blur_px if blur_px % 2 == 1 else blur_px + 1
+    mask_f = cv2.GaussianBlur(mask.astype(np.float32), (bk, bk), 0) / 255.0
+    return mask_f
+
+
+def compute_masked_lab_stats(img_bgr: np.ndarray, mask: np.ndarray):
+    """Compute per-channel Lab mean/std using only mask-selected pixels.
+
+    Returns list of (mean, std) tuples for L, a, b channels.
+    """
+    lab = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2LAB).astype(np.float32)
+    stats = []
+    for ch in range(3):
+        pixels = lab[:, :, ch][mask > 0.1]
+        if len(pixels) < 10:
+            # Fallback: use full image stats
+            pixels = lab[:, :, ch].ravel()
+        m = float(pixels.mean())
+        s = float(max(pixels.std(), 0.5))
+        stats.append((m, s))
+    return stats
+
+
+def prepare_portrait(portrait_bgr: np.ndarray, cropper):
+    """Run face detection on source portrait and build all needed data structures.
+
+    Returns dict with:
+        crop_512:    (512, 512, 3) uint8 BGR — source portrait in crop space
+        M_o2c:       (3, 3) float64 — portrait native → 512×512 crop affine
+        M_c2o:       (3, 3) float64 — 512×512 crop → portrait native affine
+        lmk_crop:    (203, 2) float32 — LP landmarks in crop coordinate space
+        lip_mask:    (512, 512) float32 — feathered lip polygon mask in crop space
+        lip_stats:   list of (mean, std) per Lab channel, computed from lip region
+        ph, pw:      portrait height, width (int)
+    """
+    portrait_rgb = cv2.cvtColor(portrait_bgr, cv2.COLOR_BGR2RGB)
+    ph, pw = portrait_bgr.shape[:2]
+
+    crop_info, _ = cropper.crop_single_image(
         portrait_rgb,
         dsize=512,
         scale=2.3,
@@ -368,32 +303,202 @@ def get_crop_info(portrait_bgr: np.ndarray, cropper, pipeline):
     if not crop_info:
         raise RuntimeError("[lp_warp] No face detected in portrait image!")
 
-    # Prepare source for the pipeline wrapper
-    I_s = pipeline.live_portrait_wrapper.prepare_source(cropped_256)
-    x_s_info = pipeline.live_portrait_wrapper.get_kp_info(I_s)
-    x_s = pipeline.live_portrait_wrapper.transform_keypoint(x_s_info)
-    R_s = get_rotation_matrix(x_s_info["pitch"], x_s_info["yaw"], x_s_info["roll"])
-    f_s = pipeline.live_portrait_wrapper.extract_feature_3d(I_s)
-    del I_s
+    M_o2c = crop_info["M_o2c"]   # (3,3): portrait native → 512×512 crop
+    M_c2o = crop_info["M_c2o"]   # (3,3): 512×512 crop → portrait native
 
-    crop_info_dict = {
-        "crop_info_list":  [crop_info],
-        "source_rot_list": [R_s],
-        "f_s_list":        [f_s],
-        "x_s_list":        [x_s],
-        "source_info":     [x_s_info],
+    # lmk_crop: 203 landmarks from LandmarkRunnerTorch.
+    # The runner returns them in portrait native space (back-transformed via M_c2o).
+    # We need them in crop space: apply M_o2c forward transform.
+    lmk_native = crop_info["lmk_crop"]                       # (203, 2) portrait space
+    lmk_crop = _transform_pts(lmk_native, M_o2c)            # (203, 2) crop space
+
+    # Build 512×512 crop via warpAffine
+    crop_512 = cv2.warpAffine(
+        portrait_bgr,
+        M_o2c[:2, :],
+        (512, 512),
+        flags=cv2.INTER_LINEAR,
+        borderMode=cv2.BORDER_REFLECT,
+    )
+
+    # Build feathered lip mask in crop space
+    lip_mask = build_polygon_mask(lmk_crop, LIP_ALL, size=512, dilate_px=6, blur_px=19)
+
+    # Compute Lab stats from the lip region of the source portrait crop
+    lip_stats = compute_masked_lab_stats(crop_512, lip_mask)
+
+    print(f"[lp_warp] Portrait face detected. Crop shape: {crop_512.shape}")
+    print(f"[lp_warp] Lip region L mean={lip_stats[0][0]:.1f}  a mean={lip_stats[1][0]:.1f}")
+
+    return {
+        "crop_512":  crop_512,
+        "M_o2c":     M_o2c,
+        "M_c2o":     M_c2o,
+        "lmk_crop":  lmk_crop,
+        "lip_mask":  lip_mask,
+        "lip_stats": lip_stats,
+        "ph":        ph,
+        "pw":        pw,
     }
-    return crop_info_dict, cropped_256
 
 
-# ─── 5. Load driving video ────────────────────────────────────────────────────
+# ─── 6. Reinhard Lab colour transfer ─────────────────────────────────────────
 
-def load_driving_frames(driver_path: str, device: torch.device):
-    """Read all frames from driver video.
+def reinhard_transfer(frame_bgr: np.ndarray, src_stats: list,
+                      strength: float = 1.0) -> np.ndarray:
+    """Apply Reinhard (2001) Lab colour transfer.
+
+    Transfers the colour distribution of src_stats (from portrait lip region)
+    onto frame_bgr (a LatentSync frame), then blends by strength.
+
+    Args:
+        frame_bgr:  (H, W, 3) uint8 BGR frame to colour-correct
+        src_stats:  [(L_mean, L_std), (a_mean, a_std), (b_mean, b_std)]
+        strength:   0.0 = identity, 1.0 = full transfer
 
     Returns:
-        t256: (N, 3, 256, 256) float tensor in [0,1] — for pipeline.execute()
-        frames_rgb: list of (H, W, 3) uint8 numpy arrays — for landmark extraction
+        colour-corrected (H, W, 3) uint8 BGR frame
+    """
+    lab = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2LAB).astype(np.float32)
+    result = lab.copy()
+    for ch in range(3):
+        s_mean, s_std = src_stats[ch]
+        t_mean = float(lab[:, :, ch].mean())
+        t_std  = float(max(lab[:, :, ch].std(), 0.5))
+        transferred = (lab[:, :, ch] - t_mean) / t_std * s_std + s_mean
+        result[:, :, ch] = (1.0 - strength) * lab[:, :, ch] + strength * transferred
+    result = np.clip(result, 0, 255).astype(np.uint8)
+    return cv2.cvtColor(result, cv2.COLOR_LAB2BGR)
+
+
+# ─── 7. Affine: LS space → portrait crop space ────────────────────────────────
+
+def compute_ls_to_crop_affine(ls_lmk: np.ndarray, crop_lmk: np.ndarray):
+    """Estimate 2D affine mapping from LatentSync landmark space to portrait crop space.
+
+    Uses RANSAC with AFFINE_ANCHORS (6 key points).  Falls back to exact 3-point
+    getAffineTransform if RANSAC returns None (degenerate geometry).
+
+    Args:
+        ls_lmk:    (203, 2) landmarks detected in the LS frame
+        crop_lmk:  (203, 2) landmarks for the source portrait in crop space
+
+    Returns:
+        M: (2, 3) float64 affine matrix suitable for cv2.warpAffine
+    """
+    src_pts = ls_lmk[AFFINE_ANCHORS].astype(np.float32)    # 6 points in LS space
+    dst_pts = crop_lmk[AFFINE_ANCHORS].astype(np.float32)  # 6 points in crop space
+
+    M, inliers = cv2.estimateAffine2D(
+        src_pts, dst_pts,
+        method=cv2.RANSAC,
+        ransacReprojThreshold=8.0,
+        maxIters=2000,
+        confidence=0.99,
+    )
+
+    if M is None:
+        # Fallback: exact affine from first 3 anchor points
+        print("[lp_warp] WARNING: RANSAC failed, using 3-point affine fallback")
+        M = cv2.getAffineTransform(src_pts[:3], dst_pts[:3])
+
+    return M  # (2, 3)
+
+
+# ─── 8. Per-frame compositing ─────────────────────────────────────────────────
+
+def composite_lip_onto_portrait(
+    ls_frame_bgr: np.ndarray,
+    ls_lmk: np.ndarray,
+    portrait_data: dict,
+) -> np.ndarray:
+    """Composite animated lip from one LS frame onto the source portrait.
+
+    Pipeline (per frame):
+      a. Compute M_ls2crop via RANSAC affine (6 anchor landmarks)
+      b. Warp LS frame to align with portrait 512×512 crop space
+      c. Reinhard Lab colour-transfer on warped LS frame (lip stats as reference)
+      d. Blend lip region using feathered mask: alpha * warped_corrected + (1-alpha) * crop_512
+      e. Warp blended 512×512 back to portrait native space via M_c2o
+      f. Alpha-blend face region onto full-res portrait using face convex-hull mask
+
+    Args:
+        ls_frame_bgr:   (H, W, 3) uint8 BGR — one LatentSync output frame
+        ls_lmk:         (203, 2) float32 — LP landmarks detected in ls_frame
+        portrait_data:  dict from prepare_portrait()
+
+    Returns:
+        (ph, pw, 3) uint8 BGR composite frame
+    """
+    crop_512  = portrait_data["crop_512"]
+    M_c2o     = portrait_data["M_c2o"]
+    crop_lmk  = portrait_data["lmk_crop"]
+    lip_mask  = portrait_data["lip_mask"]
+    lip_stats = portrait_data["lip_stats"]
+    ph        = portrait_data["ph"]
+    pw        = portrait_data["pw"]
+
+    # ── (a) Affine: LS space → 512×512 crop space
+    M_ls2crop = compute_ls_to_crop_affine(ls_lmk, crop_lmk)
+
+    # ── (b) Warp LS frame to crop coordinate space
+    ls_warped = cv2.warpAffine(
+        ls_frame_bgr,
+        M_ls2crop,
+        (512, 512),
+        flags=cv2.INTER_LINEAR,
+        borderMode=cv2.BORDER_REPLICATE,
+    )
+
+    # ── (c) Reinhard colour-transfer: LS → portrait lip palette
+    ls_corrected = reinhard_transfer(ls_warped, lip_stats, strength=1.0)
+
+    # ── (d) Blend lip region onto source crop
+    alpha = lip_mask[:, :, np.newaxis]            # (512, 512, 1) float32
+    blended_crop = (
+        alpha * ls_corrected.astype(np.float32) +
+        (1.0 - alpha) * crop_512.astype(np.float32)
+    ).astype(np.uint8)
+
+    # ── (e) Warp blended crop back to portrait native space
+    blended_on_canvas = cv2.warpAffine(
+        blended_crop,
+        M_c2o[:2, :],
+        (pw, ph),
+        flags=cv2.INTER_LINEAR,
+        borderMode=cv2.BORDER_REPLICATE,
+    )
+
+    # ── (f) Build a face-region blend mask from crop_lmk projected to portrait space
+    # Project crop landmarks to portrait space for face mask
+    face_hull_pts = _transform_pts(crop_lmk, M_c2o).astype(np.int32)
+    face_hull = cv2.convexHull(face_hull_pts.reshape(-1, 1, 2))
+    face_mask_hard = np.zeros((ph, pw), dtype=np.uint8)
+    cv2.fillConvexPoly(face_mask_hard, face_hull, 255)
+    # Feather the face boundary to avoid hard seam
+    face_mask_f = cv2.GaussianBlur(
+        face_mask_hard.astype(np.float32), (31, 31), 0
+    ) / 255.0
+    face_alpha = face_mask_f[:, :, np.newaxis]
+
+    # Build the portrait we want to write (will be populated by caller)
+    # Read original portrait (passed in via portrait_data key)
+    portrait_bgr = portrait_data["portrait_bgr"]
+    result = (
+        face_alpha * blended_on_canvas.astype(np.float32) +
+        (1.0 - face_alpha) * portrait_bgr.astype(np.float32)
+    ).astype(np.uint8)
+
+    return result
+
+
+# ─── 9. Load driving video ────────────────────────────────────────────────────
+
+def load_driving_frames(driver_path: str) -> list:
+    """Read all frames from driver video as BGR numpy arrays.
+
+    Returns:
+        frames_bgr: list of (H, W, 3) uint8 numpy arrays
     """
     cap = cv2.VideoCapture(driver_path)
     if not cap.isOpened():
@@ -404,39 +509,31 @@ def load_driving_frames(driver_path: str, device: torch.device):
         ret, frame = cap.read()
         if not ret:
             break
-        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frames.append(frame_rgb)
+        frames.append(frame)
     cap.release()
 
     if not frames:
         raise RuntimeError("[lp_warp] Driver video has no frames")
 
     print(f"[lp_warp] Driver: {len(frames)} frames loaded")
-
-    # Stack → (N, H, W, 3) → (N, 3, H, W), normalise
-    arr = np.stack(frames).astype(np.float32) / 255.0
-    t = torch.from_numpy(arr).permute(0, 3, 1, 2)   # N,H,W,3 → N,3,H,W
-
-    # Resize to 256×256 for the network
-    t256 = torch.nn.functional.interpolate(
-        t, size=(256, 256), mode="bilinear", align_corners=False
-    )
-    return t256.to(device), frames
+    return frames
 
 
-def extract_driving_landmarks(frames_rgb: list, cropper) -> list:
-    """Run face detection + landmark extraction on each driving frame.
+# ─── 10. Extract driving landmarks ───────────────────────────────────────────
 
-    Returns a list of lmk_crop arrays (shape: (N_landmarks, 2)) — one per frame.
-    Frames where face detection fails inherit the last successful landmarks.
-    Used by pipeline.execute() when flag_lip_retargeting=True.
+def extract_driving_landmarks(frames_bgr: list, cropper) -> list:
+    """Run LP face detection on each LS driving frame to get 203-pt landmarks.
+
+    Returns a list of (203, 2) float32 arrays — one per frame, in LS native space.
+    Frames where detection fails inherit last successful landmarks.
     """
     landmarks = []
     last_lmk = None
     failed = 0
 
-    print(f"[lp_warp] Extracting driving landmarks from {len(frames_rgb)} frames …")
-    for i, frame_rgb in enumerate(frames_rgb):
+    print(f"[lp_warp] Extracting driving landmarks from {len(frames_bgr)} frames …")
+    for i, frame_bgr in enumerate(frames_bgr):
+        frame_rgb = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
         try:
             crop_info, _ = cropper.crop_single_image(
                 frame_rgb,
@@ -449,31 +546,39 @@ def extract_driving_landmarks(frames_rgb: list, cropper) -> list:
                 rotate=True,
             )
             if crop_info and crop_info.get("lmk_crop") is not None:
-                last_lmk = crop_info["lmk_crop"]
-                landmarks.append(last_lmk)
+                # lmk_crop is returned in portrait native space by LandmarkRunnerTorch.
+                # For the LS frame we want landmarks in LS native (512×512) space.
+                # Apply M_o2c (portrait→crop) to get crop-equivalent coords.
+                # lmk_crop from landmark_runner is in the image's native pixel space.
+                # For LS frames this IS the LS frame coordinate space (0-512),
+                # which is exactly what warpAffine needs as source coords.
+                # Do NOT apply M_o2c here — that would transform to LS crop subspace.
+                lmk_ls = crop_info["lmk_crop"]   # (203, 2) in LS frame native space
+                last_lmk = lmk_ls
+                landmarks.append(lmk_ls)
             else:
                 failed += 1
-                landmarks.append(last_lmk)   # fallback: use previous frame
-        except Exception as e:
+                landmarks.append(last_lmk)
+        except Exception:
             failed += 1
             landmarks.append(last_lmk)
 
     if last_lmk is None:
-        raise RuntimeError("[lp_warp] No face detected in any driving frame — cannot extract landmarks")
+        raise RuntimeError("[lp_warp] No face detected in any driving frame!")
 
-    # Fill any leading None values (frames before first face detection) with first good lmk
+    # Fill any leading Nones (frames before first detection)
     for i in range(len(landmarks)):
         if landmarks[i] is None:
             landmarks[i] = last_lmk
 
     if failed > 0:
-        print(f"[lp_warp] WARNING: {failed}/{len(frames_rgb)} driver frames had no face detection (using fallback)")
+        print(f"[lp_warp] WARNING: {failed}/{len(frames_bgr)} driver frames had no face (using fallback)")
 
-    print(f"[lp_warp] Driving landmarks extracted ✓")
+    print("[lp_warp] Driving landmarks extracted ✓")
     return landmarks
 
 
-# ─── 6. Video info helpers ────────────────────────────────────────────────────
+# ─── 11. Video info ───────────────────────────────────────────────────────────
 
 def get_video_info(path: str):
     cap = cv2.VideoCapture(path)
@@ -484,69 +589,43 @@ def get_video_info(path: str):
     return fps, w, h
 
 
-# ─── 7. Composite + write frames ─────────────────────────────────────────────
+# ─── 12. Write composited video ──────────────────────────────────────────────
 
-def write_output_video(
-    out_list, crop_info_dict, portrait_bgr, fps, output_path, device
-):
-    """Composite warped face back onto full-resolution portrait and write video."""
-    h, w = portrait_bgr.shape[:2]
-    crop_info = crop_info_dict["crop_info_list"]
+def write_composited_video(
+    frames_bgr: list,
+    driving_landmarks: list,
+    portrait_data: dict,
+    fps: float,
+    output_path: str,
+) -> str:
+    """Composite each driving frame onto portrait and write to temp mp4.
 
-    # Load feather mask template (512×512, BGR)
-    mask_template_bgr = cv2.imread(MASK_PATH)
-    if mask_template_bgr is None:
-        raise RuntimeError(f"[lp_warp] Mask template not found: {MASK_PATH}")
-    crop_mask_np = mask_template_bgr.astype(np.float32) / 255.0
-    crop_mask = torch.from_numpy(crop_mask_np).unsqueeze(0)   # (1, 512, 512, 3)
+    Returns path to raw video (no audio).
+    """
+    ph = portrait_data["ph"]
+    pw = portrait_data["pw"]
 
-    # Prepare source frame tensor: (1, 3, H, W) in [0,1]
-    portrait_rgb = cv2.cvtColor(portrait_bgr, cv2.COLOR_BGR2RGB)
-    src_t = torch.from_numpy(portrait_rgb.astype(np.float32) / 255.0)
-    src_t = src_t.permute(2, 0, 1).unsqueeze(0)   # (1, 3, H, W)
-
-    # Temp raw video
     tmp_path = output_path + ".raw.mp4"
     fourcc   = cv2.VideoWriter_fourcc(*"mp4v")
-    writer   = cv2.VideoWriter(tmp_path, fourcc, fps, (w, h))
+    writer   = cv2.VideoWriter(tmp_path, fourcc, fps, (pw, ph))
 
-    total = len(out_list)
-    print(f"[lp_warp] Compositing {total} frames …")
+    total = len(frames_bgr)
+    print(f"[lp_warp] Compositing {total} frames onto portrait ({pw}×{ph}) …")
 
     for i in tqdm(range(total)):
-        safe_idx = min(i, len(crop_info) - 1)
+        ls_frame_bgr = frames_bgr[i]
+        ls_lmk       = driving_landmarks[i]
 
-        if not out_list[i]:
-            # No face in this frame — use plain source portrait
-            out_bgr = portrait_bgr.copy()
-        else:
-            # Warped 512×512 face crop (float, 0-1), shape: (1, 3, 512, 512)
-            warped = torch.clamp(out_list[i]["out"], 0, 1)                # (1,3,512,512)
-            warped_hwc = warped.permute(0, 2, 3, 1)                       # (1,512,512,3)
+        if ls_lmk is None:
+            # No landmarks at all — write static portrait
+            writer.write(portrait_data["portrait_bgr"])
+            continue
 
-            # M_c2o = 3×3 affine: crop-space → original-image-space
-            M_c2o = crop_info[safe_idx]["M_c2o"]
-
-            # Warp face back to original dimensions
-            face_on_canvas = _transform_img_kornia(
-                warped_hwc, M_c2o, dsize=(w, h), device=device
-            )   # (1, 3, H, W)
-
-            # Warp mask back to original dimensions
-            mask_on_canvas = _transform_img_kornia(
-                crop_mask, M_c2o, dsize=(w, h), device=device
-            )   # (1, 3, H, W)
-
-            src_dev  = src_t.to(device)
-            blended  = torch.clamp(
-                mask_on_canvas * face_on_canvas +
-                (1 - mask_on_canvas) * src_dev,
-                0, 1
-            )   # (1, 3, H, W)
-
-            # Convert back to BGR uint8
-            out_rgb = (blended[0].permute(1, 2, 0).cpu().numpy() * 255).astype(np.uint8)
-            out_bgr = cv2.cvtColor(out_rgb, cv2.COLOR_RGB2BGR)
+        try:
+            out_bgr = composite_lip_onto_portrait(ls_frame_bgr, ls_lmk, portrait_data)
+        except Exception as e:
+            print(f"[lp_warp] WARNING: frame {i} composite failed ({e}), using portrait")
+            out_bgr = portrait_data["portrait_bgr"]
 
         writer.write(out_bgr)
 
@@ -555,7 +634,7 @@ def write_output_video(
     return tmp_path
 
 
-# ─── 8. Audio mux ────────────────────────────────────────────────────────────
+# ─── 13. Audio mux ────────────────────────────────────────────────────────────
 
 def mux_audio(raw_video: str, audio_source: str, output_path: str):
     probe = subprocess.run(
@@ -592,12 +671,12 @@ def mux_audio(raw_video: str, audio_source: str, output_path: str):
         print("[lp_warp] WARNING: audio mux failed, copying video without audio")
 
 
-# ─── 9. Main ─────────────────────────────────────────────────────────────────
+# ─── 14. Main ─────────────────────────────────────────────────────────────────
 
 def main():
     args = parse_args()
 
-    # ── Guard: fail fast with exit code 2 if LivePortrait could not be imported
+    # ── Guard: fail fast with exit code 2 if LP couldn't be imported
     if not _LP_AVAILABLE:
         import json as _json
         print(_json.dumps({
@@ -608,16 +687,15 @@ def main():
         }))
         sys.exit(2)
 
-    # Device
+    # ── Device
     if args.device == "auto":
         device = _autodetect_device()
     else:
         device = torch.device(args.device)
-    # Update mock so pipeline uses the right device
     mm_mock.get_torch_device = lambda: device
-    print(f"[lp_warp] Device: {device}  dtype: {args.dtype}")
+    print(f"[lp_warp] Device: {device}  (compositing pipeline — no neural net models)")
 
-    # Validate inputs
+    # ── Validate inputs
     for p in [args.portrait, args.driver]:
         if not os.path.exists(p):
             print(f"[lp_warp] ERROR: Not found: {p}", file=sys.stderr)
@@ -625,70 +703,43 @@ def main():
 
     os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
 
-    # Load source portrait
+    # ── Load source portrait
     portrait_bgr = cv2.imread(args.portrait)
     if portrait_bgr is None:
         print(f"[lp_warp] ERROR: Cannot read portrait: {args.portrait}", file=sys.stderr)
         sys.exit(1)
+    ph, pw = portrait_bgr.shape[:2]
+    print(f"[lp_warp] Portrait: {pw}×{ph}")
 
-    # Get driver video info (fps, size)
+    # ── Driver video info
     fps, drv_w, drv_h = get_video_info(args.driver)
     print(f"[lp_warp] Driver: {drv_w}×{drv_h} @ {fps:.1f}fps")
 
-    # ── Load models
-    pipeline = load_models(device, args.dtype)
-
-    # ── Build cropper
+    # ── Build cropper (face_alignment + LandmarkRunnerTorch)
     cropper = build_cropper(device)
 
-    # ── Detect face in portrait + extract keypoints
-    # torch.no_grad() prevents the feature extractor / keypoint model from
-    # building autograd graphs, which would keep intermediate tensors alive on
-    # MPS and fill all 30+ GB of unified memory.
+    # ── Detect face in portrait and compute all crop-space data
     with torch.no_grad():
-        crop_info_dict, cropped_256 = get_crop_info(portrait_bgr, cropper, pipeline)
-    M_c2o = crop_info_dict["crop_info_list"][0]["M_c2o"]
-    print(f"[lp_warp] Face detected. Crop-to-original matrix computed.")
+        portrait_data = prepare_portrait(portrait_bgr, cropper)
 
-    # ── Load driving frames (tensor for pipeline + raw RGB list for landmark extraction)
-    driving_t, driving_frames_rgb = load_driving_frames(args.driver, device)
+    # Store portrait_bgr in portrait_data so composite_lip_onto_portrait can access it
+    portrait_data["portrait_bgr"] = portrait_bgr
 
-    # ── Extract per-frame driving landmarks (required for flag_lip_retargeting=True)
+    # ── Load all driving frames (BGR list, no tensors needed)
+    frames_bgr = load_driving_frames(args.driver)
+
+    # ── Extract per-frame LP landmarks from LS frames
     with torch.no_grad():
-        driving_landmarks = extract_driving_landmarks(driving_frames_rgb, cropper)
+        driving_landmarks = extract_driving_landmarks(frames_bgr, cropper)
 
-    # Release raw frames — no longer needed
-    del driving_frames_rgb
-
-    # ── Free any MPS cached memory before the expensive animation loop
-    if device.type == "mps":
-        torch.mps.empty_cache()
     gc.collect()
 
-    # ── Run LivePortrait animation
-    print(f"[lp_warp] Running LivePortrait on {driving_t.shape[0]} frames …")
-    if args.dtype == "fp16":
-        driving_t = driving_t.to(torch.float16)
-
-    with torch.no_grad():
-        out = pipeline.execute(
-            driving_images=driving_t,
-            crop_info=crop_info_dict,
-            driving_landmarks=driving_landmarks,
-            delta_multiplier=1.0,
-            relative_motion_mode="relative",
-            driving_smooth_observation_variance=3e-6,
-            mismatch_method="constant",
-        )
-    out_list = out["out_list"]
-    print(f"[lp_warp] Animation done. {len(out_list)} output frames.")
-
     # ── Composite + write
-    tmp_video = write_output_video(
-        out_list, crop_info_dict, portrait_bgr, fps, args.output, device
+    tmp_video = write_composited_video(
+        frames_bgr, driving_landmarks, portrait_data, fps, args.output
     )
 
-    # ── Mux audio from driver
+    # ── Mux audio
     audio_src = args.audio if args.audio else args.driver
     mux_audio(tmp_video, audio_src, args.output)
 
@@ -698,11 +749,17 @@ def main():
     except Exception:
         pass
 
-    size_mb = os.path.getsize(args.output) / 1024 / 1024
-    n_frames = len(out_list)
-    print(f"[lp_warp] ✅ Done → {args.output}  ({size_mb:.1f}MB)  frames={n_frames}", file=sys.stderr)
+    size_mb  = os.path.getsize(args.output) / 1024 / 1024
+    n_frames = len(frames_bgr)
+    print(f"[lp_warp] ✅ Done → {args.output}  ({size_mb:.1f}MB)  frames={n_frames}",
+          file=sys.stderr)
     import json as _json
-    print(_json.dumps({"ok": True, "output": args.output, "frames": n_frames, "size_mb": round(size_mb, 2)}))
+    print(_json.dumps({
+        "ok": True,
+        "output": args.output,
+        "frames": n_frames,
+        "size_mb": round(size_mb, 2),
+    }))
 
 
 if __name__ == "__main__":
