@@ -11,6 +11,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { spawnSync } from 'child_process';
 
 // Sprint 496: Import Telegram API from shared module
 import {
@@ -25,7 +26,7 @@ import { cmdDemos, cmdAchiriPing, cmdAchiriDeploy } from './telegram-commands/cm
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateAudit, cmdGateRefresh, cmdGateSim } from './telegram-commands/cmd-gate';
 import { runGodmanSmoke } from './godman-smoke';
 import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail, cmdCompetitor, cmdStats, cmdQuality, cmdRadar, cmdBacktest, cmdFormatStats, cmdManifesto, cmdValErrors, cmdCaptionNext, cmdPendingUrls } from './telegram-commands/cmd-content';
-import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog, cmdXPost, cmdCosts, cmdWeeklyDigest, cmdPostNext, cmdPostingHealth, cmdBulkCaptions, cmdQueueFill, cmdPreflight, cmdRemind } from './telegram-commands/cmd-posting'; // Sprint 1385: added cmdRemind
+import { cmdMetrics, cmdPostPlan, cmdYouTube, runYouTubeBatchUpload, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog, cmdXPost, cmdCosts, cmdWeeklyDigest, cmdPostNext, cmdPostingHealth, cmdBulkCaptions, cmdQueueFill, cmdPreflight, cmdRemind } from './telegram-commands/cmd-posting'; // Sprint 1385: added cmdRemind
 import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdReplenish, cmdEnrich, cmdBlockers, cmdBotTest, cmdSprintNext, cmdLog, cmdLaunches, cmdPostPulse, cmdNextActions, cmdSetUrl } from './telegram-commands/cmd-management';
 import { cmdHelp } from './telegram-commands/cmd-help';
 import { cmdApproveContent, cmdReviseContent } from './telegram-commands/cmd-cmo';
@@ -128,6 +129,23 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/quickstart':      () => cmdQuickstart(chatId),
     '/revenue':          async () => { const r = await cmdRevenue(); await sendMessage(chatId, r); },
     '/subscribe':        async () => { await sendMessage(chatId, cmdSubscribe()); },
+    '/youtube': async () => {
+      const trimmedArgs = cmdArgs.trim();
+      const tokens = trimmedArgs.split(/\s+/).filter(Boolean);
+      if (tokens[0]?.toLowerCase() === 'upload') {
+        const rest = trimmedArgs.slice(tokens[0].length).trim();
+        const modeHint = rest.toLowerCase().includes('--live') || rest.toLowerCase().includes('live') ? 'LIVE' : 'dry-run';
+        await sendMessage(chatId, `🚀 Starting YouTube batch upload (${modeHint})...`);
+        try {
+          const output = await runYouTubeBatchUpload(rest);
+          await sendMessage(chatId, output);
+        } catch (e: any) {
+          await sendMessage(chatId, `❌ /youtube upload error: ${e.message ?? e}`);
+        }
+        return;
+      }
+      await sendMessage(chatId, cmdYouTube(trimmedArgs));
+    },
     '/refresh-token':    () => cmdRefreshToken(chatId), // Sprint 1300
     '/refreshtoken':     () => cmdRefreshToken(chatId), // Sprint 1300 alias
   };
@@ -204,7 +222,6 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/queue-fill': case '/queuefill': response = cmdQueueFill(); break;
     case '/posting-preflight': response = cmdPreflight(); break;
     case '/gateanalytics': response = cmdGateAnalytics();   break;
-    case '/youtube':     response = cmdYouTube();            break;
     case '/portal':      response = cmdPortal(cmdArgs);        break;
     case '/funnel':      response = cmdFunnel();              break;
     case '/hooktest':    response = cmdHookTest();            break;
@@ -347,7 +364,11 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
       [{ text: '📦 Deliver 1', callback_data: 'cmd:/deliver 1' }, { text: '🎬 Session', callback_data: 'cmd:/session' }],
       [{ text: '📊 Gate', callback_data: 'cmd:/gate' }, { text: '🤖 Achiri', callback_data: 'cmd:/achiri' }],
       [{ text: '🔄 Refresh', callback_data: 'cmd:/refresh' }, { text: '📈 A/B Results', callback_data: 'cmd:/abresults' }],
+    ],    '/youtube': [
+      [{ text: '📤 Upload (dry run)', callback_data: 'cmd:/youtube upload' }, { text: '🚀 Upload live', callback_data: 'cmd:/youtube upload --live' }],
+      [{ text: '📜 Ledger', callback_data: 'cmd:/youtube ledger' }],
     ],
+
     // Sprint 1205: action buttons for /next-actions
     '/next-actions': [
       [{ text: '🎬 Pickup', callback_data: 'cmd:/pickup' }, { text: '🚀 Boot Crons', callback_data: 'cmd:/boot' }],
@@ -420,6 +441,8 @@ async function registerBotCommands(): Promise<void> {
 async function poll(): Promise<void> {
   let offset = loadOffset();
   let backoffMs = 1000;
+  let consecutiveErrors = 0;
+  const MAX_CONSECUTIVE_ERRORS = 10;
 
   console.log(`[Bot] Starting Telegram bot — polling for updates (offset: ${offset})`);
   console.log(`[Bot] Owner chat ID: ${OWNER_CHAT_ID}`);
@@ -454,6 +477,48 @@ async function poll(): Promise<void> {
               console.error(`[Bot] Posted callback error: ${e.message}`);
             });
           }
+          // ─── SCS-001 Video Review ─────────────────────────────────────────────
+          if (cbChatId && cbData.startsWith('approve:')) {
+            const videoId = cbData.slice(8);
+            answerCallbackQuery(cb.id, '✅ Approved!').catch(() => {});
+            const reviewsPath = path.join(ROOT, 'workspace', 'scs001', 'video-reviews.jsonl');
+            try {
+              fs.mkdirSync(path.dirname(reviewsPath), { recursive: true });
+              fs.appendFileSync(reviewsPath, JSON.stringify({ video_id: videoId, action: 'approve', reviewed_at: new Date().toISOString() }) + '\n', 'utf-8');
+            } catch { /* ignore */ }
+            await sendMessage(cbChatId,
+              `✅ *Approved* \`${videoId}\`\n\nPipeline unblocked — Kognai can now post.`
+            ).catch(() => {});
+            // Trigger scs001-heartbeat (idempotent — safe if already running)
+            try {
+              spawnSync('pm2', ['start', 'ecosystem.config.js', '--only', 'scs001-heartbeat'], { cwd: ROOT, stdio: 'ignore', timeout: 30000 });
+              spawnSync('pm2', ['save'], { cwd: ROOT, stdio: 'ignore', timeout: 10000 });
+            } catch { /* pm2 not available — ignore */ }
+          }
+          if (cbChatId && cbData.startsWith('reject:')) {
+            const videoId = cbData.slice(7);
+            answerCallbackQuery(cb.id, '❌ Rejected').catch(() => {});
+            const reviewsPath = path.join(ROOT, 'workspace', 'scs001', 'video-reviews.jsonl');
+            try {
+              fs.mkdirSync(path.dirname(reviewsPath), { recursive: true });
+              fs.appendFileSync(reviewsPath, JSON.stringify({ video_id: videoId, action: 'reject', reviewed_at: new Date().toISOString() }) + '\n', 'utf-8');
+            } catch { /* ignore */ }
+            await sendMessage(cbChatId,
+              `❌ *Rejected* \`${videoId}\`\n\nVideo will not be posted.`
+            ).catch(() => {});
+          }
+          if (cbChatId && cbData.startsWith('rework:')) {
+            const videoId = cbData.slice(7);
+            answerCallbackQuery(cb.id, '🔧 Rework noted').catch(() => {});
+            const reviewsPath = path.join(ROOT, 'workspace', 'scs001', 'video-reviews.jsonl');
+            try {
+              fs.mkdirSync(path.dirname(reviewsPath), { recursive: true });
+              fs.appendFileSync(reviewsPath, JSON.stringify({ video_id: videoId, action: 'rework', reviewed_at: new Date().toISOString() }) + '\n', 'utf-8');
+            } catch { /* ignore */ }
+            await sendMessage(cbChatId,
+              `🔧 *Rework queued* \`${videoId}\`\n\nFeedback noted — will be re-processed.`
+            ).catch(() => {});
+          }
           continue;
         }
 
@@ -475,8 +540,14 @@ async function poll(): Promise<void> {
       }
 
       backoffMs = 1000;
+      consecutiveErrors = 0;
     } catch (e: any) {
-      console.error(`[Bot] Poll error: ${e.message}`);
+      consecutiveErrors++;
+      console.error(`[Bot] Poll error (${consecutiveErrors}/${MAX_CONSECUTIVE_ERRORS}): ${e.message}`);
+      if (consecutiveErrors >= MAX_CONSECUTIVE_ERRORS) {
+        console.error(`[Bot] ${MAX_CONSECUTIVE_ERRORS} consecutive errors — exiting so PM2 can restart cleanly.`);
+        process.exit(1);
+      }
       await new Promise(r => setTimeout(r, backoffMs));
       backoffMs = Math.min(backoffMs * 2, 60000);
     }

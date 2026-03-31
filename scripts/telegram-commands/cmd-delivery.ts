@@ -91,6 +91,11 @@ export async function cmdDeliver(chatId: string, args: string): Promise<string> 
 
     const deliverButtons = [
       [
+        { text: '✅ Approve', callback_data: `approve:${videoId}` },
+        { text: '❌ Reject',  callback_data: `reject:${videoId}` },
+        { text: '🔧 Rework',  callback_data: `rework:${videoId}` },
+      ],
+      [
         { text: '✅ Posted', callback_data: `posted:${videoId}` },
         { text: '📡 Publish', callback_data: `cmd:/publish ${videoId}` },
       ],

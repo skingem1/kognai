@@ -78,6 +78,47 @@ function tgSendVideo(chatId: string, videoPath: string, caption: string): Promis
   });
 }
 
+function tgSendVideoWithButtons(chatId: string, videoPath: string, caption: string, buttons: Array<Array<{ text: string; callback_data: string }>>): Promise<void> {
+  const boundary = '----TgAutoSend' + Date.now().toString(16);
+  const filename  = path.basename(videoPath);
+  const fileData  = fs.readFileSync(videoPath);
+  const replyMarkup = JSON.stringify({ inline_keyboard: buttons });
+
+  const parts: Buffer[] = [];
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="chat_id"\r\n\r\n${chatId}\r\n`));
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="caption"\r\n\r\n${caption}\r\n`));
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="parse_mode"\r\n\r\nMarkdown\r\n`));
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="reply_markup"\r\n\r\n${replyMarkup}\r\n`));
+  parts.push(Buffer.from(
+    `--${boundary}\r\nContent-Disposition: form-data; name="video"; filename="${filename}"\r\nContent-Type: video/mp4\r\n\r\n`
+  ));
+  parts.push(fileData);
+  parts.push(Buffer.from(`\r\n--${boundary}--\r\n`));
+  const body = Buffer.concat(parts);
+
+  return new Promise((resolve, reject) => {
+    const req = https.request(
+      { hostname: 'api.telegram.org', path: `/bot${BOT_TOKEN}/sendVideo`, method: 'POST',
+        headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}`, 'Content-Length': body.length },
+        timeout: 180_000 },
+      (res) => {
+        let d = '';
+        res.on('data', c => (d += c));
+        res.on('end', () => {
+          try {
+            const r = JSON.parse(d) as { ok: boolean; description?: string };
+            if (!r.ok) reject(new Error(`sendVideoWithButtons failed: ${r.description ?? d.slice(0, 200)}`));
+            else resolve();
+          } catch { reject(new Error(`sendVideoWithButtons parse error: ${d.slice(0, 200)}`)); }
+        });
+      }
+    );
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('tgSendVideoWithButtons timeout (180s)')); });
+    req.write(body); req.end();
+  });
+}
+
 // ── Disk helpers ──────────────────────────────────────────────────────────────
 
 function findCaptionedMp4(videoId: string): string | null {
@@ -164,11 +205,19 @@ async function main(): Promise<void> {
   const hashtags = [...viralHashtags, '#fyp', '#viral', '#learnontiktok'].join(' ');
   const caption  = `${hookText}\n\n${hashtags}`;
 
+  const reviewButtons = [
+    [
+      { text: '✅ Approve', callback_data: `approve:${target.entry.video_id}` },
+      { text: '❌ Reject',  callback_data: `reject:${target.entry.video_id}` },
+      { text: '🔧 Rework',  callback_data: `rework:${target.entry.video_id}` },
+    ],
+  ];
+
   console.log(`[auto-send-video] Delivering ${target.entry.video_id} → Telegram ${OWNER_CHAT_ID}`);
   await tgSendMessage(OWNER_CHAT_ID, `📤 Auto-delivering \`${target.entry.video_id}\`…`);
 
   try {
-    await tgSendVideo(OWNER_CHAT_ID, target.mp4, caption);
+    await tgSendVideoWithButtons(OWNER_CHAT_ID, target.mp4, caption, reviewButtons);
   } catch (err) {
     const msg = (err as Error).message;
     console.error(`[auto-send-video] sendVideo failed: ${msg}`);
