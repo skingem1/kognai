@@ -314,16 +314,17 @@ def load_models(device: torch.device, dtype_str: str):
     class InferenceCfg:
         def __init__(self):
             self.flag_use_half_precision   = use_half
-            self.flag_lip_zero             = False
+            self.flag_lip_zero             = False  # KEEP False: zeroing suppresses motion (tested — reduces to 28% of driver)
             self.lip_zero_threshold        = 0.03
             self.flag_eye_retargeting      = False
-            self.flag_lip_retargeting      = False
+            self.flag_lip_retargeting      = False  # KEEP False: full-body ME drive delivers 2.23× driver lip motion
+                                                     # lip_retargeting=True only uses narrow keypoint delta — inferior for LatentSync output
             self.flag_stitching            = True
             self.input_shape               = (256, 256)
             self.device_id                 = device
             self.flag_do_rot               = True
             self.eyes_retargeting_multiplier = 1.0
-            self.lip_retargeting_multiplier  = 1.0
+            self.lip_retargeting_multiplier  = 1.0   # not used when flag_lip_retargeting=False
 
     inf_cfg = InferenceCfg()
 
@@ -387,8 +388,13 @@ def get_crop_info(portrait_bgr: np.ndarray, cropper, pipeline):
 
 # ─── 5. Load driving video ────────────────────────────────────────────────────
 
-def load_driving_frames(driver_path: str, device: torch.device) -> torch.Tensor:
-    """Read all frames from driver video → (N, 3, H, W) float tensor in [0,1]."""
+def load_driving_frames(driver_path: str, device: torch.device):
+    """Read all frames from driver video.
+
+    Returns:
+        t256: (N, 3, 256, 256) float tensor in [0,1] — for pipeline.execute()
+        frames_rgb: list of (H, W, 3) uint8 numpy arrays — for landmark extraction
+    """
     cap = cv2.VideoCapture(driver_path)
     if not cap.isOpened():
         raise RuntimeError(f"[lp_warp] Cannot open driver video: {driver_path}")
@@ -415,7 +421,56 @@ def load_driving_frames(driver_path: str, device: torch.device) -> torch.Tensor:
     t256 = torch.nn.functional.interpolate(
         t, size=(256, 256), mode="bilinear", align_corners=False
     )
-    return t256.to(device)
+    return t256.to(device), frames
+
+
+def extract_driving_landmarks(frames_rgb: list, cropper) -> list:
+    """Run face detection + landmark extraction on each driving frame.
+
+    Returns a list of lmk_crop arrays (shape: (N_landmarks, 2)) — one per frame.
+    Frames where face detection fails inherit the last successful landmarks.
+    Used by pipeline.execute() when flag_lip_retargeting=True.
+    """
+    landmarks = []
+    last_lmk = None
+    failed = 0
+
+    print(f"[lp_warp] Extracting driving landmarks from {len(frames_rgb)} frames …")
+    for i, frame_rgb in enumerate(frames_rgb):
+        try:
+            crop_info, _ = cropper.crop_single_image(
+                frame_rgb,
+                dsize=512,
+                scale=2.3,
+                vy_ratio=-0.125,
+                vx_ratio=0.0,
+                face_index=0,
+                face_index_order="large-small",
+                rotate=True,
+            )
+            if crop_info and crop_info.get("lmk_crop") is not None:
+                last_lmk = crop_info["lmk_crop"]
+                landmarks.append(last_lmk)
+            else:
+                failed += 1
+                landmarks.append(last_lmk)   # fallback: use previous frame
+        except Exception as e:
+            failed += 1
+            landmarks.append(last_lmk)
+
+    if last_lmk is None:
+        raise RuntimeError("[lp_warp] No face detected in any driving frame — cannot extract landmarks")
+
+    # Fill any leading None values (frames before first face detection) with first good lmk
+    for i in range(len(landmarks)):
+        if landmarks[i] is None:
+            landmarks[i] = last_lmk
+
+    if failed > 0:
+        print(f"[lp_warp] WARNING: {failed}/{len(frames_rgb)} driver frames had no face detection (using fallback)")
+
+    print(f"[lp_warp] Driving landmarks extracted ✓")
+    return landmarks
 
 
 # ─── 6. Video info helpers ────────────────────────────────────────────────────
@@ -595,8 +650,15 @@ def main():
     M_c2o = crop_info_dict["crop_info_list"][0]["M_c2o"]
     print(f"[lp_warp] Face detected. Crop-to-original matrix computed.")
 
-    # ── Load driving frames
-    driving_t = load_driving_frames(args.driver, device)
+    # ── Load driving frames (tensor for pipeline + raw RGB list for landmark extraction)
+    driving_t, driving_frames_rgb = load_driving_frames(args.driver, device)
+
+    # ── Extract per-frame driving landmarks (required for flag_lip_retargeting=True)
+    with torch.no_grad():
+        driving_landmarks = extract_driving_landmarks(driving_frames_rgb, cropper)
+
+    # Release raw frames — no longer needed
+    del driving_frames_rgb
 
     # ── Free any MPS cached memory before the expensive animation loop
     if device.type == "mps":
@@ -612,7 +674,7 @@ def main():
         out = pipeline.execute(
             driving_images=driving_t,
             crop_info=crop_info_dict,
-            driving_landmarks=None,
+            driving_landmarks=driving_landmarks,
             delta_multiplier=1.0,
             relative_motion_mode="relative",
             driving_smooth_observation_variance=3e-6,
