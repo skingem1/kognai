@@ -456,8 +456,12 @@ def composite_lip_onto_portrait(
     Pipeline (per frame):
       a. Compute M_ls2crop via RANSAC affine (6 anchor landmarks)
       b. Warp LS frame to align with portrait 512×512 crop space
-      c. Reinhard Lab colour-transfer on warped LS frame (lip stats as reference)
-      d. Blend lip region using feathered mask: alpha * warped_corrected + (1-alpha) * crop_512
+      c. Colour-match warped LS to portrait grade:
+           - L channel: per-pixel ratio (portrait_L / ls_L) preserves motion contrast
+             while mapping LS brightness exactly to portrait brightness at each pixel
+           - a/b channels: copied directly from portrait — preserves the stylistic
+             colour grade exactly (correct for dark/monochromatic portraits)
+      d. Blend lip region using feathered mask: alpha * colour_matched + (1-alpha) * crop_512
       e. Warp blended 512×512 back to portrait native space via M_c2o
       f. Alpha-blend face region onto full-res portrait using face convex-hull mask
 
@@ -473,7 +477,8 @@ def composite_lip_onto_portrait(
     M_c2o     = portrait_data["M_c2o"]
     crop_lmk  = portrait_data["lmk_crop"]
     lip_mask  = portrait_data["lip_mask"]
-    lip_stats = portrait_data["lip_stats"]
+    # lip_stats retained in portrait_data but not used here — boundary ring
+    # sampling is kept for diagnostic logging only; colour match is now per-pixel.
     ph        = portrait_data["ph"]
     pw        = portrait_data["pw"]
 
@@ -489,8 +494,25 @@ def composite_lip_onto_portrait(
         borderMode=cv2.BORDER_REPLICATE,
     )
 
-    # ── (c) Reinhard colour-transfer: LS → portrait lip palette
-    ls_corrected = reinhard_transfer(ls_warped, lip_stats, strength=1.0)
+    # ── (c) Per-pixel L-ratio colour match + portrait chrominance copy
+    #
+    # Reinhard fails when ΔL is extreme (e.g. bright LS ~150 vs dark portrait ~25).
+    # Per-pixel ratio: scale each LS pixel's L by (portrait_L / ls_L), so the
+    # warped lip exactly inherits the portrait's local brightness at every pixel.
+    # Copy portrait a/b channels entirely — preserves stylistic colour grades
+    # (monochromatic dark portraits, neon overlays, etc.) with zero contamination.
+    portrait_lab = cv2.cvtColor(crop_512,  cv2.COLOR_BGR2LAB).astype(np.float32)
+    ls_lab       = cv2.cvtColor(ls_warped, cv2.COLOR_BGR2LAB).astype(np.float32)
+
+    portrait_L = portrait_lab[:, :, 0]
+    ls_L       = np.maximum(ls_lab[:, :, 0], 1.0)          # avoid div/0
+    l_ratio    = np.clip(portrait_L / ls_L, 0.0, 2.0)      # cap to prevent blow-out
+
+    corrected_lab = ls_lab.copy()
+    corrected_lab[:, :, 0] = np.clip(ls_lab[:, :, 0] * l_ratio, 0.0, 255.0)
+    corrected_lab[:, :, 1] = portrait_lab[:, :, 1]         # portrait chrominance a
+    corrected_lab[:, :, 2] = portrait_lab[:, :, 2]         # portrait chrominance b
+    ls_corrected = cv2.cvtColor(corrected_lab.astype(np.uint8), cv2.COLOR_LAB2BGR)
 
     # ── (d) Blend lip region onto source crop
     alpha = lip_mask[:, :, np.newaxis]            # (512, 512, 1) float32
