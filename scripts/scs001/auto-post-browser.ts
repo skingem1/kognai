@@ -212,7 +212,7 @@ async function main(): Promise<void> {
       // Post via Browser Use
       console.log(`[auto-post-browser] Posting ${video.video_id} via browser...`);
       const result = execSync(
-        `bash "${POST_SCRIPT}" "${video.mp4_path}" "${caption.replace(/"/g, '\\"')}"`,
+        `bash "${POST_SCRIPT}" "${video.mp4_path}" "${caption.replace(/"/g, '\\"')}" --post`,
         { cwd: CWD, timeout: 120_000, stdio: 'pipe' }
       ).toString();
       console.log(`[auto-post-browser] ✅ Browser post initiated: ${video.video_id}`);
