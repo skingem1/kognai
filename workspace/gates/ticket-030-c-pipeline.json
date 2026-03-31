@@ -60,6 +60,14 @@
     "note": "For dark/stylised Ker@ portraits, --skip-gfpgan recommended (GFPGAN restores faces to natural brightness, fighting portrait colour grade)"
   },
 
+  "mediapipe_env_check": {
+    "mediapipe_installed_in_comfyui_env": true,
+    "tasks_api_present": true,
+    "task_model_path": "/Users/tarekmnif/ComfyUI/custom_nodes/ComfyUI-LivePortraitKJ/media_pipe/mp_models/face_landmarker_v2_with_blendshapes.task",
+    "api_used_in_script": "legacy solutions.face_mesh (478 landmarks, 203-pt dense mesh)",
+    "migration_note": "If solutions.face_mesh is deprecated/removed in future mediapipe, migrate to FaceLandmarker Tasks API using the .task model above. No action needed now — legacy API functional (test passed exit 0)."
+  },
+
   "test_script": "scripts/kerat/test-liveportrait.sh",
 
   "related_tickets": {
