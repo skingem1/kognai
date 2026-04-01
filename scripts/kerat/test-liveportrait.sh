@@ -49,11 +49,15 @@ elif [[ "${3:-}" == "--driver" && -n "${4:-}" ]]; then
   DRIVER="$4"
 fi
 
-# Auto-find: look for the most recent .mp4 in output/ (LatentSync results)
+# Auto-find: look for the most recent .mp4 in output/ that is a LatentSync result.
+# EXCLUDE test-output files (lp_warp_test_*, kerat_grade_test_*, kerat_gfpgan_test_*)
+# to avoid the circular-driver bug where this script uses its own output as input.
 if [[ -z "$DRIVER" || ! -f "$DRIVER" ]]; then
-  if ls "$OUT_DIR/"*.mp4 2>/dev/null | head -1 | grep -q .; then
-    DRIVER="$(ls -t "$OUT_DIR/"*.mp4 | head -1)"
+  DRIVER="$(ls -t "$OUT_DIR/"*.mp4 2>/dev/null | grep -v 'test' | head -1)"
+  if [[ -n "$DRIVER" && -f "$DRIVER" ]]; then
     echo "[test-liveportrait] Auto-selected driver: $DRIVER"
+  else
+    DRIVER=""
   fi
 fi
 
