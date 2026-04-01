@@ -154,3 +154,5 @@ workspace/scs001/auto-delivered.jsonl
 workspace/scs001/scripts/
 workspace/scs001/code-demo-runs/
 workspace/scs001/topic-radar/
+workspace/kerat/GFPGANv1.4.pth
+workspace/kerat/output/
