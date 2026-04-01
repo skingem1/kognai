@@ -39,7 +39,7 @@ def generate(text: str, voice: str, speed: float, out_path: str) -> dict:
 
     sys.stderr.write(f'[tts_kokoro] Generating audio for {len(text)} chars...\n')
     chunks = []
-    for result in model.generate(text, speed=speed):
+    for result in model.generate(text, voice=voice, speed=speed):
         chunks.append(np.array(result.audio))
 
     if not chunks:

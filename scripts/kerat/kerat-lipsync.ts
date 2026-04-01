@@ -3,35 +3,38 @@
  * TICKET-030-B/C + TICKET-030-Addendum: Ker@ Text → Lip-synced + Enhanced Video Pipeline
  *
  * Text → Kokoro am_echo TTS → LatentSync 1.6 → [LP Warp | Reinhard Grade] → [GFPGAN] → output.mp4
+ *                          OR
+ * Text → Kokoro am_echo TTS → SadTalker (3D head + lip sync in one pass) → output.mp4
  *
- * Steps:
+ * Steps (LatentSync mode, default):
  *  1. TTS      — python3.12 tts_kokoro.py            →  24kHz WAV (am_echo)
  *  2. Prep     — ffmpeg still image                   →  512×512 25fps H.264 video
  *  3. Sync     — comfyui-env LatentSync               →  lip-synced .mp4
  *  3.5a LPWarp — kerat_liveportrait_warp.py (--lp-warp)  →  source-pixel warp .mp4
- *                RECOMMENDED for dark/stylised portraits: warps source portrait's OWN
- *                pixels via LivePortrait 3-D keypoints — zero colour mismatch by construction.
  *  3.5b Grade  — kerat_color_grade.py (default ON when no --lp-warp)
- *                →  Reinhard Lab colour-graded .mp4 (post-hoc fix, less reliable on dark faces)
- *  3.7 GFPGAN  — gfpgan_enhance.py (default ON) →  face-restored .mp4
- *                Reinstated as standard step per TICKET-030-Addendum.
- *                Use --skip-gfpgan to bypass on dark/stylised portraits.
+ *  3.7 GFPGAN  — gfpgan_enhance.py (opt-in) →  face-restored .mp4
+ *
+ * Steps (SadTalker mode — --sadtalker):
+ *  1. TTS      — python3.12 tts_kokoro.py            →  24kHz WAV (am_echo)
+ *  2. SadTalker — sadtalker_run.py (portrait + WAV)  →  3D talking-head .mp4
+ *               Handles head motion + lip sync + GFPGAN in one pass.
+ *               Bypasses all LatentSync / LP-warp / grade steps.
+ *               Use --skip-gfpgan to disable built-in GFPGAN enhancement.
  *
  * Usage:
  *   cd ~/kognai && ts-node scripts/kerat/kerat-lipsync.ts \
  *     --text "Intelligence is a sovereign right." \
  *     [--portrait workspace/kerat/portraits/kerat_portrait_signal_nexus_03.jpg] \
  *     [--out workspace/kerat/output/kerat_001.mp4] \
- *     [--inference-steps 20] \
+ *     [--sadtalker]            ← 3D head motion + lip sync in one pass (RECOMMENDED for avatar)
+ *     [--still]                (SadTalker: minimal head motion, lip-sync only)
+ *     [--sadtalker-size 512]   (SadTalker: output resolution 256 or 512, default 512)
+ *     [--inference-steps 20]   (LatentSync only)
  *     [--device mps] \
- *     [--lp-warp]              ← RECOMMENDED for dark/stylised portraits (TICKET-030-C)
- *     [--grade-strength 1.0]   (Reinhard strength, used only without --lp-warp)
- *     [--enable-gfpgan]        (only for well-lit portraits)
- *     [--skip-grade]           (skip Reinhard grade when not using --lp-warp)
- *
- * Portrait guidance:
- *   - Dark / stylised (L < 50): default grade works well, skip GFPGAN
- *   - Well-lit / neutral (L ≥ 100): can optionally add --enable-gfpgan
+ *     [--lp-warp]              (LatentSync: source-pixel warp, TICKET-030-C)
+ *     [--grade-strength 1.0]   (LatentSync: Reinhard strength, used only without --lp-warp)
+ *     [--skip-grade]           (LatentSync: skip Reinhard grade when not using --lp-warp)
+ *     [--skip-gfpgan]          (skip GFPGAN enhancement in either mode)
  */
 
 import { execSync, spawnSync } from 'child_process';
@@ -51,13 +54,14 @@ const LATENTSYNC_DIR = join(
 const COMFYUI_ENV = join(process.env.HOME!, 'comfyui-env/bin/python');
 const CHECKPOINT = join(LATENTSYNC_DIR, 'checkpoints/latentsync_unet.pt');
 const UNET_CONFIG = join(LATENTSYNC_DIR, 'configs/unet/stage2.yaml');
-const DEFAULT_PORTRAIT      = join(ROOT, 'workspace/kerat/portraits/kerat_portrait_signal_nexus_03.jpg');
+const DEFAULT_PORTRAIT      = join(ROOT, 'workspace/kerat/portraits/kerat_portrait_sadtalker_v2.jpg');
 const DEFAULT_OUT_DIR       = join(ROOT, 'workspace/kerat/output');
 const TTS_SCRIPT            = join(__dirname, 'tts_kokoro.py');
 const COLOR_GRADE_SCRIPT    = join(__dirname, 'kerat_color_grade.py');
 const GFPGAN_SCRIPT         = join(__dirname, 'gfpgan_enhance.py');
 const GFPGAN_MODEL          = join(ROOT, 'workspace/kerat/GFPGANv1.4.pth');
 const LP_WARP_SCRIPT        = join(__dirname, 'kerat_liveportrait_warp.py');
+const SADTALKER_SCRIPT      = join(__dirname, 'sadtalker_run.py');
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -116,7 +120,12 @@ function generateTTS(text: string, voice: string, speed: number, outWav: string)
 
 // ─── Step 2: Portrait → Video ─────────────────────────────────────────────────
 
-function preparePortraitVideo(portraitPath: string, duration: number, tmpDir: string): string {
+function preparePortraitVideo(
+  portraitPath: string,
+  duration: number,
+  tmpDir: string,
+  brightenForLS: boolean = false
+): string {
   if (isVideoFile(portraitPath)) {
     log(`Step 2 — Portrait already a video: ${portraitPath}`);
     return portraitPath;
@@ -125,16 +134,29 @@ function preparePortraitVideo(portraitPath: string, duration: number, tmpDir: st
   // Still image — loop into 512×512 25fps H.264 video
   // Add 1s buffer so LatentSync has enough frames for the full audio
   const videoDuration = duration + 1.5;
-  const outVideo = join(tmpDir, `kerat_portrait_${Date.now()}.mp4`);
+  const suffix = brightenForLS ? '_bright' : '';
+  const outVideo = join(tmpDir, `kerat_portrait_${Date.now()}${suffix}.mp4`);
 
-  log(`Step 2 — Converting portrait image → ${videoDuration.toFixed(1)}s 512×512 H.264 video`);
+  if (brightenForLS) {
+    log(`Step 2 — Converting portrait image → ${videoDuration.toFixed(1)}s 512×512 H.264 video (BRIGHTENED for LatentSync — dark portrait detected)`);
+    // eq=gamma=2.0 maps pixel value v → sqrt(v/255)*255, bringing L≈40 → L≈101
+    // saturation=0.85 slightly desaturates the artificial boost
+    // This keeps the portrait within LatentSync's training distribution (well-lit faces)
+    // LP warp uses the original dark portrait for compositing, so visual style is preserved
+  } else {
+    log(`Step 2 — Converting portrait image → ${videoDuration.toFixed(1)}s 512×512 H.264 video`);
+  }
+
+  const vf = brightenForLS
+    ? 'scale=512:512:force_original_aspect_ratio=decrease,pad=512:512:(ow-iw)/2:(oh-ih)/2:black,eq=gamma=2.0:saturation=0.85'
+    : 'scale=512:512:force_original_aspect_ratio=decrease,pad=512:512:(ow-iw)/2:(oh-ih)/2:black';
 
   // scale + pad to exactly 512×512 (LatentSync requires this)
   const ffmpegCmd = [
     'ffmpeg', '-y',
     '-loop', '1',
     '-i', portraitPath,
-    '-vf', 'scale=512:512:force_original_aspect_ratio=decrease,pad=512:512:(ow-iw)/2:(oh-ih)/2:black',
+    '-vf', vf,
     '-c:v', 'libx264',
     '-t', videoDuration.toFixed(3),
     '-r', '25',
@@ -152,7 +174,7 @@ function preparePortraitVideo(portraitPath: string, duration: number, tmpDir: st
     die(`ffmpeg portrait conversion failed:\n${result.stderr}\n${result.error?.message ?? ''}`);
   }
 
-  log(`Step 2 ✅  Portrait video: ${outVideo}`);
+  log(`Step 2 ✅  Portrait video: ${outVideo}${brightenForLS ? '  [brightness-boosted for LatentSync]' : ''}`);
   return outVideo;
 }
 
@@ -189,7 +211,10 @@ function runLatentSync(
     '--audio_path', audioWav,
     '--video_out_path', outVideo,
     '--inference_steps', String(inferenceSteps),
-    '--guidance_scale', '1.0',
+    // guidance_scale=7.0 required for dark/stylized portraits (LP warp mode).
+    // At 1.0 (default), audio conditioning is too weak → zero motion on out-of-distribution faces.
+    // At 7.0, L range reaches ~9.8 (MOTION DETECTED threshold: ≥8.0).
+    '--guidance_scale', '7.0',
     '--device', device,
   ];
 
@@ -335,6 +360,71 @@ function runLivePortraitWarp(
   return true;
 }
 
+// ─── SadTalker: portrait + audio → 3D talking-head (replaces Steps 2+3+3.5) ──
+
+function runSadTalker(
+  portrait: string,
+  audioWav: string,
+  outVideo: string,
+  device: string,
+  size: number,
+  still: boolean,
+  enhancer: string,
+  expressionScale: number,
+  poseStyle: number,
+): void {
+  log(`SadTalker — 3D talking-head generation`);
+  log(`  portrait:  ${portrait}`);
+  log(`  audio:     ${audioWav}`);
+  log(`  output:    ${outVideo}`);
+  log(`  size:${size}  still:${still}  enhancer:${enhancer}  expr:${expressionScale}  pose:${poseStyle}`);
+
+  if (!existsSync(SADTALKER_SCRIPT)) {
+    die(`SadTalker script not found: ${SADTALKER_SCRIPT}`);
+  }
+
+  const args = [
+    SADTALKER_SCRIPT,
+    '--portrait',          portrait,
+    '--audio',             audioWav,
+    '--out',               outVideo,
+    '--size',              String(size),
+    '--preprocess',        'resize',
+    '--enhancer',          enhancer,
+    '--expression-scale',  String(expressionScale),
+    '--pose-style',        String(poseStyle),
+  ];
+  if (still) args.push('--still');
+
+  const env: Record<string, string> = {
+    ...process.env as Record<string, string>,
+    PYTORCH_ENABLE_MPS_FALLBACK: '1',
+    PYTORCH_MPS_HIGH_WATERMARK_RATIO: '0.0',
+  };
+
+  const result = spawnSync(COMFYUI_ENV, args, {
+    env,
+    encoding: 'utf8',
+    timeout: 7_200_000,   // 2h — MPS 3DMM + render is slow
+    stdio: ['pipe', 'pipe', 'pipe'],
+    maxBuffer: 50 * 1024 * 1024,
+  });
+
+  if (result.stdout) process.stdout.write(result.stdout);
+  if (result.stderr) process.stderr.write(result.stderr);
+
+  if (result.status !== 0 || result.error) {
+    die(`SadTalker failed (exit ${result.status}):\n${result.error?.message ?? ''}`);
+  }
+
+  if (!existsSync(outVideo)) {
+    die(`SadTalker exited 0 but output file not found: ${outVideo}`);
+  }
+
+  const sizeMB = (statSync(outVideo).size / 1024 / 1024).toFixed(1);
+  log(`SadTalker ✅  Output: ${outVideo}  (${sizeMB}MB)`);
+}
+
 // ─── Step 3.7: GFPGAN Face Restoration (opt-in only) ─────────────────────────
 
 function runGFPGAN(inputVideo: string, outputVideo: string): boolean {
@@ -395,25 +485,31 @@ function parseArgs() {
   if (!text) {
     process.stderr.write(
       'Usage: ts-node kerat-lipsync.ts --text "..." ' +
-      '[--portrait path] [--out path] [--inference-steps N] [--device mps] ' +
-      '[--mode latentsync|liveportrait] [--lp-warp] [--grade-strength 1.0] [--skip-grade] [--skip-gfpgan]\n'
+      '[--portrait path] [--out path] [--device mps] [--skip-gfpgan]\n' +
+      '  SadTalker mode:    --sadtalker [--still] [--sadtalker-size 512]\n' +
+      '  LatentSync mode:   [--inference-steps N] [--lp-warp] [--grade-strength 1.0] [--skip-grade]\n'
     );
     process.exit(1);
   }
 
   return {
     text,
-    portrait:      get('--portrait', DEFAULT_PORTRAIT)!,
-    out:           get('--out')!,  // will be resolved below
-    steps:         parseInt(get('--inference-steps', '20')!, 10),
-    voice:         get('--voice', 'am_echo')!,
-    speed:         parseFloat(get('--speed', '1.0')!),
-    device:        get('--device', 'mps')!,
-    gradeStrength: parseFloat(get('--grade-strength', '1.0')!),
-    skipGrade:     args.includes('--skip-grade'),
-    skipGfpgan:    args.includes('--skip-gfpgan'),
-    lpWarp:        args.includes('--lp-warp'),
-    mode:          get('--mode', 'latentsync')!,   // 'latentsync' | 'liveportrait'
+    portrait:       get('--portrait', DEFAULT_PORTRAIT)!,
+    out:            get('--out')!,  // will be resolved below
+    steps:          parseInt(get('--inference-steps', '20')!, 10),
+    voice:          get('--voice', 'bf_emma')!,
+    speed:          parseFloat(get('--speed', '1.0')!),
+    device:         get('--device', 'mps')!,
+    gradeStrength:  parseFloat(get('--grade-strength', '1.0')!),
+    skipGrade:      args.includes('--skip-grade'),
+    skipGfpgan:     args.includes('--skip-gfpgan'),
+    lpWarp:         args.includes('--lp-warp'),
+    mode:           get('--mode', 'latentsync')!,
+    sadtalker:      args.includes('--sadtalker'),
+    sadtalkerSize:      parseInt(get('--sadtalker-size', '512')!, 10),
+    still:              !args.includes('--no-still'),  // still ON by default — pass --no-still for head motion
+    expressionScale:    parseFloat(get('--expression-scale', '1.1')!),
+    poseStyle:          parseInt(get('--pose-style', '0')!, 10),
   };
 }
 
@@ -422,10 +518,10 @@ async function main() {
 
   // Validate inputs
   if (!existsSync(COMFYUI_ENV))  die(`comfyui-env not found: ${COMFYUI_ENV}`);
-  if (!existsSync(CHECKPOINT))   die(`LatentSync checkpoint not found: ${CHECKPOINT}`);
+  if (!cfg.sadtalker && !existsSync(CHECKPOINT)) die(`LatentSync checkpoint not found: ${CHECKPOINT}`);
   if (!existsSync(cfg.portrait)) die(`Portrait not found: ${cfg.portrait}`);
 
-  // Prepare output paths — resolve ALL to absolute so LatentSync (cwd=LATENTSYNC_DIR) gets correct paths
+  // Prepare output paths
   mkdirSync(DEFAULT_OUT_DIR, { recursive: true });
   const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
   const outVideo = resolve(cfg.out ?? join(DEFAULT_OUT_DIR, `kerat_${ts}.mp4`));
@@ -436,13 +532,62 @@ async function main() {
 
   const wavPath = join(tmpDir, `tts_${ts}.wav`);
 
-  // --lp-warp / --mode liveportrait and Reinhard grade are mutually exclusive; LP warp takes priority
+  // ── SadTalker mode ──────────────────────────────────────────────────────────
+  if (cfg.sadtalker) {
+    // GFPGAN ON by default — default portrait is well-lit (L=124.4).
+    // Pass --skip-gfpgan to disable (needed for dark/cinematic portraits L<70).
+    const enhancer = cfg.skipGfpgan ? 'none' : 'gfpgan';
+
+    log(`═══════════════════════════════════════════`);
+    log(`Ker@ Lip-sync Pipeline  [SadTalker mode]`);
+    log(`Text:      "${cfg.text.slice(0, 80)}"`);
+    log(`Portrait:  ${cfg.portrait}`);
+    log(`Out:       ${outVideo}`);
+    log(`Device:    ${cfg.device}  Size:${cfg.sadtalkerSize}  Still:${cfg.still}`);
+    log(`Enhancer:  ${enhancer}  ExprScale:${cfg.expressionScale}  Pose:${cfg.poseStyle}`);
+    log(`═══════════════════════════════════════════`);
+
+    // Step 1: TTS
+    const duration = generateTTS(cfg.text, cfg.voice, cfg.speed, wavPath);
+
+    // Step 2: SadTalker (portrait image + WAV → 3D talking-head MP4)
+    runSadTalker(
+      resolve(cfg.portrait),
+      wavPath,
+      outVideo,
+      cfg.device,
+      cfg.sadtalkerSize,
+      cfg.still,
+      enhancer,
+      cfg.expressionScale,
+      cfg.poseStyle,
+    );
+
+    log('');
+    log(`✅ Pipeline complete → ${outVideo}`);
+    console.log(JSON.stringify({
+      ok: true,
+      output: outVideo,
+      audio_wav: wavPath,
+      duration_s: duration,
+      mode: 'sadtalker',
+      voice: cfg.voice,
+      sadtalker_size: cfg.sadtalkerSize,
+      still: cfg.still,
+      enhancer,
+      expression_scale: cfg.expressionScale,
+      pose_style: cfg.poseStyle,
+    }));
+    return;
+  }
+
+  // ── LatentSync mode (default) ───────────────────────────────────────────────
   const lpWarpEnabled = cfg.lpWarp || cfg.mode === 'liveportrait';
   const gradeEnabled  = !cfg.skipGrade && !lpWarpEnabled;
   const gfpganEnabled = !cfg.skipGfpgan && existsSync(GFPGAN_MODEL) && existsSync(GFPGAN_SCRIPT);
 
   log(`═══════════════════════════════════════════`);
-  log(`Ker@ Lip-sync Pipeline`);
+  log(`Ker@ Lip-sync Pipeline  [LatentSync mode]`);
   log(`Text:     "${cfg.text.slice(0, 80)}"`);
   log(`Portrait: ${cfg.portrait}`);
   log(`Out:      ${outVideo}`);
@@ -450,16 +595,16 @@ async function main() {
   log(`LP Warp:  ${lpWarpEnabled ? 'ON (--lp-warp, TICKET-030-C)' : 'OFF'}`);
   log(`Grade:    ${gradeEnabled ? `ON (strength=${cfg.gradeStrength.toFixed(2)})` : lpWarpEnabled ? 'OFF (superseded by --lp-warp)' : 'OFF (--skip-grade)'}`);
   log(`GFPGAN:   ${gfpganEnabled ? 'ON (standard — use --skip-gfpgan to disable)' : 'OFF (--skip-gfpgan | model/script not found)'}`);
+  log(`BrightLS: ${lpWarpEnabled ? 'ON (dark portrait → gamma=2.0 boost for LatentSync; LP warp uses original)' : 'OFF'}`);
   log(`═══════════════════════════════════════════`);
 
   // Step 1: TTS
   const duration = generateTTS(cfg.text, cfg.voice, cfg.speed, wavPath);
 
-  // Step 2: Portrait → Video (if needed)
-  const portraitVideo = preparePortraitVideo(cfg.portrait, duration, tmpDir);
+  // Step 2: Portrait → Video
+  const portraitVideo = preparePortraitVideo(cfg.portrait, duration, tmpDir, lpWarpEnabled);
 
   // Step 3: LatentSync
-  // Always write LS output to a .latentsync.mp4 intermediate when further steps follow
   const anyPostProcess = lpWarpEnabled || gradeEnabled || gfpganEnabled;
   const latentSyncOut = anyPostProcess
     ? resolve(dirname(outVideo), `${basename(outVideo, '.mp4')}.latentsync.mp4`)
@@ -472,19 +617,16 @@ async function main() {
   let step35Out = latentSyncOut;
 
   if (lpWarpEnabled) {
-    // 3.5a — LivePortrait warp: warp source portrait's OWN pixels, zero colour mismatch
     const lpTarget = gfpganEnabled
       ? resolve(dirname(outVideo), `${basename(outVideo, '.mp4')}.lpwarp.mp4`)
       : outVideo;
     step35Applied = runLivePortraitWarp(latentSyncOut, lpTarget, cfg.portrait, cfg.device, wavPath);
     if (step35Applied) {
       step35Out = lpTarget;
-      // Remove LS intermediate now that LP warp succeeded
       if (existsSync(latentSyncOut) && latentSyncOut !== outVideo) {
         try { require('fs').unlinkSync(latentSyncOut); } catch {}
       }
     } else if (!cfg.skipGrade) {
-      // LP unavailable or failed (exit 2) — fall through to Reinhard grade as fallback
       log(`Step 3.5 — LP warp fallback: attempting Reinhard grade`);
       const gradeTarget = gfpganEnabled
         ? resolve(dirname(outVideo), `${basename(outVideo, '.mp4')}.graded.mp4`)
@@ -498,27 +640,24 @@ async function main() {
       }
     }
   } else if (gradeEnabled) {
-    // 3.5b — Reinhard Lab colour grade: post-hoc full-frame colour transfer
     const gradeTarget = gfpganEnabled
       ? resolve(dirname(outVideo), `${basename(outVideo, '.mp4')}.graded.mp4`)
       : outVideo;
     step35Applied = runColorGrade(latentSyncOut, gradeTarget, cfg.portrait, cfg.gradeStrength);
     if (step35Applied) {
       step35Out = gradeTarget;
-      // Remove LS intermediate now that grade succeeded
       if (existsSync(latentSyncOut) && latentSyncOut !== outVideo) {
         try { require('fs').unlinkSync(latentSyncOut); } catch {}
       }
     }
   }
 
-  // Step 3.7: GFPGAN face restoration (opt-in only — safe for well-lit portraits)
+  // Step 3.7: GFPGAN face restoration
   let gfpganApplied = false;
   let finalOut = step35Applied ? step35Out : latentSyncOut;
   if (gfpganEnabled) {
     gfpganApplied = runGFPGAN(finalOut, outVideo);
     if (gfpganApplied) {
-      // Remove step35 intermediate now that GFPGAN succeeded
       if (existsSync(step35Out) && step35Out !== outVideo) {
         try { require('fs').unlinkSync(step35Out); } catch {}
       }
@@ -526,17 +665,15 @@ async function main() {
     }
   }
 
-  // If no post-processing produced outVideo, the LS output is the final output
   log('');
   log(`✅ Pipeline complete → ${finalOut}`);
-
-  // Print JSON result for programmatic callers
   console.log(JSON.stringify({
     ok: true,
     output: finalOut,
     audio_wav: wavPath,
     portrait_video: portraitVideo,
     duration_s: duration,
+    mode: 'latentsync',
     inference_steps: cfg.steps,
     voice: cfg.voice,
     lp_warp_applied: lpWarpEnabled && step35Applied,
