@@ -526,9 +526,24 @@ def composite_lip_onto_portrait(
     ls_corrected = cv2.cvtColor(corrected_lab.astype(np.uint8), cv2.COLOR_LAB2BGR)
 
     # ── (d) Blend lip region onto source crop
+    #
+    # The feathered alpha blends ls_corrected with crop_512.  Outside the tight
+    # lip polygon, ls_corrected still contains LS face content at a different
+    # brightness than the portrait → the wide Gaussian feather zone shows a
+    # visible "haze" blob even when the lip colour is correct.
+    #
+    # Fix: replace ls_corrected pixels OUTSIDE the lip region with portrait
+    # pixels.  The feather zone then blends portrait-with-portrait → invisible.
+    # Only the interior of the lip polygon carries LS (colour-corrected) content.
+    inner = (lip_mask > 0.05).astype(np.float32)[:, :, np.newaxis]   # tight binary
+    ls_for_blend = (
+        inner       * ls_corrected.astype(np.float32) +
+        (1.0 - inner) * crop_512.astype(np.float32)
+    )   # float32, portrait outside lips, corrected LS inside
+
     alpha = lip_mask[:, :, np.newaxis]            # (512, 512, 1) float32
     blended_crop = (
-        alpha * ls_corrected.astype(np.float32) +
+        alpha * ls_for_blend +
         (1.0 - alpha) * crop_512.astype(np.float32)
     ).astype(np.uint8)
 
