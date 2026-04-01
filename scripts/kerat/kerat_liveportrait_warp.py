@@ -367,7 +367,7 @@ def prepare_portrait(portrait_bgr: np.ndarray, cropper):
     lip_stats = compute_masked_lab_stats(crop_512, boundary_ring)
 
     print(f"[lp_warp] Portrait face detected. Crop shape: {crop_512.shape}")
-    print(f"[lp_warp] Boundary ring L mean={lip_stats[0][0]:.1f}  a mean={lip_stats[1][0]:.1f}")
+    print(f"[lp_warp] Boundary ring  L={lip_stats[0][0]:.1f}  a={lip_stats[1][0]:.1f}  b={lip_stats[2][0]:.1f}")
 
     return {
         "crop_512":  crop_512,
@@ -495,38 +495,33 @@ def composite_lip_onto_portrait(
         borderMode=cv2.BORDER_REPLICATE,
     )
 
-    # ── (c) Global L scale + portrait chrominance copy
+    # ── (c) Colour-correct LS lip patch to match portrait face grade
     #
-    # Per-pixel ratio was wrong: portrait_L/ls_L * ls_L = portrait_L, so the
-    # corrected frame became identical to the portrait — zero motion visible.
+    # Target L  = boundary ring mean L (surrounding SKIN brightness).
+    # Using the portrait's own lip-region L is wrong: portrait lips are often
+    # slightly lighter than surrounding skin, so l_scale ends up too high and
+    # produces a visible bright blob.  Matching to the surrounding skin L makes
+    # the patch indistinguishable from the face at rest; mouth-open frames are
+    # still visible because the LS interior (dark cavity) is darker, and the
+    # relative frame-to-frame L variation is preserved as motion contrast.
     #
-    # Fix: compute ONE global scale = mean(portrait lip L) / mean(ls lip L).
-    # Apply it uniformly to the entire LS L channel.  This preserves the
-    # relative L variation across frames (= lip motion) while bringing the
-    # overall level down to match the dark portrait.
-    # Copy portrait a/b chrominance to preserve the stylistic colour grade.
-    portrait_lab = cv2.cvtColor(crop_512,  cv2.COLOR_BGR2LAB).astype(np.float32)
-    ls_lab       = cv2.cvtColor(ls_warped, cv2.COLOR_BGR2LAB).astype(np.float32)
+    # Target a/b = boundary ring mean a/b (surrounding skin chrominance).
+    # Portrait lip a/b are warm/reddish even in blue-lit portraits → orange blob.
+    # Using surrounding skin a/b eliminates that artefact.
+    ls_lab  = cv2.cvtColor(ls_warped, cv2.COLOR_BGR2LAB).astype(np.float32)
+    ls_L    = ls_lab[:, :, 0]
 
-    portrait_L = portrait_lab[:, :, 0]
-    ls_L       = ls_lab[:, :, 0]
+    lip_region   = lip_mask > 0.1
+    ls_lip_L     = float(np.maximum(ls_L[lip_region], 1.0).mean()) if lip_region.any() else 128.0
 
-    lip_region       = lip_mask > 0.1
-    portrait_lip_L   = float(portrait_L[lip_region].mean()) if lip_region.any() else 64.0
-    ls_lip_L         = float(np.maximum(ls_L[lip_region], 1.0).mean()) if lip_region.any() else 128.0
-    l_scale          = float(np.clip(portrait_lip_L / max(ls_lip_L, 1.0), 0.05, 1.5))
-
-    # Chrominance: use the SURROUNDING SKIN mean a/b (boundary ring stats),
-    # not the portrait's own lip pixels.  The portrait's lip pixels have warm
-    # (reddish) a/b even in a blue-lit face, causing orange artefacts.
-    # A flat skin-tone constant eliminates spatial alignment issues and ensures
-    # the lip patch chrominance matches the surrounding face grade exactly.
-    skin_a = float(lip_stats[1][0])   # mean a of surrounding skin (dark-blue grade)
-    skin_b = float(lip_stats[2][0])   # mean b of surrounding skin
+    skin_L = float(lip_stats[0][0])   # boundary ring mean L (surrounding skin brightness)
+    skin_a = float(lip_stats[1][0])   # boundary ring mean a
+    skin_b = float(lip_stats[2][0])   # boundary ring mean b
+    l_scale = float(np.clip(skin_L / max(ls_lip_L, 1.0), 0.02, 1.5))
 
     corrected_lab = ls_lab.copy()
     corrected_lab[:, :, 0] = np.clip(ls_lab[:, :, 0] * l_scale, 0.0, 255.0)
-    corrected_lab[:, :, 1] = skin_a   # flat surrounding-skin a (no spatial misalign)
+    corrected_lab[:, :, 1] = skin_a   # flat surrounding-skin a
     corrected_lab[:, :, 2] = skin_b   # flat surrounding-skin b
     ls_corrected = cv2.cvtColor(corrected_lab.astype(np.uint8), cv2.COLOR_LAB2BGR)
 
