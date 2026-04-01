@@ -494,24 +494,31 @@ def composite_lip_onto_portrait(
         borderMode=cv2.BORDER_REPLICATE,
     )
 
-    # ── (c) Per-pixel L-ratio colour match + portrait chrominance copy
+    # ── (c) Global L scale + portrait chrominance copy
     #
-    # Reinhard fails when ΔL is extreme (e.g. bright LS ~150 vs dark portrait ~25).
-    # Per-pixel ratio: scale each LS pixel's L by (portrait_L / ls_L), so the
-    # warped lip exactly inherits the portrait's local brightness at every pixel.
-    # Copy portrait a/b channels entirely — preserves stylistic colour grades
-    # (monochromatic dark portraits, neon overlays, etc.) with zero contamination.
+    # Per-pixel ratio was wrong: portrait_L/ls_L * ls_L = portrait_L, so the
+    # corrected frame became identical to the portrait — zero motion visible.
+    #
+    # Fix: compute ONE global scale = mean(portrait lip L) / mean(ls lip L).
+    # Apply it uniformly to the entire LS L channel.  This preserves the
+    # relative L variation across frames (= lip motion) while bringing the
+    # overall level down to match the dark portrait.
+    # Copy portrait a/b chrominance to preserve the stylistic colour grade.
     portrait_lab = cv2.cvtColor(crop_512,  cv2.COLOR_BGR2LAB).astype(np.float32)
     ls_lab       = cv2.cvtColor(ls_warped, cv2.COLOR_BGR2LAB).astype(np.float32)
 
     portrait_L = portrait_lab[:, :, 0]
-    ls_L       = np.maximum(ls_lab[:, :, 0], 1.0)          # avoid div/0
-    l_ratio    = np.clip(portrait_L / ls_L, 0.0, 2.0)      # cap to prevent blow-out
+    ls_L       = ls_lab[:, :, 0]
+
+    lip_region       = lip_mask > 0.1
+    portrait_lip_L   = float(portrait_L[lip_region].mean()) if lip_region.any() else 64.0
+    ls_lip_L         = float(np.maximum(ls_L[lip_region], 1.0).mean()) if lip_region.any() else 128.0
+    l_scale          = float(np.clip(portrait_lip_L / max(ls_lip_L, 1.0), 0.05, 1.5))
 
     corrected_lab = ls_lab.copy()
-    corrected_lab[:, :, 0] = np.clip(ls_lab[:, :, 0] * l_ratio, 0.0, 255.0)
-    corrected_lab[:, :, 1] = portrait_lab[:, :, 1]         # portrait chrominance a
-    corrected_lab[:, :, 2] = portrait_lab[:, :, 2]         # portrait chrominance b
+    corrected_lab[:, :, 0] = np.clip(ls_lab[:, :, 0] * l_scale, 0.0, 255.0)
+    corrected_lab[:, :, 1] = portrait_lab[:, :, 1]   # portrait a (blue grade)
+    corrected_lab[:, :, 2] = portrait_lab[:, :, 2]   # portrait b
     ls_corrected = cv2.cvtColor(corrected_lab.astype(np.uint8), cv2.COLOR_LAB2BGR)
 
     # ── (d) Blend lip region onto source crop
