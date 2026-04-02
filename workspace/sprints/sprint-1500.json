@@ -1,0 +1,96 @@
+{
+  "sprint_id": "sprint-1500",
+  "title": "GODMAN-REWRITE-001 \u2014 Full rewrite of all 7 Godman Protocol packages",
+  "description": "All 7 protocols have wrong names and 4/7 implement wrong concepts. Rewrite README, package.json, and src/ for all 7 + SDK. Bump to v0.3.0. Full specs in workspace/sprints/sprint-GODMAN-REWRITE-001.md",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "godman-rewrite-01",
+      "title": "Rewrite @godman-protocols/pact \u2014 Protocol for Agent Constitutional Trust (five-chamber trust protocol)",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "workspace/godman-protocols/pact/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "context": "Full spec in workspace/sprints/sprint-GODMAN-REWRITE-001.md section 1. Fix name from Coordination to Constitutional. Implement five-chamber types, NegotiationSchema, SessionToken, TrustCeiling. Bump version to 0.3.0."
+    },
+    {
+      "id": "godman-rewrite-02",
+      "title": "Rewrite @godman-protocols/lax \u2014 Linked Agent eXchange (discovery protocol, NOT latency routing)",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "workspace/godman-protocols/lax/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "context": "Full spec in workspace/sprints/sprint-GODMAN-REWRITE-001.md section 2. COMPLETELY WRONG currently \u2014 delete all src/ and rewrite. LaxOffer schema, LaxCapability, RegistryClient, A2AExporter. Discovery protocol not latency routing."
+    },
+    {
+      "id": "godman-rewrite-03",
+      "title": "Rewrite @godman-protocols/score \u2014 Sovereign Constitutional Output Rating Engine",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "workspace/godman-protocols/score/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "context": "Full spec in workspace/sprints/sprint-GODMAN-REWRITE-001.md section 3. ScoreRubric, ConstitutionalMultiplier, ACPDimension, ScoreResult types. Constitutional output rating not generic scoring."
+    },
+    {
+      "id": "godman-rewrite-04",
+      "title": "Rewrite @godman-protocols/amf \u2014 Agent Memory Format (NOT message format)",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "workspace/godman-protocols/amf/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "context": "Full spec in workspace/sprints/sprint-GODMAN-REWRITE-001.md section 4. COMPLETELY WRONG \u2014 Memory not Message. Six-vector extraction, TemporalSupersession, ObserverConfig, AMFStore types."
+    },
+    {
+      "id": "godman-rewrite-05",
+      "title": "Rewrite @godman-protocols/drs \u2014 Deal Receipt Standard (NOT resource scheduling)",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "workspace/godman-protocols/drs/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "context": "Full spec in workspace/sprints/sprint-GODMAN-REWRITE-001.md section 5. COMPLETELY WRONG \u2014 on-chain deal receipts not compute scheduling. DealReceipt, ReceiptMinter, ReceiptVerifier types."
+    },
+    {
+      "id": "godman-rewrite-06",
+      "title": "Rewrite @godman-protocols/soul \u2014 Sovereign Open Universal Layer (identity passport)",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "workspace/godman-protocols/soul/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "context": "Full spec in workspace/sprints/sprint-GODMAN-REWRITE-001.md section 6. SOUL.md format, SoulValidator, SoulPublisher, ERC8004Anchor types. Constitutional identity passport."
+    },
+    {
+      "id": "godman-rewrite-07",
+      "title": "Rewrite @godman-protocols/signal \u2014 Sovereign Intelligence for Governing Neural Agent Learning (NOT event bus)",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "workspace/godman-protocols/signal/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "context": "Full spec in workspace/sprints/sprint-GODMAN-REWRITE-001.md section 7. COMPLETELY WRONG \u2014 RL reward signal not pub/sub. RewardSignal, LearningMode, ModeController, RewardLogger types."
+    },
+    {
+      "id": "godman-rewrite-08",
+      "title": "Update @godman-protocols/sdk \u2014 re-export all 7 corrected packages",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "workspace/godman-protocols/sdk/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "context": "Update src/index.ts to re-export correct types from all 7 rewritten packages. Update README with correct names. Bump to 0.3.0."
+    }
+  ]
+}

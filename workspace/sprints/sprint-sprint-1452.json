@@ -1,6 +1,6 @@
 {
   "sprint_id": "sprint-sprint-1452",
-  "title": "SCS-001 Phase 1 \u2014 YouTube analytics collector (CTO-rejected)",
+  "title": "SCS-001 Phase 1 \u2014 YouTube analytics collector (CTO-rejected) [SKIPPED \u2014 swarm stuck 11h, CTO-rejected, no files produced]",
   "description": "",
   "source": "queue-prescribed",
   "tasks": [
@@ -11,7 +11,7 @@
       "task_type": "autonomous",
       "task_target": "workspace/sprints/sprint-sprint-1452-output.md",
       "agent": "coder",
-      "status": "pending",
+      "status": "skipped",
       "priority": "high",
       "sprint_id": "sprint-sprint-1452"
     }
