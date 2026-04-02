@@ -255,5 +255,7 @@
         "SOUL.md": true
       }
     }
-  }
+  },
+  "overall_pass": true,
+  "_status_normalized": true
 }

@@ -1,6 +1,6 @@
 {
   "ticket": "TICKET-030-B",
-  "title": "Ker@ am_echo TTS → LatentSync lip-sync pipeline",
+  "title": "Ker@ am_echo TTS \u2192 LatentSync lip-sync pipeline",
   "status": "PASS",
   "date": "2026-03-30",
   "files_created": [
@@ -22,7 +22,7 @@
       "status": "RUNNING (e2e test PID 68063)",
       "implementation": "comfyui-env/bin/python inference.py --device mps --inference_steps 10",
       "critical_fix": "PYTHONPATH must include LATENTSYNC_DIR for 'import latentsync' to resolve",
-      "note": "spawnSync buffers all output until complete — no progress stream"
+      "note": "spawnSync buffers all output until complete \u2014 no progress stream"
     }
   },
   "key_fixes": {
@@ -31,5 +31,7 @@
     "mps_flags": "PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 + PYTORCH_ENABLE_MPS_FALLBACK=1"
   },
   "usage": "cd ~/kognai && ts-node scripts/kerat/kerat-lipsync.ts --text '...' --portrait workspace/kerat/avatar-test/real_face.jpg --out workspace/kerat/output/kerat_001.mp4 --inference-steps 10",
-  "next": "TICKET-031-D — replace real_face.jpg with AI-generated Ker@ portrait (awaiting Godman A/B/C)"
+  "next": "TICKET-031-D \u2014 replace real_face.jpg with AI-generated Ker@ portrait (awaiting Godman A/B/C)",
+  "overall_pass": true,
+  "_status_normalized": true
 }

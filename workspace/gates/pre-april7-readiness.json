@@ -3,7 +3,7 @@
   "generated": "2026-03-20T18:30:00Z",
   "gate_date": "2026-04-07",
   "days_remaining": 18,
-  "overall_status": "NOT_READY — 0/4 criteria met",
+  "overall_status": "NOT_READY \u2014 0/4 criteria met",
   "criteria": [
     {
       "id": "post-count",
@@ -24,13 +24,13 @@
       "status": "FAIL",
       "gap": 500,
       "blocker": "No posts = no views. Views depend on posting first.",
-      "unblock": "Start posting → views will accumulate. Average TikTok post gets 200-500 views minimum."
+      "unblock": "Start posting \u2192 views will accumulate. Average TikTok post gets 200-500 views minimum."
     },
     {
       "id": "pipeline-operational",
       "name": "Pipeline Producing Quality Videos",
       "status": "PASS",
-      "detail": "389 videos in publish ledger. 198 ready to post with captioned MP4. Pipeline runs end-to-end: trend → discovery → clip → script → edit → caption → QC → publish ledger."
+      "detail": "389 videos in publish ledger. 198 ready to post with captioned MP4. Pipeline runs end-to-end: trend \u2192 discovery \u2192 clip \u2192 script \u2192 edit \u2192 caption \u2192 QC \u2192 publish ledger."
     },
     {
       "id": "stripe-ready",
@@ -60,11 +60,13 @@
   },
   "kill_switch_assessment": {
     "account_banned": false,
-    "views_under_500_per_30_posts": "N/A — 0 posts",
-    "retention_under_20_pct": "N/A — no data",
-    "approval_under_80_pct": "N/A — no data",
+    "views_under_500_per_30_posts": "N/A \u2014 0 posts",
+    "retention_under_20_pct": "N/A \u2014 no data",
+    "approval_under_80_pct": "N/A \u2014 no data",
     "memory_over_22GB": false,
     "oversight_over_6h_day": false,
-    "verdict": "No kill switches triggered — gate criteria simply not started yet"
-  }
+    "verdict": "No kill switches triggered \u2014 gate criteria simply not started yet"
+  },
+  "overall_pass": false,
+  "_status_normalized": true
 }

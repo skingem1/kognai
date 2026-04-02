@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0",
+  "runtime": "kognai",
+  "gateway": {
+    "auth": {
+      "mode": "token"
+    },
+    "endpoint": "http://127.0.0.1:3101/route"
+  },
+  "compaction": {
+    "reserve_tokens_floor": 40000,
+    "memory_flush": true,
+    "soft_threshold": 4000
+  },
+  "constitutional": {
+    "constitution": "workspace/shared-context/CONSTITUTION.md",
+    "five_principles": "workspace/shared-context/FIVE_PRINCIPLES.md",
+    "soul": "workspace/SOUL.md",
+    "acp_version": "1.1.0"
+  },
+  "agent_id": "cmo",
+  "tier": "T2"
+}

@@ -5,11 +5,11 @@
   "date": "2026-03-30",
   "verdict": "Pipeline fully functional on Apple M4 MPS. All stages verified.",
   "stages": {
-    "face_detection": "PASS — insightface buffalo_l via CPUExecutionProvider ctx_id=-1",
-    "audio_decode": "PASS — soundfile + scipy.resample_poly fallback (decord not available arm64)",
-    "affine_transform": "PASS — 75/75 frames, linalg_svd CPU fallback warning (non-blocking)",
-    "unet_inference": "PASS — 6/10 DDIM steps completed, no OOM crash (PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0)",
-    "vae_decode": "PENDING — inference still running"
+    "face_detection": "PASS \u2014 insightface buffalo_l via CPUExecutionProvider ctx_id=-1",
+    "audio_decode": "PASS \u2014 soundfile + scipy.resample_poly fallback (decord not available arm64)",
+    "affine_transform": "PASS \u2014 75/75 frames, linalg_svd CPU fallback warning (non-blocking)",
+    "unet_inference": "PASS \u2014 6/10 DDIM steps completed, no OOM crash (PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0)",
+    "vae_decode": "PENDING \u2014 inference still running"
   },
   "performance": {
     "device": "mps (Apple M4)",
@@ -21,12 +21,14 @@
   },
   "patches_applied": [
     "scripts/inference.py: MPS dtype + device + argparse --device",
-    "latentsync/pipelines/lipsync_pipeline.py:345 — device=str(device)",
-    "latentsync/utils/face_detector.py — CPUExecutionProvider + cuda_to_int MPS→-1",
-    "latentsync/utils/util.py — read_audio soundfile+scipy fallback"
+    "latentsync/pipelines/lipsync_pipeline.py:345 \u2014 device=str(device)",
+    "latentsync/utils/face_detector.py \u2014 CPUExecutionProvider + cuda_to_int MPS\u2192-1",
+    "latentsync/utils/util.py \u2014 read_audio soundfile+scipy fallback"
   ],
   "env_flags": {
     "PYTORCH_MPS_HIGH_WATERMARK_RATIO": "0.0"
   },
-  "next_ticket": "TICKET-031-C (DONE) → TICKET-030-B: build TTS→LatentSync→video pipeline"
+  "next_ticket": "TICKET-031-C (DONE) \u2192 TICKET-030-B: build TTS\u2192LatentSync\u2192video pipeline",
+  "overall_pass": true,
+  "_status_normalized": true
 }

@@ -22,7 +22,7 @@
       "actual": 0,
       "pass": null,
       "avg_per_post": 0,
-      "note": "TIKTOK_ACCESS_TOKEN not set — view count cannot be fetched"
+      "note": "TIKTOK_ACCESS_TOKEN not set \u2014 view count cannot be fetched"
     },
     {
       "id": "pipeline-operational",
@@ -39,7 +39,7 @@
       "pass": true
     }
   ],
-  "kill_switch": "NOT EVALUATED — TIKTOK_ACCESS_TOKEN not set, view count unavailable",
+  "kill_switch": "NOT EVALUATED \u2014 TIKTOK_ACCESS_TOKEN not set, view count unavailable",
   "system_health": {
     "smoke_test": "undefined/undefined pass",
     "commits": 2518,
@@ -47,7 +47,7 @@
     "agents": 44,
     "sprints_shipped": "487+"
   },
-  "decision": "HOLD — 2 criteria not met. 13 days remaining to remediate.",
+  "decision": "HOLD \u2014 2 criteria not met. 13 days remaining to remediate.",
   "next_actions": [
     "Review remediation plan (workspace/gates/remediation-plan.json)",
     "Prioritize posting",
@@ -79,5 +79,7 @@
       "views": 0,
       "posted_at": "2026-03-24T09:13:07.531Z"
     }
-  ]
+  ],
+  "overall_pass": false,
+  "_status_normalized": true
 }

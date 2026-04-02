@@ -21,5 +21,7 @@
     "sprint-184": "human-brake-hardening",
     "sprint-185": "integration-test-gate"
   },
-  "notes": "All OMEL Phase 2 hardening tests pass. AMD-13 fully implemented."
+  "notes": "All OMEL Phase 2 hardening tests pass. AMD-13 fully implemented.",
+  "overall_pass": false,
+  "_status_normalized": true
 }

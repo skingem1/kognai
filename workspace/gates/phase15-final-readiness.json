@@ -32,12 +32,12 @@
   },
   "phase2_plan": {
     "activation_criteria": [
-      "GATE FAILED — remediation required before Phase 2"
+      "GATE FAILED \u2014 remediation required before Phase 2"
     ],
     "phase2_sprints": [],
     "blockers": [
-      "Insufficient posts — need manual posting effort",
-      "TIKTOK_ACCESS_TOKEN still not set — automated posting impossible",
+      "Insufficient posts \u2014 need manual posting effort",
+      "TIKTOK_ACCESS_TOKEN still not set \u2014 automated posting impossible",
       "Must hit 30 posts + 500 views before April 7"
     ]
   },
@@ -48,5 +48,7 @@
     "low_approval": false,
     "memory_exceeded": false,
     "high_oversight": false
-  }
+  },
+  "overall_pass": false,
+  "_status_normalized": true
 }

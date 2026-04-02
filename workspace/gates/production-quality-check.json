@@ -19,10 +19,12 @@
       "id": "subtitle-burnin",
       "name": "Subtitle burn-in applied to captioned videos",
       "pass": false,
-      "details": "Mock mode detected — captioned videos are same size as source (no burn-in). Set SCS_EDITING_MODE=production to enable.",
+      "details": "Mock mode detected \u2014 captioned videos are same size as source (no burn-in). Set SCS_EDITING_MODE=production to enable.",
       "action_required": "Set SCS_EDITING_MODE=production and re-run pipeline"
     }
   ],
   "all_critical_pass": true,
-  "notes": "Pipeline output meets minimum quality bar. Production mode: NO (mock mode — set SCS_EDITING_MODE=production)"
+  "notes": "Pipeline output meets minimum quality bar. Production mode: NO (mock mode \u2014 set SCS_EDITING_MODE=production)",
+  "overall_pass": true,
+  "_status_normalized": true
 }
