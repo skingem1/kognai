@@ -1,20 +1,21 @@
 {
   "_note": "ClaWHub.com listing metadata — Sprint TICKET-011-EVAL-03. Submit this before GitHub repos go public.",
-  "_status": "READY TO SUBMIT — awaiting manual ClaWHub.com submission",
+  "_status": "BLOCKED — wait for GODMAN-REWRITE-001 (sprint-1500) to complete before submitting. Current npm v0.2.0 has wrong descriptions.",
   "_gate": "listing must be live at clawHub.com BEFORE GitHub branch goes public (331K user install source)",
+  "_cli_token": "clh_Gp0xAEkSAG1bc53Z14WiTqnRYDxy0hIAahRIMoxMiLc",
 
   "listing": {
     "name": "Godman Protocols",
     "slug": "godman-protocols",
     "install_command": "npx kognai init",
-    "description": "7 open protocols for building autonomous AI agent systems: coordination (PACT), latency-aware routing (LAX), reputation scoring (SCORE), event bus (SIGNAL), constitutional safety (SOUL), message format (AMF), resource scheduling (DRS).",
+    "description": "7 open protocols for building autonomous AI agent systems: constitutional trust (PACT), agent discovery (LAX), output rating (SCORE), constitutional learning (SIGNAL), agent identity (SOUL), structured memory (AMF), deal receipts (DRS).",
     "tagline": "The missing infrastructure layer for autonomous AI agent swarms.",
     "tags": ["agents", "protocols", "coordination", "safety", "typescript", "open-source"],
     "category": "agent-infrastructure",
-    "license": "MIT",
-    "version": "0.2.0",
+    "license": "Apache-2.0",
+    "version": "0.3.0",
     "npm_org": "@godman-protocols",
-    "github_org": "skingem1",
+    "github_org": "godman-protocols",
     "docs_url": "https://godman-protocols.dev",
     "screenshots": [
       "workspace/godman-protocols/docs/demo-pact.mp4",
@@ -24,13 +25,13 @@
   },
 
   "packages": [
-    { "name": "@godman-protocols/pact",   "description": "Agent Coordination and Trust",                    "tier": "T2" },
-    { "name": "@godman-protocols/lax",    "description": "Latency-Aware Execution with SLA contracts",      "tier": "T2" },
-    { "name": "@godman-protocols/score",  "description": "Scoring and Reputation for Agent Outputs",       "tier": "T2" },
-    { "name": "@godman-protocols/signal", "description": "Event Bus and Pub/Sub for Agent Swarms",          "tier": "T2" },
-    { "name": "@godman-protocols/soul",   "description": "Constitutional Constraints and Safety",           "tier": "T3" },
-    { "name": "@godman-protocols/amf",    "description": "Agent Message Format — signed typed envelopes",   "tier": "T1" },
-    { "name": "@godman-protocols/drs",    "description": "Dynamic Resource Scheduling for Agent Swarms",    "tier": "T2" }
+    { "name": "@godman-protocols/pact",   "description": "Protocol for Agent Constitutional Trust — five-chamber trust and negotiation",  "tier": "T2" },
+    { "name": "@godman-protocols/lax",    "description": "Linked Agent eXchange — agent capability discovery protocol",                  "tier": "T2" },
+    { "name": "@godman-protocols/score",  "description": "Sovereign Constitutional Output Rating Engine — self-scoring rubric",          "tier": "T2" },
+    { "name": "@godman-protocols/signal", "description": "Sovereign Intelligence for Governing Neural Agent Learning — reward signals",  "tier": "T2" },
+    { "name": "@godman-protocols/soul",   "description": "Sovereign Open Universal Layer — agent constitutional identity passport",      "tier": "T3" },
+    { "name": "@godman-protocols/amf",    "description": "Agent Memory Format — six-vector structured memory extraction",               "tier": "T1" },
+    { "name": "@godman-protocols/drs",    "description": "Deal Receipt Standard — on-chain transaction receipts via EAS",               "tier": "T2" }
   ],
 
   "openclaw_metadata": {
@@ -45,15 +46,15 @@
   },
 
   "submission_steps": [
-    "1. Publish all 7 npm packages (see PUBLISH-CHECKLIST.md) — MUST be on npm before ClaWHub submission",
-    "2. Go to clawHub.com/submit",
-    "3. Use the JSON above to fill the listing form",
+    "1. Wait for GODMAN-REWRITE-001 (sprint-1500) to complete — correct descriptions in npm v0.3.0",
+    "2. Publish v0.3.0 to npm",
+    "3. Use CLI token to submit: clawHub submit --token clh_Gp0xAEkSAG1bc53Z14WiTqnRYDxy0hIAahRIMoxMiLc",
     "4. Upload screenshots/demo MP4s from workspace/godman-protocols/docs/",
     "5. Set listing visibility to 'public'",
     "6. Confirm listing is live at clawHub.com/listing/godman-protocols",
     "7. THEN and only then: make GitHub repos public"
   ],
 
-  "prepared_at": "2026-03-26T00:00:00Z",
-  "prepared_by": "sprint-TICKET-011-EVAL-03"
+  "prepared_at": "2026-04-01T23:00:00Z",
+  "prepared_by": "sprint-TICKET-011-EVAL-03 (updated with correct protocol names)"
 }
