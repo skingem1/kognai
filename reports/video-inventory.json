@@ -1,145 +1,16 @@
 {
-  "scanned_at": "2026-03-26T05:08:02.161Z",
-  "total_runs": 10,
-  "total_videos": 24,
-  "unique_topics": 16,
-  "already_registered": 14,
+  "scanned_at": "2026-04-01T15:25:03.689Z",
+  "total_runs": 0,
+  "total_videos": 0,
+  "unique_topics": 0,
+  "already_registered": 0,
   "newly_registered": 0,
-  "already_posted": 16,
+  "already_posted": 0,
   "ready_to_post": 0,
   "gate_status": {
-    "posted": 156,
+    "posted": 164,
     "target": 30,
     "gap": 0
   },
-  "videos": [
-    {
-      "video_id": "dbt-c170ca34",
-      "format": "debate",
-      "title": "Siren (SIREN) 📉 -58.9%",
-      "duration_s": 27,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T05-x3fb/output/dbt-c170ca34_final.mp4"
-    },
-    {
-      "video_id": "dbt-7c3375ff",
-      "format": "debate",
-      "title": "Backpack (BP) 📉 -39.2%",
-      "duration_s": 27,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T13-swx3/output/dbt-7c3375ff_final.mp4"
-    },
-    {
-      "video_id": "exp-93f4ae07",
-      "format": "explainer",
-      "title": "Harvey confirms $11B valuation: Sequoia triples down",
-      "duration_s": 25,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T17-jrzi/output/exp-93f4ae07_final.mp4"
-    },
-    {
-      "video_id": "exp-5b853a93",
-      "format": "explainer",
-      "title": "Granola raises $125M, hits $1.5B valuation as it expands from meeting notetaker to enterprise AI app",
-      "duration_s": 25,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T17-jrzi/output/exp-5b853a93_final.mp4"
-    },
-    {
-      "video_id": "exp-af218f4c",
-      "format": "explainer",
-      "title": "After pivoting, Y Combinator grad Glimpse raises $35M led by a16z",
-      "duration_s": 25,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T13-auwn/output/exp-af218f4c_final.mp4"
-    },
-    {
-      "video_id": "exp-7ff189fd",
-      "format": "explainer",
-      "title": "Tired of authors using ChatGPT in their books",
-      "duration_s": 25,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T09-rkdn/output/exp-7ff189fd_final.mp4"
-    },
-    {
-      "video_id": "exp-d6b13c99",
-      "format": "explainer",
-      "title": "OpenAI Will Shut Down Sora Video Platform",
-      "duration_s": 25,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T05-zrt9/output/exp-d6b13c99_final.mp4"
-    },
-    {
-      "video_id": "exp-cf28b84e",
-      "format": "explainer",
-      "title": "SpecEyes: Accelerating Agentic Multimodal LLMs via Speculative Perception and Planning",
-      "duration_s": 25,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T05-zrt9/output/exp-cf28b84e_final.mp4"
-    },
-    {
-      "video_id": "exp-9091c5ad",
-      "format": "explainer",
-      "title": "Mirage raises $75M to continue building models for its AI video editing app Captions",
-      "duration_s": 25,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T13-zkqr/output/exp-9091c5ad_final.mp4"
-    },
-    {
-      "video_id": "exp-429e2006",
-      "format": "explainer",
-      "title": "Insight Partners scrubs investment post about Delve amid &#8216;fake compliance&#8217; allegations",
-      "duration_s": 25,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T13-zkqr/output/exp-429e2006_final.mp4"
-    },
-    {
-      "video_id": "exp-7746309f",
-      "format": "explainer",
-      "title": "Delve halts demos, Insight Partners scrubs investment post amid &#8216;fake compliance&#8217; allegations",
-      "duration_s": 25,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T09-4d65/output/exp-7746309f_final.mp4"
-    },
-    {
-      "video_id": "exp-a044af98",
-      "format": "explainer",
-      "title": "Zipline snaps up another $200M to fuel its drone delivery expansion",
-      "duration_s": 25,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T09-4d65/output/exp-a044af98_final.mp4"
-    },
-    {
-      "video_id": "exp-e13848fd",
-      "format": "explainer",
-      "title": "Bengaluru food delivery startup Swish raises $38M, its third round in 18 months",
-      "duration_s": 25,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T05-x3fb/output/exp-e13848fd_final.mp4"
-    },
-    {
-      "video_id": "exp-3760d8ad",
-      "format": "explainer",
-      "title": "Air Street becomes one of the largest solo VCs in Europe with $232M fund",
-      "duration_s": 25,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T05-x3fb/output/exp-3760d8ad_final.mp4"
-    },
-    {
-      "video_id": "exp-552c0c33",
-      "format": "explainer",
-      "title": "Solana (SOL) 📈 3.6%",
-      "duration_s": 25,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T13-swx3/output/exp-552c0c33_final.mp4"
-    },
-    {
-      "video_id": "exp-287e9abf",
-      "format": "explainer",
-      "title": "Bitcoin (BTC) 📈 3.2%",
-      "duration_s": 25,
-      "posted": true,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T13-swx3/output/exp-287e9abf_final.mp4"
-    }
-  ]
+  "videos": []
 }

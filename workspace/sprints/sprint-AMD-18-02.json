@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "AMD-18-02",
+      "description": "Post-April 7 gate. AMD-18: wire psychological_resilience as 5% weight in ACP score computation. Memory writes reducing resilience flagged for review. Sprint 510.",
+      "status": "rejected",
+      "agent": "coder",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-AMD-18-02",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Post-April 7 gate. AMD-18: wire psychological_resilience as 5% weight in ACP score computation. Memory writes reducing resilience flagged for review. Sprint 510."
+    }
+  ]
+}

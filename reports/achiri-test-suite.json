@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-03-25T08:00:03.802Z",
+  "generated_at": "2026-03-26T07:06:29.467Z",
   "mode": "full",
   "total": 17,
   "passed": 17,
   "failed": 0,
   "skipped": 0,
-  "duration_ms": 138662,
+  "duration_ms": 113849,
   "tests": [
     {
       "name": "Safety Filter",
       "script": "scripts/achiri/validate-safety-filter.ts",
       "passed": true,
-      "duration_ms": 304,
-      "output": "[Achiri] Loaded — model: qwen3:4b, tier: free, memory: on/50turns, prompt: 4409 chars\n[Achiri] safety_block category=violence user=safety-test-1774425465438\n  ✓ chat() safety block fires BEFORE LLM call. Reply: Ma njemch n3awnek fi hatha. Itha 3andek mochkla, nchawrou fi...\n\n=== ALL TESTS PASSED (7/7) ===\n\nSprint 123 validation: PASS\n  - safetyCheck() function: 4 categories detected correctly\n  - ACHIRI_SKIP_SAFETY=1 admin bypass: OK\n  - chat() integration: safety block fires before LLM call: OK",
+      "duration_ms": 305,
+      "output": "[Achiri] Loaded — model: qwen3:4b, tier: free, memory: on/50turns, prompt: 4409 chars\n[Achiri] safety_block category=violence user=safety-test-1774508675914\n  ✓ chat() safety block fires BEFORE LLM call. Reply: Ma njemch n3awnek fi hatha. Itha 3andek mochkla, nchawrou fi...\n\n=== ALL TESTS PASSED (7/7) ===\n\nSprint 123 validation: PASS\n  - safetyCheck() function: 4 categories detected correctly\n  - ACHIRI_SKIP_SAFETY=1 admin bypass: OK\n  - chat() integration: safety block fires before LLM call: OK",
       "skipped": false
     },
     {
       "name": "Derja Profiler",
       "script": "scripts/achiri/validate-derja-profiler.ts",
       "passed": true,
-      "duration_ms": 221,
+      "duration_ms": 222,
       "output": "mality=informal features=informal_marker\n  ✓ Darija numerals detected as informal: formality=informal\n\nTest 5: MSA/formal vocabulary = formal formality\n  formality=formal features=formal_marker, formal_marker\n  ✓ MSA text = formal: formality=formal\n\n=== ALL TESTS PASSED (5/5) ===\n\nSprint 125 validation: PASS\n  - Tunisian Darija detection: OK\n  - Moroccan Darija detection: OK\n  - Unknown for French/English: OK\n  - Informal formality via Darija numerals: OK\n  - Formal formality via MSA markers: OK",
       "skipped": false
     },
@@ -27,7 +27,7 @@
       "name": "Emotion Detector",
       "script": "scripts/achiri/validate-emotion-detector.ts",
       "passed": true,
-      "duration_ms": 224,
+      "duration_ms": 220,
       "output": "piness — Darija \"far7an\"\n  PASS  Detects stress — \"I am so stressed about exams\"\n  PASS  Detects anger — \"I am furious\"\n  PASS  Detects gratitude — \"barak allah fik\"\n  PASS  Detects loneliness — \"I feel so lonely\"\n  PASS  Neutral for everyday message — \"What time is it?\"\n  PASS  getMoodHint returns non-empty for sad\n  PASS  getMoodHint returns empty for neutral\n  PASS  Detects sadness — French \"je suis triste\"\n  PASS  Confidence is within 0-1 range\n\n--- Results: 13 passed, 0 failed ---\n\nALL PASS",
       "skipped": false
     },
@@ -43,7 +43,7 @@
       "name": "Memory Search",
       "script": "scripts/achiri/validate-memory-search.ts",
       "passed": true,
-      "duration_ms": 249,
+      "duration_ms": 240,
       "output": "Check 3: getMemorySummary returns summary with topic data\n  PASS  summary is a non-empty string\n  PASS  summary mentions message count\n\nCheck 4: injectMemoryContext returns null for unknown user (empty history)\n  PASS  null for empty history\n\nCheck 5: injectMemoryContext returns context block for football query\n  PASS  non-null context block returned\n  PASS  context block contains previous conversation reference\n  PASS  context block contains actual turn excerpt\n\n=== Results: 11 PASS, 0 FAIL ===",
       "skipped": false
     },
@@ -51,7 +51,7 @@
       "name": "Memory Persistence",
       "script": "scripts/achiri/validate-memory-persistence.ts",
       "passed": true,
-      "duration_ms": 276,
+      "duration_ms": 258,
       "output": "\n  PASS  Previous facts preserved\n  PASS  New fact added (work/startup)\n\nSprint 620: Tier-based history limits\n  PASS  TIER_HISTORY_LIMITS.free = 50\n  PASS  TIER_HISTORY_LIMITS.tnd_basic = 200\n  PASS  TIER_HISTORY_LIMITS.tnd_premium = 500\n  PASS  Free tier maxTurns = 50\n  PASS  tnd_basic maxTurns = 200\n  PASS  tnd_premium maxTurns = 500\n  PASS  Free tier trims to 50 turns\n  PASS  Free tier keeps latest turns\n  PASS  tnd_basic keeps all 60 turns (under 200 limit)\n\n=== Results: 27 PASS, 0 FAIL ===",
       "skipped": false
     },
@@ -59,7 +59,7 @@
       "name": "Context Window",
       "script": "scripts/achiri/validate-context-window.ts",
       "passed": true,
-      "duration_ms": 232,
+      "duration_ms": 221,
       "output": "6: Context Window Validation ===\n\n  PASS  estimateTokens returns correct estimate\n  PASS  getTokenBudget returns 1500 for qwen3:0.6b\n  PASS  getTokenBudget returns default 3000 for unknown model\n  PASS  Small history (5 turns) passes through unchanged\n  PASS  50 turns get trimmed for qwen3:0.6b (1500 token budget)\n  PASS  Most recent 6 turns are always included\n  PASS  Empty history returns empty array\n  PASS  Turn order is preserved after windowing\n\n--- Results: 8 passed, 0 failed ---\n\nALL PASS",
       "skipped": false
     },
@@ -68,14 +68,14 @@
       "script": "scripts/achiri/validate-daily-limit.ts",
       "passed": true,
       "duration_ms": 327,
-      "output": ", prompt: 4409 chars\n[Achiri] feedback_request injected for user=validate-sprint-122-1774425467162-bypass\n[Achiri] chat() model=qwen3:4b tier=free msg_len=11 history=0 NEW_SESSION TIME_HINT\n  ✓ ACHIRI_NO_LIMIT=1 bypasses limit (count=100, limit=50, still passes)\n\n=== ALL TESTS PASSED (5/5) ===\n\nSprint 122 validation: PASS\n  - getDailyCount / incrementDailyCount: OK\n  - Free tier limit enforced at message_per_day=50: OK\n  - tnd_basic limit=-1 (unlimited): OK\n  - ACHIRI_NO_LIMIT=1 admin bypass: OK",
+      "output": ", prompt: 4409 chars\n[Achiri] feedback_request injected for user=validate-sprint-122-1774508677597-bypass\n[Achiri] chat() model=qwen3:4b tier=free msg_len=11 history=0 NEW_SESSION TIME_HINT\n  ✓ ACHIRI_NO_LIMIT=1 bypasses limit (count=100, limit=50, still passes)\n\n=== ALL TESTS PASSED (5/5) ===\n\nSprint 122 validation: PASS\n  - getDailyCount / incrementDailyCount: OK\n  - Free tier limit enforced at message_per_day=50: OK\n  - tnd_basic limit=-1 (unlimited): OK\n  - ACHIRI_NO_LIMIT=1 admin bypass: OK",
       "skipped": false
     },
     {
       "name": "Alpha Access",
       "script": "scripts/achiri/validate-alpha-access.ts",
       "passed": true,
-      "duration_ms": 215,
+      "duration_ms": 212,
       "output": "=== Sprint 131/618: Achiri Alpha Access Gate Validation ===\n\n  PASS  Achiri Telegram bot exists\n  PASS  ACHIRI_ALLOWED_CHAT_IDS used for access control\n  PASS  hasAccess() function for alpha gating\n  PASS  Waitlist mechanism (addToWaitlist)\n  PASS  Tier system in AchiriConversationHandler\n  PASS  ACHIRI env vars documented in .env.example\n\n─────────────────────────────────────\nResults: 6 passed, 0 failed\nSTATUS: PASS",
       "skipped": false
     },
@@ -83,15 +83,15 @@
       "name": "Onboarding",
       "script": "scripts/achiri/validate-onboarding.ts",
       "passed": true,
-      "duration_ms": 339,
-      "output": "ction\n  PASS  Onboarding gated on isNewSession && !summaryCtx && message_count === 0\n[Achiri] Loaded — model: qwen3:4b, tier: free, memory: on/50turns, prompt: 4409 chars\n  PASS  Dry-run: new user system prompt contains onboarding hint\n[Achiri] Loaded — model: qwen3:4b, tier: free, memory: on/50turns, prompt: 4409 chars\n  PASS  Dry-run: returning user (isNewSession=false) does NOT get onboarding\n  PASS  Onboarding hint discourages product-tour style\n\n--- Results: 7 passed, 0 failed ---\n\nALL PASS",
+      "duration_ms": 304,
+      "output": "OT get onboarding\n  PASS  Onboarding hint discourages product-tour style\n  PASS  selectOnboardingVariant returns A or B\n  PASS  selectOnboardingVariant is deterministic for same userId\n  PASS  ONBOARDING_VARIANT_A and ONBOARDING_VARIANT_B both defined in source\n  PASS  Variant A includes Tunisian cultural markers (Darija)\n  PASS  Variant B includes universal language-matching instruction\n  PASS  A/B split is approximately 50/50 across 1000 test IDs\n\n--- Results: 13 passed, 0 failed ---\n\nALL PASS",
       "skipped": false
     },
     {
       "name": "PayMee",
       "script": "scripts/achiri/validate-paymee.ts",
       "passed": true,
-      "duration_ms": 652,
+      "duration_ms": 649,
       "output": "ASS  amount_tnd = 25\n  PASS  tier = tnd_premium\n\nCheck 3: order_id is unique per call\n  PASS  order_ids are different\n\nCheck 4: getUpgradeMessage returns Arabic string for lang=ar\n  PASS  Arabic message contains Arabic chars\n  PASS  Arabic message contains checkout URL\n\nCheck 5: GET /upgrade endpoint returns checkout_url\n  PASS  server started on port 3421\n  PASS  GET /upgrade status 200\n  PASS  GET /upgrade returns checkout_url\n  PASS  GET /upgrade amount_tnd=9\n\n=== Results: 14 PASS, 0 FAIL ===",
       "skipped": false
     },
@@ -99,15 +99,15 @@
       "name": "Voice Handler",
       "script": "scripts/achiri/validate-voice-handler.ts",
       "passed": true,
-      "duration_ms": 71945,
-      "output": "sers/tarekmnif/kognai/agents/achiri/index.ts:308:35)\n    at listOnTimeout (node:internal/timers:588:17)\n    at processTimers (node:internal/timers:523:7)\n  PASS  transcript is set\n  PASS  reply is set\n  PASS  voice_reply is set\n  PASS  whisper_used is false (no whisper installed)\n\nCheck 5: POST /voice endpoint returns tier_error for free tier (server test)\n  PASS  server started on port 3422\n  PASS  POST /voice with free tier returns 403\n  PASS  error=tier_error\n\n=== Results: 13 PASS, 0 FAIL ===",
+      "duration_ms": 45340,
+      "output": "-4-6, tier: tnd_premium, memory: on/500turns, prompt: 4409 chars\n[Achiri] chat() model=claude-sonnet-4-6 tier=tnd_premium msg_len=11 history=19 TIME_HINT\n  PASS  transcript is set\n  PASS  reply is set\n  PASS  voice_reply is set\n  PASS  whisper_used is false (no whisper installed)\n\nCheck 5: POST /voice endpoint returns tier_error for free tier (server test)\n  PASS  server started on port 3422\n  PASS  POST /voice with free tier returns 403\n  PASS  error=tier_error\n\n=== Results: 13 PASS, 0 FAIL ===",
       "skipped": false
     },
     {
       "name": "Eval Harness",
       "script": "scripts/achiri/validate-eval-harness.ts",
       "passed": true,
-      "duration_ms": 272,
+      "duration_ms": 378,
       "output": ": 2 | Pass rate: 50% | Avg: 47\n  ✓ batchEval: total=4, passed=2, pass_rate=50%, avg=47\n\nTest 5: Tunisian cultural markers boost score\n  Generic score: 74 | Cultural score: 99\n  ✓ Cultural markers boost: 74 → 99 (+25)\n\n=== ALL TESTS PASSED (5/5) ===\n\nSprint 124 validation: PASS\n  - evalResponse() scoring: warmth/cultural/code_switch/length/safety: OK\n  - Ideal response passes (score >= 70): OK\n  - Darija outscores English-only: OK\n  - batchEval aggregation: OK\n  - Cultural markers boost score: OK",
       "skipped": false
     },
@@ -115,7 +115,7 @@
       "name": "Deploy Package",
       "script": "scripts/achiri/validate-deploy-package.ts",
       "passed": true,
-      "duration_ms": 3249,
+      "duration_ms": 3250,
       "output": "ecosystem-hetzner-achiri.config.js — PM2 config\n  PASS  file exists\n  PASS  has 'achiri-api' process name\n  PASS  has ACHIRI_PORT 3420\n\nCheck 3: scripts/deploy-achiri.sh — deploy script\n  PASS  file exists\n  PASS  file is executable\n\nCheck 4: deploy script dry-run produces expected commands\n  PASS  dry-run exits 0\n  PASS  dry-run mentions rsync\n  PASS  dry-run mentions PM2 restart\n\nCheck 5: all required Achiri agent files present\n  PASS  all 11 agent files exist\n\n=== Results: 12 PASS, 0 FAIL ===",
       "skipped": false
     },
@@ -123,15 +123,15 @@
       "name": "HTTP API",
       "script": "scripts/achiri/validate-http-api.ts",
       "passed": true,
-      "duration_ms": 713,
-      "output": "0 NEW_SESSION TOPIC_HINT TIME_HINT\n[server] [Achiri API] /chat userId=test-user tier=free turns_after=0 ms=5\n[server:err] [event-bus] SUPABASE_URL or SUPABASE_SERVICE_KEY not set — events will be dropped\n[server] [Achiri API] memory cleared for user: test-user\n\n  ✓ GET /health → status=ok\n  ✓ POST /chat → has reply\n  ✓ GET /stats → has users + total_turns\n  ✓ DELETE /memory/:userId → { ok: true }\n  ✓ POST /chat missing message → 400\n\n[validate-http-api] 5/5 checks passed\n[validate-http-api] PASS",
+      "duration_ms": 704,
+      "output": "0 NEW_SESSION TOPIC_HINT TIME_HINT\n[server] [Achiri API] /chat userId=test-user tier=free turns_after=0 ms=6\n[server:err] [event-bus] SUPABASE_URL or SUPABASE_SERVICE_KEY not set — events will be dropped\n[server] [Achiri API] memory cleared for user: test-user\n\n  ✓ GET /health → status=ok\n  ✓ POST /chat → has reply\n  ✓ GET /stats → has users + total_turns\n  ✓ DELETE /memory/:userId → { ok: true }\n  ✓ POST /chat missing message → 400\n\n[validate-http-api] 5/5 checks passed\n[validate-http-api] PASS",
       "skipped": false
     },
     {
       "name": "E2E Integration",
       "script": "scripts/achiri/validate-e2e-integration.ts",
       "passed": true,
-      "duration_ms": 58838,
+      "duration_ms": 60518,
       "output": "=== Sprint 272 — Achiri E2E Integration Validation ===\n\n  PASS  e2e-integration-test.ts exists\n  PASS  E2E test executes without error\n  PASS  output contains Component Tests\n  PASS  output contains Results summary\n  PASS  reports/achiri-e2e-latest.json written\n  PASS  report has timestamp\n  PASS  report has passed count\n  PASS  report has failed count\n  PASS  report has total count\n  PASS  component tests all pass\n\n=== Validation: 10 passed, 0 failed ===",
       "skipped": false
     },
@@ -139,8 +139,8 @@
       "name": "E2E Alpha",
       "script": "scripts/achiri/validate-e2e-alpha.ts",
       "passed": true,
-      "duration_ms": 379,
-      "output": "iggers topic hint (via logs)\n\n--- Safety Integration ---\n\n[Achiri] Loaded — model: qwen3:4b, tier: free, memory: on/50turns, prompt: 4409 chars\n[Achiri] safety_block category=violence user=e2e-safety-1774425603794\n  PASS  Blocked message returns safety reply, not LLM response\n\n========================================\nE2E Alpha Integration Test Results\n========================================\n27 passed, 0 failed\n========================================\n\nALL PASS — Achiri alpha features validated.",
+      "duration_ms": 480,
+      "output": "ded — model: qwen3:4b, tier: free, memory: on/50turns, prompt: 4409 chars\n[Achiri] safety_block category=violence user=e2e-safety-1774508789460\n  PASS  Blocked message returns safety reply, not LLM response\n\n========================================\nE2E Alpha Integration Test Results\n========================================\n27 passed, 0 failed\n========================================\n\n[e2e-cleanup] Removed 5 synthetic user entries from daily-counts.json\nALL PASS — Achiri alpha features validated.",
       "skipped": false
     }
   ]

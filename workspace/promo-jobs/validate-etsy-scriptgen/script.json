@@ -1,0 +1,50 @@
+{
+  "jobId": "validate-etsy-scriptgen",
+  "productName": "Handmade Ceramic Mug",
+  "tone": "enthusiastic",
+  "totalDuration": 49,
+  "beats": [
+    {
+      "beat": "hook",
+      "text": "Tired of the same old solutions? Handmade Ceramic Mug changes everything.",
+      "image_index": 0,
+      "duration_s": 6
+    },
+    {
+      "beat": "problem",
+      "text": "Most products promise results but deliver frustration.",
+      "image_index": null,
+      "duration_s": 7
+    },
+    {
+      "beat": "solution",
+      "text": "Handmade Ceramic Mug is engineered to actually work.",
+      "image_index": 1,
+      "duration_s": 8
+    },
+    {
+      "beat": "benefit1",
+      "text": "Premium quality that lasts — backed by thousands of happy customers.",
+      "image_index": 2,
+      "duration_s": 7
+    },
+    {
+      "beat": "benefit2",
+      "text": "Designed for ease of use — no setup, no hassle.",
+      "image_index": 1,
+      "duration_s": 7
+    },
+    {
+      "beat": "proof",
+      "text": "Rated 4.7 stars by 2,341 reviews.",
+      "image_index": 0,
+      "duration_s": 7
+    },
+    {
+      "beat": "cta",
+      "text": "Order yours today — link in bio.",
+      "image_index": null,
+      "duration_s": 7
+    }
+  ]
+}

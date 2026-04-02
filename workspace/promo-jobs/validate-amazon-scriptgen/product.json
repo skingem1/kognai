@@ -1,0 +1,26 @@
+{
+  "name": "Amazon Product",
+  "brand": "TestBrand",
+  "price": "$29.99",
+  "description": "A premium product with outstanding quality.",
+  "bulletPoints": [
+    "Feature A",
+    "Feature B",
+    "Feature C"
+  ],
+  "images": [
+    "https://example.com/img0.jpg",
+    "https://example.com/img1.jpg",
+    "https://example.com/img2.jpg",
+    "https://example.com/img3.jpg",
+    "https://example.com/img4.jpg"
+  ],
+  "rating": "4.7",
+  "reviewCount": "2,341 reviews",
+  "topReviews": [
+    "Amazing!",
+    "Worth every penny."
+  ],
+  "category": "Electronics",
+  "url": "https://example.com/product"
+}

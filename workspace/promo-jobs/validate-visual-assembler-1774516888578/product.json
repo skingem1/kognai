@@ -1,0 +1,24 @@
+{
+  "name": "Premium Wireless Earbuds",
+  "brand": "SoundTech",
+  "price": "$79.99",
+  "description": "Crystal clear audio with 30hr battery life.",
+  "bulletPoints": [
+    "Active Noise Cancellation",
+    "Wireless Charging Case",
+    "IPX5 Water Resistant"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600",
+    "https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?w=600",
+    "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=600"
+  ],
+  "rating": "4.8",
+  "reviewCount": "12,450 reviews",
+  "topReviews": [
+    "Best earbuds I've ever owned!",
+    "Amazing noise cancellation."
+  ],
+  "category": "Electronics",
+  "url": "https://example.com/earbuds"
+}

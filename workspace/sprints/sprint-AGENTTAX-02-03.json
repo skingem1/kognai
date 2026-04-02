@@ -1,0 +1,41 @@
+{
+  "tasks": [
+    {
+      "id": "AGENTTAX-02-01",
+      "description": "MacGyver: TICKET-017-AGENTTAX-02 — Add optional tax_line field to Invoica invoice creation. Context: AgentTax is an x402 pay-per-call API that charges $0.001 USDC per call. Kognai needs to expose this as a line item in Invoica invoices so that agent-to-agent transactions can include tax calculations. File: ~/Documents/Invoica/backend/src/api/invoices-create.ts. (1) Add optional taxLine field to createInvoiceSchema: z.object({ amount: z.number().positive(), taxRate: z.number().min(0).max(1).optional(), taxDescription: z.string().optional() }).optional() named 'taxLine'. (2) If taxLine is present, compute taxAmount = amount * taxRate, add it to the invoice total before calling createPendingInvoice. (3) Add taxLine data to the invoice creation payload so it is stored. The invoice service is at ~/Documents/Invoica/backend/src/services/invoice.ts — check what createPendingInvoice accepts and extend the type if needed. Keep changes surgical — do not touch unrelated logic. Run: cd ~/Documents/Invoica && npx tsc --noEmit to verify no TypeScript errors after changes.",
+      "files": [
+        "~/Documents/Invoica/backend/src/api/invoices-create.ts",
+        "~/Documents/Invoica/backend/src/services/invoice.ts"
+      ],
+      "agent": "macgyver",
+      "type": "feature",
+      "task_type": "autonomous",
+      "priority": "P1",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "MacGyver: TICKET-017-AGENTTAX-02 — Add optional tax_line field to Invoica invoice creation. Context: AgentTax is an x402 pay-per-call API that charges $0.001 USDC per call. Kognai needs to expose this as a line item in Invoica invoices so that agent-to-agent transactions can include tax calculations. File: ~/Documents/Invoica/backend/src/api/invoices-create.ts. (1) Add optional taxLine field to createInvoiceSchema: z.object({ amount: z.number().positive(), taxRate: z.number().min(0).max(1).optional(), taxDescription: z.string().optional() }).optional() named 'taxLine'. (2) If taxLine is present, compute taxAmount = amount * taxRate, add it to the invoice total before calling createPendingInvoice. (3) Add taxLine data to the invoice creation payload so it is stored. The invoice service is at ~/Documents/Invoica/backend/src/services/invoice.ts — check what createPendingInvoice accepts and extend the type if needed. Keep changes surgical — do not touch unrelated logic. Run: cd ~/Documents/Invoica && npx tsc --noEmit to verify no TypeScript errors after changes.",
+      "sprint_id": "sprint-AGENTTAX-02-03"
+    },
+    {
+      "id": "AGENTTAX-03-01",
+      "description": "MacGyver: TICKET-017-AGENTTAX-03 — Nexus threshold monitoring script. Context: US sales tax nexus is triggered when a business exceeds certain revenue thresholds in a state ($100K revenue or 200 transactions for most states). Invoica must track this. (1) Create ~/Documents/Invoica/scripts/nexus-monitor.ts. (2) The script queries the Invoica Prisma database for: total revenue per US state (group by customerState or billing state), transaction count per state over rolling 12 months. (3) For each state, compare against a hardcoded threshold map (ALL 51 US jurisdictions — use $100K / 200 tx as the safe default for all states). (4) If any state is within 20% of threshold: log a WARNING. If any state has exceeded threshold: log an ALERT. (5) Output a JSON report to ~/Documents/Invoica/logs/nexus-alerts/YYYY-MM-DD.json with fields: { state, revenue_ttm, tx_count_ttm, threshold_revenue, threshold_tx, status: 'safe'|'warning'|'alert', pct_of_threshold }. (6) Add a Harvey INTEL note: nexus monitoring is NOT a substitute for a licensed tax advisor — print a reminder to the report. Run: cd ~/Documents/Invoica && npx ts-node scripts/nexus-monitor.ts --dry-run to verify it compiles and executes without errors.",
+      "files": [
+        "~/Documents/Invoica/scripts/nexus-monitor.ts"
+      ],
+      "agent": "macgyver",
+      "type": "feature",
+      "task_type": "autonomous",
+      "priority": "P1",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "MacGyver: TICKET-017-AGENTTAX-03 — Nexus threshold monitoring script. Context: US sales tax nexus is triggered when a business exceeds certain revenue thresholds in a state ($100K revenue or 200 transactions for most states). Invoica must track this. (1) Create ~/Documents/Invoica/scripts/nexus-monitor.ts. (2) The script queries the Invoica Prisma database for: total revenue per US state (group by customerState or billing state), transaction count per state over rolling 12 months. (3) For each state, compare against a hardcoded threshold map (ALL 51 US jurisdictions — use $100K / 200 tx as the safe default for all states). (4) If any state is within 20% of threshold: log a WARNING. If any state has exceeded threshold: log an ALERT. (5) Output a JSON report to ~/Documents/Invoica/logs/nexus-alerts/YYYY-MM-DD.json with fields: { state, revenue_ttm, tx_count_ttm, threshold_revenue, threshold_tx, status: 'safe'|'warning'|'alert', pct_of_threshold }. (6) Add a Harvey INTEL note: nexus monitoring is NOT a substitute for a licensed tax advisor — print a reminder to the report. Run: cd ~/Documents/Invoica && npx ts-node scripts/nexus-monitor.ts --dry-run to verify it compiles and executes without errors.",
+      "sprint_id": "sprint-AGENTTAX-02-03"
+    }
+  ]
+}

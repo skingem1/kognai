@@ -1,55 +1,55 @@
 {
-  "generated_at": "2026-03-25T09:52:09.208Z",
+  "generated_at": "2026-04-02T05:00:01.041Z",
   "overall_status": "ok",
-  "summary": "7 ok, 1 warn, 0 critical",
+  "summary": "6 ok, 2 warn, 0 critical",
   "metrics": [
     {
       "name": "gate_progress",
-      "value": 0,
-      "status": "warn",
-      "detail": "0/30 posts, 13d left, need 3/day"
+      "value": 161,
+      "status": "ok",
+      "detail": "161/30 posts, 5d left, need -26/day"
     },
     {
       "name": "script_inventory",
-      "value": 40,
+      "value": 70,
       "status": "ok",
-      "detail": "40 scripts ready"
+      "detail": "70 scripts ready"
     },
     {
       "name": "ledger_entries",
-      "value": 1242,
+      "value": 1923,
       "status": "ok",
-      "detail": "1242 entries"
+      "detail": "1923 entries"
     },
     {
       "name": "reports_freshness",
-      "value": 3,
-      "status": "ok",
-      "detail": "3/3 fresh"
+      "value": 2,
+      "status": "warn",
+      "detail": "2/3 fresh"
     },
     {
       "name": "knowledge_trading",
-      "value": 10,
+      "value": 18,
       "status": "ok",
-      "detail": "10 records in 1 batches"
+      "detail": "18 records in 3 batches"
     },
     {
       "name": "observer_status",
-      "value": 1107,
-      "status": "ok",
-      "detail": "1107 AAR entries, last run 0h ago"
+      "value": 1111,
+      "status": "warn",
+      "detail": "1111 AAR entries, last run 187h ago"
     },
     {
       "name": "aar_volume",
-      "value": 1110,
+      "value": 1345,
       "status": "ok",
-      "detail": "1110 entries across 19 files"
+      "detail": "1345 entries across 23 files"
     },
     {
       "name": "git_head",
-      "value": "ac091adc",
+      "value": "5b2c514e",
       "status": "ok",
-      "detail": "ac091adc Sprint 1232: E2E-SMOKE — end-to-end pipeline smoke test"
+      "detail": "5b2c514e chore: gitignore large model weights and kerat output"
     }
   ]
 }

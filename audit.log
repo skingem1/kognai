@@ -4,3 +4,47 @@
 [2026-03-23T06:24:35.141Z] [TELEGRAM_BOT] Command: /sendvideo from 6001921477
 [2026-03-23T06:24:47.637Z] [TELEGRAM_BOT] Command: /sendnow from 6001921477
 [2026-03-25T17:43:40.170Z] [TELEGRAM_BOT] Command: /achiri china a7welek? from 6001921477
+[2026-03-27T21:32:42.197Z] [TELEGRAM_BOT] Command: /deliver from 6001921477
+[2026-03-27T21:33:09.388Z] [TELEGRAM_BOT] Command: /warmup from 6001921477
+[2026-03-27T21:33:23.364Z] [TELEGRAM_BOT] Command: /menu from 6001921477
+[2026-03-27T21:34:29.629Z] [TELEGRAM_BOT] Command: /achiri winek? from 6001921477
+[2026-03-27T21:34:58.906Z] [TELEGRAM_BOT] Command: /achiri ca va? from 6001921477
+[2026-03-27T21:35:16.282Z] [TELEGRAM_BOT] Command: /queue from 6001921477
+[2026-03-27T21:35:22.595Z] [TELEGRAM_BOT] Command: /revenue from 6001921477
+[2026-03-27T21:35:27.864Z] [TELEGRAM_BOT] Command: /warmup from 6001921477
+[2026-03-27T21:35:36.068Z] [TELEGRAM_BOT] Command: /schedule from 6001921477
+[2026-03-28T20:54:20.406Z] [TELEGRAM_BOT] Command: /menu from 6001921477
+[2026-03-28T20:54:35.822Z] [TELEGRAM_BOT] Command: /gate from 6001921477
+[2026-03-28T20:55:24.885Z] [TELEGRAM_BOT] Command: /status from 6001921477
+[2026-03-28T20:56:25.178Z] [TELEGRAM_BOT] Command: /golive from 6001921477
+[2026-03-28T20:56:36.619Z] [TELEGRAM_BOT] Command: /tiktokauth from 6001921477
+[2026-03-28T20:56:42.023Z] [TELEGRAM_BOT] Command: /postbatch from 6001921477
+[2026-03-28T20:56:58.579Z] [TELEGRAM_BOT] Command: /boot from 6001921477
+[2026-03-28T20:57:00.400Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-03-28T21:14:41.126Z] [TELEGRAM_BOT] Command: /record vlog-mn7cstmo 0 https://www.tiktok.com/ from 6001921477
+[2026-03-28T21:15:06.856Z] [TELEGRAM_BOT] Command: /updateviews vlog-mn7cstmo from 6001921477
+[2026-03-28T21:15:39.829Z] [TELEGRAM_BOT] Command: /updateviews vlog-mn7cstmo 316 from 6001921477
+[2026-03-28T21:18:20.447Z] [TELEGRAM_BOT] Command: /record ent-mn77aif1 0 https://www.tiktok.com/ from 6001921477
+[2026-03-28T23:00:02.405Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-03-29T04:00:02.950Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-03-29T08:12:41.486Z] [TELEGRAM_BOT] Command: /updateviews ent-mn77aif1 0 480 from 6001921477
+[2026-03-29T08:13:31.400Z] [TELEGRAM_BOT] Command: /updateviews ent-mn77aif1 480 from 6001921477
+[2026-03-29T10:00:02.367Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-03-29T16:00:02.501Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-03-29T16:13:45.486Z] [TELEGRAM_BOT] Command: /record vlog-mn7di7zk 0 https://vm.tiktok.com/znrqtrhor/ from 6001921477
+[2026-03-29T22:00:02.766Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-03-30T04:00:02.156Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-03-30T08:08:39.842Z] [TELEGRAM_BOT] Command: /gate from 6001921477
+[2026-03-30T10:00:03.004Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-03-30T16:00:03.529Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-03-30T22:00:03.190Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-03-31T04:00:03.344Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-03-31T07:08:45.685Z] [TELEGRAM_BOT] Command: /record vlog-mne9oqct 0 https://vm.tiktok.com/znrcrkrhd/ from 6001921477
+[2026-03-31T10:00:03.341Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-03-31T16:00:03.042Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-03-31T22:00:02.559Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-04-01T04:00:02.344Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-04-01T15:01:24.402Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-04-01T16:00:04.824Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-04-01T22:00:03.573Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none
+[2026-04-02T04:00:02.936Z] [HEARTBEAT] [ALERT] Stale cron services: cto-email-support, cto-daily-scan, x-admin-post, cmo-daily-watch, tax-watchdog-us, tax-watchdog-eu-japan | Auto-restarted: none

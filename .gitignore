@@ -156,3 +156,5 @@ workspace/scs001/code-demo-runs/
 workspace/scs001/topic-radar/
 workspace/kerat/GFPGANv1.4.pth
 workspace/kerat/output/
+.venv-browser-use/
+gfpgan/

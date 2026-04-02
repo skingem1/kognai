@@ -1,0 +1,37 @@
+{
+  "skill_id": "coder-sprint-1449-achiri-env-push-to-hetzner",
+  "type": "kognai-owned",
+  "name": "Achiri env push to Hetzner",
+  "description": "Written directly — swarm bypassed (shell script)",
+  "definition": {
+    "approach": "Written directly — swarm bypassed (shell script)",
+    "key_patterns": [
+      "SSH env push",
+      "PM2 reload",
+      "health poll with retry"
+    ],
+    "anti_patterns": [
+      "swarm bypassed: shell scripts not handled well by swarm"
+    ]
+  },
+  "optimal_settings": {
+    "model": "manual-sonnet",
+    "task_target": "manual",
+    "max_attempts": 3
+  },
+  "score_history": [
+    {
+      "sprint_id": "sprint-1449",
+      "task_id": "1449-push-env",
+      "score": 88,
+      "reviewed_at": "2026-03-26T08:01:44.815Z"
+    }
+  ],
+  "execution_count": 1,
+  "access_tier": "internal",
+  "source_sprint": "sprint-1449",
+  "source_task": "1449-push-env",
+  "agent_id": "coder",
+  "created_at": "2026-03-26T08:01:44.815Z",
+  "updated_at": "2026-03-26T08:01:44.815Z"
+}

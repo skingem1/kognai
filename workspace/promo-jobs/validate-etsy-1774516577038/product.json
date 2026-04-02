@@ -1,0 +1,24 @@
+{
+  "name": "Test Product (dry-run)",
+  "brand": "TestBrand",
+  "price": "$9.99",
+  "description": "This is a dry-run mock product.",
+  "bulletPoints": [
+    "Feature A",
+    "Feature B",
+    "Feature C"
+  ],
+  "images": [
+    "https://example.com/img1.jpg",
+    "https://example.com/img2.jpg",
+    "https://example.com/img3.jpg"
+  ],
+  "rating": "4.5",
+  "reviewCount": "123 reviews",
+  "topReviews": [
+    "Great product!",
+    "Works as expected."
+  ],
+  "category": "Test",
+  "url": "https://www.etsy.com/listing/1234567890/handmade-ceramic-mug"
+}

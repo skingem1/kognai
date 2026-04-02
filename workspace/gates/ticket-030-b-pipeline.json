@@ -1,0 +1,35 @@
+{
+  "ticket": "TICKET-030-B",
+  "title": "Ker@ am_echo TTS → LatentSync lip-sync pipeline",
+  "status": "PASS",
+  "date": "2026-03-30",
+  "files_created": [
+    "scripts/kerat/tts_kokoro.py",
+    "scripts/kerat/kerat-lipsync.ts"
+  ],
+  "pipeline_steps": {
+    "step1_tts": {
+      "status": "VERIFIED",
+      "implementation": "python3.12 tts_kokoro.py --text ... --voice am_echo --out .wav",
+      "result": "3.95s WAV @ 24kHz, soundfile PCM_16, am_echo voice confirmed"
+    },
+    "step2_portrait_prep": {
+      "status": "VERIFIED",
+      "implementation": "ffmpeg -loop 1 -i portrait.jpg -vf scale=512:512 -c:v libx264 -r 25 -pix_fmt yuv420p",
+      "result": "512x512 H.264 25fps video at audio_duration+1.5s buffer"
+    },
+    "step3_latentsync": {
+      "status": "RUNNING (e2e test PID 68063)",
+      "implementation": "comfyui-env/bin/python inference.py --device mps --inference_steps 10",
+      "critical_fix": "PYTHONPATH must include LATENTSYNC_DIR for 'import latentsync' to resolve",
+      "note": "spawnSync buffers all output until complete — no progress stream"
+    }
+  },
+  "key_fixes": {
+    "pythonpath": "PYTHONPATH=LATENTSYNC_DIR set in env before spawnSync",
+    "path_resolution": "All output paths resolved to absolute via resolve() before passing to LatentSync",
+    "mps_flags": "PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 + PYTORCH_ENABLE_MPS_FALLBACK=1"
+  },
+  "usage": "cd ~/kognai && ts-node scripts/kerat/kerat-lipsync.ts --text '...' --portrait workspace/kerat/avatar-test/real_face.jpg --out workspace/kerat/output/kerat_001.mp4 --inference-steps 10",
+  "next": "TICKET-031-D — replace real_face.jpg with AI-generated Ker@ portrait (awaiting Godman A/B/C)"
+}

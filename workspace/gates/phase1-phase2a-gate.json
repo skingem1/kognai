@@ -1,14 +1,14 @@
 {
   "gate": "phase1-phase2a",
-  "generated_at": "2026-03-26T07:35:43.642Z",
+  "generated_at": "2026-04-02T04:56:00.412Z",
   "deadline": "2026-04-11",
-  "days_remaining": 16,
+  "days_remaining": 9,
   "criteria": [
     {
       "id": "phase15_gate",
       "name": "Phase 1.5 Gate Passed",
       "pass": true,
-      "details": "PASS — 156 posts recorded in manual-posts.jsonl"
+      "details": "PASS — 161 posts recorded in manual-posts.jsonl"
     },
     {
       "id": "achiri_tests",
@@ -26,18 +26,16 @@
       "id": "pipeline_ok",
       "name": "Pipeline Operational (<48h since last run)",
       "pass": true,
-      "details": "PASS — last run scs001-2026-03-26T06-00-00-834Z, completed 2026-03-26T06:07:54.340Z (1h ago)"
+      "details": "PASS — last run scs001-2026-04-01T19-00-01-087Z, completed 2026-04-01T19:14:26.648Z (10h ago)"
     },
     {
       "id": "bot_token",
       "name": "Achiri Bot Token Set (informational)",
       "pass": null,
-      "details": "NOT SET — create @AchiriBuddyBot and add ACHIRI_TELEGRAM_BOT_TOKEN to .env"
+      "details": "SET — Telegram bot token present"
     }
   ],
   "overall_pass": true,
   "recommendation": "PROCEED to Phase 2A — all gate criteria met. Achiri alpha on track for Apr 25.",
-  "blockers": [
-    "PENDING HUMAN: ACHIRI_TELEGRAM_BOT_TOKEN not set (Achiri alpha launch Apr 25)"
-  ]
+  "blockers": []
 }

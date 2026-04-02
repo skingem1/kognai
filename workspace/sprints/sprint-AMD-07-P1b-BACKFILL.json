@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "AMD-07-P1b-BACKFILL",
+      "description": "Phase 1. AMD-07 Cross-Project Memory: backfill Invoica sprint completions (120+ sprints) and Voxight API events into AMD-07 shared ledger. Enables cross-project pattern recognition in Sherlock v2.",
+      "status": "rejected",
+      "agent": "coder",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-AMD-07-P1b-BACKFILL",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Phase 1. AMD-07 Cross-Project Memory: backfill Invoica sprint completions (120+ sprints) and Voxight API events into AMD-07 shared ledger. Enables cross-project pattern recognition in Sherlock v2."
+    }
+  ]
+}

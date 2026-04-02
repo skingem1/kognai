@@ -1,33 +1,33 @@
 {
   "gate": "phase1-5-tiktok-kill-switch",
-  "date": "2026-03-26",
-  "generated_at": "2026-03-26T05:07:27.233Z",
+  "date": "2026-04-02",
+  "generated_at": "2026-04-02T08:00:00.291Z",
   "deadline": "2026-04-07",
-  "days_remaining": 12,
-  "urgency": "ON_TRACK",
-  "urgency_signal": "Posting pace is sufficient",
+  "days_remaining": 5,
+  "urgency": "PASSED",
+  "urgency_signal": "Gate criteria met — PROCEED",
   "pace_needed": 0,
   "criteria": [
     {
       "id": "post-count",
       "name": "Manual TikTok Posts (target: 30)",
       "pass": true,
-      "details": "152 posts recorded in manual-posts.jsonl"
+      "details": "161 posts recorded in manual-posts.jsonl"
     },
     {
       "id": "total-views",
       "name": "Total Views Across Posts (target: 500)",
-      "pass": null,
-      "details": "views unverifiable (TIKTOK_ACCESS_TOKEN not set)"
+      "pass": true,
+      "details": "796 total views | avg 5 views/post"
     }
   ],
   "overall_pass": true,
   "recommendation": "PROCEED to Phase 2A — TikTok stable. Launch Achiri alpha Apr 25.",
   "raw": {
-    "posts_count": 152,
-    "total_views": 0,
-    "avg_views": 0,
+    "posts_count": 161,
+    "total_views": 796,
+    "avg_views": 5,
     "posts_remaining": 0,
-    "views_remaining": 500
+    "views_remaining": 0
   }
 }

@@ -119,3 +119,191 @@
 {"ts":"2026-03-26T06:47:58.337Z","agentId":"coder","taskId":"1439-health-fix","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
 {"ts":"2026-03-26T06:47:58.337Z","agentId":"coder","taskId":"1439-health-fix","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
 {"ts":"2026-03-26T06:47:58.338Z","agentId":"coder","taskId":"1439-health-fix","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: local"}
+{"ts":"2026-03-26T09:00:05.609Z","agentId":"coder","taskId":"CR-THINK-tier","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T09:00:05.610Z","agentId":"coder","taskId":"CR-THINK-tier","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T09:00:05.638Z","agentId":"coder","taskId":"CR-THINK-tier","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-26T09:00:05.645Z","agentId":"coder","taskId":"CR-THINK-escalation","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T09:00:05.645Z","agentId":"coder","taskId":"CR-THINK-escalation","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T09:00:05.650Z","agentId":"coder","taskId":"CR-THINK-escalation","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-26T09:00:05.652Z","agentId":"coder","taskId":"CR-THINK-env","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T09:00:05.652Z","agentId":"coder","taskId":"CR-THINK-env","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T09:00:05.657Z","agentId":"coder","taskId":"CR-THINK-env","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-26T09:55:35.993Z","agentId":"coder","taskId":"achiri-bot-live","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T09:55:35.993Z","agentId":"coder","taskId":"achiri-bot-live","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T09:55:36.028Z","agentId":"coder","taskId":"achiri-bot-live","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-26T09:55:36.034Z","agentId":"coder","taskId":"achiri-bot-test","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T09:55:36.034Z","agentId":"coder","taskId":"achiri-bot-test","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T09:55:36.039Z","agentId":"coder","taskId":"achiri-bot-test","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-26T10:00:27.713Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T10:00:27.713Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T10:00:27.731Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-26T11:00:29.054Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T11:00:29.054Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T11:00:29.086Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-26T12:01:20.077Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T12:01:20.077Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T12:01:20.111Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-26T12:30:12.439Z","agentId":"coder","taskId":"1477-diagnose-publish-stall","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T12:30:12.440Z","agentId":"coder","taskId":"1477-diagnose-publish-stall","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T12:30:12.478Z","agentId":"coder","taskId":"1477-diagnose-publish-stall","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-26T12:30:12.482Z","agentId":"coder","taskId":"1477-verify-bot-token","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T12:30:12.482Z","agentId":"coder","taskId":"1477-verify-bot-token","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T12:30:12.487Z","agentId":"coder","taskId":"1477-verify-bot-token","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-26T12:37:10.238Z","agentId":"coder","taskId":"1478-wire-queue-purge","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-26T12:37:10.239Z","agentId":"coder","taskId":"1478-wire-queue-purge","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-26T12:37:10.269Z","agentId":"coder","taskId":"1478-wire-queue-purge","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-28T20:31:16.621Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T20:31:16.622Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T20:31:16.655Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-28T20:47:29.217Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T20:47:29.217Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T20:47:29.239Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-28T20:54:05.478Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T20:54:05.479Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T20:54:05.505Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: /Users/tarekmnif/Documents/Voxight/src/routes"}
+{"ts":"2026-03-28T20:54:05.505Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T20:54:05.505Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T20:54:05.505Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: /Users/tarekmnif/Documents/Voxight/src/routes"}
+{"ts":"2026-03-28T20:54:05.505Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T20:54:05.505Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T20:54:05.506Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: /Users/tarekmnif/Documents/Voxight/src/routes"}
+{"ts":"2026-03-28T20:54:05.506Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T20:54:05.506Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T20:54:05.506Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: /Users/tarekmnif/Documents/Voxight/src/routes"}
+{"ts":"2026-03-28T20:54:05.506Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T20:54:05.506Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T20:54:05.506Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: /Users/tarekmnif/Documents/Voxight/src/routes"}
+{"ts":"2026-03-28T20:54:05.507Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T20:54:05.507Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T20:54:05.508Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: /Users/tarekmnif/Documents/Voxight/src/routes"}
+{"ts":"2026-03-28T20:54:05.508Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T20:54:05.508Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T20:54:05.508Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: /Users/tarekmnif/Documents/Voxight/src/routes"}
+{"ts":"2026-03-28T20:54:05.508Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T20:54:05.508Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T20:54:05.509Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: /Users/tarekmnif/Documents/Voxight/src/routes"}
+{"ts":"2026-03-28T20:54:05.509Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T20:54:05.509Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T20:54:05.509Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: /Users/tarekmnif/Documents/Voxight/src/routes"}
+{"ts":"2026-03-28T20:54:05.510Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T20:54:05.510Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T20:54:05.510Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: PREFLIGHT_FAILED: Files not found: /Users/tarekmnif/Documents/Voxight/src/routes"}
+{"ts":"2026-03-28T20:57:24.027Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T20:57:24.027Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T21:01:32.398Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-28T21:07:15.311Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T21:07:15.312Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T21:11:26.535Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-28T21:14:04.180Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T21:14:04.180Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T21:19:35.122Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-01","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-28T21:28:30.178Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T21:28:30.180Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T21:35:34.746Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-A-02","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-28T23:02:36.049Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-B-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-28T23:02:36.050Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-B-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-28T23:10:04.281Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-B-01","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-29T02:02:13.004Z","agentId":"coder","taskId":"TICKET-017-AGENTTAX-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-29T02:02:13.005Z","agentId":"coder","taskId":"TICKET-017-AGENTTAX-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-29T02:02:13.027Z","agentId":"coder","taskId":"TICKET-017-AGENTTAX-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-29T06:03:03.691Z","agentId":"coder","taskId":"TICKET-017-AGENTTAX-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-29T06:03:03.691Z","agentId":"coder","taskId":"TICKET-017-AGENTTAX-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-29T06:03:03.706Z","agentId":"coder","taskId":"TICKET-017-AGENTTAX-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-29T09:33:03.430Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-C-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-29T09:33:03.431Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-C-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-29T09:38:21.953Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-C-01","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-29T09:54:42.063Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-C-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-29T09:54:42.064Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-C-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-29T10:10:33.865Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-D-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-29T10:10:33.866Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-D-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-29T10:17:39.667Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-D-01","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-29T18:00:03.181Z","agentId":"coder","taskId":"AMD-05-P1b-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-29T18:00:03.181Z","agentId":"coder","taskId":"AMD-05-P1b-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-29T18:00:03.203Z","agentId":"coder","taskId":"AMD-05-P1b-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-29T22:00:02.861Z","agentId":"coder","taskId":"AMD-05-P1b-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-29T22:00:02.861Z","agentId":"coder","taskId":"AMD-05-P1b-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-29T22:00:02.869Z","agentId":"coder","taskId":"AMD-05-P1b-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-30T06:00:02.374Z","agentId":"coder","taskId":"AMD-07-P1b-BACKFILL","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-30T06:00:02.374Z","agentId":"coder","taskId":"AMD-07-P1b-BACKFILL","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-30T06:00:02.389Z","agentId":"coder","taskId":"AMD-07-P1b-BACKFILL","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-30T10:00:02.319Z","agentId":"coder","taskId":"AMD-15-P1-CORPUS","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-30T10:00:02.319Z","agentId":"coder","taskId":"AMD-15-P1-CORPUS","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-30T10:00:02.327Z","agentId":"coder","taskId":"AMD-15-P1-CORPUS","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-30T22:00:03.138Z","agentId":"coder","taskId":"AMD-02A-P1-WRITE","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-30T22:00:03.139Z","agentId":"coder","taskId":"AMD-02A-P1-WRITE","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-30T22:00:03.146Z","agentId":"coder","taskId":"AMD-02A-P1-WRITE","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-31T02:00:02.231Z","agentId":"coder","taskId":"AMD-17-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-31T02:00:02.231Z","agentId":"coder","taskId":"AMD-17-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-31T02:00:02.246Z","agentId":"coder","taskId":"AMD-17-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-31T06:00:02.234Z","agentId":"coder","taskId":"AMD-17-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-31T06:00:02.235Z","agentId":"coder","taskId":"AMD-17-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-31T06:00:02.256Z","agentId":"coder","taskId":"AMD-17-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-31T10:00:12.934Z","agentId":"coder","taskId":"AMD-17-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-31T10:00:12.935Z","agentId":"coder","taskId":"AMD-17-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-31T10:00:12.954Z","agentId":"coder","taskId":"AMD-17-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-31T18:00:02.539Z","agentId":"coder","taskId":"AMD-18-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-31T18:00:02.539Z","agentId":"coder","taskId":"AMD-18-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-31T18:00:02.557Z","agentId":"coder","taskId":"AMD-18-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-03-31T22:00:02.674Z","agentId":"coder","taskId":"AMD-18-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-31T22:00:02.674Z","agentId":"coder","taskId":"AMD-18-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-31T22:00:02.683Z","agentId":"coder","taskId":"AMD-18-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-01T02:00:02.153Z","agentId":"coder","taskId":"AMD-19-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-01T02:00:02.153Z","agentId":"coder","taskId":"AMD-19-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-01T02:00:02.169Z","agentId":"coder","taskId":"AMD-19-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-01T06:00:02.164Z","agentId":"coder","taskId":"CHOMSKY-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-01T06:00:02.164Z","agentId":"coder","taskId":"CHOMSKY-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-01T06:00:02.180Z","agentId":"coder","taskId":"CHOMSKY-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-01T15:01:38.717Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-01T15:01:38.718Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-01T15:01:38.739Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-01T16:00:05.240Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-01T16:00:05.241Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-01T16:00:05.271Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-01T17:00:03.763Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-01T17:00:03.763Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-01T17:00:03.774Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-01T18:00:01.854Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-01T18:00:01.854Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-01T18:00:01.868Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-01T19:00:02.399Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-01T19:00:02.399Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-01T19:00:02.413Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-01T20:00:02.277Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-01T20:00:02.277Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-01T20:00:02.293Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-01T21:00:01.817Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-01T21:00:01.818Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-01T21:00:01.834Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-01T22:00:02.445Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-01T22:00:02.446Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-01T22:00:02.462Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-01T23:00:02.232Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-01T23:00:02.233Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-01T23:00:02.247Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T00:00:01.836Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T00:00:01.836Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T00:00:01.850Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T01:00:01.845Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T01:00:01.846Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T01:00:01.860Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T02:00:01.867Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T02:00:01.867Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T02:00:01.883Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T03:00:01.841Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T03:00:01.841Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T03:00:01.856Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T04:00:02.252Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T04:00:02.252Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T04:00:02.261Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T05:00:02.009Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T05:00:02.010Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T05:00:02.025Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T06:00:02.074Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T06:00:02.074Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T06:00:02.087Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T07:00:02.431Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T07:00:02.432Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T07:00:02.453Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T08:00:01.960Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T08:00:01.961Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T08:00:01.980Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}

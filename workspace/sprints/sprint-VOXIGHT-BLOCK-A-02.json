@@ -1,0 +1,41 @@
+{
+  "tasks": [
+    {
+      "id": "VOXIGHT-BLOCK-A-02",
+      "description": "Phase 0 IMMEDIATE. Block A-02: transcript store with queryable interface. Index by date, domain, speaker. REST endpoint GET /transcripts?domain=&from=&to=. Feeds Block B signal production. Deploy to voxight-api.vercel.app.\n\nProject root: /Users/tarekmnif/Documents/Voxight\nTarget file to CREATE: /Users/tarekmnif/Documents/Voxight/src/routes/transcripts.js\nAlso MODIFY: /Users/tarekmnif/Documents/Voxight/src/server.js to register the new route.\nBuild GET /api/transcripts with query params: domain, from (ISO date), speaker.\nQuery Supabase transcripts table. Apply x402 payment gate ($0.03 USDC).\nReturn paginated JSON array of transcript objects with timestamps.\nUse same pattern as routes/space.js for structure.",
+      "status": "done",
+      "agent": "coder",
+      "type": "create",
+      "priority": "P0",
+      "files_to_read": [
+        "/Users/tarekmnif/Documents/Voxight/src/services/database.js",
+        "/Users/tarekmnif/Documents/Voxight/src/server.js",
+        "/Users/tarekmnif/Documents/Voxight/src/routes/space.js",
+        "/Users/tarekmnif/Documents/Voxight/src/middleware/x402Payment.js"
+      ],
+      "deliverables": {
+        "code": [
+          "/Users/tarekmnif/Documents/Voxight/src/routes/transcripts.js"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "sprint_id": "sprint-VOXIGHT-BLOCK-A-02",
+      "context": "Phase 0 IMMEDIATE. Block A-02: transcript store with queryable interface. Index by date, domain, speaker. REST endpoint GET /transcripts?domain=&from=&to=. Feeds Block B signal production. Deploy to voxight-api.vercel.app.\n\nProject root: /Users/tarekmnif/Documents/Voxight\nTarget file to CREATE: /Users/tarekmnif/Documents/Voxight/src/routes/transcripts.js\nAlso MODIFY: /Users/tarekmnif/Documents/Voxight/src/server.js to register the new route.\nBuild GET /api/transcripts with query params: domain, from (ISO date), speaker.\nQuery Supabase transcripts table. Apply x402 payment gate ($0.03 USDC).\nReturn paginated JSON array of transcript objects with timestamps.\nUse same pattern as routes/space.js for structure.",
+      "output": {
+        "files": [
+          "/Users/tarekmnif/Documents/Voxight/src/routes/transcripts.js"
+        ],
+        "commit": "",
+        "model": "qwen3:14b",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 70,
+          "summary": "Dual-approved: Claude (70/100) + Codex (70/100)",
+          "issues": [],
+          "strengths": []
+        }
+      }
+    }
+  ]
+}

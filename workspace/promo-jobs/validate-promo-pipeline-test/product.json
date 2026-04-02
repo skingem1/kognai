@@ -1,0 +1,24 @@
+{
+  "name": "Test Product (dry-run)",
+  "brand": "TestBrand",
+  "price": "$29.99",
+  "description": "High-quality product with amazing features.",
+  "bulletPoints": [
+    "Feature A",
+    "Feature B",
+    "Feature C"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600",
+    "https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?w=600",
+    "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=600"
+  ],
+  "rating": "4.7",
+  "reviewCount": "5,432 reviews",
+  "topReviews": [
+    "Great product!",
+    "Worth every penny."
+  ],
+  "category": "Electronics",
+  "url": "https://www.amazon.com/dp/B08N5WRWNW"
+}

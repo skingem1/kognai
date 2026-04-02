@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "AMD-03-P1-SIGNAL",
+      "description": "Phase 1. AMD-03: First Signal Report documenting Phase 0->Phase 1 gate transition, ACP wiring status (28/28 agents), constitutional compliance. Output to workspace/reports/signal-001.md.",
+      "status": "rejected",
+      "agent": "ceo",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-AMD-03-P1-SIGNAL",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Phase 1. AMD-03: First Signal Report documenting Phase 0->Phase 1 gate transition, ACP wiring status (28/28 agents), constitutional compliance. Output to workspace/reports/signal-001.md."
+    }
+  ]
+}

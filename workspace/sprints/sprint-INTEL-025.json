@@ -1,0 +1,20 @@
+{
+  "tasks": [
+    {
+      "id": "INTEL-025-01",
+      "description": "Harvey: Write INTEL-025 — MetaLeX BORG legal wrapper deep analysis. MetaLeX is a legal framework allowing autonomous AI entities and DAOs to get legal wrappers. A BORG (Blackrock Optimized Registered Group / Perpetual Purpose Trust) is a legal structure with no shareholders — the entity is its own purpose. Key claim: Kognai qualifies as a BORG by MetaLeX's definition because it has a founding charter, constitutional framework, five immutable laws, and operates as a perpetual purpose entity. For Invoica, the relevant structure is cyberCORP. Read ~/Documents/Kognai/Master Documents/kognai_founding_charter_v1.docx for the charter. Read ~/Documents/Kognai/Master Documents/PACT\\ protocol\\ v1\\ spec.docx for the Kognai operational mandate. Produce intel brief at workspace/intel/intel-025-metalex-borg-analysis.md covering: (1) What MetaLeX BORG is and how it works, (2) Why Kognai matches the BORG definition, (3) What the cyberCORP structure means for Invoica, (4) Practical steps to adopt (jurisdiction, cost, timeline), (5) Risks and considerations, (6) Godman Decision Brief — recommended action with rationale. Structure: ## Summary, ## MetaLeX BORG Explained, ## Kognai as BORG: Fit Analysis, ## Invoica as cyberCORP, ## Adoption Pathway, ## Risks, ## Godman Decision Brief.",
+      "output": "workspace/intel/intel-025-metalex-borg-analysis.md",
+      "agent": "ceo",
+      "type": "research",
+      "task_type": "autonomous",
+      "priority": "P1",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Harvey: Write INTEL-025 — MetaLeX BORG legal wrapper deep analysis. MetaLeX is a legal framework allowing autonomous AI entities and DAOs to get legal wrappers. A BORG (Blackrock Optimized Registered Group / Perpetual Purpose Trust) is a legal structure with no shareholders — the entity is its own purpose. Key claim: Kognai qualifies as a BORG by MetaLeX's definition because it has a founding charter, constitutional framework, five immutable laws, and operates as a perpetual purpose entity. For Invoica, the relevant structure is cyberCORP. Read ~/Documents/Kognai/Master Documents/kognai_founding_charter_v1.docx for the charter. Read ~/Documents/Kognai/Master Documents/PACT\\ protocol\\ v1\\ spec.docx for the Kognai operational mandate. Produce intel brief at workspace/intel/intel-025-metalex-borg-analysis.md covering: (1) What MetaLeX BORG is and how it works, (2) Why Kognai matches the BORG definition, (3) What the cyberCORP structure means for Invoica, (4) Practical steps to adopt (jurisdiction, cost, timeline), (5) Risks and considerations, (6) Godman Decision Brief — recommended action with rationale. Structure: ## Summary, ## MetaLeX BORG Explained, ## Kognai as BORG: Fit Analysis, ## Invoica as cyberCORP, ## Adoption Pathway, ## Risks, ## Godman Decision Brief.",
+      "sprint_id": "sprint-INTEL-025"
+    }
+  ]
+}

@@ -1,163 +1,163 @@
 # TikTok Posting Manifest
-# Generated: 2026-03-26T05:07:37.909Z
+# Generated: 2026-03-26T06:00:42.049Z
 # Videos: 10 (sorted by viral score)
 
 --- Video 1 of 10 ---
-ID: video-75ac1293
-File: /Users/tarekmnif/kognai/workspace/scs001/run-1774471249834/caption/video-75ac1293-captioned.mp4
+ID: video-9c735539
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774502705124/caption/video-9c735539-captioned.mp4
 Score: 50%
-Speaker: Jensen Huang
+Speaker: Chamath Palihapitiya
+Hook: curiosity_gap
+Caption:
+This is the part they don't teach you
+
+Hear it from Chamath Palihapitiya
+
+What do you think? Comment below
+
+#artificialintelligence #machinelearning #deeplearning #aivideo #sora #runway #hollywood #vfx #AIvideo #Sora #Runway #fyp
+After posting: /record video-9c735539 0 <tiktok_url>
+
+--- Video 2 of 10 ---
+ID: video-401abad1
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774502705124/caption/video-401abad1-captioned.mp4
+Score: 50%
+Speaker: Sam Altman
 Hook: authority
 Caption:
 Finally someone explains this properly
 
-Jensen Huang explains it all
+Sam Altman — this is a must-watch
 
-Full breakdowns daily — link in bio
+Tag someone who needs to see this
 
-#artificialintelligence #machinelearning #deeplearning #openai #tired #speceyes #harbingers #after #will #shut #fyp #viral
-After posting: /record video-75ac1293 0 <tiktok_url>
-
---- Video 2 of 10 ---
-ID: video-00293108
-File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-00293108-captioned.mp4
-Score: 50%
-Speaker: TED
-Hook: contrarian
-Caption:
-Unpopular opinion but hear me out
-
-TED breaks it down in 60 seconds
-
-Full breakdowns daily — link in bio
-
-#artificialintelligence #machinelearning #deeplearning #openai #tired #speceyes #harbingers #after #will #shut #fyp #viral
-After posting: /record video-00293108 0 <tiktok_url>
+#artificialintelligence #machinelearning #deeplearning #aivideo #sora #runway #hollywood #vfx #AIvideo #Sora #Runway #fyp
+After posting: /record video-401abad1 0 <tiktok_url>
 
 --- Video 3 of 10 ---
-ID: video-89fdb5b3
-File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-89fdb5b3-captioned.mp4
+ID: video-c5fa5b6f
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774502705124/caption/video-c5fa5b6f-captioned.mp4
 Score: 50%
-Speaker: TED
-Hook: curiosity_gap
-Caption:
-Wait for it... this changes everything
-
-TED with a hot take
-
-Go deeper — subscribe via link in bio
-
-#artificialintelligence #machinelearning #deeplearning #openai #tired #speceyes #harbingers #after #will #shut #fyp #viral
-After posting: /record video-89fdb5b3 0 <tiktok_url>
-
---- Video 4 of 10 ---
-ID: video-24f1d601
-File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-24f1d601-captioned.mp4
-Score: 50%
-Speaker: ThePrimeagen
-Hook: contrarian
-Caption:
-I'm about to upset a lot of people
-
-ThePrimeagen — this is a must-watch
-
-Go deeper — subscribe via link in bio
-
-#programming #developer #coding #openai #tired #speceyes #harbingers #after #will #shut #fyp #viral
-After posting: /record video-24f1d601 0 <tiktok_url>
-
---- Video 5 of 10 ---
-ID: video-fe5f4a51
-File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-fe5f4a51-captioned.mp4
-Score: 50%
-Speaker: ThePrimeagen
-Hook: authority
-Caption:
-Years of experience in 60 seconds
-
-ThePrimeagen explains it all
-
-Double tap if this blew your mind
-
-#programming #developer #coding #openai #tired #speceyes #harbingers #after #will #shut #fyp #viral
-After posting: /record video-fe5f4a51 0 <tiktok_url>
-
---- Video 6 of 10 ---
-ID: video-c3076a1c
-File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-c3076a1c-captioned.mp4
-Score: 50%
-Speaker: CNET
+Speaker: Sam Altman
 Hook: secret
 Caption:
 Here's what they're hiding from you
 
-CNET explains it all
+Sam Altman just dropped this
 
-Follow for the stuff they don't teach you
+Share this with someone who needs it
 
-#artificialintelligence #machinelearning #deeplearning #openai #tired #speceyes #harbingers #after #will #shut #fyp #viral
-After posting: /record video-c3076a1c 0 <tiktok_url>
+#artificialintelligence #machinelearning #deeplearning #aivideo #sora #runway #hollywood #vfx #AIvideo #Sora #Runway #fyp
+After posting: /record video-c5fa5b6f 0 <tiktok_url>
 
---- Video 7 of 10 ---
-ID: video-f9e97fdd
-File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-f9e97fdd-captioned.mp4
+--- Video 4 of 10 ---
+ID: video-65446162
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774502705124/caption/video-65446162-captioned.mp4
 Score: 50%
-Speaker: TheAIGRID
+Speaker: Yann LeCun
 Hook: curiosity_gap
 Caption:
-Watch till the end, trust me
+This is the part they don't teach you
 
-TheAIGRID breaks it down in 60 seconds
+Yann LeCun — this is a must-watch
 
-Double tap if this blew your mind
+Share this with someone who needs it
 
-#artificialintelligence #machinelearning #deeplearning #openai #tired #speceyes #harbingers #after #will #shut #fyp #viral
-After posting: /record video-f9e97fdd 0 <tiktok_url>
+#artificialintelligence #machinelearning #deeplearning #aivideo #sora #runway #hollywood #vfx #AIvideo #Sora #Runway #fyp
+After posting: /record video-65446162 0 <tiktok_url>
 
---- Video 8 of 10 ---
-ID: video-f51c6b53
-File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-f51c6b53-captioned.mp4
+--- Video 5 of 10 ---
+ID: video-341392e6
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774502705124/caption/video-341392e6-captioned.mp4
 Score: 50%
-Speaker: Theoretically Media
-Hook: contrarian
-Caption:
-Everyone is wrong about this
-
-Theoretically Media explains it all
-
-Tag someone who needs to see this
-
-#artificialintelligence #machinelearning #deeplearning #openai #tired #speceyes #harbingers #after #will #shut #fyp #viral
-After posting: /record video-f51c6b53 0 <tiktok_url>
-
---- Video 9 of 10 ---
-ID: video-40ce6d9f
-File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-40ce6d9f-captioned.mp4
-Score: 50%
-Speaker: Futurepedia
+Speaker: Margrethe Vestager
 Hook: authority
 Caption:
-Years of experience in 60 seconds
+Finally someone explains this properly
 
-Futurepedia just dropped this
+Margrethe Vestager explains it all
 
-Double tap if this blew your mind
+What do you think? Comment below
 
-#artificialintelligence #machinelearning #deeplearning #openai #tired #speceyes #harbingers #after #will #shut #fyp #viral
-After posting: /record video-40ce6d9f 0 <tiktok_url>
+#artificialintelligence #machinelearning #deeplearning #aivideo #sora #runway #hollywood #vfx #AIvideo #Sora #Runway #fyp
+After posting: /record video-341392e6 0 <tiktok_url>
 
---- Video 10 of 10 ---
-ID: video-eae08759
-File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-eae08759-captioned.mp4
+--- Video 6 of 10 ---
+ID: video-a13293d2
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774502705124/caption/video-a13293d2-captioned.mp4
 Score: 50%
-Speaker: PyCascades
+Speaker: Bill Gates
+Hook: secret
+Caption:
+Most people will never know this
+
+Bill Gates with a hot take
+
+Full breakdowns daily — link in bio
+
+#artificialintelligence #machinelearning #deeplearning #aivideo #sora #runway #hollywood #vfx #AIvideo #Sora #Runway #fyp
+After posting: /record video-a13293d2 0 <tiktok_url>
+
+--- Video 7 of 10 ---
+ID: video-cc0eb313
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774502705124/caption/video-cc0eb313-captioned.mp4
+Score: 50%
+Speaker: Demis Hassabis
+Hook: curiosity_gap
+Caption:
+This is the part they don't teach you
+
+What Demis Hassabis just said changes everything
+
+What do you think? Comment below
+
+#artificialintelligence #machinelearning #deeplearning #aivideo #sora #runway #hollywood #vfx #AIvideo #Sora #Runway #fyp
+After posting: /record video-cc0eb313 0 <tiktok_url>
+
+--- Video 8 of 10 ---
+ID: video-75404e8a
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774502705124/caption/video-75404e8a-captioned.mp4
+Score: 50%
+Speaker: Yves Guillemot
+Hook: contrarian
+Caption:
+This might be controversial but...
+
+Yves Guillemot — this is a must-watch
+
+Want more like this? Link in bio
+
+#artificialintelligence #machinelearning #deeplearning #aivideo #sora #runway #hollywood #vfx #AIvideo #Sora #Runway #fyp
+After posting: /record video-75404e8a 0 <tiktok_url>
+
+--- Video 9 of 10 ---
+ID: video-51f0ae08
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774502705124/caption/video-51f0ae08-captioned.mp4
+Score: 50%
+Speaker: Rick Beato
 Hook: secret
 Caption:
 They really don't want this going viral
 
-PyCascades with a hot take
+Rick Beato — this is a must-watch
 
-Double tap if this blew your mind
+Want more like this? Link in bio
 
-#artificialintelligence #machinelearning #deeplearning #openai #tired #speceyes #harbingers #after #will #shut #fyp #viral
-After posting: /record video-eae08759 0 <tiktok_url>
+#artificialintelligence #machinelearning #deeplearning #aivideo #sora #runway #hollywood #vfx #AIvideo #Sora #Runway #fyp
+After posting: /record video-51f0ae08 0 <tiktok_url>
+
+--- Video 10 of 10 ---
+ID: video-f6ceb48f
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774502705124/caption/video-f6ceb48f-captioned.mp4
+Score: 50%
+Speaker: Eric Topol
+Hook: curiosity_gap
+Caption:
+Nobody is talking about this yet
+
+Hear it from Eric Topol
+
+Want more like this? Link in bio
+
+#artificialintelligence #machinelearning #deeplearning #aivideo #sora #runway #hollywood #vfx #AIvideo #Sora #Runway #fyp
+After posting: /record video-f6ceb48f 0 <tiktok_url>

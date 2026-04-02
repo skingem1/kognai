@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "TICKET-017-AGENTTAX-03",
+      "description": "TICKET-017. 100K/state nexus threshold triggers collection obligation. Monitor cumulative state revenue, alert Harvey morning briefing. Depends on AGENTTAX-02.",
+      "status": "rejected",
+      "agent": "coder",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-TICKET-017-AGENTTAX-03",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "TICKET-017. 100K/state nexus threshold triggers collection obligation. Monitor cumulative state revenue, alert Harvey morning briefing. Depends on AGENTTAX-02."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Bluesky's New AI App: Attie",
+  "full_monologue": "**Bluesky is embracing AI with a new app called Attie.** Attie lets you build custom feeds using AI, making it easier than ever to curate your own content. Think of it as a smart filter that learns your preferences and tailors your experience. With Attie, you’re not just scrolling—you’re engaging with content that matters to you. Want to see how it works? Well, I can’t show you the app, but I can tell you this: it’s a game-changer. What do you think about AI-powered feeds?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "hands interacting with a tablet in a modern workspace, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a person walking through a city with a focused, curious expression, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

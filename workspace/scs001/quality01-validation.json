@@ -1,40 +1,40 @@
 {
-  "validation_date": "2026-03-21T13:52:19.248Z",
+  "validation_date": "2026-03-26T09:02:27.107Z",
   "sprint": "sprint-735",
   "pipeline": "Pipeline 1 (Hailuo)",
-  "report_id": "scs001-2026-03-20T20-00-01-573Z",
-  "status": "PASS",
+  "report_id": "scs001-2026-03-26T06-00-00-834Z",
+  "status": "FAIL",
   "checks": [
     {
       "name": "has_run_id",
       "pass": true,
-      "detail": "run_id: scs001-2026-03-20T20-00-01-573Z"
+      "detail": "run_id: scs001-2026-03-26T06-00-00-834Z"
     },
     {
       "name": "editing_stage_ok",
       "pass": true,
-      "detail": "status: ok, count: 1"
+      "detail": "status: ok, count: 11"
     },
     {
       "name": "tts_audio_mix_ok",
-      "pass": true,
-      "detail": "status: ok, count: 1"
+      "pass": false,
+      "detail": "status: empty, count: 0"
     },
     {
       "name": "qc_stage_ok",
       "pass": true,
-      "detail": "status: ok, count: 1"
+      "detail": "status: ok, count: 11"
     },
     {
       "name": "publishing_ok",
-      "pass": true,
-      "detail": "status: ok, count: 1"
+      "pass": false,
+      "detail": "status: missing, count: 0"
     },
     {
       "name": "mp4_output_exists",
       "pass": true,
-      "detail": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T12-xdmv/output/dbt-f97dc857_base.mp4: 1080x1920, 27.0s, audio: false"
+      "detail": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260326T05-9r41/output/dbt-a548d6df_base.mp4: 1080x1920, 27.0s, audio: false"
     }
   ],
-  "summary": "ALL CHECKS PASS — Pipeline live output validated"
+  "summary": "FAILED: tts_audio_mix_ok, publishing_ok"
 }

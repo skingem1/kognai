@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "AMD-19-01",
+      "description": "Post-April 7 gate. AMD-19 ERC-8004 Constitutional Anchoring: Genesis EAS attestation on Base mainnet. Four-party multi-sig (MetaMask+Google+Coinbase+EF). Anchors Founding Charter to chain. Sprint 511.",
+      "status": "rejected",
+      "agent": "coder",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-AMD-19-01",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Post-April 7 gate. AMD-19 ERC-8004 Constitutional Anchoring: Genesis EAS attestation on Base mainnet. Four-party multi-sig (MetaMask+Google+Coinbase+EF). Anchors Founding Charter to chain. Sprint 511."
+    }
+  ]
+}

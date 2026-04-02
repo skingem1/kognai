@@ -1,0 +1,21 @@
+{
+  "title": "AI Taking Over Junior Dev Jobs?",
+  "full_monologue": "**AI agents are replacing junior developers**. It's happening faster than you think. These tools can write code, debug issues, and even understand complex requirements—without the need for years of experience. But does this mean the end for new devs? Not necessarily. It’s shifting the focus from basic tasks to higher-level problem-solving. The future belongs to those who adapt. So, what skills will junior devs need to stay relevant? Let me know in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A person typing on a keyboard, hands moving rapidly across the keys, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A group of people collaborating in a modern office space, focused and engaged, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

@@ -2,10 +2,12 @@
 // Consumes: PublishedVideo[] from Publishing Agent
 // Produces: PerformanceSignal[] (per contracts/scs-001/publishing-analytics-v1.json)
 // Engine: Deterministic — KPI aggregation + classification (no LLM)
-// Block E: Mock KPIs until TikTok Analytics API available
+// Sprint BUGFIX-ANALYTICS-01: Real KPIs from Browser Use scraper + manual-posts.jsonl
+//   Falls back to mock profiles when no real data is available.
 
 import { randomUUID } from 'crypto';
 import type { PublishedVideo } from '../scs001-publishing/index';
+import { lookupKPIs, getMetricsSummary } from '../../scripts/scs001/analytics-scraper';
 
 export interface PerformanceKPIs {
   completion_rate:         number;
@@ -41,25 +43,56 @@ function classifyViralStatus(completionRate: number): PerformanceSignal['viral_s
   return 'failure';
 }
 
-// Generate mock KPIs for testing (realistic distribution)
-// In production: replaced by TikTok Analytics API fetch
-function generateMockKPIs(videoIndex: number): PerformanceKPIs {
-  // Simulate a realistic distribution: first video viral, second performing
-  const profiles = [
-    { completion: 78, watch: 42, rewatch: 25, comments: 340, shares: 120, views: 85000, likes: 12000, followers: 450 },
-    { completion: 55, watch: 28, rewatch: 12, comments: 85, shares: 30, views: 22000, likes: 3200, followers: 80 },
-    { completion: 32, watch: 16, rewatch: 5, comments: 12, shares: 3, views: 4500, likes: 400, followers: 10 },
-  ];
-  const p = profiles[videoIndex % profiles.length];
+// Mock KPI profiles — used ONLY as fallback when no real data is available
+const MOCK_PROFILES = [
+  { completion: 78, watch: 42, rewatch: 25, comments: 340, shares: 120, views: 85000, likes: 12000, followers: 450 },
+  { completion: 55, watch: 28, rewatch: 12, comments: 85, shares: 30, views: 22000, likes: 3200, followers: 80 },
+  { completion: 32, watch: 16, rewatch: 5, comments: 12, shares: 3, views: 4500, likes: 400, followers: 10 },
+];
+
+/**
+ * Build KPIs for a video — real data first, mock fallback.
+ * Priority:
+ *   1. Scraped from TikTok Creator Center (Browser Use analytics scraper)
+ *   2. Recorded via /record command in Telegram (has real views from manual log)
+ *   3. Mock profile (rotating 3-profile fallback — no real data available)
+ */
+function buildKPIs(videoId: string, videoIndex: number): { kpis: PerformanceKPIs; source: string } {
+  const real = lookupKPIs(videoId, videoIndex);
+
+  if (real) {
+    // Estimate rewatch_rate and followers_gained if not available from scraper
+    const rewatch = real.completion_rate > 70 ? 20 : real.completion_rate > 40 ? 8 : 3;
+    const followers = real.views > 50000 ? 300 : real.views > 10000 ? 60 : real.views > 1000 ? 10 : 2;
+    return {
+      kpis: {
+        completion_rate:        real.completion_rate,
+        avg_watch_time_seconds: real.avg_watch_time_seconds,
+        rewatch_rate:           rewatch,
+        comments:               real.comments,
+        shares:                 real.shares,
+        views:                  real.views,
+        likes:                  real.likes,
+        followers_gained:       followers,
+      },
+      source: real.source,
+    };
+  }
+
+  // Fallback: mock profile
+  const p = MOCK_PROFILES[videoIndex % MOCK_PROFILES.length];
   return {
-    completion_rate:        p.completion,
-    avg_watch_time_seconds: p.watch,
-    rewatch_rate:           p.rewatch,
-    comments:               p.comments,
-    shares:                 p.shares,
-    views:                  p.views,
-    likes:                  p.likes,
-    followers_gained:       p.followers,
+    kpis: {
+      completion_rate:        p.completion,
+      avg_watch_time_seconds: p.watch,
+      rewatch_rate:           p.rewatch,
+      comments:               p.comments,
+      shares:                 p.shares,
+      views:                  p.views,
+      likes:                  p.likes,
+      followers_gained:       p.followers,
+    },
+    source: 'mock',
   };
 }
 
@@ -72,10 +105,18 @@ export class AnalyticsAgent {
       return [];
     }
 
+    // Log metrics data availability
+    const metricsSummary = getMetricsSummary();
+    console.log(
+      `[AnalyticsAgent] Metrics sources — scraped: ${metricsSummary.scraped}, ` +
+      `manual_with_views: ${metricsSummary.manual_with_views}, ` +
+      `latest_scrape: ${metricsSummary.latest_scrape ?? 'never'}`
+    );
+
     const signals: PerformanceSignal[] = [];
 
     publishedVideos.forEach((pv, idx) => {
-      const kpis = generateMockKPIs(idx);
+      const { kpis, source } = buildKPIs(pv.video_id, idx);
       const viralStatus = classifyViralStatus(kpis.completion_rate);
       const flywheelTriggered = kpis.completion_rate >= 70;
       const failureEntry = kpis.completion_rate < 40;
@@ -113,9 +154,10 @@ export class AnalyticsAgent {
       const status = viralStatus.toUpperCase();
       const flywheel = flywheelTriggered ? ' [FLYWHEEL]' : '';
       const failure = failureEntry ? ' [FAILURE LIBRARY]' : '';
+      const srcTag = source === 'mock' ? ' [MOCK]' : ` [${source.toUpperCase()}]`;
       console.log('[AnalyticsAgent] ' + pv.video_id + ' → ' + status +
         ' (' + kpis.completion_rate + '% completion, ' + kpis.views + ' views)' +
-        flywheel + failure);
+        flywheel + failure + srcTag);
     });
 
     // Summary

@@ -1,0 +1,152 @@
+{
+  "batch_id": "batch-2026-04-01T15-01-22",
+  "count": 7,
+  "records": [
+    {
+      "id": "cg-5f00368a6ad2",
+      "timestamp": "2026-03-26T13:00:02.602Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "momentum",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/backpack",
+      "title": "Backpack (BP) 📉 -14.7%",
+      "summary": "Trending on CoinGecko — rank #7",
+      "keywords": [
+        "backpack",
+        "bp",
+        "crypto",
+        "defi"
+      ],
+      "confidence": 64.67885120031755,
+      "price_change_pct": -14.7,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "cg-5076d640154f",
+      "timestamp": "2026-03-26T13:00:02.602Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "momentum",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/perle",
+      "title": "Perle (PRL) 📈 49.9%",
+      "summary": "Trending on CoinGecko — rank #9",
+      "keywords": [
+        "perle",
+        "prl",
+        "crypto",
+        "defi"
+      ],
+      "confidence": 80,
+      "price_change_pct": 49.9,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "tc-074fed5e19e4",
+      "timestamp": "2026-03-28T10:15:46.337Z",
+      "asset_class": "commodities",
+      "timeframe": "daily",
+      "strategy_type": "sentiment",
+      "source": "techcrunch",
+      "source_url": "https://techcrunch.com/2026/03/27/why-softbanks-new-40b-loan-points-to-a-2026-openai-ipo/",
+      "title": "Why SoftBank’s new $40B loan points to a 2026 OpenAI IPO",
+      "summary": "TechCrunch — Wall Street giants JPMorgan and Goldman Sachs are extending a 12-month, unsecured loan to the Japane",
+      "keywords": [
+        "softbank’s",
+        "$40b",
+        "loan",
+        "points",
+        "2026",
+        "openai"
+      ],
+      "confidence": 75,
+      "price_change_pct": null,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "reddit-b71eb34e07cf",
+      "timestamp": "2026-03-28T10:15:46.772Z",
+      "asset_class": "equities",
+      "timeframe": "daily",
+      "strategy_type": "sentiment",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/technology/comments/1s51flq/micron_sandisk_stocks_tumble_after_google_unveils/",
+      "title": "Micron, SanDisk Stocks Tumble After Google Unveils AI Memory Compression Breakthrough",
+      "summary": "Reddit r/technology (5907 pts, 279 comments)",
+      "keywords": [
+        "micron",
+        "sandisk",
+        "stocks",
+        "tumble",
+        "after",
+        "google"
+      ],
+      "confidence": 85,
+      "price_change_pct": null,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "arxiv-c6e288f5edae",
+      "timestamp": "2026-03-28T13:10:13.287Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "sentiment",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.25720v1",
+      "title": "R-C2: Cycle-Consistent Reinforcement Learning Improves Multimodal Reasoning",
+      "summary": "Robust perception and reasoning require consistency across sensory modalities. Yet current multimodal models often violate this principle, yielding co",
+      "keywords": [
+        "cycle",
+        "consistent",
+        "reinforcement",
+        "learning",
+        "improves",
+        "multimodal"
+      ],
+      "confidence": 62.5,
+      "price_change_pct": null,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "cg-93d60f845f31",
+      "timestamp": "2026-03-28T20:37:02.529Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "momentum",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/doge-strategy",
+      "title": "Doge Strategy (DOGESTR) 📈 1628002.9%",
+      "summary": "Trending on CoinGecko — rank #1",
+      "keywords": [
+        "doge strategy",
+        "dogestr",
+        "crypto",
+        "defi"
+      ],
+      "confidence": 80,
+      "price_change_pct": 1628002.9,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "cg-0d45f5fd462b",
+      "timestamp": "2026-03-29T12:10:13.343Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "momentum",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/coredaoorg",
+      "title": "Core (CORE) 📉 -37.5%",
+      "summary": "Trending on CoinGecko — rank #2",
+      "keywords": [
+        "core",
+        "core",
+        "crypto",
+        "defi"
+      ],
+      "confidence": 80,
+      "price_change_pct": -37.5,
+      "curated_by": "curator-trading"
+    }
+  ]
+}

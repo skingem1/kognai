@@ -1,25 +1,40 @@
 {
-  "sprint_id": "sprint-VOXIGHT-BLOCK-A-01",
-  "title": "VOXIGHT Block A — Whisper batch transcription pipeline (Space recordings → timestamped transcripts JSONL)",
-  "source": "queue-auto-generated",
-  "generated_by": "kognai-autonomous",
-  "generated_at": "2026-03-28T19:58:09.332Z",
   "tasks": [
     {
       "id": "VOXIGHT-BLOCK-A-01",
-      "description": "Phase 0 IMMEDIATE. ORACLE-6 is running on mock data only. Block A-01: download Space recordings from Voxight API, run Whisper base model locally, output timestamped transcripts to voxight-data/transcripts/YYYY-MM-DD.jsonl. Batch mode, idempotent.",
-      "status": "pending",
-      "agent": "Messi",
-      "type": "code",
+      "description": "Phase 0 IMMEDIATE. ORACLE-6 is running on mock data only. Block A-01: download Space recordings from Voxight API, run Whisper base model locally, output timestamped transcripts to voxight-data/transcripts/YYYY-MM-DD.jsonl. Batch mode, idempotent.\n\nProject root: /Users/tarekmnif/Documents/Voxight\nTarget file to CREATE: /Users/tarekmnif/Documents/Voxight/src/scripts/batch-transcribe.js\nRead whisperLocal.js and twitterApi.js first for API signatures.\nThe script must: (1) query Supabase spaces table for all spaces with recording_url, (2) for each space call transcribeLocal(audioPath) from whisperLocal.js, (3) write JSONL output to /Users/tarekmnif/Documents/Voxight/voxight-data/transcripts/YYYY-MM-DD.jsonl, (4) be idempotent — skip spaces already in transcripts table. Use ES module syntax (import/export). Include a main() guard.",
+      "status": "done",
+      "agent": "coder",
+      "type": "create",
       "priority": "P0",
-      "sprint_id": "sprint-VOXIGHT-BLOCK-A-01"
+      "files_to_read": [
+        "/Users/tarekmnif/Documents/Voxight/src/services/whisperLocal.js",
+        "/Users/tarekmnif/Documents/Voxight/src/services/twitterApi.js",
+        "/Users/tarekmnif/Documents/Voxight/src/services/database.js"
+      ],
+      "deliverables": {
+        "code": [
+          "/Users/tarekmnif/Documents/Voxight/src/scripts/batch-transcribe.js"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "sprint_id": "sprint-VOXIGHT-BLOCK-A-01",
+      "context": "Phase 0 IMMEDIATE. ORACLE-6 is running on mock data only. Block A-01: download Space recordings from Voxight API, run Whisper base model locally, output timestamped transcripts to voxight-data/transcripts/YYYY-MM-DD.jsonl. Batch mode, idempotent.\n\nProject root: /Users/tarekmnif/Documents/Voxight\nTarget file to CREATE: /Users/tarekmnif/Documents/Voxight/src/scripts/batch-transcribe.js\nRead whisperLocal.js and twitterApi.js first for API signatures.\nThe script must: (1) query Supabase spaces table for all spaces with recording_url, (2) for each space call transcribeLocal(audioPath) from whisperLocal.js, (3) write JSONL output to /Users/tarekmnif/Documents/Voxight/voxight-data/transcripts/YYYY-MM-DD.jsonl, (4) be idempotent — skip spaces already in transcripts table. Use ES module syntax (import/export). Include a main() guard.",
+      "output": {
+        "files": [
+          "/Users/tarekmnif/Documents/Voxight/src/scripts/batch-transcribe.js"
+        ],
+        "commit": "",
+        "model": "qwen3:14b",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 70,
+          "summary": "Dual-approved: Claude (70/100) + Codex (70/100)",
+          "issues": [],
+          "strengths": []
+        }
+      }
     }
-  ],
-  "cto_gate": {
-    "approved": false,
-    "reason": "The sprint does not map to any item in the execution plan or work plan and is not a critical bug fix or blocker. It introduces new functionality not aligned with the current phase goals.",
-    "plan_reference": "NOT_IN_PLAN",
-    "confidence": 85,
-    "timestamp": "2026-03-28T20:00:27.674Z"
-  }
+  ]
 }

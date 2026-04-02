@@ -1,0 +1,20 @@
+{
+  "tasks": [
+    {
+      "id": "INTEL-027-01",
+      "description": "Satoshi/Harvey: Write INTEL-027 — Valeo/Sentinel (@x402sentinel/x402) evaluation. Context: Valeo and Sentinel are the name of a compliance layer sitting on top of x402. The npm package @x402sentinel/x402 adds per-agent spend caps and audit trails to x402 payments on Base. TICKET-022 was raised 2026-03-27. This is relevant to Kognai because: (1) Kognai uses x402 via Voxight and PACT, (2) OMEL Human Brake (AMD-13) requires spend cap enforcement, (3) Invoica could add Sentinel as a compliance wrapper. Read ~/Documents/Kognai/Master Documents/kognai_architecture_amendment_13.docx (OMEL — Human Brake, Credential Vault). Read ~/Documents/Kognai/Master Documents/voxight_product_spec_v2.docx (Voxight x402 usage). Produce intel brief at workspace/intel/intel-027-valeo-sentinel-x402-compliance.md covering: (1) What Sentinel is and what the @x402sentinel/x402 package does technically, (2) Per-agent spend caps — how they work, (3) Audit trail format, (4) Kognai OMEL alignment — does Sentinel satisfy the Human Brake spend cap requirement from AMD-13?, (5) Invoica integration opportunity, (6) Voxight integration opportunity, (7) One-line install assessment: does 'npm install @x402sentinel/x402' actually work or are there blockers, (8) Godman Decision Brief — recommended action. Also produce eval-016-valeo-sentinel.json at workspace/intel/eval-results/ with fields: eval_id, date, subject, recommendation, confidence (1-10), install_complexity (low/medium/high), omel_compatible (true/false), sprint_estimate.",
+      "output": "workspace/intel/intel-027-valeo-sentinel-x402-compliance.md",
+      "agent": "ceo",
+      "type": "research",
+      "task_type": "autonomous",
+      "priority": "P1",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Satoshi/Harvey: Write INTEL-027 — Valeo/Sentinel (@x402sentinel/x402) evaluation. Context: Valeo and Sentinel are the name of a compliance layer sitting on top of x402. The npm package @x402sentinel/x402 adds per-agent spend caps and audit trails to x402 payments on Base. TICKET-022 was raised 2026-03-27. This is relevant to Kognai because: (1) Kognai uses x402 via Voxight and PACT, (2) OMEL Human Brake (AMD-13) requires spend cap enforcement, (3) Invoica could add Sentinel as a compliance wrapper. Read ~/Documents/Kognai/Master Documents/kognai_architecture_amendment_13.docx (OMEL — Human Brake, Credential Vault). Read ~/Documents/Kognai/Master Documents/voxight_product_spec_v2.docx (Voxight x402 usage). Produce intel brief at workspace/intel/intel-027-valeo-sentinel-x402-compliance.md covering: (1) What Sentinel is and what the @x402sentinel/x402 package does technically, (2) Per-agent spend caps — how they work, (3) Audit trail format, (4) Kognai OMEL alignment — does Sentinel satisfy the Human Brake spend cap requirement from AMD-13?, (5) Invoica integration opportunity, (6) Voxight integration opportunity, (7) One-line install assessment: does 'npm install @x402sentinel/x402' actually work or are there blockers, (8) Godman Decision Brief — recommended action. Also produce eval-016-valeo-sentinel.json at workspace/intel/eval-results/ with fields: eval_id, date, subject, recommendation, confidence (1-10), install_complexity (low/medium/high), omel_compatible (true/false), sprint_estimate.",
+      "sprint_id": "sprint-INTEL-027"
+    }
+  ]
+}

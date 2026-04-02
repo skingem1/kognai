@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "AMD-17-02",
+      "description": "Post-April 7 gate. AMD-17: ACP psychological_resilience score check in broadcast gate. Events <5% resilience held for Godman review. /pause-broadcast command.",
+      "status": "rejected",
+      "agent": "coder",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-AMD-17-02",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Post-April 7 gate. AMD-17: ACP psychological_resilience score check in broadcast gate. Events <5% resilience held for Godman review. /pause-broadcast command."
+    }
+  ]
+}

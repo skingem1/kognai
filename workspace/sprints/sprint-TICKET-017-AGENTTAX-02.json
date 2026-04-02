@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "TICKET-017-AGENTTAX-02",
+      "description": "TICKET-017. Wire AgentTax x402 call into Invoica invoice pipeline. Tax line visible on invoices before PACT Week 1. Depends on AGENTTAX-01.",
+      "status": "rejected",
+      "agent": "coder",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-TICKET-017-AGENTTAX-02",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "TICKET-017. Wire AgentTax x402 call into Invoica invoice pipeline. Tax line visible on invoices before PACT Week 1. Depends on AGENTTAX-01."
+    }
+  ]
+}

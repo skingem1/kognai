@@ -14,12 +14,24 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 
-dotenv.config({ path: path.join(process.cwd(), '.env') });
+const ENV_PATH = path.join(process.cwd(), '.env');
+
+// ── Project root guard ─────────────────────────────────────────────────────
+// This script uses process.cwd() for .env and data/ paths.
+// Must be run from the kognai project root, not from ~ or another directory.
+if (!fs.existsSync(ENV_PATH)) {
+  console.error('\n❌ .env not found in current directory.');
+  console.error(`   CWD: ${process.cwd()}`);
+  console.error('\n   Run from the kognai project root:\n');
+  console.error('     cd ~/kognai && npx ts-node scripts/tiktok-refresh-token.ts\n');
+  process.exit(1);
+}
+
+dotenv.config({ path: ENV_PATH });
 
 const CLIENT_KEY      = process.env.TIKTOK_CLIENT_KEY      || '';
 const CLIENT_SECRET   = process.env.TIKTOK_CLIENT_SECRET   || '';
 const REFRESH_TOKEN   = process.env.TIKTOK_REFRESH_TOKEN   || '';
-const ENV_PATH        = path.join(process.cwd(), '.env');
 
 if (!CLIENT_KEY || !CLIENT_SECRET) {
   console.error('[tiktok-refresh] TIKTOK_CLIENT_KEY and TIKTOK_CLIENT_SECRET required');
@@ -65,7 +77,14 @@ async function refreshToken(): Promise<void> {
   const json = await res.json() as any;
 
   if (json.error || !json.access_token) {
-    console.error(`[tiktok-refresh] Failed: ${json.error_description || json.error || JSON.stringify(json)}`);
+    const msg = json.error_description || json.error || JSON.stringify(json);
+    if (json.error === 'invalid_grant' || /expired/i.test(msg)) {
+      console.error('\n❌ Refresh token expired — need full re-auth.');
+      console.error('\n   Run:\n');
+      console.error('     cd ~/kognai && npx ts-node scripts/tiktok-oauth.ts\n');
+    } else {
+      console.error(`[tiktok-refresh] Failed: ${msg}`);
+    }
     process.exit(1);
   }
 

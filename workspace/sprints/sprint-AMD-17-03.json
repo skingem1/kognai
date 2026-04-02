@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "AMD-17-03",
+      "description": "Post-April 7 gate. AMD-17: live broadcast panel in Mission Control dashboard. Shows last 10 broadcast events with ACP scores, delay status, surface destinations.",
+      "status": "rejected",
+      "agent": "coder",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-AMD-17-03",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Post-April 7 gate. AMD-17: live broadcast panel in Mission Control dashboard. Shows last 10 broadcast events with ACP scores, delay status, surface destinations."
+    }
+  ]
+}

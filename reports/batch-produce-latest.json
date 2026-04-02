@@ -1,14 +1,26 @@
 {
-  "batch_at": "2026-03-25T20:38:43.860Z",
-  "pipeline_filter": "code-demo",
-  "runs_planned": 1,
-  "runs_completed": 1,
+  "batch_at": "2026-04-02T07:11:01.978Z",
+  "pipeline_filter": "all",
+  "runs_planned": 3,
+  "runs_completed": 3,
   "results": [
     {
+      "pipeline": "educational",
+      "runId": "vlog-mnh4kfk4",
+      "title": "The Future of Coding with AI Agents",
+      "cost": 0.26
+    },
+    {
       "pipeline": "code-demo",
-      "runId": "demo-mn6i8r28",
-      "title": "Talk to Claude with Python",
+      "runId": "demo-mnh4so2c",
+      "title": "Fetch News with Python in 3 Steps",
       "cost": 0
+    },
+    {
+      "pipeline": "entertainment",
+      "runId": "ent-mnh4u1hx",
+      "title": "What If the Future Wasn't Coming? It Was Already Here",
+      "cost": 0.3
     }
   ],
   "errors": []

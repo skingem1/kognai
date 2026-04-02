@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "AMD-02A-P1-WRITE",
+      "description": "Phase 1. AMD-02 Addendum: BrainX Episodic Memory write path for two new memory types: skill_rental_gotcha + skill_rental_learning. RENTAL_EXPIRED tier. nomic-embed-text local embedding. Rental Memory Governance Rule enforcement.",
+      "status": "rejected",
+      "agent": "coder",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-AMD-02A-P1-WRITE",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Phase 1. AMD-02 Addendum: BrainX Episodic Memory write path for two new memory types: skill_rental_gotcha + skill_rental_learning. RENTAL_EXPIRED tier. nomic-embed-text local embedding. Rental Memory Governance Rule enforcement."
+    }
+  ]
+}

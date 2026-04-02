@@ -1,0 +1,40 @@
+{
+  "tasks": [
+    {
+      "id": "VOXIGHT-BLOCK-B-01",
+      "description": "Phase 0 IMMEDIATE. Block B-01: Signal Production agent reads transcripts from Block A, uses qwen3:14b to extract IntelligenceSignal objects (domain, signal_type, topic, summary, evidence[], confidence_score, decay_rate, scs_relevance[], purpose_signal_candidate, timestamp). Output to voxight-data/signals/YYYY-MM-DD.jsonl. Replaces mock ORACLE-6 feed in AMD-05.\n\nProject root: /Users/tarekmnif/Documents/Voxight\nTarget file to CREATE: /Users/tarekmnif/Documents/Voxight/src/scripts/produce-signals.js\nRead qwen3Insights.js and oracleSignals.js first for API signatures.\nThe script must: (1) query transcripts table for unprocessed transcripts (no corresponding row in insights table), (2) for each call extractInsights() from qwen3Insights.js, (3) call createSignal() from oracleSignals.js to write IntelligenceSignal to signals table, (4) mark transcript as processed. IntelligenceSignal fields: domain, signal_type, topic, summary, evidence, confidence_score. Use ES module syntax. Include a main() guard with error handling.",
+      "status": "done",
+      "agent": "coder",
+      "type": "create",
+      "priority": "P0",
+      "files_to_read": [
+        "/Users/tarekmnif/Documents/Voxight/src/services/qwen3Insights.js",
+        "/Users/tarekmnif/Documents/Voxight/src/services/oracleSignals.js",
+        "/Users/tarekmnif/Documents/Voxight/src/services/database.js"
+      ],
+      "deliverables": {
+        "code": [
+          "/Users/tarekmnif/Documents/Voxight/src/scripts/produce-signals.js"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "sprint_id": "sprint-VOXIGHT-BLOCK-B-01",
+      "context": "Phase 0 IMMEDIATE. Block B-01: Signal Production agent reads transcripts from Block A, uses qwen3:14b to extract IntelligenceSignal objects (domain, signal_type, topic, summary, evidence[], confidence_score, decay_rate, scs_relevance[], purpose_signal_candidate, timestamp). Output to voxight-data/signals/YYYY-MM-DD.jsonl. Replaces mock ORACLE-6 feed in AMD-05.\n\nProject root: /Users/tarekmnif/Documents/Voxight\nTarget file to CREATE: /Users/tarekmnif/Documents/Voxight/src/scripts/produce-signals.js\nRead qwen3Insights.js and oracleSignals.js first for API signatures.\nThe script must: (1) query transcripts table for unprocessed transcripts (no corresponding row in insights table), (2) for each call extractInsights() from qwen3Insights.js, (3) call createSignal() from oracleSignals.js to write IntelligenceSignal to signals table, (4) mark transcript as processed. IntelligenceSignal fields: domain, signal_type, topic, summary, evidence, confidence_score. Use ES module syntax. Include a main() guard with error handling.",
+      "output": {
+        "files": [
+          "/Users/tarekmnif/Documents/Voxight/src/scripts/produce-signals.js"
+        ],
+        "commit": "",
+        "model": "qwen3:14b",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 70,
+          "summary": "Dual-approved: Claude (70/100) + Codex (70/100)",
+          "issues": [],
+          "strengths": []
+        }
+      }
+    }
+  ]
+}

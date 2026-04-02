@@ -1,0 +1,7 @@
+file '/Users/tarekmnif/kognai/workspace/promo-jobs/validate-promo-pipeline-test/segments/beat_00_hook.mp4'
+file '/Users/tarekmnif/kognai/workspace/promo-jobs/validate-promo-pipeline-test/segments/beat_01_problem.mp4'
+file '/Users/tarekmnif/kognai/workspace/promo-jobs/validate-promo-pipeline-test/segments/beat_02_solution.mp4'
+file '/Users/tarekmnif/kognai/workspace/promo-jobs/validate-promo-pipeline-test/segments/beat_03_benefit1.mp4'
+file '/Users/tarekmnif/kognai/workspace/promo-jobs/validate-promo-pipeline-test/segments/beat_04_benefit2.mp4'
+file '/Users/tarekmnif/kognai/workspace/promo-jobs/validate-promo-pipeline-test/segments/beat_05_proof.mp4'
+file '/Users/tarekmnif/kognai/workspace/promo-jobs/validate-promo-pipeline-test/segments/beat_06_cta.mp4'

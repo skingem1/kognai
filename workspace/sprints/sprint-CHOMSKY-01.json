@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "CHOMSKY-01",
+      "description": "Post-April 7 gate. Chomsky Agent Spec: build Prompt Engineer agent (qwen3:4b T1). Sprint 519. Intercepts all LLM calls, injects constitutional framing, refines prompts. Quality score >=7 gate.",
+      "status": "rejected",
+      "agent": "coder",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-CHOMSKY-01",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Post-April 7 gate. Chomsky Agent Spec: build Prompt Engineer agent (qwen3:4b T1). Sprint 519. Intercepts all LLM calls, injects constitutional framing, refines prompts. Quality score >=7 gate."
+    }
+  ]
+}

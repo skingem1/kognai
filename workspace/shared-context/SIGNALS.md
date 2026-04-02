@@ -47,3 +47,9 @@
 - AAR entries: 14
 - Sprint activity: 659
 - Report: reports/constitution/2026-W13.md
+
+## 2026-W14
+- Generated: 2026-04-01T15:06:45.529Z
+- AAR entries: 274
+- Sprint activity: 199
+- Report: reports/constitution/2026-W14.md

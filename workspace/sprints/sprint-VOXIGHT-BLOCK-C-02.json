@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-VOXIGHT-BLOCK-C-02",
+  "title": "VOXIGHT Block C — Posts trend detection: velocity scoring, engagement rate, cross-domain signal merge",
+  "source": "queue-prescribed",
+  "generated_by": "kognai-autonomous",
+  "generated_at": "2026-03-29T09:53:03.377Z",
+  "tasks": [
+    {
+      "id": "VOXIGHT-BLOCK-C-02",
+      "description": "Phase 1. Block C-02: compute velocity (posts/hour), engagement rate (likes+RTs/post), detect emerging trends. Merge with Space signals from Block B. Output enriched IntelligenceSignal[].\n\nProject root: /Users/tarekmnif/Documents/Voxight\nTarget file to MODIFY: /Users/tarekmnif/Documents/Voxight/src/services/hashtagIntelligence.js\nAdd computeVelocity(tag, windowHours) that returns posts/hour for the given tag over the rolling window. Add computeEngagementRate(tag) = avg (likes+RTs)/post. Expose detectEmergingTrends() that combines baseline comparison with velocity and returns tags crossing the isSignificantTrend() threshold from baselineComputation.js.",
+      "status": "pending",
+      "agent": "coder",
+      "type": "create",
+      "priority": "P1",
+      "files_to_read": [
+        "/Users/tarekmnif/Documents/Voxight/src/services/hashtagIntelligence.js",
+        "/Users/tarekmnif/Documents/Voxight/src/services/baselineComputation.js",
+        "/Users/tarekmnif/Documents/Voxight/src/services/database.js"
+      ],
+      "deliverables": [
+        "/Users/tarekmnif/Documents/Voxight/src/services/hashtagIntelligence.js"
+      ],
+      "sprint_id": "sprint-VOXIGHT-BLOCK-C-02"
+    }
+  ]
+}

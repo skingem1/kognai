@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "AMD-05-P1a-REPORT",
+      "description": "Phase 1. AMD-05-G: Intel Agent produces first real weekly insight report from ORACLE-6 feed (Voxight Block B signals). Output to workspace/oracle-reports/YYYY-WW.md. Telegram delivery to Godman.",
+      "status": "rejected",
+      "agent": "ceo",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-AMD-05-P1a-REPORT",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Phase 1. AMD-05-G: Intel Agent produces first real weekly insight report from ORACLE-6 feed (Voxight Block B signals). Output to workspace/oracle-reports/YYYY-WW.md. Telegram delivery to Godman."
+    }
+  ]
+}

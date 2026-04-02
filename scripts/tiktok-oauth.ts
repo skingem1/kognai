@@ -62,14 +62,32 @@ function generateState(): string {
   return crypto.randomBytes(16).toString('hex');
 }
 
-// PKCE helpers — required by TikTok v2 OAuth
-function generateCodeVerifier(): string {
-  // 32 random bytes → base64url = 43-char verifier (within 43-128 allowed range)
-  return crypto.randomBytes(32).toString('base64url');
-}
+// PKCE diagnostic results (2026-03-29):
+//   S256  → auth URL accepted; token exchange fails: "Code verifier or code challenge is invalid"
+//           (fresh code + correct SHA256 confirmed — still fails with base64url challenge)
+//   plain → auth URL rejected immediately: error_type=code_challenge_method errCode=10008
+//   none  → auth URL rejected: error_type=code_challenge errCode=10007 (code_challenge REQUIRED)
+//
+// Redirect URI findings (2026-03-29):
+//   Portal Desktop* tab registers: http://127.0.0.1:3456/callback  ← CORRECT
+//   Setting localhost in .env → auth URL immediately rejected: error_type=redirect_uri
+//   127.0.0.1 IS the correct registered redirect URI — use this.
+//
+// Hypothesis v2 (ELIMINATED): TikTok uses BASE64 vs BASE64URL for PKCE.
+//   Tested both; same error. Encoding is NOT the issue.
+//
+// OPEN: Why does PKCE S256 token exchange still fail with fresh codes?
+//   Attempts: base64url+verifier, base64+verifier, base64url+no-verifier → all fail same error.
+//   Next hypothesis: Sandbox client_secret in .env may belong to wrong app (Production vs Sandbox).
+// Using RFC 7636 base64url challenge (correct per spec).
 
-function generateCodeChallenge(verifier: string): string {
-  return crypto.createHash('sha256').update(verifier).digest('base64url');
+function generateCodePair(): { codeVerifier: string; codeChallenge: string } {
+  const codeVerifier  = crypto.randomBytes(32).toString('base64url');
+  // TikTok requires HEX(SHA256(verifier)), NOT RFC 7636 base64url.
+  // See: https://developers.tiktok.com/doc/login-kit-desktop
+  // "You must use hex encoding of SHA256 to generate the code challenge from the code verifier."
+  const codeChallenge = crypto.createHash('sha256').update(codeVerifier).digest('hex');
+  return { codeVerifier, codeChallenge };
 }
 
 function buildAuthUrl(state: string, codeChallenge: string): string {
@@ -92,22 +110,43 @@ async function exchangeCodeForToken(code: string, codeVerifier: string): Promise
   refresh_expires_in: number;
   open_id: string;
 }> {
-  const body = new URLSearchParams({
-    client_key: CLIENT_KEY,
+  // NOTE (2026-03-29): Both omitting and including code_verifier returned the same error
+  // "Code verifier or code challenge is invalid" when using a stale (already-exchanged) code.
+  // Confirmed with a fresh code that omitting code_verifier still fails → TikTok DOES require it.
+  // Using URLSearchParams for body encoding: per HTML5 spec it leaves '*' literal (not %2A),
+  // matching what browsers send. This avoids any ambiguity in TikTok auth code encoding.
+  const recomputedChallenge = crypto.createHash('sha256').update(codeVerifier).digest('hex'); // hex per TikTok spec
+
+  // URLSearchParams encodes per HTML5 application/x-www-form-urlencoded spec:
+  // leaves * literal, encodes ! as %21, ~ as ~, etc.
+  const params = new URLSearchParams({
+    client_key:    CLIENT_KEY,
     client_secret: CLIENT_SECRET,
-    code,
-    grant_type: 'authorization_code',
-    redirect_uri: REDIRECT_URI,
+    code:          code,
+    grant_type:    'authorization_code',
+    redirect_uri:  REDIRECT_URI,
     code_verifier: codeVerifier,
   });
+  const bodyStr = params.toString();
+
+  console.log('\n[token-exchange] POST https://open.tiktokapis.com/v2/oauth/token/');
+  console.log('[token-exchange] code_verifier           :', codeVerifier);
+  console.log('[token-exchange] recomputed_challenge    :', recomputedChallenge);
+  console.log('[token-exchange] code (URL-decoded)      :', code);
+  console.log('[token-exchange] raw body string         :', bodyStr);
 
   const res = await fetch('https://open.tiktokapis.com/v2/oauth/token/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: body.toString(),
+    body: bodyStr,
   });
 
-  const json = await res.json() as any;
+  const rawText = await res.text();
+  console.log('[token-exchange] Status:', res.status);
+  console.log('[token-exchange] Raw response:', rawText);
+
+  let json: any;
+  try { json = JSON.parse(rawText); } catch { throw new Error(`Non-JSON response (${res.status}): ${rawText.slice(0, 200)}`); }
 
   if (json.error || !json.access_token) {
     throw new Error(`Token exchange failed: ${json.error_description || json.error || JSON.stringify(json)}`);
@@ -138,15 +177,18 @@ function upsertEnvVar(key: string, value: string): void {
 }
 
 function main(): void {
-  const state        = generateState();
-  const codeVerifier = generateCodeVerifier();
-  const authUrl      = buildAuthUrl(state, generateCodeChallenge(codeVerifier));
+  const state                          = generateState();
+  const { codeVerifier, codeChallenge } = generateCodePair();
+  const authUrl                        = buildAuthUrl(state, codeChallenge);
 
   console.log('\n══════════════════════════════════════════════');
   console.log(' TikTok OAuth 2.0 — Access Token Flow');
   console.log('══════════════════════════════════════════════\n');
   console.log(`Redirect URI: ${REDIRECT_URI}`);
-  console.log(`Scopes: ${SCOPES}\n`);
+  console.log(`Scopes: ${SCOPES}`);
+  console.log(`[pkce] verifier  : ${codeVerifier}`);
+  console.log(`[pkce] challenge : ${codeChallenge}`);
+  console.log(`[pkce] method    : S256 (RFC 7636 base64url)\n`);
   console.log('Open this URL in your browser:\n');
   console.log(`  ${authUrl}\n`);
   console.log(`Waiting for callback on port ${PORT}...\n`);

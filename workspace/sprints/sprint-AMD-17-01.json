@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "AMD-17-01",
+      "description": "Post-April 7 gate. AMD-17 Transparency Broadcast: scs001-broadcast agent (qwen3:4b T1). 60-second delay. ACP filter: psychological_resilience >=5% required. Godman kill switch. Sprint 508.",
+      "status": "rejected",
+      "agent": "coder",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-AMD-17-01",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Post-April 7 gate. AMD-17 Transparency Broadcast: scs001-broadcast agent (qwen3:4b T1). 60-second delay. ACP filter: psychological_resilience >=5% required. Godman kill switch. Sprint 508."
+    }
+  ]
+}

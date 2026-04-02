@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-26T05:07:36.729Z",
+  "generated_at": "2026-03-26T05:10:35.412Z",
   "all_pass": true,
   "checks": [
     {
@@ -10,12 +10,12 @@
     {
       "name": "Schedule freshness",
       "pass": true,
-      "detail": "1.6h old"
+      "detail": "0.0h old"
     },
     {
       "name": "Gate progress",
       "pass": true,
-      "detail": "153/30 posted · 0 remaining · 12d left · 0.0/day needed"
+      "detail": "155/30 posted · 0 remaining · 12d left · 0.0/day needed"
     },
     {
       "name": "Video inventory",
@@ -24,7 +24,7 @@
     }
   ],
   "gate": {
-    "posted": 153,
+    "posted": 155,
     "target": 30,
     "remaining": 0,
     "days_left": 12,

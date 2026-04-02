@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "AMD-18-01",
+      "description": "Post-April 7 gate. AMD-18 Memory Emotional Tone Protocol: Right 7 (Psychological Integrity) framing conventions. Sherlock tone audit: scan memory writes for framing compliance. Sprint 509.",
+      "status": "rejected",
+      "agent": "coder",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-AMD-18-01",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Post-April 7 gate. AMD-18 Memory Emotional Tone Protocol: Right 7 (Psychological Integrity) framing conventions. Sherlock tone audit: scan memory writes for framing compliance. Sprint 509."
+    }
+  ]
+}

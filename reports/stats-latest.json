@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-26T05:07:33.986Z",
+  "timestamp": "2026-03-26T06:00:34.619Z",
   "period": {
     "today": "2026-03-26",
     "week_start": "2026-03-22"
@@ -8,8 +8,8 @@
     "total_videos": 214,
     "videos_today": 0,
     "videos_this_week": 3,
-    "pipeline_runs_total": 113,
-    "pipeline_runs_today": 1
+    "pipeline_runs_total": 114,
+    "pipeline_runs_today": 2
   },
   "delivery": {
     "auto_delivered_total": 562,
@@ -28,15 +28,15 @@
   },
   "gate": {
     "posts_target": 30,
-    "posts_delivered": 153,
+    "posts_delivered": 157,
     "days_remaining": 12,
     "on_track": true,
     "urgency": "PASSED",
     "urgency_signal": "Gate criteria met — PROCEED"
   },
   "queue": {
-    "ready_count": 1134,
-    "unposted_count": 1134,
+    "ready_count": 1738,
+    "unposted_count": 1738,
     "top3_video_ids": [
       "video-88863065",
       "video-a9c3b478",

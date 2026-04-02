@@ -1,0 +1,109 @@
+{
+  "tasks": [
+    {
+      "id": "VOXIGHT-A-01",
+      "description": "Extend GET /api/space/:id to include transcript and insight data. In ~/Documents/Voxight/src/routes/space.js, after fetching the space record, also call getInsightBySpaceId(space.id) from database.js and get the transcript from the transcripts table. Return enriched response: { ...spaceFields, transcript: { fullText, speakerSegments }, insights: { insightBrief, keyClaims, confidenceScore } }. If no transcript/insights exist yet (space not yet processed), return those fields as null. Add getTranscriptBySpaceId(spaceId) to ~/Documents/Voxight/src/services/database.js querying the transcripts table by space_id.",
+      "output": "Modified ~/Documents/Voxight/src/routes/space.js and ~/Documents/Voxight/src/services/database.js. GET /api/space/:id now returns transcript + insight data when available.",
+      "agent": "coder",
+      "type": "code",
+      "task_type": "autonomous",
+      "priority": "P1",
+      "files_to_read": [
+        "~/Documents/Voxight/src/routes/space.js",
+        "~/Documents/Voxight/src/services/database.js"
+      ],
+      "files_to_modify": [
+        "~/Documents/Voxight/src/routes/space.js",
+        "~/Documents/Voxight/src/services/database.js"
+      ],
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Extend GET /api/space/:id to include transcript and insight data. In ~/Documents/Voxight/src/routes/space.js, after fetching the space record, also call getInsightBySpaceId(space.id) from database.js and get the transcript from the transcripts table. Return enriched response: { ...spaceFields, transcript: { fullText, speakerSegments }, insights: { insightBrief, keyClaims, confidenceScore } }. If no transcript/insights exist yet (space not yet processed), return those fields as null. Add getTranscriptBySpaceId(spaceId) to ~/Documents/Voxight/src/services/database.js querying the transcripts table by space_id.",
+      "sprint_id": "sprint-VOXIGHT-A-01"
+    },
+    {
+      "id": "VOXIGHT-A-02",
+      "description": "Verify the Supabase migration SQL files have the correct schema and write a migration verification script. Read ~/Documents/Voxight/supabase/migrations/20260327_add_module2_tables.sql and ~/Documents/Voxight/supabase/migrations/20260327_add_module3_tables.sql. Create ~/Documents/Voxight/scripts/verify-migrations.js that: (1) uses the Supabase client from database.js to check if all 8 new tables exist (posts, post_metrics, hashtags, thought_leaders, transcripts, insights, signals, narratives), (2) for each table, runs a SELECT COUNT(*) to confirm the table is accessible, (3) outputs a JSON report to ~/Documents/Voxight/logs/migration-status.json with { table, exists: true/false, rowCount }. Add a package.json script: 'verify-migrations': 'node scripts/verify-migrations.js'.",
+      "output": "~/Documents/Voxight/scripts/verify-migrations.js created. Run result written to ~/Documents/Voxight/logs/migration-status.json.",
+      "agent": "coder",
+      "type": "code",
+      "task_type": "autonomous",
+      "priority": "P1",
+      "files_to_read": [
+        "~/Documents/Voxight/supabase/migrations/20260327_add_module2_tables.sql",
+        "~/Documents/Voxight/supabase/migrations/20260327_add_module3_tables.sql",
+        "~/Documents/Voxight/src/services/database.js",
+        "~/Documents/Voxight/package.json"
+      ],
+      "files_to_create": [
+        "~/Documents/Voxight/scripts/verify-migrations.js"
+      ],
+      "files_to_modify": [
+        "~/Documents/Voxight/package.json"
+      ],
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Verify the Supabase migration SQL files have the correct schema and write a migration verification script. Read ~/Documents/Voxight/supabase/migrations/20260327_add_module2_tables.sql and ~/Documents/Voxight/supabase/migrations/20260327_add_module3_tables.sql. Create ~/Documents/Voxight/scripts/verify-migrations.js that: (1) uses the Supabase client from database.js to check if all 8 new tables exist (posts, post_metrics, hashtags, thought_leaders, transcripts, insights, signals, narratives), (2) for each table, runs a SELECT COUNT(*) to confirm the table is accessible, (3) outputs a JSON report to ~/Documents/Voxight/logs/migration-status.json with { table, exists: true/false, rowCount }. Add a package.json script: 'verify-migrations': 'node scripts/verify-migrations.js'.",
+      "sprint_id": "sprint-VOXIGHT-A-01"
+    },
+    {
+      "id": "VOXIGHT-A-03",
+      "description": "Write an end-to-end pipeline smoke test for the whisper→qwen3→signal chain. Create ~/Documents/Voxight/scripts/test-pipeline.js that: (1) calls whisperLocal.js transcribeAudio() with a short test audio file (use any existing .mp3/.wav in the repo or download a 10-second clip), (2) passes the transcript to qwen3Insights.js extractInsights(), (3) calls oracleSignals.js createSignal() to create a test signal, (4) immediately queries it back via querySignals(), (5) logs each step result and any errors to console and writes a summary to ~/Documents/Voxight/logs/pipeline-test-YYYY-MM-DD.json. If Ollama is not running locally, the test should gracefully skip Qwen3 steps and log 'LOCAL_UNAVAILABLE'. Add 'test-pipeline': 'node scripts/test-pipeline.js' to package.json scripts.",
+      "output": "~/Documents/Voxight/scripts/test-pipeline.js created. Pipeline test script ready to run manually.",
+      "agent": "coder",
+      "type": "code",
+      "task_type": "autonomous",
+      "priority": "P1",
+      "files_to_read": [
+        "~/Documents/Voxight/src/services/whisperLocal.js",
+        "~/Documents/Voxight/src/services/qwen3Insights.js",
+        "~/Documents/Voxight/src/services/oracleSignals.js",
+        "~/Documents/Voxight/package.json"
+      ],
+      "files_to_create": [
+        "~/Documents/Voxight/scripts/test-pipeline.js"
+      ],
+      "files_to_modify": [
+        "~/Documents/Voxight/package.json"
+      ],
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Write an end-to-end pipeline smoke test for the whisper→qwen3→signal chain. Create ~/Documents/Voxight/scripts/test-pipeline.js that: (1) calls whisperLocal.js transcribeAudio() with a short test audio file (use any existing .mp3/.wav in the repo or download a 10-second clip), (2) passes the transcript to qwen3Insights.js extractInsights(), (3) calls oracleSignals.js createSignal() to create a test signal, (4) immediately queries it back via querySignals(), (5) logs each step result and any errors to console and writes a summary to ~/Documents/Voxight/logs/pipeline-test-YYYY-MM-DD.json. If Ollama is not running locally, the test should gracefully skip Qwen3 steps and log 'LOCAL_UNAVAILABLE'. Add 'test-pipeline': 'node scripts/test-pipeline.js' to package.json scripts.",
+      "sprint_id": "sprint-VOXIGHT-A-01"
+    },
+    {
+      "id": "VOXIGHT-A-04",
+      "description": "Audit the x402 dynamic pricing integration in summary.js to confirm it matches the pricing table from pricingEngine.js. Read ~/Documents/Voxight/src/routes/summary.js and ~/Documents/Voxight/src/services/pricingEngine.js in full. Verify: (1) summary.js calls calculatePrice() before the x402 middleware runs, (2) req.voxightPrice is set correctly based on audio duration (< 30min → 150000, 30-60min → 300000, > 60min → 600000), (3) the x402 middleware reads req.voxightPrice. If any of these are missing or wrong, fix them. Write findings to ~/Documents/Voxight/logs/pricing-audit-2026-03-28.md.",
+      "output": "Pricing integration confirmed or fixed. Audit report at ~/Documents/Voxight/logs/pricing-audit-2026-03-28.md.",
+      "agent": "coder",
+      "type": "code",
+      "task_type": "autonomous",
+      "priority": "P1",
+      "files_to_read": [
+        "~/Documents/Voxight/src/routes/summary.js",
+        "~/Documents/Voxight/src/services/pricingEngine.js",
+        "~/Documents/Voxight/src/middleware/x402Payment.js"
+      ],
+      "files_to_modify_if_needed": [
+        "~/Documents/Voxight/src/routes/summary.js",
+        "~/Documents/Voxight/src/middleware/x402Payment.js"
+      ],
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Audit the x402 dynamic pricing integration in summary.js to confirm it matches the pricing table from pricingEngine.js. Read ~/Documents/Voxight/src/routes/summary.js and ~/Documents/Voxight/src/services/pricingEngine.js in full. Verify: (1) summary.js calls calculatePrice() before the x402 middleware runs, (2) req.voxightPrice is set correctly based on audio duration (< 30min → 150000, 30-60min → 300000, > 60min → 600000), (3) the x402 middleware reads req.voxightPrice. If any of these are missing or wrong, fix them. Write findings to ~/Documents/Voxight/logs/pricing-audit-2026-03-28.md.",
+      "sprint_id": "sprint-VOXIGHT-A-01"
+    }
+  ]
+}

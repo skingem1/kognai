@@ -1,23 +1,23 @@
 {
-  "scan_date": "2026-03-23T07:00:00.392384+00:00",
+  "scan_date": "2026-04-01T15:01:45.752731+00:00",
   "target_url": "https://kognai.ai",
-  "geo_score": 20,
+  "geo_score": 15,
   "checks": [
     {
       "check": "robots_txt",
       "status": "error",
       "details": {},
-      "message": "Cannot fetch robots.txt: <urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      "message": "The read operation timed out"
     },
     {
       "check": "llms_txt",
       "status": "error",
-      "message": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      "message": "The read operation timed out"
     },
     {
       "check": "jsonld",
       "status": "error",
-      "message": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+      "message": "The read operation timed out"
     },
     {
       "check": "citable_blocks",
@@ -64,11 +64,12 @@
     },
     {
       "check": "brand_baseline",
-      "status": "pass",
+      "status": "warn",
       "next_scan_due": "2026-03-27T00:00:00Z",
-      "overdue": false
+      "overdue": true,
+      "message": "Brand scan overdue since 2026-03-27T00:00:00Z"
     }
   ],
   "previous_score": 20,
-  "score_delta": 0
+  "score_delta": -5
 }

@@ -1,8 +1,8 @@
 {
-  "last_backup": "2026-03-25T13:39:29.596Z",
+  "last_backup": "2026-04-02T01:00:00.426Z",
   "files_backed_up": 7,
-  "archive": "/Users/tarekmnif/.kognai-backups/kognai-backup-2026-03-25T13-39-29.tar.gz",
-  "size_mb": 0.06,
+  "archive": "/Users/tarekmnif/.kognai-backups/kognai-backup-2026-04-02T01-00-00.tar.gz",
+  "size_mb": 0.09,
   "backup_dir": "/Users/tarekmnif/.kognai-backups",
-  "kept_backups": 1
+  "kept_backups": 3
 }

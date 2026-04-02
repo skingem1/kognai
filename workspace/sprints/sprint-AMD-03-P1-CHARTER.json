@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "AMD-03-P1-CHARTER",
+      "description": "Phase 1. AMD-03 Constitutional Framework: draft Founding Charter v1.0 (Nine Articles, Five Immutable Laws, Khaldunian framework). Commit to workspace/constitution/founding-charter-v1.md. Read at inaugural X Space.",
+      "status": "rejected",
+      "agent": "ceo",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-AMD-03-P1-CHARTER",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Phase 1. AMD-03 Constitutional Framework: draft Founding Charter v1.0 (Nine Articles, Five Immutable Laws, Khaldunian framework). Commit to workspace/constitution/founding-charter-v1.md. Read at inaugural X Space."
+    }
+  ]
+}

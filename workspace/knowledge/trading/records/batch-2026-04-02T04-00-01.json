@@ -1,0 +1,26 @@
+{
+  "batch_id": "batch-2026-04-02T04-00-01",
+  "count": 1,
+  "records": [
+    {
+      "id": "cg-600b9dff1f40",
+      "timestamp": "2026-04-01T15:01:21.141Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "momentum",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/stakestone",
+      "title": "StakeStone (STO) 📈 174.3%",
+      "summary": "Trending on CoinGecko — rank #1",
+      "keywords": [
+        "stakestone",
+        "sto",
+        "crypto",
+        "defi"
+      ],
+      "confidence": 80,
+      "price_change_pct": 174.3,
+      "curated_by": "curator-trading"
+    }
+  ]
+}

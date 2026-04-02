@@ -1,0 +1,20 @@
+{
+  "tasks": [
+    {
+      "id": "INTEL-026-01",
+      "description": "Harvey: Write INTEL-026 — Trust Zones deep analysis for PACT Chamber 4 integration. Context: spengrah and Lyle (OpenClaw community) have built the Trust Zone protocol — an on-chain enforcement layer for agent-to-agent trust. It is deployed on Base mainnet with 539 tests passing. It uses ERC-7579 smart accounts. The integration point in Kognai is PACT Chamber 4 (Soul Handshake — the constitutional commitment exchange between agents). Read ~/Documents/Kognai/Master Documents/kognai_amd23_cerberus_airlock_protocol.docx (Cerberus/PACT spec). Read ~/Documents/Kognai/Master Documents/PACT\\ protocol\\ v1\\ spec.docx. Read ~/Documents/Kognai/Master Documents/kognai\\ pact\\ helixa\\ integration\\ internal.docx for the Chamber 4 Soul Handshake spec. Produce intel brief at workspace/intel/intel-026-trust-zones-pact-chamber4.md covering: (1) What Trust Zones is and how it works technically, (2) ERC-7579 smart accounts — what they enable, (3) How Trust Zones maps to PACT Chamber 4 (the Soul Handshake), (4) Integration design — what changes in PACT Chamber 4 if Trust Zones is adopted, (5) Risks and open questions, (6) Godman Decision Brief — recommended action: adopt Trust Zones for Chamber 4 enforcement, defer, or evaluate further. Also write eval-015-trust-zones-pact-chamber4.json to workspace/intel/eval-results/ with fields: eval_id, date, subject, recommendation (adopt/defer/evaluate), confidence (1-10), integration_complexity (low/medium/high), sprint_estimate (number of sprints), blocking_on.",
+      "output": "workspace/intel/intel-026-trust-zones-pact-chamber4.md",
+      "agent": "ceo",
+      "type": "research",
+      "task_type": "autonomous",
+      "priority": "P1",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Harvey: Write INTEL-026 — Trust Zones deep analysis for PACT Chamber 4 integration. Context: spengrah and Lyle (OpenClaw community) have built the Trust Zone protocol — an on-chain enforcement layer for agent-to-agent trust. It is deployed on Base mainnet with 539 tests passing. It uses ERC-7579 smart accounts. The integration point in Kognai is PACT Chamber 4 (Soul Handshake — the constitutional commitment exchange between agents). Read ~/Documents/Kognai/Master Documents/kognai_amd23_cerberus_airlock_protocol.docx (Cerberus/PACT spec). Read ~/Documents/Kognai/Master Documents/PACT\\ protocol\\ v1\\ spec.docx. Read ~/Documents/Kognai/Master Documents/kognai\\ pact\\ helixa\\ integration\\ internal.docx for the Chamber 4 Soul Handshake spec. Produce intel brief at workspace/intel/intel-026-trust-zones-pact-chamber4.md covering: (1) What Trust Zones is and how it works technically, (2) ERC-7579 smart accounts — what they enable, (3) How Trust Zones maps to PACT Chamber 4 (the Soul Handshake), (4) Integration design — what changes in PACT Chamber 4 if Trust Zones is adopted, (5) Risks and open questions, (6) Godman Decision Brief — recommended action: adopt Trust Zones for Chamber 4 enforcement, defer, or evaluate further. Also write eval-015-trust-zones-pact-chamber4.json to workspace/intel/eval-results/ with fields: eval_id, date, subject, recommendation (adopt/defer/evaluate), confidence (1-10), integration_complexity (low/medium/high), sprint_estimate (number of sprints), blocking_on.",
+      "sprint_id": "sprint-INTEL-026"
+    }
+  ]
+}

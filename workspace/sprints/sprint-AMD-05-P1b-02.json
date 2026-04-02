@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "AMD-05-P1b-02",
+      "description": "Phase 1. AMD-05 IRL Intelligence Layer: wire SEC Edgar RSS + gov regulatory feeds as Regulatory oracle. Output IntelligenceSignal[] with domain=regulatory.",
+      "status": "rejected",
+      "agent": "coder",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-AMD-05-P1b-02",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Phase 1. AMD-05 IRL Intelligence Layer: wire SEC Edgar RSS + gov regulatory feeds as Regulatory oracle. Output IntelligenceSignal[] with domain=regulatory."
+    }
+  ]
+}

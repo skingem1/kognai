@@ -1,0 +1,24 @@
+{
+  "name": "Smart Watch",
+  "brand": "BestBrand",
+  "price": "$199",
+  "description": "Top-rated product with thousands of verified reviews.",
+  "bulletPoints": [
+    "Premium Quality",
+    "Money-Back Guarantee",
+    "Fast Shipping"
+  ],
+  "images": [
+    "https://example.com/1.jpg",
+    "https://example.com/2.jpg",
+    "https://example.com/3.jpg"
+  ],
+  "rating": "4.8",
+  "reviewCount": "8,543 reviews",
+  "topReviews": [
+    "Amazing!",
+    "Life-changing."
+  ],
+  "category": "Consumer",
+  "url": "https://example.com"
+}

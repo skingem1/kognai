@@ -1,0 +1,40 @@
+{
+  "tasks": [
+    {
+      "id": "VOXIGHT-BLOCK-C-01",
+      "description": "Phase 1. Block C-01: scrape X posts via existing x-api or topic-radar.ts. Score sentiment. Tag by domain (AI/crypto/regulatory/market). Feed into Block D Oracle Synthesis.\n\nProject root: /Users/tarekmnif/Documents/Voxight\nTarget file to CREATE: /Users/tarekmnif/Documents/Voxight/src/scripts/scrape-posts.js\nThe script must: (1) use twitterApi.js fetchRecentSearch() to pull posts for each tracked domain (AI, crypto, regulation, web3), (2) score sentiment via Ollama qwen3:4b with a short prompt, (3) tag each post by domain, (4) upsert into Supabase posts table. Include deduplication by post_id. ES module syntax.",
+      "status": "done",
+      "agent": "coder",
+      "type": "create",
+      "priority": "P1",
+      "files_to_read": [
+        "/Users/tarekmnif/Documents/Voxight/src/services/postsStream.js",
+        "/Users/tarekmnif/Documents/Voxight/src/services/database.js",
+        "/Users/tarekmnif/Documents/Voxight/src/services/twitterApi.js"
+      ],
+      "deliverables": {
+        "code": [
+          "/Users/tarekmnif/Documents/Voxight/src/scripts/scrape-posts.js"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "sprint_id": "sprint-VOXIGHT-BLOCK-C-01",
+      "context": "Phase 1. Block C-01: scrape X posts via existing x-api or topic-radar.ts. Score sentiment. Tag by domain (AI/crypto/regulatory/market). Feed into Block D Oracle Synthesis.\n\nProject root: /Users/tarekmnif/Documents/Voxight\nTarget file to CREATE: /Users/tarekmnif/Documents/Voxight/src/scripts/scrape-posts.js\nThe script must: (1) use twitterApi.js fetchRecentSearch() to pull posts for each tracked domain (AI, crypto, regulation, web3), (2) score sentiment via Ollama qwen3:4b with a short prompt, (3) tag each post by domain, (4) upsert into Supabase posts table. Include deduplication by post_id. ES module syntax.",
+      "output": {
+        "files": [
+          "/Users/tarekmnif/Documents/Voxight/src/scripts/scrape-posts.js"
+        ],
+        "commit": "",
+        "model": "qwen3:14b",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 70,
+          "summary": "Dual-approved: Claude (70/100) + Codex (70/100)",
+          "issues": [],
+          "strengths": []
+        }
+      }
+    }
+  ]
+}

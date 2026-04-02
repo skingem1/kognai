@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": "AMD-15-P1-CORPUS",
+      "description": "Phase 1. AMD-15 LoRA Self-Improvement: data pipeline extracts approved CTO task completions (quality>=7) into structured training pairs. Output to vault/training/corpus-r1.jsonl. Min 100 task pairs before first LoRA cycle.",
+      "status": "rejected",
+      "agent": "coder",
+      "type": "code",
+      "priority": "P1",
+      "sprint_id": "sprint-AMD-15-P1-CORPUS",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Phase 1. AMD-15 LoRA Self-Improvement: data pipeline extracts approved CTO task completions (quality>=7) into structured training pairs. Output to vault/training/corpus-r1.jsonl. Min 100 task pairs before first LoRA cycle."
+    }
+  ]
+}

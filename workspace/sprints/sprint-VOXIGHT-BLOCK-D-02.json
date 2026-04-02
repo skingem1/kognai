@@ -1,0 +1,26 @@
+{
+  "tasks": [
+    {
+      "id": "VOXIGHT-BLOCK-D-02",
+      "description": "Phase 1. Block D-02: weekly Oracle report. Top 5 signals per domain. Purpose signal candidates. SCS-001 topic recommendations ranked by scs_relevance. Telegram delivery + JSONL archive.\n\nProject root: /Users/tarekmnif/Documents/Voxight\nTarget file to CREATE: /Users/tarekmnif/Documents/Voxight/src/scripts/weekly-oracle-report.js\nThe script generates a weekly Oracle intelligence report: (1) query top 5 signals per domain (AI, crypto, regulation, web3) by confidence, (2) list all purpose_signal_candidate=true signals, (3) list SCS-001 topic recommendations (top signals relevant to content creation), (4) write report as Markdown to /Users/tarekmnif/Documents/Voxight/reports/oracle/YYYY-MM-DD.md, (5) also store report JSON in Supabase for API access. ES module syntax.",
+      "status": "rejected",
+      "agent": "ceo",
+      "type": "create",
+      "priority": "P1",
+      "files_to_read": [
+        "/Users/tarekmnif/Documents/Voxight/src/services/oracleSignals.js",
+        "/Users/tarekmnif/Documents/Voxight/src/routes/signals.js",
+        "/Users/tarekmnif/Documents/Voxight/src/services/database.js"
+      ],
+      "deliverables": {
+        "code": [
+          "/Users/tarekmnif/Documents/Voxight/src/scripts/weekly-oracle-report.js"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "sprint_id": "sprint-VOXIGHT-BLOCK-D-02",
+      "context": "Phase 1. Block D-02: weekly Oracle report. Top 5 signals per domain. Purpose signal candidates. SCS-001 topic recommendations ranked by scs_relevance. Telegram delivery + JSONL archive.\n\nProject root: /Users/tarekmnif/Documents/Voxight\nTarget file to CREATE: /Users/tarekmnif/Documents/Voxight/src/scripts/weekly-oracle-report.js\nThe script generates a weekly Oracle intelligence report: (1) query top 5 signals per domain (AI, crypto, regulation, web3) by confidence, (2) list all purpose_signal_candidate=true signals, (3) list SCS-001 topic recommendations (top signals relevant to content creation), (4) write report as Markdown to /Users/tarekmnif/Documents/Voxight/reports/oracle/YYYY-MM-DD.md, (5) also store report JSON in Supabase for API access. ES module syntax."
+    }
+  ]
+}

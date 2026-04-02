@@ -450,43 +450,48 @@ def composite_lip_onto_portrait(
     ls_frame_bgr: np.ndarray,
     ls_lmk: np.ndarray,
     portrait_data: dict,
+    ls_L_ref_mean: float = None,
 ) -> np.ndarray:
-    """Composite animated lip from one LS frame onto the source portrait.
+    """Dynamic-mask delta-transfer compositing.
 
-    Pipeline (per frame):
-      a. Compute M_ls2crop via RANSAC affine (6 anchor landmarks)
-      b. Warp LS frame to align with portrait 512×512 crop space
-      c. Colour-match warped LS to portrait grade:
-           - L channel: global scale = mean(portrait lip L) / mean(LS lip L),
-             applied uniformly — preserves relative motion contrast across frames
-             while bringing overall brightness to match the dark portrait
-           - a/b channels: flat constant = boundary-ring mean a/b (surrounding
-             skin colour, not portrait lip pixels which retain warm tones even
-             in a blue-lit portrait — copying those caused orange artefacts)
-      d. Blend lip region using feathered mask: alpha * colour_matched + (1-alpha) * crop_512
-      e. Warp blended 512×512 back to portrait native space via M_c2o
-      f. Alpha-blend face region onto full-res portrait using face convex-hull mask
+    Root cause of "no motion" with static portrait mask:
+      The portrait lip polygon is built from the CLOSED-MOUTH face.
+      When the LS mouth opens, teeth/cavity pixels land BELOW the top lip —
+      OUTSIDE the static polygon boundary → alpha=0 → nothing blends.
+
+    Fix:
+      a. Compute LS landmarks in crop space (M_ls2crop applied to ls_lmk).
+      b. Build a PER-FRAME dynamic mask from those transformed landmarks —
+         the polygon expands vertically as the mouth opens.
+      c. Use UNION of portrait mask + dynamic mask as the blend region so
+         the animation covers the full open-mouth area.
+      d. Transfer luminance DELTA (additive, not multiplicative ratio) so
+         the effect is clearly visible on this very dark portrait:
+             delta = ls_L[px] − mean(ls_L[lip_region])
+             portrait_L_mod = portrait_L + delta * GAIN
+         Teeth:   delta ≈ +80 → portrait L +64 (clearly bright)
+         Cavity:  delta ≈ -90 → portrait L → near 0 (clearly dark)
+         Neutral: delta ≈  0  → portrait unchanged at rest
 
     Args:
         ls_frame_bgr:   (H, W, 3) uint8 BGR — one LatentSync output frame
-        ls_lmk:         (203, 2) float32 — LP landmarks detected in ls_frame
+        ls_lmk:         (N, 2) float32 — LP landmarks detected in ls_frame
         portrait_data:  dict from prepare_portrait()
 
     Returns:
         (ph, pw, 3) uint8 BGR composite frame
     """
-    crop_512  = portrait_data["crop_512"]
-    M_c2o     = portrait_data["M_c2o"]
-    crop_lmk  = portrait_data["lmk_crop"]
-    lip_mask  = portrait_data["lip_mask"]
-    lip_stats = portrait_data["lip_stats"]   # boundary-ring skin stats
-    ph        = portrait_data["ph"]
-    pw        = portrait_data["pw"]
+    DELTA_GAIN = 0.85   # scale factor on luminance delta — tune 0.7-1.0
 
-    # ── (a) Affine: LS space → 512×512 crop space
+    crop_lmk     = portrait_data["lmk_crop"]
+    lip_mask     = portrait_data["lip_mask"]   # static closed-mouth mask
+    M_c2o        = portrait_data["M_c2o"]
+    ph           = portrait_data["ph"]
+    pw           = portrait_data["pw"]
+    portrait_bgr = portrait_data["portrait_bgr"]
+
+    # ── (a) Warp LS frame to 512×512 crop space via RANSAC affine
     M_ls2crop = compute_ls_to_crop_affine(ls_lmk, crop_lmk)
-
-    # ── (b) Warp LS frame to crop coordinate space
     ls_warped = cv2.warpAffine(
         ls_frame_bgr,
         M_ls2crop,
@@ -495,88 +500,75 @@ def composite_lip_onto_portrait(
         borderMode=cv2.BORDER_REPLICATE,
     )
 
-    # ── (c) Colour-correct LS lip patch to match portrait face grade
-    #
-    # Target L  = boundary ring mean L (surrounding SKIN brightness).
-    # Using the portrait's own lip-region L is wrong: portrait lips are often
-    # slightly lighter than surrounding skin, so l_scale ends up too high and
-    # produces a visible bright blob.  Matching to the surrounding skin L makes
-    # the patch indistinguishable from the face at rest; mouth-open frames are
-    # still visible because the LS interior (dark cavity) is darker, and the
-    # relative frame-to-frame L variation is preserved as motion contrast.
-    #
-    # Target a/b = boundary ring mean a/b (surrounding skin chrominance).
-    # Portrait lip a/b are warm/reddish even in blue-lit portraits → orange blob.
-    # Using surrounding skin a/b eliminates that artefact.
-    ls_lab  = cv2.cvtColor(ls_warped, cv2.COLOR_BGR2LAB).astype(np.float32)
-    ls_L    = ls_lab[:, :, 0]
+    # ── (b) Dynamic lip mask from LS landmarks transformed to crop space
+    #   M_ls2crop maps LS pixels to crop space; same matrix maps LS points.
+    pts_h         = np.hstack([ls_lmk, np.ones((len(ls_lmk), 1))]).T  # (3, N)
+    ls_lmk_crop   = (M_ls2crop @ pts_h).T[:, :2]                       # (N, 2)
+    dyn_lip_mask  = build_polygon_mask(ls_lmk_crop, LIP_ALL, size=512,
+                                      dilate_px=6, blur_px=19)          # (512, 512) float32
 
-    lip_region   = lip_mask > 0.1
-    ls_lip_L     = float(np.maximum(ls_L[lip_region], 1.0).mean()) if lip_region.any() else 128.0
+    # Union: covers both static lip surface and expanded open-mouth area
+    blend_mask_crop = np.maximum(lip_mask, dyn_lip_mask)
 
-    skin_L = float(lip_stats[0][0])   # boundary ring mean L (surrounding skin brightness)
-    skin_a = float(lip_stats[1][0])   # boundary ring mean a
-    skin_b = float(lip_stats[2][0])   # boundary ring mean b
-    l_scale = float(np.clip(skin_L / max(ls_lip_L, 1.0), 0.02, 1.5))
+    # ── (c) Luminance delta in crop space
+    ls_L        = cv2.cvtColor(ls_warped, cv2.COLOR_BGR2LAB)[:, :, 0].astype(np.float32)
+    # Use a FIXED reference mean (from the first neutral frame) so that inter-frame
+    # L variation is NOT normalized away.  The original per-frame mean subtraction
+    # removed the motion signal: when the mouth shifted from L≈107 (closed) to
+    # L≈117 (open), subtracting the per-frame mean made delta≈0 for all frames.
+    # With a fixed reference, delta = current_frame_L − ref_L captures the actual shift.
+    if ls_L_ref_mean is not None:
+        ls_mean = ls_L_ref_mean
+    else:
+        lip_region  = blend_mask_crop > 0.1
+        ls_mean = max(float(ls_L[lip_region].mean()) if lip_region.any() else 128.0, 1.0)
+    delta_L     = (ls_L - ls_mean) * DELTA_GAIN   # signed float32
 
-    corrected_lab = ls_lab.copy()
-    corrected_lab[:, :, 0] = np.clip(ls_lab[:, :, 0] * l_scale, 0.0, 255.0)
-    corrected_lab[:, :, 1] = skin_a   # flat surrounding-skin a
-    corrected_lab[:, :, 2] = skin_b   # flat surrounding-skin b
-    ls_corrected = cv2.cvtColor(corrected_lab.astype(np.uint8), cv2.COLOR_LAB2BGR)
+    # ── (d) Project delta map + blend mask to portrait space
+    #   Encode delta: 0 → 128, range [-128, +127] → [0, 255]
+    #   BORDER_CONSTANT=128 = neutral delta of 0
+    delta_u8 = np.clip(delta_L + 128.0, 0, 255).astype(np.uint8)
+    delta_portrait = (
+        cv2.warpAffine(
+            delta_u8,
+            M_c2o[:2, :],
+            (pw, ph),
+            flags=cv2.INTER_LINEAR,
+            borderMode=cv2.BORDER_CONSTANT,
+            borderValue=128,
+        ).astype(np.float32)
+        - 128.0
+    )
 
-    # ── (d) Blend lip region onto source crop
-    #
-    # The feathered alpha blends ls_corrected with crop_512.  Outside the tight
-    # lip polygon, ls_corrected still contains LS face content at a different
-    # brightness than the portrait → the wide Gaussian feather zone shows a
-    # visible "haze" blob even when the lip colour is correct.
-    #
-    # Fix: replace ls_corrected pixels OUTSIDE the lip region with portrait
-    # pixels.  The feather zone then blends portrait-with-portrait → invisible.
-    # Only the interior of the lip polygon carries LS (colour-corrected) content.
-    inner = (lip_mask > 0.05).astype(np.float32)[:, :, np.newaxis]   # tight binary
-    ls_for_blend = (
-        inner       * ls_corrected.astype(np.float32) +
-        (1.0 - inner) * crop_512.astype(np.float32)
-    )   # float32, portrait outside lips, corrected LS inside
-
-    alpha = lip_mask[:, :, np.newaxis]            # (512, 512, 1) float32
-    blended_crop = (
-        alpha * ls_for_blend +
-        (1.0 - alpha) * crop_512.astype(np.float32)
-    ).astype(np.uint8)
-
-    # ── (e) Warp blended crop back to portrait native space
-    blended_on_canvas = cv2.warpAffine(
-        blended_crop,
+    blend_mask_portrait = cv2.warpAffine(
+        (blend_mask_crop * 255).astype(np.uint8),
         M_c2o[:2, :],
         (pw, ph),
         flags=cv2.INTER_LINEAR,
-        borderMode=cv2.BORDER_REPLICATE,
+        borderMode=cv2.BORDER_CONSTANT,
+        borderValue=0,
+    )
+    lip_alpha_p = (blend_mask_portrait.astype(np.float32) / 255.0)[:, :, np.newaxis]
+
+    # ── (e) Add delta to portrait L channel; a/b preserved (colour grade intact)
+    portrait_lab     = cv2.cvtColor(portrait_bgr, cv2.COLOR_BGR2LAB).astype(np.float32)
+    portrait_lab_mod = portrait_lab.copy()
+    portrait_lab_mod[:, :, 0] = np.clip(
+        portrait_lab[:, :, 0] + delta_portrait, 0.0, 255.0
+    )
+    modulated_portrait = cv2.cvtColor(
+        portrait_lab_mod.astype(np.uint8), cv2.COLOR_LAB2BGR
     )
 
-    # ── (f) Build a face-region blend mask from crop_lmk projected to portrait space
-    # Project crop landmarks to portrait space for face mask
-    face_hull_pts = _transform_pts(crop_lmk, M_c2o).astype(np.int32)
-    face_hull = cv2.convexHull(face_hull_pts.reshape(-1, 1, 2))
-    face_mask_hard = np.zeros((ph, pw), dtype=np.uint8)
-    cv2.fillConvexPoly(face_mask_hard, face_hull, 255)
-    # Feather the face boundary to avoid hard seam
-    face_mask_f = cv2.GaussianBlur(
-        face_mask_hard.astype(np.float32), (31, 31), 0
-    ) / 255.0
-    face_alpha = face_mask_f[:, :, np.newaxis]
-
-    # Build the portrait we want to write (will be populated by caller)
-    # Read original portrait (passed in via portrait_data key)
-    portrait_bgr = portrait_data["portrait_bgr"]
+    # ── (f) Blend only inside the dynamic mouth region
     result = (
-        face_alpha * blended_on_canvas.astype(np.float32) +
-        (1.0 - face_alpha) * portrait_bgr.astype(np.float32)
+        lip_alpha_p         * modulated_portrait.astype(np.float32) +
+        (1.0 - lip_alpha_p) * portrait_bgr.astype(np.float32)
     ).astype(np.uint8)
 
     return result
+
+
 
 
 # ─── 9. Load driving video ────────────────────────────────────────────────────
@@ -696,6 +688,25 @@ def write_composited_video(
     fourcc   = cv2.VideoWriter_fourcc(*"mp4v")
     writer   = cv2.VideoWriter(tmp_path, fourcc, fps, (pw, ph))
 
+    # ── Compute a fixed reference lip L mean from the first detected frame.
+    # This prevents the per-frame mean normalisation from zeroing out inter-frame motion.
+    ls_L_ref_mean = None
+    for _ri in range(min(5, len(frames_bgr))):
+        _rlmk = driving_landmarks[_ri]
+        if _rlmk is None:
+            continue
+        _M_ref = compute_ls_to_crop_affine(_rlmk, portrait_data["lmk_crop"])
+        _ls_ref_warped = cv2.warpAffine(
+            frames_bgr[_ri], _M_ref, (512, 512),
+            flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE,
+        )
+        _ref_L    = cv2.cvtColor(_ls_ref_warped, cv2.COLOR_BGR2LAB)[:, :, 0].astype(np.float32)
+        _ref_mask = portrait_data["lip_mask"] > 0.1
+        if _ref_mask.any():
+            ls_L_ref_mean = float(_ref_L[_ref_mask].mean())
+            break
+    print(f"[lp_warp] Reference lip L mean: {ls_L_ref_mean:.1f}")
+
     total = len(frames_bgr)
     print(f"[lp_warp] Compositing {total} frames onto portrait ({pw}×{ph}) …")
 
@@ -709,7 +720,7 @@ def write_composited_video(
             continue
 
         try:
-            out_bgr = composite_lip_onto_portrait(ls_frame_bgr, ls_lmk, portrait_data)
+            out_bgr = composite_lip_onto_portrait(ls_frame_bgr, ls_lmk, portrait_data, ls_L_ref_mean)
         except Exception as e:
             print(f"[lp_warp] WARNING: frame {i} composite failed ({e}), using portrait")
             out_bgr = portrait_data["portrait_bgr"]
