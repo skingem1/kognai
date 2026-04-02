@@ -11,6 +11,13 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src", "bin"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src",
+    "bin"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "bin"
+  ]
 }
