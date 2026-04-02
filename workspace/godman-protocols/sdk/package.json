@@ -1,6 +1,6 @@
 {
   "name": "@godman-protocols/sdk",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Unified SDK for all 7 Godman Protocols \u2014 PACT, LAX, SCORE, SIGNAL, SOUL, AMF, DRS",
   "type": "module",
   "main": "dist/index.js",

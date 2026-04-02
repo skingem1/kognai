@@ -1,7 +1,7 @@
 {
   "name": "@godman-protocols/soul",
-  "version": "0.2.0",
-  "description": "Constitutional Constraints and Safety \u2014 signed constitutions, kill switches, default-deny evaluation, audit trail",
+  "version": "0.3.0",
+  "description": "Sovereign Open Universal Layer \u2014 agent constitutional identity passport",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",

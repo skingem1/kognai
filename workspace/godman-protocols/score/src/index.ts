@@ -1,28 +1,46 @@
 /**
- * SCORE — Scoring and Reputation for Agent Outputs
- * Public API surface
- * @version 0.2.0
+ * SCORE — Sovereign Constitutional Output Rating Engine
+ * "How do agents know which endpoints are worth paying for? SCORE."
+ *
+ * Public API surface.
+ * @version 0.3.0
+ * @license Apache-2.0
  */
 
+// ---------------------------------------------------------------------------
 // Types
+// ---------------------------------------------------------------------------
+
 export type {
-  AgentId,
+  AgentDID,
   Timestamp,
-  Signature,
-  Criterion,
-  Rubric,
-  Evaluation,
-  Reputation,
-  AuditEntry,
+  Hash,
+  ACPDimension,
+  RubricDimension,
+  ScoreRubric,
+  DimensionScore,
+  ScoreResult,
+  ReputationSubmission,
+  ScoreConfig,
 } from './types.js';
 
+export { ACP_DIMENSIONS } from './types.js';
+
+// ---------------------------------------------------------------------------
 // Core implementation
+// ---------------------------------------------------------------------------
+
 export {
   createRubric,
-  evaluate,
-  calculateReputation,
-  createAuditEntry,
+  computeConstitutionalMultiplier,
+  scoreOutput,
+  buildReputationSubmission,
+  createDefaultACPRubric,
 } from './core.js';
 
+// ---------------------------------------------------------------------------
+// Protocol version
+// ---------------------------------------------------------------------------
+
 /** Protocol version constant */
-export const SCORE_VERSION = '0.2' as const;
+export const SCORE_VERSION = '0.3' as const;

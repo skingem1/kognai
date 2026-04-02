@@ -1,7 +1,7 @@
 {
   "name": "@godman-protocols/amf",
-  "version": "0.2.0",
-  "description": "Agent Message Format \u2014 signed, typed envelope format for inter-agent communication, transport-agnostic",
+  "version": "0.3.0",
+  "description": "Agent Memory Format \u2014 six-vector structured memory extraction",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",

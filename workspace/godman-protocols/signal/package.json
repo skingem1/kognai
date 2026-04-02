@@ -1,7 +1,7 @@
 {
   "name": "@godman-protocols/signal",
-  "version": "0.2.0",
-  "description": "Event Bus and Pub/Sub for Agent Swarms \u2014 typed events, topic-glob routing, idempotent delivery, delivery receipts",
+  "version": "0.3.0",
+  "description": "Sovereign Intelligence for Governing Neural Agent Learning \u2014 reward signals",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",

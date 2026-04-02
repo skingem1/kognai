@@ -1,7 +1,7 @@
 {
   "name": "@godman-protocols/pact",
-  "version": "0.2.0",
-  "description": "Protocol for Agent Coordination and Trust — the missing coordination layer for autonomous AI agents",
+  "version": "0.3.0",
+  "description": "Protocol for Agent Constitutional Trust \u2014 five-chamber trust and negotiation",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",

@@ -1,34 +1,10 @@
 /**
- * SOUL — Constitutional Constraints and Safety
- * Public API surface
- * @version 0.2.0
- *
- * SOUL is the lowest protocol layer. No other protocol overrides it.
- * Kill switches are non-negotiable and cannot be delegated away.
+ * SOUL — Sovereign Open Universal Layer
+ * "One layer. Every chain. Every model. SOUL."
+ * @version 0.3.0
  */
 
-// Types
-export type {
-  AgentId,
-  Timestamp,
-  Signature,
-  EnforcementLevel,
-  ConstraintAction,
-  Constraint,
-  KillSwitch,
-  Constitution,
-  EvaluationResult,
-  AuditEntry,
-} from './types.js';
-
-// Engine
-export {
-  createConstitution,
-  signConstitution,
-  evaluateAction,
-  checkKillSwitches,
-  createAudit,
-} from './engine.js';
+export * from './types.js';
 
 /** Protocol version constant */
-export const SOUL_VERSION = '0.2' as const;
+export const SOUL_VERSION = '0.3' as const;

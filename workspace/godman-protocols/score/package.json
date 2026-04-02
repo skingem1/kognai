@@ -1,7 +1,7 @@
 {
   "name": "@godman-protocols/score",
-  "version": "0.2.0",
-  "description": "Scoring and Reputation for Agent Outputs \u2014 weighted rubric evaluation and reputation tracking for AI agents",
+  "version": "0.3.0",
+  "description": "Sovereign Constitutional Output Rating Engine \u2014 self-scoring rubric",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",

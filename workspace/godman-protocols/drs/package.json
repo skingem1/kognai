@@ -1,7 +1,7 @@
 {
   "name": "@godman-protocols/drs",
-  "version": "0.2.0",
-  "description": "Dynamic Resource Scheduling \u2014 allocate, preempt, and expire compute resources across AI agent swarms",
+  "version": "0.3.0",
+  "description": "Deal Receipt Standard \u2014 on-chain transaction receipts via EAS",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",

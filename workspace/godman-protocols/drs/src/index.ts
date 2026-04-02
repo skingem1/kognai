@@ -1,25 +1,10 @@
 /**
- * DRS — Dynamic Resource Scheduling
- * Public API surface
- * @version 0.2.0
+ * DRS — Deal Receipt Standard
+ * "Every deal needs a receipt. DRS is that receipt."
+ * @version 0.3.0
  */
 
-// Types
-export type {
-  AgentId,
-  Timestamp,
-  ResourcePoolId,
-  ResourcePool,
-  AllocationRequest,
-  Allocation,
-  PreemptionEvent,
-} from './types.js';
-
-// Scheduler
-export {
-  ResourceScheduler,
-  defaultScheduler,
-} from './scheduler.js';
+export * from './types.js';
 
 /** Protocol version constant */
-export const DRS_VERSION = '0.2' as const;
+export const DRS_VERSION = '0.3' as const;

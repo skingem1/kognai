@@ -1,29 +1,10 @@
 /**
- * SIGNAL — Event Bus and Pub/Sub for Agent Swarms
- * Public API surface
- * @version 0.2.0
+ * SIGNAL — Sovereign Intelligence for Governing Neural Agent Learning
+ * "The swarm teaches itself."
+ * @version 0.3.0
  */
 
-// Types
-export type {
-  AgentId,
-  Timestamp,
-  Signature,
-  EventId,
-  SubscriptionId,
-  Event,
-  Subscription,
-  TransportConfig,
-  DeliveryReceipt,
-} from './types.js';
-
-// Event bus
-export {
-  EventBus,
-  defaultBus,
-  createEvent,
-  topicMatches,
-} from './bus.js';
+export * from './types.js';
 
 /** Protocol version constant */
-export const SIGNAL_VERSION = '0.2' as const;
+export const SIGNAL_VERSION = '0.3' as const;
