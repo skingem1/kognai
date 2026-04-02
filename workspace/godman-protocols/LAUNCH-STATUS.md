@@ -1,5 +1,5 @@
 # Godman Protocols — Launch Status
-*Generated: 2026-03-26T05:12:32.187Z | 19d until April 14 launch*
+*Updated: 2026-04-01 | 13d until April 14 launch*
 
 ## Protocol Versions
 - ✅ `@godman-protocols/pact` v0.2.0
@@ -9,19 +9,19 @@
 - ✅ `@godman-protocols/soul` v0.2.0
 - ✅ `@godman-protocols/amf` v0.2.0
 - ✅ `@godman-protocols/drs` v0.2.0
-- 📦 `@godman-protocols/sdk` v0.2.0
+- ✅ `@godman-protocols/sdk` v0.2.0
 
 ## npm Registry
-- ❌ `@godman-protocols/pact` — NOT PUBLISHED
-- ❌ `@godman-protocols/lax` — NOT PUBLISHED
-- ❌ `@godman-protocols/score` — NOT PUBLISHED
-- ❌ `@godman-protocols/signal` — NOT PUBLISHED
-- ❌ `@godman-protocols/soul` — NOT PUBLISHED
-- ❌ `@godman-protocols/amf` — NOT PUBLISHED
-- ❌ `@godman-protocols/drs` — NOT PUBLISHED
-- ❌ `@godman-protocols/sdk` — NOT PUBLISHED
+- ✅ `@godman-protocols/pact` v0.2.0 — PUBLISHED 2026-04-01
+- ✅ `@godman-protocols/lax` v0.2.0 — PUBLISHED 2026-04-01
+- ✅ `@godman-protocols/score` v0.2.0 — PUBLISHED 2026-04-01
+- ✅ `@godman-protocols/signal` v0.2.0 — PUBLISHED 2026-04-01
+- ✅ `@godman-protocols/soul` v0.2.0 — PUBLISHED 2026-04-01
+- ✅ `@godman-protocols/amf` v0.2.0 — PUBLISHED 2026-04-01
+- ✅ `@godman-protocols/drs` v0.2.0 — PUBLISHED 2026-04-01
+- ✅ `@godman-protocols/sdk` v0.2.0 — PUBLISHED 2026-04-01
 
-**Publish status: 0/8 packages published**
+**Publish status: 8/8 packages published**
 
 ## Launch Assets
 - ✅ PACT demo mp4
@@ -35,5 +35,10 @@
 - ✅ X megathread (10 tweets)
 - ✅ godman-launch-day.sh
 
+## Remaining
+- ⬜ ClaWHub publisher account + listing submission
+- ⬜ GitHub repos public (currently private)
+- ⬜ PACT Week 1 launch (April 14)
+
 ## Overall Status
-🔴 **NOT READY** — 0/8 published, builds ok
+🟢 **READY** — 8/8 published, builds ok, demos recorded, X thread prepared
