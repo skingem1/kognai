@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1503",
+  "title": "INTEL-030 — Block Intelligence Model: DRI Field + Morning Briefing + Enterprise Pitch",
+  "description": "INTEL-030 action items from Jack/Sequoia Block essay. Formalize DRI field in sprint JSON, build Harvey morning briefing foundation, update TICKET-034 Enterprise Deploy pitch. Source: INTEL-030.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "intel030-01",
+      "title": "Add DRI field to sprint JSON schema and brief generator",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "scripts/generate-sprint-brief.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "context": "Add a 'dri' (Directly Responsible Individual) field to the sprint JSON format. In the brief generator script (scripts/generate-sprint-brief.ts), ensure every generated sprint brief includes:\n\n1. A 'dri' field in the sprint JSON (string, agent name — e.g. 'MacGyver', 'Harvey', 'Sherlock')\n2. A 'dri_ownership_days' field (number, default 90 — per Block's DRI model)\n3. A 'resource_pull_authority' field (boolean, default true — DRI can spawn subagents)\n\nThis maps Block's three-role model to Kognai: ICs = named agents, DRIs = sprint-assigned leads, Player-Coaches = Harvey.\n\nIf generate-sprint-brief.ts does not exist, look for the nearest equivalent in scripts/ that generates sprint JSON files and modify that instead."
+    },
+    {
+      "id": "intel030-02",
+      "title": "Create Harvey morning briefing foundation script",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "scripts/harvey-morning-briefing.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "context": "Create scripts/harvey-morning-briefing.ts — Harvey's intelligence layer morning briefing generator.\n\nThis script runs daily at 08:30 and composes:\n1. Read the last 24h of sprint results from workspace/sprints/*.json (filter by date)\n2. Count: tasks completed, tasks rejected, CTO proposals, supervisor conflicts\n3. Read pending items from workspace/sprint-queue.json (top 10 by priority)\n4. Read any new daily report from reports/swarm-runs/\n5. Check PM2 process status by reading ecosystem.config.js\n6. Compose a structured briefing JSON:\n\n{\n  date: string,\n  sprint_velocity: { completed: number, rejected: number, pending: number },\n  top_priority_items: Array<{id: string, title: string, priority: string}>,\n  system_health: { pm2_online: number, pm2_stopped: number },\n  intelligence_signals: string[], // from latest INTEL briefs\n  recommended_actions: string[] // Harvey's top 3 recommendations\n}\n\nWrite output to workspace/briefings/YYYY-MM-DD-morning.json.\n\nUse only Node built-ins (fs, path). No LLM calls — this is a data aggregation script, not a generation script."
+    },
+    {
+      "id": "intel030-03",
+      "title": "Write FORMAT-04 Kerat script: Block thesis mapped to Kognai",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "workspace/scs001/scripts/format04-block-intelligence.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "context": "Write a FORMAT-04 Kerat video script in markdown. The script maps Jack Dorsey's Block Intelligence essay to Kognai's architecture.\n\nStructure (15-20 second reel format):\n- HOOK (2s): 'A $40B company just announced what we built for $200.'\n- SETUP (5s): Block is replacing hierarchy with an intelligence. Four layers: Capabilities, World Model, Intelligence Layer, Interfaces.\n- PAYOFF (5s): Kognai has the same four layers: Godman Protocols, Book of Code + KSL, Harvey + ClawRouter, Citizen Node + Invoica.\n- CTA (3s): 'The model compounds with every sprint. Follow to see it live.'\n\nKeep language conversational, Grade 7 reading level. No jargon. This is a TikTok/Reels script, not an essay."
+    }
+  ]
+}

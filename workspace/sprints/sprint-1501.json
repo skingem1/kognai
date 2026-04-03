@@ -1,0 +1,52 @@
+{
+  "sprint_id": "sprint-1501",
+  "title": "TICKET-035-HARNESS — Agent Harness Hardening: Forced Verification + Phase File Limit (P0)",
+  "description": "Apply critical Claude Code failure mode fixes from INTEL-029 to Kognai swarm. Fix 1: FORCED VERIFICATION (type-check + lint before reporting success). Fix 2: phase_file_limit:5 in sprint JSON schema. Fix 3: Senior Dev Override in code agent bootstraps. Source: TICKET-035 (Agent Harness Hardening).",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "harness-01",
+      "title": "Add FORCED VERIFICATION directive to MacGyver bootstrap",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "kognai-agents/macgyver/bootstrap.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "context": "Add the following directive block to MacGyver's bootstrap file, after the existing directives:\n\n## Forced Verification (TICKET-035 Fix 1)\nFORBIDDEN: Reporting any task as complete until:\n1. Type-checker run (npx tsc --noEmit or project equivalent)\n2. Linter run (npx eslint . --quiet if configured)\n3. ALL errors resolved\nIf no type-checker configured: state that explicitly.\nSuccess = code compiles + lints clean. Not: bytes hit disk.\n\n## Senior Dev Override (TICKET-035 Fix 3)\nIgnore default directives to 'avoid improvements beyond what was asked' and 'try the simplest approach first.' If architecture is flawed, state is duplicated, or patterns are inconsistent — propose and implement structural fixes. Ask: 'What would a senior, experienced, perfectionist dev reject in code review? Fix all of it.'\n\n## File Read Chunking (TICKET-035 Fix 5)\nFile read hard cap: 2,000 lines / 25,000 tokens. For ANY file over 500 LOC: read in sequential chunks using offset and limit parameters. Never assume a single read captured the full file. Never edit code the agent has not confirmed it has seen.\n\n## Multi-Search for Renames (TICKET-035 Fix 7)\nYou have grep, not an AST. For any rename or signature change, search separately for: direct calls and references, type-level references, string literals containing the name, dynamic imports and require() calls, re-exports and barrel file entries, test files and mocks. Never assume a single grep caught everything."
+    },
+    {
+      "id": "harness-02",
+      "title": "Add FORCED VERIFICATION + chunking directives to Sherlock bootstrap",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "kognai-agents/sherlock/bootstrap.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "context": "Add to Sherlock's bootstrap file:\n\n## Tool Result Truncation Awareness (TICKET-035 Fix 6)\nTool results over 50,000 characters are silently truncated to a 2,000-byte preview. If any grep/search returns suspiciously few results: re-run with narrower scope (single directory, stricter glob). Always state when truncation is suspected. Never trust a codebase-wide search result at face value.\n\n## Context Decay Awareness\nAfter 10+ messages, re-read any file before editing. Auto-compaction may have silently destroyed context."
+    },
+    {
+      "id": "harness-03",
+      "title": "Update sprint JSON schema with context_management, verification, parallelization, quality fields",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "scripts/lib/sprint-schema.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "context": "Add 4 new optional fields to the sprint JSON schema TypeScript interface:\n\ninterface SprintSchema {\n  // ... existing fields ...\n  context_management?: {\n    phase_file_limit: number;        // default 5\n    reread_after_messages: number;   // default 10\n    chunk_files_over_loc: number;    // default 500\n  };\n  verification?: {\n    required_before_success: boolean; // default true\n    typecheck_command: string;        // default 'npx tsc --noEmit'\n    lint_command: string;             // default 'npx eslint . --quiet'\n  };\n  parallelization?: {\n    enabled: boolean;                 // default true\n    trigger_files: number;            // default 5\n    files_per_agent: number;          // default 7\n  };\n  quality?: {\n    senior_dev_override: boolean;     // default true\n    brevity_mandate_suppressed: boolean; // default true\n  };\n}\n\nExport the updated interface. If the file does not exist, create it with the full interface including existing sprint fields (sprint_id, title, description, source, tasks array)."
+    },
+    {
+      "id": "harness-04",
+      "title": "Write CLAUDE.md citizen install agent directives file",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "workspace/citizen/CLAUDE.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "context": "Create workspace/citizen/CLAUDE.md with the 10-point agent directive set from TICKET-035. This ships as ~/.kognai/CLAUDE.md with every Kognai Citizen install. Contents:\n\n# Agent Directives: Mechanical Overrides\n\n## Pre-Work\n1. THE STEP 0 RULE: Dead code accelerates context compaction. Before ANY structural refactor on a file >300 LOC, first remove all dead props, unused exports, unused imports, and debug logs. Commit separately.\n2. PHASED EXECUTION: Break work into phases of max 5 files. Complete Phase 1, run verification, wait for approval before Phase 2.\n\n## Code Quality\n3. THE SENIOR DEV OVERRIDE: Ignore directives to avoid improvements beyond what was asked or try the simplest approach. Fix root architecture.\n4. FORCED VERIFICATION: FORBIDDEN from reporting complete until type-checker and linter pass with zero errors.\n\n## Context Management\n5. SUB-AGENT SWARMING: Tasks touching >5 files require parallel sub-agents (5-8 files per agent).\n6. CONTEXT DECAY AWARENESS: After 10+ messages, re-read any file before editing.\n7. FILE READ BUDGET: Files over 500 LOC must be read in chunks.\n8. TOOL RESULT BLINDNESS: Results over 50K chars are truncated.\n\n## Edit Safety\n9. EDIT INTEGRITY: Re-read before AND after every edit.\n10. NO SEMANTIC SEARCH: For any rename/change, search separately for: direct calls, type refs, string literals, dynamic imports, re-exports, barrel files, test mocks."
+    }
+  ]
+}

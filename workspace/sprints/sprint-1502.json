@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1502",
+  "title": "TICKET-036-WS1 — Gemma 4 26B MoE Benchmark on Mac Mini (ClawRouter Tier Evaluation)",
+  "description": "TICKET-036 Workstream 1: Benchmark Gemma 4 26B MoE against qwen3:14b on Mac Mini M4 for ClawRouter POWER tier. Three representative agent tasks (dev/QA/audit). Measure tokens/sec, TTFT, peak memory, output quality. Test function calling and system instruction adherence. Source: TICKET-036.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "gemma4-bench-01",
+      "title": "Create Gemma 4 vs Qwen3:14b benchmark harness script",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "scripts/benchmarks/gemma4-vs-qwen-benchmark.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "context": "Create a TypeScript benchmark script that tests two Ollama models (gemma4:26b and qwen3:14b) on three tasks. The script should:\n\n1. DEV TASK: Send a prompt asking each model to generate a Python FastAPI endpoint with structured error handling. Score output quality 1-5 on completeness, correctness, code style.\n2. QA TASK: Send a deliberately buggy Python script and ask each model to find and fix all bugs. Score detection accuracy and fix quality 1-5.\n3. AUDIT TASK: Send a regulatory document excerpt and ask each model to extract structured JSON data. Score accuracy and JSON compliance 1-5.\n\nFor each task, measure:\n- tokens_per_second (output tokens / generation time)\n- time_to_first_token_ms\n- peak_memory_mb (query Ollama /api/ps endpoint)\n- output_quality (placeholder for human rating)\n\nUse the Ollama HTTP API at localhost:11434. Store results as JSON in workspace/benchmarks/gemma4-benchmark-results.json.\n\nDo NOT use any npm packages beyond node built-ins (fetch, fs). Keep the script self-contained."
+    },
+    {
+      "id": "gemma4-bench-02",
+      "title": "Create function calling compliance test for Gemma 4 vs Qwen",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "scripts/benchmarks/gemma4-function-calling-test.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "context": "Create a TypeScript script that tests function calling (tool use) compliance for Gemma 4 26B MoE and qwen3:14b via Ollama API.\n\nDefine 5 test cases:\n1. Simple single tool call (get_weather with city param)\n2. Multi-step tool call (search_db then format_result)\n3. Structured JSON output (generate PACT offer schema)\n4. System instruction adherence (agent persona + constraints, check if model follows)\n5. x402 payment header generation (produce valid x402 JSON)\n\nFor each test, check:\n- Did the model produce valid JSON tool calls?\n- Did it follow the schema exactly?\n- How many retries needed to get valid output?\n\nStore results in workspace/benchmarks/gemma4-function-calling-results.json with pass/fail per test and compliance rate percentage."
+    },
+    {
+      "id": "gemma4-bench-03",
+      "title": "Create ClawRouter tier mapping document based on benchmark results",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "workspace/benchmarks/clawrouter-gemma4-tier-mapping.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "context": "Create a markdown document template for the Gemma 4 ClawRouter tier mapping decision. Structure:\n\n# ClawRouter Tier Mapping — Gemma 4 Evaluation\n## Date: 2026-04-03\n## Models Tested: gemma4:26b, qwen3:14b\n\n### Benchmark Results Summary\n(Table: Model | Task | Tokens/sec | TTFT | Memory | Quality)\n\n### Function Calling Compliance\n(Table: Model | Test | Pass/Fail | Retries)\n\n### Tier Assignment Decision\n| Tier | Current | Proposed | Decision Rationale |\n|------|---------|----------|-------------------|\n| NANO | qwen3:4b | Gemma 4 E4B (deferred) | |\n| LOCAL | qwen3:14b | TBD | |\n| POWER | qwen3:14b (think) | TBD | |\n| POWER-BURST | (new) | rvLLM serverless (TICKET-035) | |\n| CLOUD-ORCHESTRATION | Claude Sonnet | No change | |\n| CLOUD-EXECUTION | (new) | Qwen 3.6-Plus API (TICKET-036 WS7) | |\n| APEX | Claude Opus | No change | |\n\n### Vault Compliance Check\n- ACP scoring: LOCAL only\n- Codebook operations: LOCAL only\n- Financial reasoning: LOCAL only\n- PACT credentials: LOCAL only\n\n### Next Steps\n- Workstream 2: Apply tier mapping to clawrouter-v2.ts config\n- Workstream 3: LoRA feasibility assessment"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1505",
+  "title": "SCS001-A — Batch Faceless Reels: Hook Formula Table Generator",
+  "description": "SCS001-A addendum implementation. Build the batch content generation pipeline that produces 100-row hook formula tables for Canva Bulk Create. Uses SCS001 Part 3's 9 hook formulas. Output: structured CSV/JSON table ready for Canva import. Source: SCS001-A Batch Production Pipeline.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "scs001a-01",
+      "title": "Create batch hook formula table generator script",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "scripts/scs001/batch-hook-generator.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "context": "Create scripts/scs001/batch-hook-generator.ts — generates a 100-row content table for Canva Bulk Create.\n\nThe script should:\n1. Accept a --count parameter (default 100) and --output parameter (default workspace/scs001/batch-output.csv)\n2. Use ClawRouter to call a local LLM (qwen3:14b via Ollama at localhost:11434) with the SCS001-A batch generation prompt\n3. The prompt template (embedded in the script):\n   - Generate {count} rows with columns: TOPIC, HOOK_LINE, PAYOFF_LINE\n   - Rotate evenly across 9 hook formulas: Curiosity Gap, Contrarian, Specific Number, Relatable Pain, Reveal Tease, Direct Address, Bold Claim, Story Start, Challenge\n   - Content verticals: AI agents, building with AI, sovereign technology, agent economics, digital identity, creator tools, future of work\n   - Grade 7 reading level, conversational\n4. Parse the LLM output into a structured array of {topic, hook_line, payoff_line, hook_formula}\n5. Write output as CSV with headers: Topic,Hook Line,Payoff Line,Hook Formula\n6. Also write JSON version to workspace/scs001/batch-output.json for analytics\n\nHandle LLM output parsing robustly — the model may output markdown tables, pipe-delimited, or numbered lists. Parse all common formats.\n\nDo NOT use any external npm packages. Use Node built-ins only (fs, path, http/https for Ollama API)."
+    },
+    {
+      "id": "scs001a-02",
+      "title": "Create hook formula performance tracker",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "scripts/scs001/hook-formula-tracker.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "context": "Create scripts/scs001/hook-formula-tracker.ts — tracks which of the 9 hook formulas perform best.\n\nThe script should:\n1. Read workspace/scs001/batch-output.json to get the generated hooks with formula tags\n2. Accept manual metric input via --add-metrics flag: --video-id, --formula, --retention-3s (0-100), --completion-rate (0-100), --comment-rate (float)\n3. Store metrics in workspace/scs001/hook-formula-metrics.json:\n   {\n     formulas: {\n       'curiosity_gap': { count: number, avg_retention_3s: number, avg_completion: number, avg_comment_rate: number },\n       'contrarian': { ... },\n       // ... all 9 formulas\n     },\n     last_updated: string\n   }\n4. With --report flag, print a ranked table of formulas by avg_retention_3s descending\n5. With --recommend flag, output the top 3 formulas to weight more heavily in next batch generation\n\nThis feeds SCS001 Part 12's iteration loop: batch volume generates performance data, performance data sharpens the next batch."
+    }
+  ]
+}

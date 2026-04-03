@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1506",
+  "title": "TICKET-036-WS7 — Qwen 3.6-Plus API: ClawRouter CLOUD-EXECUTION Tier",
+  "description": "TICKET-036 Workstream 7: Wire Qwen 3.6-Plus API as CLOUD-EXECUTION tier in ClawRouter. Split CLOUD into CLOUD-ORCHESTRATION (Claude Sonnet) and CLOUD-EXECUTION (Qwen 3.6-Plus). 10x cheaper for coding tasks, 1M context window. Source: TICKET-036 WS7.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "qwen36-01",
+      "title": "Add CLOUD-EXECUTION tier to ClawRouter v2 config",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "scripts/lib/clawrouter-v2.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "context": "In scripts/lib/clawrouter-v2.ts, add a new CLOUD-EXECUTION tier between the existing CLOUD and APEX tiers.\n\nChanges needed:\n1. Add 'CLOUD-EXECUTION' to the tier enum/type (alongside NANO, LOCAL, POWER, CLOUD, APEX)\n2. Rename existing 'CLOUD' to 'CLOUD-ORCHESTRATION' in the tier definitions\n3. Add routing config for CLOUD-EXECUTION:\n   - model: 'qwen-plus-latest' (Alibaba Cloud Model Studio model ID)\n   - provider: 'qwen-api'\n   - base_url: process.env.QWEN_API_URL || 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1'\n   - api_key: process.env.QWEN_API_KEY\n   - max_tokens: 8192\n   - temperature: 0.7\n4. Add routing logic: tasks with type 'code_generation', 'agentic_coding', 'repo_engineering', or 'bulk_dev' route to CLOUD-EXECUTION. Everything else stays CLOUD-ORCHESTRATION.\n5. Add new env vars to the config loader: QWEN_API_KEY, QWEN_API_URL\n6. Vault rule: CLOUD-EXECUTION must NEVER receive sensitive operations (acp_scoring, codebook, financial_reasoning, pact_credentials)\n\nPreserve all existing routing logic. This is an ADDITIVE change — no existing routes should break."
+    },
+    {
+      "id": "qwen36-02",
+      "title": "Create Qwen 3.6-Plus API benchmark script",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "scripts/benchmarks/qwen36plus-benchmark.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "context": "Create scripts/benchmarks/qwen36plus-benchmark.ts that benchmarks Qwen 3.6-Plus API against Claude Sonnet on 3 coding tasks.\n\nThe script should:\n1. Use OpenAI-compatible API format for Qwen (base URL from env: QWEN_API_URL or default to dashscope-intl.aliyuncs.com)\n2. Run 3 benchmark tasks:\n   a. REPO-LEVEL: Given a codebase context (~10K tokens), implement a new feature with tests. Compare code quality.\n   b. DEBUG: Given a buggy Python module with test failures, fix all bugs. Compare fix accuracy.\n   c. STRUCTURED OUTPUT: Generate a PACT offer JSON schema from natural language spec. Compare schema compliance.\n3. For each task, measure: latency_ms, output_tokens, cost_estimate_usd (based on $0.29/M input, $1.65/M output), quality_score (placeholder 1-5)\n4. Run same tasks against Claude Sonnet via Anthropic API for comparison\n5. Output results to workspace/benchmarks/qwen36plus-benchmark-results.json\n6. Include cost comparison table: monthly projected spend at 50 sessions/week\n\nRequires env vars: QWEN_API_KEY, ANTHROPIC_API_KEY. Skip Claude tests if ANTHROPIC_API_KEY not set."
+    },
+    {
+      "id": "qwen36-03",
+      "title": "Create ClawRouter CLOUD tier routing rules document",
+      "type": "feature",
+      "task_type": "autonomous",
+      "task_target": "workspace/routing/cloud-tier-routing-rules.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "context": "Create workspace/routing/cloud-tier-routing-rules.md documenting the CLOUD tier split:\n\n# ClawRouter CLOUD Tier Routing Rules\n## Date: 2026-04-03\n## Source: TICKET-036 Workstream 7\n\n### CLOUD-ORCHESTRATION (Claude Sonnet)\nRoutes here:\n- CEO-level planning and multi-agent coordination\n- PACT protocol negotiations (Chambers 1-5)\n- User-facing responses and content generation\n- Constitutional reasoning and governance decisions\n- ACP scoring and codebook operations (vault-restricted)\n\n### CLOUD-EXECUTION (Qwen 3.6-Plus API)\nRoutes here:\n- Code generation (new files, new features)\n- Agentic coding (plan → code → test → iterate loops)\n- Repository-level engineering (multi-file changes)\n- Bulk development tasks (batch file updates)\n- Debug and fix tasks\n\n### Vault Boundary\nNEVER routes to CLOUD-EXECUTION:\n- ACP scoring\n- Codebook operations\n- Financial reasoning with real data\n- PACT credential handling\n- Wallet key operations\n\n### Cost Model\n| Tier | Model | Input $/M | Output $/M | Monthly Est (50 sessions/week) |\n|------|-------|-----------|------------|-------------------------------|\n| CLOUD-ORCHESTRATION | Claude Sonnet | ~$3.00 | ~$15.00 | ~$XXX |\n| CLOUD-EXECUTION | Qwen 3.6-Plus | ~$0.29 | ~$1.65 | ~$XXX |\n| Savings | | | | ~XX% reduction |"
+    }
+  ]
+}
