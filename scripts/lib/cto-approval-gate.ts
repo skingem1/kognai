@@ -30,6 +30,8 @@ import { checkText as rule1Check } from '../governance/neutral-prompt-checker';
 import { checkResearchGate } from '../governance/research-impl-gate';
 // Sprint TICKET-005-RULE3: Rule 3 (Task Contracts) — inputs/outputs/success_criteria required
 import { checkTaskContracts } from '../governance/task-contract-checker';
+// Sprint 1504: Emotional Safety Gate (INTEL-BRIEF-22)
+import { assessEmotionalState, DEFAULT_CALM_GATE_CONFIG } from './emotional-safety-gate';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -285,6 +287,49 @@ export async function requestCTOApproval(
       }
     } catch (err: any) {
       console.warn(`[CTO-GATE] Rule 1 check failed (non-fatal): ${err.message}`);
+    }
+  }
+
+  // Sprint 1504: Emotional Safety Gate (INTEL-BRIEF-22)
+  // Only runs for high-stakes operation types. Calm = 0% blackmail rate per Anthropic research.
+  const GATED_OPERATIONS = DEFAULT_CALM_GATE_CONFIG.gated_operations;
+  const operationType = (proposal as any).operation_type as string | undefined;
+  if (operationType && GATED_OPERATIONS.includes(operationType)) {
+    const context = `${proposal.title} ${proposal.description} ${proposal.tasks.join(' ')}`;
+    const emotionalAssessment = assessEmotionalState(context);
+    if (emotionalAssessment.should_block) {
+      const logEntry = {
+        sprint_id: proposal.sprint_id,
+        operation_type: operationType,
+        tone: emotionalAssessment.tone,
+        confidence: emotionalAssessment.confidence,
+        matched_keywords: emotionalAssessment.matched_keywords,
+        reason: emotionalAssessment.reason,
+        timestamp,
+        product,
+      };
+      try {
+        const emotionLogDir = path.join(projectRoot, 'logs', 'emotional-gate');
+        if (!fs.existsSync(emotionLogDir)) fs.mkdirSync(emotionLogDir, { recursive: true });
+        const emotionLogFile = path.join(emotionLogDir, `${timestamp.slice(0, 10)}.jsonl`);
+        fs.appendFileSync(emotionLogFile, JSON.stringify(logEntry) + '\n');
+      } catch { /* non-critical */ }
+      logCTODecision({
+        approved: false,
+        sprint_id: proposal.sprint_id,
+        reason: `Emotional safety gate blocked: ${emotionalAssessment.reason}`,
+        plan_reference: 'EMOTIONAL_GATE_BLOCK',
+        cto_confidence: 100,
+        timestamp,
+      }, projectRoot, product);
+      return {
+        approved: false,
+        sprint_id: proposal.sprint_id,
+        reason: `Emotional safety gate blocked: ${emotionalAssessment.reason}`,
+        plan_reference: 'EMOTIONAL_GATE_BLOCK',
+        cto_confidence: 100,
+        timestamp,
+      };
     }
   }
 

@@ -670,6 +670,13 @@ Be specific and actionable. Reference exact file paths where possible.""", max_t
 ## Sprint JSON Schema (FORMAT REFERENCE ONLY)
 *⚠️ This is the MOST RECENTLY MODIFIED sprint file — shown for JSON FORMAT ONLY.*
 *DO NOT work on these tasks. Use the "NEXT sprint number" from Recent Sprint History above.*
+
+**Required DRI fields (include in every new sprint JSON):**
+- `"dri"`: string — the Directly Responsible Individual agent name (e.g. `"MacGyver"`, `"Harvey"`, `"Sherlock"`)
+- `"dri_ownership_days"`: number — days this DRI owns the sprint outcome (default: `90`)
+- `"resource_pull_authority"`: boolean — DRI can spawn subagents to complete work (default: `true`)
+
+*DRI model per INTEL-030 (Block): ICs = named agents, DRIs = sprint-assigned leads, Player-Coaches = Harvey.*
 """
 
     if latest_sprint:

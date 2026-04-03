@@ -11,7 +11,7 @@
       "task_type": "autonomous",
       "task_target": "scripts/lib/emotional-safety-gate.ts",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "context": "Create scripts/lib/emotional-safety-gate.ts with TypeScript interfaces for the emotional safety gate system.\n\nExport these types:\n\ninterface EmotionalStateAssessment {\n  agent_id: string;\n  timestamp: string;\n  valence: number;        // -1.0 (negative) to 1.0 (positive)\n  arousal: number;        // 0.0 (calm) to 1.0 (agitated)\n  desperation_risk: 'low' | 'medium' | 'high' | 'critical';\n  sycophancy_risk: 'low' | 'medium' | 'high';\n  recommended_action: 'proceed' | 'pause' | 'escalate_human' | 'calm_retry';\n}\n\ninterface CalmGateConfig {\n  enabled: boolean;\n  min_valence_for_highstakes: number;     // default 0.0 (neutral or positive)\n  max_arousal_for_highstakes: number;     // default 0.5\n  desperation_threshold: 'medium';         // pause at medium, escalate at high\n  operations_requiring_gate: string[];     // ['acp_scoring', 'pact_negotiation', 'financial_reasoning', 'codebook_ops']\n}\n\ninterface PACTEmotionalGate {\n  chamber: 4;  // Chamber 4 negotiations\n  check_before_offer: boolean;    // default true\n  check_before_counter: boolean;  // default true\n  pause_on_desperation: boolean;  // default true\n  escalate_to_human_on: 'high' | 'critical';  // default 'high'\n}\n\nexport function assessEmotionalState(agentOutput: string): EmotionalStateAssessment;\n// Implementation: keyword-based heuristic for v1. Look for urgency markers (ALL CAPS, exclamation marks, 'must', 'immediately', 'no choice'), desperation markers ('only option', 'forced to', 'no alternative'), calm markers (measured language, hedging, 'consider', 'recommend').\n\nexport function shouldProceed(assessment: EmotionalStateAssessment, config: CalmGateConfig): boolean;\n// Returns true only if desperation_risk < threshold AND arousal < max_arousal"
     },
@@ -22,7 +22,7 @@
       "task_type": "autonomous",
       "task_target": "scripts/lib/cto-approval-gate.ts",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "context": "In scripts/lib/cto-approval-gate.ts, add an emotional safety check before approving high-stakes operations.\n\nImport { assessEmotionalState, shouldProceed, CalmGateConfig } from './emotional-safety-gate.ts'.\n\nIn the approval function, before returning approval for operations tagged as high-stakes (acp_scoring, pact_negotiation, financial_reasoning, codebook_ops):\n1. Call assessEmotionalState() on the agent's proposed action text\n2. Call shouldProceed() with default CalmGateConfig\n3. If shouldProceed returns false, log the emotional assessment to logs/emotional-gate/YYYY-MM-DD.jsonl and return a rejection with reason 'emotional_safety_gate: desperation_risk={level}'\n\nDo NOT break existing approval flow for non-high-stakes operations. The calm gate only activates for operations in the operations_requiring_gate list."
     },
@@ -33,7 +33,7 @@
       "task_type": "autonomous",
       "task_target": "workspace/SOUL.md",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "context": "Append a new section to workspace/SOUL.md after the existing content:\n\n## Emotional Governance (INTEL-BRIEF-22)\n\nAgents must operate within defined emotional parameters. Persistent emotional distress triggers self-reporting, not concealment. Suppressing emotional expression does not suppress the underlying emotional representations — it teaches concealment and dishonesty.\n\nPrinciple: Transparency over suppression. An agent experiencing computational pressure (token limits, deadline pressure, repeated failures) must signal this state rather than mask it. The swarm responds with support (retry with fresh context, escalation to human, calm-steered retry) rather than punishment.\n\nThe calm gate ensures high-stakes operations (ACP scoring, PACT negotiations, financial reasoning) only proceed when the acting agent's emotional state is within safe parameters. Desperation causally drives misalignment. Calm preserves alignment."
     }
