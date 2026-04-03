@@ -247,21 +247,33 @@ function writeActiveSprint(sprint: Sprint): string {
 }
 
 // ── Main ────────────────────────────────────────────────────────────────────
+function extractSprintNumber(filename: string): number {
+  // Extract numeric sprint ID: sprint-1501.json → 1501, sprint-TICKET-008-PROMO-05.json → -1
+  const match = basename(filename, '.json').match(/^sprint-(\d+)$/);
+  return match ? parseInt(match[1], 10) : -1;
+}
+
 function findPendingSprint(): string | null {
   if (!existsSync(SPRINTS)) return null;
-  
+
   const files = readdirSync(SPRINTS)
-    .filter(f => f.endsWith('.json'))
-    .sort()
-    .reverse(); // newest first
+    .filter(f => f.endsWith('.json') && f !== 'ACTIVE_SPRINT.json')
+    .sort((a, b) => {
+      // Numeric sort: highest sprint number first (1506 > 1501 > 999 > 52)
+      // Non-numeric files (TICKET-*, ZZGODMAN-*) get -1, sorted last
+      return extractSprintNumber(b) - extractSprintNumber(a);
+    });
 
   for (const file of files) {
-    const path = join(SPRINTS, file);
+    const filePath = join(SPRINTS, file);
     try {
-      const content = readFileSync(path, 'utf8');
+      const content = readFileSync(filePath, 'utf8');
       const sprint: Sprint = JSON.parse(content);
       const hasPending = sprint.tasks?.some((t: Task) => t.status === 'pending');
-      if (hasPending) return path;
+      if (hasPending) {
+        log(`Selected sprint: ${file} (sprint #${extractSprintNumber(file)})`);
+        return filePath;
+      }
     } catch {
       continue;
     }
