@@ -1,157 +1,157 @@
 {
-  "run_id": "scs001-2026-04-02T05-00-01-323Z",
+  "run_id": "scs001-2026-04-03T10-00-02-093Z",
   "mode": "live",
-  "started_at": "2026-04-02T05:00:01.323Z",
-  "completed_at": "2026-04-02T05:13:49.124Z",
-  "total_elapsed_ms": 827801,
+  "started_at": "2026-04-03T10:00:02.093Z",
+  "completed_at": "2026-04-03T10:11:38.690Z",
+  "total_elapsed_ms": 696597,
   "stages": [
     {
       "stage": "1-trend",
       "agent": "TrendAgent",
-      "count": 11,
-      "elapsed_ms": 624,
+      "count": 13,
+      "elapsed_ms": 609,
       "status": "ok"
     },
     {
       "stage": "2-discovery",
       "agent": "DiscoveryAgent",
-      "count": 64,
-      "elapsed_ms": 1044,
+      "count": 44,
+      "elapsed_ms": 402,
       "status": "ok"
     },
     {
       "stage": "2.5-viral-tiktok",
       "agent": "ViralTikTokDownloader",
       "count": 0,
-      "elapsed_ms": 0,
+      "elapsed_ms": 1,
       "status": "empty"
     },
     {
       "stage": "4-insight",
       "agent": "InsightAgent (mock-from-clips)",
-      "count": 64,
+      "count": 44,
       "elapsed_ms": 0,
       "status": "ok"
     },
     {
       "stage": "5-script",
       "agent": "ScriptAgent",
-      "count": 64,
-      "elapsed_ms": 438456,
+      "count": 44,
+      "elapsed_ms": 421586,
       "status": "ok"
     },
     {
       "stage": "5.5-score",
       "agent": "ScriptScorer",
-      "count": 48,
+      "count": 34,
       "elapsed_ms": 2,
       "status": "ok"
     },
     {
       "stage": "6-validate",
       "agent": "ScriptValidator",
-      "count": 48,
+      "count": 34,
       "elapsed_ms": 0,
       "status": "ok"
     },
     {
       "stage": "6-editing",
       "agent": "EditingAgent",
-      "count": 48,
-      "elapsed_ms": 73203,
+      "count": 34,
+      "elapsed_ms": 53129,
       "status": "ok"
     },
     {
       "stage": "6.5-avatar",
       "agent": "AvatarPresenter",
       "count": 0,
-      "elapsed_ms": 44445,
+      "elapsed_ms": 25458,
       "status": "empty"
     },
     {
       "stage": "6.8-tts-mix",
       "agent": "TTS+AudioMix",
-      "count": 48,
-      "elapsed_ms": 133182,
+      "count": 34,
+      "elapsed_ms": 96415,
       "status": "ok"
     },
     {
       "stage": "7-caption",
       "agent": "CaptionAgent",
-      "count": 48,
-      "elapsed_ms": 2158,
+      "count": 34,
+      "elapsed_ms": 1774,
       "status": "ok"
     },
     {
       "stage": "7.5-animated-captions",
       "agent": "JSON2Video",
       "count": 0,
-      "elapsed_ms": 76848,
+      "elapsed_ms": 56294,
       "status": "empty"
     },
     {
       "stage": "8-qc",
       "agent": "QCAgent",
-      "count": 48,
-      "elapsed_ms": 4,
+      "count": 34,
+      "elapsed_ms": 7,
       "status": "ok"
     },
     {
       "stage": "9-experiment",
       "agent": "ExperimentTracker",
-      "count": 48,
-      "elapsed_ms": 5,
+      "count": 34,
+      "elapsed_ms": 6,
       "status": "ok"
     },
     {
       "stage": "9-publishing",
       "agent": "PublishingAgent",
-      "count": 48,
-      "elapsed_ms": 57799,
+      "count": 34,
+      "elapsed_ms": 40880,
       "status": "ok"
     },
     {
       "stage": "10-analytics",
       "agent": "AnalyticsAgent",
-      "count": 48,
-      "elapsed_ms": 18,
+      "count": 34,
+      "elapsed_ms": 20,
       "status": "ok"
     },
     {
       "stage": "11-flywheel",
       "agent": "ContentFlywheelAgent",
-      "count": 64,
-      "elapsed_ms": 5,
+      "count": 48,
+      "elapsed_ms": 6,
       "status": "ok"
     },
     {
       "stage": "12-failure-library",
       "agent": "FailureLibraryAgent",
-      "count": 16,
-      "elapsed_ms": 4,
+      "count": 11,
+      "elapsed_ms": 6,
       "status": "ok"
     }
   ],
   "summary": {
-    "topics_found": 11,
-    "clips_discovered": 64,
-    "clips_qualified": 64,
-    "insights_generated": 64,
-    "scripts_produced": 64,
-    "scripts_scored": 64,
-    "scripts_filtered": 16,
+    "topics_found": 13,
+    "clips_discovered": 44,
+    "clips_qualified": 44,
+    "insights_generated": 44,
+    "scripts_produced": 44,
+    "scripts_scored": 44,
+    "scripts_filtered": 10,
     "scripts_validation_skipped": 0,
-    "videos_edited": 48,
-    "videos_captioned": 48,
-    "qc_passed": 48,
+    "videos_edited": 34,
+    "videos_captioned": 34,
+    "qc_passed": 34,
     "qc_failed": 0,
     "qc_failures": [],
-    "published": 48,
-    "viral": 16,
-    "performing": 16,
-    "failure_library": 16,
-    "flywheel_derivatives": 64,
-    "failure_entries": 16,
+    "published": 34,
+    "viral": 12,
+    "performing": 11,
+    "failure_library": 11,
+    "flywheel_derivatives": 48,
+    "failure_entries": 11,
     "clips_deduplicated": 0,
     "platforms_targeted": 9,
     "publish_method": "tiktok-direct"

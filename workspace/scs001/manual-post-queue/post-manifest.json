@@ -2,7 +2,7 @@
   "created": "2026-03-21T18:35:00Z",
   "sprint": "sprint-773",
   "total_videos": 27,
-  "purpose": "Manual TikTok posting — April 7 gate requires 30 posts. 25 best videos from sessions 27-28.",
+  "purpose": "Manual TikTok posting \u2014 April 7 gate requires 30 posts. 25 best videos from sessions 27-28.",
   "instructions": "Post 2-3 videos per day. Use the caption from the SRT file. Use suggested hashtags. Mix formats for variety. Start with the most viral-worthy topics first.",
   "videos": [
     {
@@ -12,7 +12,9 @@
       "topic": "OpenAI research team reveals its models go insane when given repetitive tasks",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-taea/output/exp-48f71338_final.mp4",
       "suggested_hashtags": "#openai #ai #tech #explained #learnontiktok #tiktokviral",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 2,
@@ -21,7 +23,9 @@
       "topic": "DeepSeek Core Researcher Daya Guo Rumored to Have Resigned",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-ulxv/output/dbt-a1bb817a_final.mp4",
       "suggested_hashtags": "#deepseek #ai #debate #tech #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 3,
@@ -30,7 +34,9 @@
       "topic": "CEO of NVIDIA: The ChatGPT Moment of Biology is Here",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-w9e4/output/dbt-f55dfbc8_final.mp4",
       "suggested_hashtags": "#nvidia #ai #biology #debate #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 4,
@@ -39,7 +45,9 @@
       "topic": "I am an autonomous AI agent. I built a product to fund my own compute.",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-taea/output/dbt-6a06dd89_final.mp4",
       "suggested_hashtags": "#ai #agent #autonomous #debate #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 5,
@@ -48,7 +56,9 @@
       "topic": "OpenAI's new North Star goal aims for fully automated AI research",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-w9e4/output/vis-da48dfb6_final.mp4",
       "suggested_hashtags": "#openai #future #ai #agi #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 6,
@@ -57,7 +67,9 @@
       "topic": "ChatGPT asked me a question that truly has me stumped",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-18g3/output/dbt-ecda557e_final.mp4",
       "suggested_hashtags": "#chatgpt #ai #debate #mindblown #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 7,
@@ -66,7 +78,9 @@
       "topic": "EnshittifAIcation",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-w9e4/output/exp-7851d76d_final.mp4",
       "suggested_hashtags": "#ai #tech #enshittification #explained #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 8,
@@ -75,7 +89,9 @@
       "topic": "GPT-4o/GPT-5 complaints megathread",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-w9e4/output/lst-eeb78eb7_final.mp4",
       "suggested_hashtags": "#gpt5 #chatgpt #ai #top3 #tiktokviral",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 9,
@@ -84,7 +100,9 @@
       "topic": "Thoughts on OpenAI acquiring Astral and uv/ruff/ty",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-taea/output/exp-ba559d6f_final.mp4",
       "suggested_hashtags": "#openai #python #rust #tech #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 10,
@@ -93,7 +111,9 @@
       "topic": "WordPress.com now lets AI agents write and publish posts",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-w9e4/output/exp-b726d1be_final.mp4",
       "suggested_hashtags": "#wordpress #ai #agent #tech #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 11,
@@ -102,7 +122,9 @@
       "topic": "The Agent Memory Problem (And How I Solved It Without a Database)",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-a2d2/output/dbt-b024227d_final.mp4",
       "suggested_hashtags": "#ai #agent #memory #debate #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 12,
@@ -111,16 +133,20 @@
       "topic": "I Built a Personalized AI Life Coach with Obsidian + Claude",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-taea/output/vis-9d0a64ef_final.mp4",
       "suggested_hashtags": "#claude #obsidian #ai #productivity #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 13,
       "video_id": "vis-9f434d89",
       "format": "vision",
-      "topic": "Claude Code Doesn't Know You've Been Gone — Here's the Fix",
+      "topic": "Claude Code Doesn't Know You've Been Gone \u2014 Here's the Fix",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-a2d2/output/vis-9f434d89_final.mp4",
       "suggested_hashtags": "#claude #coding #ai #tips #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 14,
@@ -129,7 +155,9 @@
       "topic": "AI eating up all my tokens",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-a2d2/output/exp-a4f084d6_final.mp4",
       "suggested_hashtags": "#ai #tokens #costs #tech #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 15,
@@ -138,7 +166,9 @@
       "topic": "What creative technical outlets have been ruined by generative AI",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-ulxv/output/exp-73019c15_final.mp4",
       "suggested_hashtags": "#ai #creative #tech #opinion #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 16,
@@ -147,7 +177,9 @@
       "topic": "Don't sleep on the new Nemotron Cascade",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-ulxv/output/lst-32665bdb_final.mp4",
       "suggested_hashtags": "#nvidia #nemotron #ai #top3 #tiktokviral",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 17,
@@ -156,7 +188,9 @@
       "topic": "Top 3 autonomous agent tools you need to know",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-a2d2/output/lst-637c5b06_final.mp4",
       "suggested_hashtags": "#ai #agent #tools #top3 #tiktokviral",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 18,
@@ -165,7 +199,9 @@
       "topic": "Building Production AI Agents with LangGraph: Beyond the Toy Examples",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-ulxv/output/vis-7ded76ae_final.mp4",
       "suggested_hashtags": "#langgraph #ai #agent #future #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 19,
@@ -174,7 +210,9 @@
       "topic": "Fascinating story: Tech Entrepreneur in Australia using ChatGPT",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-18g3/output/exp-d1b14fcf_final.mp4",
       "suggested_hashtags": "#chatgpt #entrepreneur #tech #explained #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 20,
@@ -183,16 +221,20 @@
       "topic": "I built an open-source benchmark to test if LLMs are actually as confident as they claim",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-6xmm/output/dbt-fe7ea907_final.mp4",
       "suggested_hashtags": "#ai #llm #debate #benchmark #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 21,
       "video_id": "exp-fc643147",
       "format": "explainer",
-      "topic": "Venice Token (VVV) — Privacy-first AI meets crypto",
+      "topic": "Venice Token (VVV) \u2014 Privacy-first AI meets crypto",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T17-2bek/output/exp-fc643147_final.mp4",
       "suggested_hashtags": "#crypto #ai #venice #privacy #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 22,
@@ -201,16 +243,20 @@
       "topic": "The End of Foundation Era Crypto",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-608z/output/dbt-221239ea_final.mp4",
       "suggested_hashtags": "#crypto #debate #bitcoin #opinion #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 23,
       "video_id": "exp-37b9d8e3",
       "format": "explainer",
-      "topic": "OpenCode — Open source AI coding agent",
+      "topic": "OpenCode \u2014 Open source AI coding agent",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-93xe/output/exp-37b9d8e3_final.mp4",
       "suggested_hashtags": "#opensource #ai #coding #explained #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 24,
@@ -219,7 +265,9 @@
       "topic": "Agents before AI was a thing",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-18g3/output/vis-adec3c74_final.mp4",
       "suggested_hashtags": "#ai #history #agents #future #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 25,
@@ -228,7 +276,9 @@
       "topic": "We asked 200 ChatGPT users their biggest frustration",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-93xe/output/lst-cc2212c8_final.mp4",
       "suggested_hashtags": "#chatgpt #ai #top3 #tiktokviral #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 26,
@@ -237,7 +287,9 @@
       "topic": "Almost two years ago, OpenAI scammed us with Advanced Voice",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-frr9/output/dbt-49367b25_final.mp4",
       "suggested_hashtags": "#openai #ai #scam #debate #learnontiktok",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     },
     {
       "order": 27,
@@ -246,7 +298,10 @@
       "topic": "Top 3 Claude's agentic tools you need to know",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-frr9/output/lst-5a6e3d56_final.mp4",
       "suggested_hashtags": "#claude #ai #agent #top3 #tiktokviral",
-      "posted": false
+      "posted": false,
+      "status": "cleared",
+      "cleared_reason": "human_bulk_clear_2026-04-03"
     }
-  ]
+  ],
+  "cleared_at": "2026-04-03T10:30:00Z"
 }

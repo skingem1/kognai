@@ -1,0 +1,21 @@
+{
+  "title": "AI Agents Taking Over Junior Dev Jobs?",
+  "full_monologue": "**AI agents are replacing junior developers.** This isn’t sci-fi — it’s happening now. Tools like AI code generators and automated testing are streamlining tasks that once took months to learn. Junior devs are finding themselves outpaced by machines that write clean code, debug faster, and scale effortlessly. But here’s the twist: this isn’t about job loss — it’s about evolution. The future belongs to developers who adapt, learn AI workflows, and focus on complex problem-solving. So, what skills will define the next generation of coders? Comment below and let’s discuss.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "a group of people working together in a modern office, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a person typing rapidly on a keyboard with glowing keys, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

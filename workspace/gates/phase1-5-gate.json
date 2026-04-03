@@ -1,9 +1,9 @@
 {
   "gate": "phase1-5-tiktok-kill-switch",
-  "date": "2026-04-02",
-  "generated_at": "2026-04-02T14:00:00.346Z",
+  "date": "2026-04-03",
+  "generated_at": "2026-04-03T14:00:00.291Z",
   "deadline": "2026-04-07",
-  "days_remaining": 5,
+  "days_remaining": 4,
   "urgency": "PASSED",
   "urgency_signal": "Gate criteria met — PROCEED",
   "pace_needed": 0,

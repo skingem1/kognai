@@ -1,8 +1,8 @@
 {
   "gate": "phase1-phase2a",
-  "generated_at": "2026-04-02T04:56:00.412Z",
+  "generated_at": "2026-04-03T04:56:00.603Z",
   "deadline": "2026-04-11",
-  "days_remaining": 9,
+  "days_remaining": 8,
   "criteria": [
     {
       "id": "phase15_gate",
@@ -26,7 +26,7 @@
       "id": "pipeline_ok",
       "name": "Pipeline Operational (<48h since last run)",
       "pass": true,
-      "details": "PASS — last run scs001-2026-04-01T19-00-01-087Z, completed 2026-04-01T19:14:26.648Z (10h ago)"
+      "details": "PASS — last run scs001-2026-04-02T19-00-01-386Z, completed 2026-04-02T19:11:43.678Z (10h ago)"
     },
     {
       "id": "bot_token",

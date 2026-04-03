@@ -1,46 +1,100 @@
 {
-  "run_id": "de0e18f4-bef3-4a4d-9f1d-fede70eeade0",
+  "run_id": "a21a4afa-8969-4d21-a867-45e656e9199e",
   "project": "kognai",
   "sprint_file": "/Users/tarekmnif/kognai/logs/sprint-runner-active.json",
-  "started_at": "2026-04-02T08:00:00.828Z",
-  "finished_at": "2026-04-02T08:00:04.785Z",
-  "duration_seconds": 4,
+  "started_at": "2026-04-03T15:00:00.903Z",
+  "finished_at": "2026-04-03T15:04:10.652Z",
+  "duration_seconds": 250,
   "git_branch": "main",
-  "git_head_before": "5b2c514e",
-  "git_head_after": "5b2c514e",
+  "git_head_before": "c6983aec",
+  "git_head_after": "285ec505",
   "sovereign_mode": false,
   "summary": {
-    "total_tasks": 1,
-    "done": 0,
-    "rejected": 1,
+    "total_tasks": 3,
+    "done": 3,
+    "rejected": 0,
     "skipped": 0,
-    "approval_rate": 0,
-    "total_tokens": 0,
-    "supervisor_conflicts": 0,
+    "approval_rate": 1,
+    "total_tokens": 8679,
+    "supervisor_conflicts": 3,
     "ceo_escalations": 0
   },
   "models_used": {
+    "claude-sonnet-4-6": {
+      "calls": 2,
+      "tokens": 0
+    },
     "qwen3:14b": {
       "calls": 1,
-      "tokens": 0
+      "tokens": 8679
     }
   },
-  "total_cost_usd": 0,
+  "total_cost_usd": 0.0043,
   "tasks": [
     {
-      "task_id": "sprint-1452-01",
-      "title": "SCS-001 Phase 1 — YouTube analytics collector (CTO-rejected)",
+      "task_id": "qwen36-01",
+      "title": "Add CLOUD-EXECUTION tier to ClawRouter v2 config",
       "type": "feature",
-      "task_target": "workspace/sprints/sprint-sprint-1452-output.md",
-      "status": "rejected",
+      "task_target": "cloud-code",
+      "status": "done",
+      "attempts": 1,
+      "model_used": "claude-sonnet-4-6",
+      "provider": "",
+      "tokens_total": 0,
+      "duration_seconds": 5,
+      "files_written": [
+        "scripts/lib/clawrouter-v2.ts"
+      ],
+      "review": {
+        "verdict": "APPROVED",
+        "score": 0,
+        "strengths": []
+      },
+      "error": null,
+      "rejection_reason": null
+    },
+    {
+      "task_id": "qwen36-02",
+      "title": "Create Qwen 3.6-Plus API benchmark script",
+      "type": "feature",
+      "task_target": "cloud-code",
+      "status": "done",
       "attempts": 1,
       "model_used": "qwen3:14b",
       "provider": "",
+      "tokens_total": 8679,
+      "duration_seconds": 209,
+      "files_written": [
+        "scripts/benchmarks/qwen36plus-benchmark.ts"
+      ],
+      "review": {
+        "verdict": "APPROVED",
+        "score": 0,
+        "strengths": []
+      },
+      "error": null,
+      "rejection_reason": null
+    },
+    {
+      "task_id": "qwen36-03",
+      "title": "Create ClawRouter CLOUD tier routing rules document",
+      "type": "feature",
+      "task_target": "cloud-code",
+      "status": "done",
+      "attempts": 1,
+      "model_used": "claude-sonnet-4-6",
+      "provider": "",
       "tokens_total": 0,
-      "duration_seconds": 0,
-      "files_written": [],
-      "review": null,
-      "error": "No files produced",
+      "duration_seconds": 30,
+      "files_written": [
+        "workspace/routing/cloud-tier-routing-rules.md"
+      ],
+      "review": {
+        "verdict": "APPROVED",
+        "score": 0,
+        "strengths": []
+      },
+      "error": null,
       "rejection_reason": null
     }
   ]

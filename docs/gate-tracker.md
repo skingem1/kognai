@@ -1,16 +1,16 @@
 # GATE TRACKER
-*Updated: 2026-04-02 05:08 (auto by scripts/update-gate-tracker.ts)*
+*Updated: 2026-04-03 05:08 (auto by scripts/update-gate-tracker.ts)*
 
 # GATE TRACKER
 # ═══════════════════════════════════════════════
 
 | Gate | Target Date | Status | Result | Notes |
 |---|---|---|---|---|
-| Phase 0 → Phase 1 | Mar 13 | [x] PASS | PROCEED | Pipeline operational · 1923 videos generated |
-| Phase 1.5 Decision | Apr 7 | [x] PASS | PROCEED | 161/30 posts · 796 total views | avg 5 views/post · 5d remaining |
-| Godman Protocols Launch | Apr 14 | [x] READY | LAUNCH | 7/7 protocols built · 12d remaining |
-| Phase 1 → Phase 2A | Apr 11 | [x] PASS | PROCEED | 4/4 criteria · 9d remaining |
-| Achiri Lite Alpha Launch | Apr 25 | [ ] Pending | | Waitlist: 1 · 23d remaining |
+| Phase 0 → Phase 1 | Mar 13 | [x] PASS | PROCEED | Pipeline operational · 2100 videos generated |
+| Phase 1.5 Decision | Apr 7 | [x] PASS | PROCEED | 161/30 posts · 796 total views | avg 5 views/post · 4d remaining |
+| Godman Protocols Launch | Apr 14 | [x] READY | LAUNCH | 7/7 protocols built · 11d remaining |
+| Phase 1 → Phase 2A | Apr 11 | [x] PASS | PROCEED | 4/4 criteria · 8d remaining |
+| Achiri Lite Alpha Launch | Apr 25 | [ ] Pending | | Waitlist: 1 · 22d remaining |
 | Lite Alpha Gate (voice works?) | May 1 | [ ] Pending | | |
 | Full Alpha Gate (memory works?) | May 14 | [ ] Pending | | |
 | Phase 2A → Phase 2B | May 30 | [ ] Pending | | |

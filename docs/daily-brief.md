@@ -1,17 +1,16 @@
-# KOGNAI DAILY BRIEF — 2026-04-02
-## Thursday, April 2, 2026
+# KOGNAI DAILY BRIEF — 2026-04-03
+## Friday, April 3, 2026
 
-**Generated:** 2026-04-02 06:45
+**Generated:** 2026-04-03 06:45
 **Active Sprint:** sprint-1480
-**Hours Today:** 4h
-**Midday Block:** NO (Tuesday/Thursday)
+**Hours Today:** 6h
+**Midday Block:** YES (12:00-14:00)
 
 ---
 
 ## LIVE STATUS (auto-generated)
-**Gate:** 🟢 PASSED — 161/30 posts · 0 needed · 5d to Apr 7
-**Godman launch:** 12d — April 14  |  **Achiri alpha:** 23d — April 25
-**Next queued sprint:** Sprint TICKET-017-AGENTTAX-04 — MacGyver TICKET-017-AGENTTAX-04 — BOND v0.2 tax_line field in Recurring Deal Sch
+**Gate:** 🟢 PASSED — 161/30 posts · 0 needed · 4d to Apr 7
+**Godman launch:** 11d — April 14  |  **Achiri alpha:** 22d — April 25
 
 **Blockers:**
 - 🟠 **Gate urgency: PASSED** — posting pace needs attention
@@ -23,38 +22,29 @@
 | Block | Time | Available |
 |-------|------|-----------|
 | AM | 07:00–09:30 | YES |
-| MID | 12:00–14:00 | NO |
+| MID | 12:00–14:00 | YES |
 | PM | 18:00–19:30 | YES |
 
 ---
 
 ## TODAY'S TASKS
 
-### Thursday, April 2
+### Friday, April 3
 
 **AM 07:00–09:30**
-- [ ] ⚠️ **Post 1 TikTok video(s) today** (161/30 · 5d left · /today for top picks)
-- [ ] 🛠️ **Sprint TICKET-017-AGENTTAX-04: MacGyver TICKET-017-AGENTTAX-04 — BOND v0.2 tax_line field in Recurrin…** — /sprint to view queue
+- [ ] ⚠️ **Post 1 TikTok video(s) today** (161/30 · 4d left · /today for top picks)
+- [ ] 🔄 Queue empty — run /replenish to generate next sprint
 - [ ] /errors — check for overnight process errors
 - [ ] /status — confirm gate pace and cron health
 
+**MID 12:00–14:00**
+- [ ] 🚀 Godman: 11d to launch — /godman for readiness checklist
+- [ ] npm login check — /blockers shows npm whoami status
+
 **PM 18:00–19:30**
 - [ ] Review AM sprint output — /changelog to see what shipped
-- [ ] Achiri: 23d to alpha — /achiri for readiness summary
+- [ ] Achiri: 22d to alpha — /achiri for readiness summary
 - [ ] Write session log to workspace/agents/memory/
-
----
-
-## TOMORROW PREVIEW
-
-### Thursday, April 3
-**AM 07:00–09:30**
-- [ ] Review all content metrics — 30+ posts should be live
-- [ ] Check TikTok API application status — approved/pending/rejected?
-- [ ] If approved: enable auto-posting (Model B premium tier)
-- [ ] If still pending: manual posting is working fine, continue
-
-**NO MIDDAY BLOCK**
 
 ---
 

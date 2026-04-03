@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-02T04:00:01.599Z",
+  "timestamp": "2026-04-03T10:00:02.105Z",
   "pass": 9,
   "fail": 2,
   "skip": 0,
   "total": 11,
-  "total_duration_ms": 671,
+  "total_duration_ms": 930,
   "results": [
     {
       "name": "1. Ollama (local models)",
@@ -16,25 +16,25 @@
       "name": "2. ClawRouter Gateway",
       "status": "PASS",
       "detail": "ClawRouter gateway healthy",
-      "duration_ms": 55
+      "duration_ms": 69
     },
     {
       "name": "3. Telegram Bot",
       "status": "PASS",
       "detail": "Bot: @MessiKognai_Bot",
-      "duration_ms": 87
+      "duration_ms": 106
     },
     {
       "name": "4. Dashboard",
       "status": "PASS",
       "detail": "Dashboard responding on :11436",
-      "duration_ms": 8
+      "duration_ms": 227
     },
     {
       "name": "5. Stripe",
       "status": "PASS",
       "detail": "Stripe API key set (reachable)",
-      "duration_ms": 207
+      "duration_ms": 127
     },
     {
       "name": "6. YouTube API",
@@ -57,8 +57,8 @@
     {
       "name": "9. Git Health",
       "status": "PASS",
-      "detail": "2856 commits, 488 uncommitted changes",
-      "duration_ms": 135
+      "detail": "2867 commits, 36 uncommitted changes",
+      "duration_ms": 110
     },
     {
       "name": "10. Critical Env Vars",
@@ -70,7 +70,7 @@
       "name": "11. Supabase",
       "status": "PASS",
       "detail": "Supabase reachable (read-only, write failed)",
-      "duration_ms": 177
+      "duration_ms": 289
     }
   ]
 }

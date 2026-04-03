@@ -307,3 +307,564 @@
 {"ts":"2026-04-02T08:00:01.960Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
 {"ts":"2026-04-02T08:00:01.961Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
 {"ts":"2026-04-02T08:00:01.980Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T09:00:02.136Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T09:00:02.137Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T09:00:02.157Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T10:00:03.835Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T10:00:03.835Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T10:00:03.850Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T11:00:08.292Z","agentId":"coder","taskId":"sprint-1452-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T11:00:08.293Z","agentId":"coder","taskId":"sprint-1452-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T11:00:08.340Z","agentId":"coder","taskId":"sprint-1452-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T12:00:02.177Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-C-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T12:00:02.178Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-C-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T12:00:05.196Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-C-02","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-04-02T13:00:02.683Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-C-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T13:00:02.684Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-C-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T13:00:07.480Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-C-02","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-04-02T13:45:12.449Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-C-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T13:45:12.450Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-C-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T13:45:15.503Z","agentId":"coder","taskId":"VOXIGHT-BLOCK-C-02","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-04-02T14:30:02.154Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T14:30:02.156Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T14:30:02.174Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T14:30:02.178Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T14:30:02.179Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T14:30:02.181Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T14:30:02.183Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T14:30:02.183Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T14:30:02.185Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T14:30:02.187Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T14:30:02.187Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T14:30:02.189Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T14:30:02.190Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T14:30:02.191Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T14:30:02.192Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T14:30:02.194Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T14:30:02.194Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T14:30:02.196Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T14:30:02.197Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T14:30:02.197Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T14:30:02.199Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T14:30:02.201Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T14:30:02.202Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T14:30:02.204Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T15:30:02.023Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T15:30:02.023Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T15:30:02.040Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T15:30:02.044Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T15:30:02.044Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T15:30:02.047Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T15:30:02.049Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T15:30:02.049Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T15:30:02.051Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T15:30:02.053Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T15:30:02.053Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T15:30:02.054Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T15:30:02.056Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T15:30:02.056Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T15:30:02.058Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T15:30:02.059Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T15:30:02.059Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T15:30:02.061Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T15:30:02.062Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T15:30:02.062Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T15:30:02.064Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T15:30:02.066Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T15:30:02.066Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T15:30:02.068Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T16:30:01.966Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T16:30:01.966Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T16:30:01.984Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T16:30:01.988Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T16:30:01.988Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T16:30:01.990Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T16:30:01.992Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T16:30:01.993Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T16:30:01.995Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T16:30:01.997Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T16:30:01.997Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T16:30:01.999Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T16:30:02.001Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T16:30:02.001Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T16:30:02.003Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T16:30:02.004Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T16:30:02.004Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T16:30:02.006Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T16:30:02.008Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T16:30:02.008Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T16:30:02.010Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T16:30:02.012Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T16:30:02.012Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T16:30:02.014Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T17:30:01.898Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T17:30:01.899Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T17:30:01.921Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T17:30:01.926Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T17:30:01.929Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T17:30:01.932Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T17:30:01.935Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T17:30:01.935Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T17:30:01.937Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T17:30:01.939Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T17:30:01.939Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T17:30:01.941Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T17:30:01.943Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T17:30:01.943Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T17:30:01.945Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T17:30:01.946Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T17:30:01.946Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T17:30:01.948Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T17:30:01.950Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T17:30:01.950Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T17:30:01.952Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T17:30:01.954Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T17:30:01.954Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T17:30:01.957Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T18:30:01.852Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T18:30:01.853Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T18:30:01.869Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T18:30:01.874Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T18:30:01.874Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T18:30:01.876Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T18:30:01.878Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T18:30:01.878Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T18:30:01.880Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T18:30:01.882Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T18:30:01.882Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T18:30:01.884Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T18:30:01.886Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T18:30:01.886Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T18:30:01.887Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T18:30:01.889Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T18:30:01.889Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T18:30:01.890Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T18:30:01.892Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T18:30:01.892Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T18:30:01.894Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T18:30:01.896Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T18:30:01.896Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T18:30:01.898Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T19:30:01.850Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T19:30:01.851Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T19:30:01.868Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T19:30:01.873Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T19:30:01.873Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T19:30:01.876Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T19:30:01.878Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T19:30:01.878Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T19:30:01.880Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T19:30:01.883Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T19:30:01.883Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T19:30:01.884Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T19:30:01.886Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T19:30:01.886Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T19:30:01.888Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T19:30:01.889Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T19:30:01.889Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T19:30:01.891Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T19:30:01.893Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T19:30:01.893Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T19:30:01.895Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T19:30:01.897Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T19:30:01.897Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T19:30:01.899Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T20:30:01.995Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T20:30:01.996Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T20:30:02.016Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T20:30:02.021Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T20:30:02.021Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T20:30:02.023Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T20:30:02.025Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T20:30:02.026Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T20:30:02.028Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T20:30:02.030Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T20:30:02.030Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T20:30:02.031Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T20:30:02.033Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T20:30:02.033Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T20:30:02.034Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T20:30:02.036Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T20:30:02.036Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T20:30:02.038Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T20:30:02.039Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T20:30:02.039Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T20:30:02.041Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T20:30:02.043Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T20:30:02.043Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T20:30:02.045Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T21:30:01.888Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T21:30:01.889Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T21:30:01.907Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T21:30:01.912Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T21:30:01.912Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T21:30:01.914Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T21:30:01.916Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T21:30:01.916Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T21:30:01.918Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T21:30:01.921Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T21:30:01.921Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T21:30:01.922Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T21:30:01.924Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T21:30:01.924Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T21:30:01.926Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T21:30:01.927Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T21:30:01.927Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T21:30:01.928Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T21:30:01.930Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T21:30:01.930Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T21:30:01.931Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T21:30:01.933Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T21:30:01.933Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T21:30:01.935Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T22:30:01.811Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T22:30:01.812Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T22:30:01.829Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T22:30:01.833Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T22:30:01.834Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T22:30:01.836Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T22:30:01.838Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T22:30:01.838Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T22:30:01.840Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T22:30:01.842Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T22:30:01.842Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T22:30:01.843Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T22:30:01.846Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T22:30:01.846Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T22:30:01.847Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T22:30:01.849Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T22:30:01.849Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T22:30:01.851Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T22:30:01.853Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T22:30:01.853Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T22:30:01.855Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T22:30:01.857Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T22:30:01.857Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T22:30:01.859Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T23:30:01.970Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T23:30:01.970Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T23:30:01.987Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T23:30:01.991Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T23:30:01.992Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T23:30:01.994Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T23:30:01.996Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T23:30:01.996Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T23:30:01.998Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T23:30:02.000Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T23:30:02.000Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T23:30:02.001Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T23:30:02.003Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T23:30:02.003Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T23:30:02.005Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T23:30:02.007Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T23:30:02.007Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T23:30:02.008Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T23:30:02.010Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T23:30:02.010Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T23:30:02.012Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-02T23:30:02.014Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-02T23:30:02.014Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-02T23:30:02.016Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T00:30:02.087Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T00:30:02.088Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T00:30:02.106Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T00:30:02.110Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T00:30:02.110Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T00:30:02.113Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T00:30:02.115Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T00:30:02.115Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T00:30:02.117Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T00:30:02.119Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T00:30:02.119Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T00:30:02.120Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T00:30:02.122Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T00:30:02.122Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T00:30:02.123Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T00:30:02.125Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T00:30:02.125Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T00:30:02.126Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T00:30:02.128Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T00:30:02.128Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T00:30:02.130Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T00:30:02.132Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T00:30:02.132Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T00:30:02.134Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T01:30:01.930Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T01:30:01.930Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T01:30:01.938Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T01:30:01.941Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T01:30:01.941Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T01:30:01.942Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T01:30:01.944Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T01:30:01.944Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T01:30:01.945Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T01:30:01.946Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T01:30:01.946Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T01:30:01.947Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T01:30:01.948Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T01:30:01.948Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T01:30:01.949Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T01:30:01.950Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T01:30:01.950Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T01:30:01.951Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T01:30:01.952Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T01:30:01.952Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T01:30:01.953Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T01:30:01.954Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T01:30:01.954Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T01:30:01.955Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T02:30:01.855Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T02:30:01.856Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T02:30:01.872Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T02:30:01.877Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T02:30:01.877Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T02:30:01.879Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T02:30:01.882Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T02:30:01.882Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T02:30:01.884Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T02:30:01.886Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T02:30:01.886Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T02:30:01.888Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T02:30:01.889Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T02:30:01.889Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T02:30:01.891Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T02:30:01.893Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T02:30:01.893Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T02:30:01.894Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T02:30:01.896Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T02:30:01.896Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T02:30:01.898Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T02:30:01.900Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T02:30:01.900Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T02:30:01.902Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T03:30:01.954Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T03:30:01.955Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T03:30:01.972Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T03:30:01.977Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T03:30:01.977Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T03:30:01.979Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T03:30:01.981Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T03:30:01.981Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T03:30:01.983Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T03:30:01.985Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T03:30:01.985Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T03:30:01.987Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T03:30:01.989Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T03:30:01.989Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T03:30:01.990Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T03:30:01.992Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T03:30:01.992Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T03:30:01.993Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T03:30:01.995Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T03:30:01.995Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T03:30:01.997Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T03:30:01.999Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T03:30:01.999Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T03:30:02.001Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T04:30:01.890Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T04:30:01.890Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T04:30:01.907Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T04:30:01.913Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T04:30:01.913Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T04:30:01.915Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T04:30:01.917Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T04:30:01.917Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T04:30:01.919Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T04:30:01.921Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T04:30:01.921Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T04:30:01.923Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T04:30:01.925Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T04:30:01.925Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T04:30:01.926Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T04:30:01.928Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T04:30:01.928Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T04:30:01.930Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T04:30:01.932Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T04:30:01.932Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T04:30:01.933Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T04:30:01.936Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T04:30:01.936Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T04:30:01.937Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T05:30:02.086Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T05:30:02.086Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T05:30:02.102Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T05:30:02.106Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T05:30:02.106Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T05:30:02.109Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T05:30:02.111Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T05:30:02.111Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T05:30:02.113Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T05:30:02.115Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T05:30:02.115Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T05:30:02.117Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T05:30:02.119Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T05:30:02.119Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T05:30:02.120Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T05:30:02.122Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T05:30:02.122Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T05:30:02.124Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T05:30:02.126Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T05:30:02.126Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T05:30:02.128Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T05:30:02.131Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T05:30:02.131Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T05:30:02.133Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T06:30:01.887Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T06:30:01.888Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T06:30:01.912Z","agentId":"coder","taskId":"godman-rewrite-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T06:30:01.917Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T06:30:01.917Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T06:30:01.919Z","agentId":"coder","taskId":"godman-rewrite-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T06:30:01.922Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T06:30:01.922Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T06:30:01.924Z","agentId":"coder","taskId":"godman-rewrite-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T06:30:01.926Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T06:30:01.926Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T06:30:01.927Z","agentId":"coder","taskId":"godman-rewrite-04","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T06:30:01.929Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T06:30:01.929Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T06:30:01.931Z","agentId":"coder","taskId":"godman-rewrite-05","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T06:30:01.932Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T06:30:01.932Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T06:30:01.934Z","agentId":"coder","taskId":"godman-rewrite-06","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T06:30:01.935Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T06:30:01.935Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T06:30:01.937Z","agentId":"coder","taskId":"godman-rewrite-07","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T06:30:01.939Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T06:30:01.939Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T06:30:01.941Z","agentId":"coder","taskId":"godman-rewrite-08","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T07:09:48.021Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T07:09:48.022Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T07:09:48.050Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T07:09:48.063Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T07:09:48.063Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T07:09:48.067Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T07:09:48.070Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T07:09:48.070Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T07:09:48.073Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T07:09:48.075Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T07:09:48.075Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T07:09:48.078Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T08:00:02.737Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T08:00:02.738Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T08:00:02.758Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T08:00:02.763Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T08:00:02.764Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T08:00:02.766Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T08:00:02.768Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T08:00:02.768Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T08:00:02.770Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T08:00:02.772Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T08:00:02.772Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T08:00:02.774Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T09:00:03.317Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T09:00:03.317Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T09:00:03.333Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T09:00:03.338Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T09:00:03.338Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T09:00:03.341Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T09:00:03.343Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T09:00:03.343Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T09:00:03.345Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T09:00:03.347Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T09:00:03.347Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T09:00:03.349Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T10:00:03.702Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T10:00:03.703Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T10:00:03.712Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T10:00:03.745Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T10:00:03.745Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T10:00:03.747Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T10:00:03.748Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T10:00:03.748Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T10:00:03.750Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T10:00:03.751Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T10:00:03.751Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T10:00:03.752Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T11:00:04.888Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T11:00:04.889Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T11:00:04.924Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T11:00:04.931Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T11:00:04.931Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T11:00:04.936Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T11:00:04.938Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T11:00:04.939Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T11:00:04.943Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T11:00:04.945Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T11:00:04.946Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T11:00:04.949Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T12:00:02.771Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T12:00:02.772Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T12:00:02.789Z","agentId":"coder","taskId":"PROMO-05-tune-prompt","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T12:00:02.793Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T12:00:02.793Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T12:00:02.796Z","agentId":"coder","taskId":"PROMO-05-credits","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T12:00:02.798Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T12:00:02.798Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T12:00:02.800Z","agentId":"coder","taskId":"PROMO-05-wire-credits","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T12:00:02.801Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T12:00:02.801Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T12:00:02.803Z","agentId":"coder","taskId":"PROMO-05-scorer","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T12:15:58.773Z","agentId":"coder","taskId":"qwen36-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T12:15:58.773Z","agentId":"coder","taskId":"qwen36-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T12:15:58.792Z","agentId":"coder","taskId":"qwen36-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T12:15:58.796Z","agentId":"coder","taskId":"qwen36-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T12:15:58.796Z","agentId":"coder","taskId":"qwen36-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T12:15:58.798Z","agentId":"coder","taskId":"qwen36-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T12:15:58.800Z","agentId":"coder","taskId":"qwen36-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T12:15:58.800Z","agentId":"coder","taskId":"qwen36-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T12:16:25.486Z","agentId":"coder","taskId":"qwen36-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T13:00:02.907Z","agentId":"coder","taskId":"qwen36-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T13:00:02.908Z","agentId":"coder","taskId":"qwen36-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T13:00:02.930Z","agentId":"coder","taskId":"qwen36-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T13:00:02.935Z","agentId":"coder","taskId":"qwen36-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T13:00:02.935Z","agentId":"coder","taskId":"qwen36-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T13:00:02.938Z","agentId":"coder","taskId":"qwen36-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T13:00:02.940Z","agentId":"coder","taskId":"qwen36-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T13:00:02.940Z","agentId":"coder","taskId":"qwen36-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T13:00:29.416Z","agentId":"coder","taskId":"qwen36-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T14:00:02.753Z","agentId":"coder","taskId":"qwen36-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T14:00:02.754Z","agentId":"coder","taskId":"qwen36-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T14:00:02.780Z","agentId":"coder","taskId":"qwen36-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T14:00:02.784Z","agentId":"coder","taskId":"qwen36-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T14:00:02.784Z","agentId":"coder","taskId":"qwen36-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T14:00:02.787Z","agentId":"coder","taskId":"qwen36-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T14:00:02.789Z","agentId":"coder","taskId":"qwen36-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T14:00:02.789Z","agentId":"coder","taskId":"qwen36-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T14:00:29.089Z","agentId":"coder","taskId":"qwen36-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T14:13:50.387Z","agentId":"coder","taskId":"qwen36-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T14:13:50.388Z","agentId":"coder","taskId":"qwen36-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T14:13:50.406Z","agentId":"coder","taskId":"qwen36-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T14:13:50.411Z","agentId":"coder","taskId":"qwen36-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T14:13:50.411Z","agentId":"coder","taskId":"qwen36-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T14:13:50.414Z","agentId":"coder","taskId":"qwen36-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T14:13:50.416Z","agentId":"coder","taskId":"qwen36-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T14:13:50.416Z","agentId":"coder","taskId":"qwen36-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T14:14:17.126Z","agentId":"coder","taskId":"qwen36-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T14:16:05.331Z","agentId":"coder","taskId":"qwen36-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T14:16:05.331Z","agentId":"coder","taskId":"qwen36-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T14:16:05.352Z","agentId":"coder","taskId":"qwen36-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T14:16:05.357Z","agentId":"coder","taskId":"qwen36-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T14:16:05.357Z","agentId":"coder","taskId":"qwen36-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T14:16:05.359Z","agentId":"coder","taskId":"qwen36-02","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T14:16:05.361Z","agentId":"coder","taskId":"qwen36-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T14:16:05.361Z","agentId":"coder","taskId":"qwen36-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T14:16:35.129Z","agentId":"coder","taskId":"qwen36-03","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"no files produced"}
+{"ts":"2026-04-03T14:17:01.094Z","agentId":"coder","taskId":"qwen36-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T14:17:01.094Z","agentId":"coder","taskId":"qwen36-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T14:17:06.649Z","agentId":"coder","taskId":"qwen36-01","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-04-03T14:17:06.656Z","agentId":"coder","taskId":"qwen36-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T14:17:06.656Z","agentId":"coder","taskId":"qwen36-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T14:21:32.679Z","agentId":"coder","taskId":"qwen36-02","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-04-03T14:21:32.688Z","agentId":"coder","taskId":"qwen36-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T14:21:32.688Z","agentId":"coder","taskId":"qwen36-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T14:22:02.993Z","agentId":"coder","taskId":"qwen36-03","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-04-03T15:00:02.832Z","agentId":"coder","taskId":"qwen36-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T15:00:02.833Z","agentId":"coder","taskId":"qwen36-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T15:00:07.809Z","agentId":"coder","taskId":"qwen36-01","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-04-03T15:00:07.816Z","agentId":"coder","taskId":"qwen36-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T15:00:07.817Z","agentId":"coder","taskId":"qwen36-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T15:03:36.513Z","agentId":"coder","taskId":"qwen36-02","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-04-03T15:03:36.516Z","agentId":"coder","taskId":"qwen36-03","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-04-03T15:03:36.516Z","agentId":"coder","taskId":"qwen36-03","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-04-03T15:04:06.035Z","agentId":"coder","taskId":"qwen36-03","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}

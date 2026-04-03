@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-02T05:00:01.041Z",
+  "generated_at": "2026-04-03T05:00:01.018Z",
   "overall_status": "ok",
   "summary": "6 ok, 2 warn, 0 critical",
   "metrics": [
@@ -7,7 +7,7 @@
       "name": "gate_progress",
       "value": 161,
       "status": "ok",
-      "detail": "161/30 posts, 5d left, need -26/day"
+      "detail": "161/30 posts, 4d left, need -32/day"
     },
     {
       "name": "script_inventory",
@@ -17,39 +17,39 @@
     },
     {
       "name": "ledger_entries",
-      "value": 1923,
+      "value": 2100,
       "status": "ok",
-      "detail": "1923 entries"
+      "detail": "2100 entries"
     },
     {
       "name": "reports_freshness",
-      "value": 2,
+      "value": 0,
       "status": "warn",
-      "detail": "2/3 fresh"
+      "detail": "0/3 fresh"
     },
     {
       "name": "knowledge_trading",
-      "value": 18,
+      "value": 19,
       "status": "ok",
-      "detail": "18 records in 3 batches"
+      "detail": "19 records in 4 batches"
     },
     {
       "name": "observer_status",
       "value": 1111,
       "status": "warn",
-      "detail": "1111 AAR entries, last run 187h ago"
+      "detail": "1111 AAR entries, last run 211h ago"
     },
     {
       "name": "aar_volume",
-      "value": 1345,
+      "value": 1348,
       "status": "ok",
-      "detail": "1345 entries across 23 files"
+      "detail": "1348 entries across 24 files"
     },
     {
       "name": "git_head",
-      "value": "5b2c514e",
+      "value": "dfac15d7",
       "status": "ok",
-      "detail": "5b2c514e chore: gitignore large model weights and kerat output"
+      "detail": "dfac15d7 fix(sdk): remove broken demo.ts, exclude bin/ from tsc build"
     }
   ]
 }

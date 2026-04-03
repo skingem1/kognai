@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-02T04:00:00.696Z",
+  "timestamp": "2026-04-03T10:00:00.861Z",
   "alerts": [
     {
       "severity": "warning",
       "title": "Disk usage high",
-      "detail": "workspace/scs001/ is 15.9GB (threshold: 5GB)."
+      "detail": "workspace/scs001/ is 17.9GB (threshold: 5GB)."
     },
     {
       "severity": "info",
       "title": "Captioned videos",
-      "detail": "163 videos ready"
+      "detail": "192 videos ready"
     }
   ],
   "critical_count": 0,

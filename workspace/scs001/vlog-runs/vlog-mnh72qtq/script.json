@@ -1,0 +1,21 @@
+{
+  "title": "AI Taking Over Junior Dev Jobs?",
+  "full_monologue": "**AI agents are replacing junior developers.** Let’s talk about this. These AI tools can now write clean code, debug issues, and even understand project requirements—fast. They’re not just assisting; they’re stepping into roles once reserved for entry-level devs. But here’s the thing: AI isn’t replacing creativity or problem-solving. It’s changing the game. So, what does this mean for the future of coding? Let me know in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "hands typing on a keyboard, blurred background, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a group of people collaborating in a modern office space, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
