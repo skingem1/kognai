@@ -226,7 +226,7 @@ function normalizeTasks(tasks: any[]): any[] {
     ...task,
     context:      task.context      ?? task.description ?? '',
     dependencies: task.dependencies ?? task.depends_on  ?? [],
-    deliverables: task.deliverables ?? (task.file ? { code: [task.file] } : { code: [] }),
+    deliverables: task.deliverables ?? (task.file ? { code: [task.file] } : task.task_target ? { code: [task.task_target] } : { code: [] }),
     agent:        task.agent        ?? 'coder',
     type:         task.type         ?? 'feature',
     priority:     task.priority     ?? 'medium',

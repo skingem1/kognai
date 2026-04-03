@@ -2110,6 +2110,12 @@ class Orchestrator {
       if (!task.context) task.context = `${task.id}: ${(task as any).title || task.type}`;
       // Normalize priority: sprint JSON may omit it
       if (!task.priority) task.priority = 'medium';
+      // Fix: task_target used as file path (e.g., 'scripts/lib/foo.ts') must be cleared
+      // so it doesn't confuse the routing switch which expects: local|cloud-code|cloud-exec|cloud-post
+      const VALID_ROUTING_TARGETS = ['local', 'cloud-code', 'cloud-exec', 'cloud-post'];
+      if ((task as any).task_target && !VALID_ROUTING_TARGETS.includes((task as any).task_target)) {
+        delete (task as any).task_target; // file path already captured in deliverables.code
+      }
       // Stamp sprint_id — avoids 'unknown' in logs/routing/YYYY-MM-DD.jsonl
       if (!(task as any).sprint_id) (task as any).sprint_id = _sprintId;
     }
