@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-03T05:00:01.018Z",
+  "generated_at": "2026-04-04T05:00:01.213Z",
   "overall_status": "ok",
   "summary": "6 ok, 2 warn, 0 critical",
   "metrics": [
@@ -7,7 +7,7 @@
       "name": "gate_progress",
       "value": 161,
       "status": "ok",
-      "detail": "161/30 posts, 4d left, need -32/day"
+      "detail": "161/30 posts, 3d left, need -43/day"
     },
     {
       "name": "script_inventory",
@@ -17,9 +17,9 @@
     },
     {
       "name": "ledger_entries",
-      "value": 2100,
+      "value": 2214,
       "status": "ok",
-      "detail": "2100 entries"
+      "detail": "2214 entries"
     },
     {
       "name": "reports_freshness",
@@ -29,27 +29,27 @@
     },
     {
       "name": "knowledge_trading",
-      "value": 19,
+      "value": 20,
       "status": "ok",
-      "detail": "19 records in 4 batches"
+      "detail": "20 records in 5 batches"
     },
     {
       "name": "observer_status",
       "value": 1111,
       "status": "warn",
-      "detail": "1111 AAR entries, last run 211h ago"
+      "detail": "1111 AAR entries, last run 235h ago"
     },
     {
       "name": "aar_volume",
-      "value": 1348,
+      "value": 1393,
       "status": "ok",
-      "detail": "1348 entries across 24 files"
+      "detail": "1393 entries across 26 files"
     },
     {
       "name": "git_head",
-      "value": "dfac15d7",
+      "value": "647640cc",
       "status": "ok",
-      "detail": "dfac15d7 fix(sdk): remove broken demo.ts, exclude bin/ from tsc build"
+      "detail": "647640cc feat(coder): qwen36-02 - feature"
     }
   ]
 }

@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-03T10:00:02.105Z",
+  "timestamp": "2026-04-04T10:00:01.811Z",
   "pass": 9,
   "fail": 2,
   "skip": 0,
   "total": 11,
-  "total_duration_ms": 930,
+  "total_duration_ms": 728,
   "results": [
     {
       "name": "1. Ollama (local models)",
@@ -16,25 +16,25 @@
       "name": "2. ClawRouter Gateway",
       "status": "PASS",
       "detail": "ClawRouter gateway healthy",
-      "duration_ms": 69
+      "duration_ms": 14
     },
     {
       "name": "3. Telegram Bot",
       "status": "PASS",
       "detail": "Bot: @MessiKognai_Bot",
-      "duration_ms": 106
+      "duration_ms": 96
     },
     {
       "name": "4. Dashboard",
       "status": "PASS",
       "detail": "Dashboard responding on :11436",
-      "duration_ms": 227
+      "duration_ms": 154
     },
     {
       "name": "5. Stripe",
       "status": "PASS",
       "detail": "Stripe API key set (reachable)",
-      "duration_ms": 127
+      "duration_ms": 124
     },
     {
       "name": "6. YouTube API",
@@ -52,13 +52,13 @@
       "name": "8. Pipeline Data Files",
       "status": "PASS",
       "detail": "All 4 pipeline data files present",
-      "duration_ms": 0
+      "duration_ms": 1
     },
     {
       "name": "9. Git Health",
       "status": "PASS",
-      "detail": "2867 commits, 36 uncommitted changes",
-      "duration_ms": 110
+      "detail": "2892 commits, 34 uncommitted changes",
+      "duration_ms": 103
     },
     {
       "name": "10. Critical Env Vars",
@@ -70,7 +70,7 @@
       "name": "11. Supabase",
       "status": "PASS",
       "detail": "Supabase reachable (read-only, write failed)",
-      "duration_ms": 289
+      "duration_ms": 234
     }
   ]
 }
